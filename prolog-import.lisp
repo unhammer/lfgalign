@@ -67,72 +67,95 @@ structure."
   (seventh parse))
 
 
-(defun num (varnum) (if (equal (car varnum) "'NULL'")
+(defun clean-var (varnum) (if (equal (car varnum) "'NULL'")
 			(intern (car varnum))
 			(intern (caadr varnum))))
-(defun pred (semform)
+(defun clean-pred (semform)
   (list (intern (car (second semform)))
 	(intern (car (third semform)))
 	(if (not (equal (cadr (fourth semform)) '("")))
-	    (mapcar #'num (cdr (fourth semform))))
+	    (mapcar #'clean-var (cdr (fourth semform))))
 	(if (not (equal (cadr (fifth semform)) '("")))
-	    (mapcar #'num (cdr (fifth semform))))))
+	    (mapcar #'clean-var (cdr (fifth semform))))))
 
-(progn ;; current:
-  (defun clean-f-str (raw)
-    (mapcar
-     (lambda (cf)
-       (let* ((assig (third cf))
-	      (lhs (second assig))
-	      (rhs (third assig)))
-	 (case (intern (car assig))
-	   (|eq|
-	    (case (intern (car lhs))
-	      (|attr|
-	       (list (num (second lhs))
-		     (cons (intern (car (third lhs)))
-			   (if (equal (car rhs)
-				      "var")
-			       (num rhs)
-			       (pred rhs)))))
-	      (|var|
-	       (list (num lhs)
-		     (case (intern (car rhs))
-		       (|var|
-			(num rhs))
-		       (|semform|
-			(pred rhs))
-		       (t ; all other should start with a ', but maybe we should check for this?
-			(intern (car rhs)))))
-	       )
-	      (t 'TODO-WHAT-IS-THIS)))
-	   (|in_set|
-	    'in_set))))
-     raw))
-
-  (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19"))))
-		 ("cf" ("1") ("eq"
-			      ("attr" ("var" ("3")) ("'PRED'"))
-			      ("semform" ("'kata'") ("8") (LIST ("")) (LIST ("")))))
-		 ("cf" ("1")
-		  ("eq" ("var" ("1"))
-		   ("semform" ("'bjeffe'") ("10") (LIST ("'NULL'") ("var" ("5")))
-			      (LIST ("")))))
-		 ("cf" ("1") ("eq"
-			      ("var" ("1"))
-			      ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST ("")))))
-		 ("cf" ("1") ("eq"
-			      ("var" ("20"))
-			      ("'past'")))
-		 ("cf" ("1") ("eq"
-			      ("var" ("20"))
-			      ("var" ("2"))))
-		 ("cf" ("1") ("eq"
-			      ("attr" ("var" ("0")) ("'PRED'"))
-			      ("var" ("1")))))))
+(defun clean-f-str (raw)
+  (mapcar
+   (lambda (cf)
+     (let* ((assig (third cf))
+	    (lhs (second assig))
+	    (rhs (third assig)))
+       (case (intern (car assig))
+	 (|eq|
+	  (case (intern (car lhs))
+	    (|attr|
+	     (list (clean-var (second lhs))
+		   (cons (intern (car (third lhs)))
+			 (if (equal (car rhs) "var")
+			     (clean-var rhs)
+			     (clean-pred rhs)))))
+	    (|var|
+	     (list (clean-var lhs)
+		   (case (intern (car rhs))
+		     (|var|
+		      (clean-var rhs))
+		     (|semform|
+		      (clean-pred rhs))
+		     (t ; all other should start with a ', but maybe we should check for this?
+		      (intern (car rhs)))))
+	     )
+	    (|proj|
+	     (list (clean-var (second lhs))
+		   (cons (intern (car (third lhs)))
+			 (clean-var rhs))))))
+	 (|in_set|
+	  'in_set))))
+   raw))
 
 
-;; TESTING:
+;;;;;;;; TESTING:		  
+(lisp-unit:define-test test-clean-f
+  (lisp-unit:assert-equal
+   '((|in_set| |'NO-PV'| |19|))
+   (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19")))))))
+  (lisp-unit:assert-equal
+   '((|18| (|'o::'| . |19|)) (|3| (|'PRED'| |'kata'| |8| NIL NIL))
+     (|1| (|'bjeffe'| |10| (|'NULL'| |5|) NIL)) (|1| (|'qePa'| |10| (|3|) NIL))
+     (|20| |'past'|) (|20| |2|) (|0| (|'PRED'| . |1|)))
+   (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19"))))
+		  ("cf" ("1") ("eq"
+			       ("attr" ("var" ("3")) ("'PRED'"))
+			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST ("")))))
+		  ("cf" ("1")
+		   ("eq" ("var" ("1"))
+		    ("semform" ("'bjeffe'") ("10") (LIST ("'NULL'") ("var" ("5")))
+			       (LIST ("")))))
+		  ("cf" ("1") ("eq"
+			       ("var" ("1"))
+			       ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST ("")))))
+		  ("cf" ("1") ("eq"
+			       ("var" ("20"))
+			       ("'past'")))
+		  ("cf" ("1") ("eq"
+			       ("var" ("20"))
+			       ("var" ("2"))))
+		  ("cf" ("1") ("eq"
+			       ("attr" ("var" ("0")) ("'PRED'"))
+			       ("var" ("1"))))))))
+
+(lisp-unit:define-test test-var/pred
+  (lisp-unit:assert-eq
+   (let ((firstvalue (clean-var '("var" ("3"))))) firstvalue)
+   '|3|)
+  (lisp-unit:assert-equal
+   (clean-pred '("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))
+   '(|'kata'| |8| NIL NIL))
+  (lisp-unit:assert-equal
+   (clean-pred '("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))
+   '(|'qePa'| |10| (|3|) NIL))
+  (lisp-unit:assert-equal
+   (clean-pred '("semform" ("'bjeffe'") ("10") (LIST ("'NULL'") ("var" ("5"))) (LIST (""))))
+   '(|'bjeffe'| |10| (|'NULL'| |5|) NIL)))
+
 (lisp-unit:define-test test-parsefile
   (lisp-unit:assert-equal
      '("fstructure" ("'abramsma iqePa.'")
@@ -263,20 +286,6 @@ structure."
 	 (stream (merge-pathnames "dev/TEST_parse.pl"
 				  (asdf:component-pathname (asdf:find-system :lfgalign))))
        (parse-prolog stream))))
-
-(lisp-unit:define-test test-num/pred
-  (lisp-unit:assert-eq
-   (let ((firstvalue (num '("var" ("3"))))) firstvalue)
-   '|3|)
-  (lisp-unit:assert-equal
-   (pred '("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))
-   '(|'kata'| |8| NIL NIL))
-  (lisp-unit:assert-equal
-   (pred '("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))
-   '(|'qePa'| |10| (|3|) NIL))
-  (lisp-unit:assert-equal
-   (pred '("semform" ("'bjeffe'") ("10") (LIST ("'NULL'") ("var" ("5"))) (LIST (""))))
-   '(|'bjeffe'| |10| (|'NULL'| |5|) NIL)))
 
 
 
