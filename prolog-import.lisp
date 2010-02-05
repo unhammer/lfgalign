@@ -108,7 +108,7 @@ structure."
 		   (cons (intern (car (third lhs)))
 			 (clean-var rhs))))))
 	 (|in_set|
-	  'in_set))))
+	  (list '|in_set| (intern (car lhs)) (num rhs))))))
    raw))
 
 
