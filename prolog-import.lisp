@@ -100,9 +100,8 @@ structure."
 		      (clean-var rhs))
 		     (|semform|
 		      (clean-pred rhs))
-		     (t ; all other should start with a ', but maybe we should check for this?
-		      (intern (car rhs)))))
-	     )
+		     (t ; symbol, should start with a ', but maybe we should check for this?
+		      (intern (car rhs))))))
 	    (|proj|
 	     (list (clean-var (second lhs))
 		   (cons (intern (car (third lhs)))
