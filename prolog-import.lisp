@@ -78,6 +78,16 @@ structure."
 	(if (not (equal (cadr (fifth semform)) '("")))
 	    (mapcar #'clean-var (cdr (fifth semform))))))
 
+(defun clean-att-val (lhs rhs)
+  (cons lhs
+	(case (intern (car rhs))
+	  (|var|
+	   (clean-var rhs))
+	  (|semform|
+	   (clean-pred rhs))
+	  (t ; symbol, should start with a ', but maybe we should check for this?
+	   (intern (car rhs))))))
+
 (defun clean-f-str (raw)
   (mapcar
    (lambda (cf)
@@ -89,23 +99,9 @@ structure."
 	  (case (intern (car lhs))
 	    (|attr|
 	     (list (clean-var (second lhs))
-		   (cons (intern (car (third lhs)))
-			 (case (intern (car rhs))
-			   (|var|
-			    (clean-var rhs))
-			   (|semform|
-			    (clean-pred rhs))
-			   (t ; symbol
-			    (intern (car rhs)))))))
+		   (clean-att-val (intern (car (third lhs))) rhs)))
 	    (|var|
-	     (list (clean-var lhs)
-		   (case (intern (car rhs))
-		     (|var|
-		      (clean-var rhs))
-		     (|semform|
-		      (clean-pred rhs))
-		     (t ; symbol, should start with a ', but maybe we should check for this?
-		      (intern (car rhs))))))
+	     (clean-att-val (clean-var lhs) rhs))
 	    (|proj|
 	     (list (clean-var (second lhs))
 		   (cons (intern (car (third lhs)))
@@ -114,36 +110,43 @@ structure."
 	  (list '|in_set| (intern (car lhs)) (clean-var rhs))))))
    raw))
 
-
 ;;;;;;;; TESTING:		  
 (lisp-unit:define-test test-clean-f
   (lisp-unit:assert-equal
    '((|in_set| |'NO-PV'| |19|))
    (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19")))))))
   (lisp-unit:assert-equal
-   '((|18| (|'o::'| . |19|)) (|3| (|'PRED'| |'kata'| |8| NIL NIL))
-     (|1| (|'bjeffe'| |10| (|'NULL'| |5|) NIL)) (|1| (|'qePa'| |10| (|3|) NIL))
-     (|20| |'past'|) (|20| |2|) (|0| (|'PRED'| . |1|)))
-   (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19"))))
-		  ("cf" ("1") ("eq"
-			       ("attr" ("var" ("3")) ("'PRED'"))
-			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST ("")))))
-		  ("cf" ("1")
-		   ("eq" ("var" ("1"))
-		    ("semform" ("'bjeffe'") ("10") (LIST ("'NULL'") ("var" ("5")))
-			       (LIST ("")))))
-		  ("cf" ("1") ("eq"
-			       ("var" ("1"))
-			       ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST ("")))))
-		  ("cf" ("1") ("eq"
-			       ("var" ("20"))
-			       ("'past'")))
-		  ("cf" ("1") ("eq"
+   '((|20| . |2|)
+     (|0| (|'PRED'| . |1|)))
+   (clean-f-str '(("cf" ("1") ("eq"
 			       ("var" ("20"))
 			       ("var" ("2"))))
 		  ("cf" ("1") ("eq"
 			       ("attr" ("var" ("0")) ("'PRED'"))
 			       ("var" ("1")))))))
+  (lisp-unit:assert-equal
+   '((|18| (|'o::'| . |19|)))
+   (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19")))))))
+  (lisp-unit:assert-equal
+   '((|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL)
+     (|1| |'qePa'| |10| (|3|) NIL))
+   (clean-f-str '(("cf" ("1")
+		   ("eq" ("var" ("1"))
+		    ("semform" ("'bjeffe'") ("10") (LIST ("'NULL'") ("var" ("5")))
+			       (LIST ("")))))
+		  ("cf" ("1") ("eq"
+			       ("var" ("1"))
+			       ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))))))
+  (lisp-unit:assert-equal
+   '((|3| (|'PRED'| |'kata'| |8| NIL NIL)))
+   (clean-f-str '(("cf" ("1") ("eq"
+			       ("attr" ("var" ("3")) ("'PRED'"))
+			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))))
+  (lisp-unit:assert-equal
+   '((|20| . |'past'|))
+   (clean-f-str '(("cf" ("1") ("eq"
+			       ("var" ("20"))
+			       ("'past'"))))))
   (lisp-unit:assert-equal 
    '((|5| (|'CASE'| . |'erg'|)))
    (clean-f-str '(("cf" ("1") ("eq"
