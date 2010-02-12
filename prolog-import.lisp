@@ -90,9 +90,13 @@ structure."
 	    (|attr|
 	     (list (clean-var (second lhs))
 		   (cons (intern (car (third lhs)))
-			 (if (equal (car rhs) "var")
-			     (clean-var rhs)
-			     (clean-pred rhs)))))
+			 (case (intern (car rhs))
+			   (|var|
+			    (clean-var rhs))
+			   (|semform|
+			    (clean-pred rhs))
+			   (t ; symbol
+			    (intern (car rhs)))))))
 	    (|var|
 	     (list (clean-var lhs)
 		   (case (intern (car rhs))
@@ -139,7 +143,12 @@ structure."
 			       ("var" ("2"))))
 		  ("cf" ("1") ("eq"
 			       ("attr" ("var" ("0")) ("'PRED'"))
-			       ("var" ("1"))))))))
+			       ("var" ("1")))))))
+  (lisp-unit:assert-equal 
+   '((|5| (|'CASE'| . |'erg'|)))
+   (clean-f-str '(("cf" ("1") ("eq"
+			       ("attr" ("var" ("5")) ("'CASE'"))
+			       ("'erg'")))))))
 
 (lisp-unit:define-test test-var/pred
   (lisp-unit:assert-eq
