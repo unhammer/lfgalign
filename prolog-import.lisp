@@ -62,9 +62,11 @@ structure."
   (cdr (parse-pred stream)))
 
 (defun raw-f-str (parse)
-  (sixth parse))
+  "Skip the first element, LIST"
+  (cdr (sixth parse)))
 (defun raw-c-str (parse)
-  (seventh parse))
+  "Skip the first element, LIST"
+  (cdr (seventh parse)))
 
 
 (defun clean-var (varnum) (if (equal (car varnum) "'NULL'")
@@ -98,12 +100,12 @@ structure."
 	 (|eq|
 	  (case (intern (car lhs))
 	    (|attr|
-	     (list (clean-var (second lhs))
+	     (cons (clean-var (second lhs))
 		   (clean-att-val (intern (car (third lhs))) rhs)))
 	    (|var|
 	     (clean-att-val (clean-var lhs) rhs))
 	    (|proj|
-	     (list (clean-var (second lhs))
+	     (cons (clean-var (second lhs))
 		   (cons (intern (car (third lhs)))
 			 (clean-var rhs))))))
 	 (|in_set|
@@ -130,7 +132,7 @@ structure."
    (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19")))))))
   (lisp-unit:assert-equal
    '((|20| . |2|)
-     (|0| (|'PRED'| . |1|)))
+     (|0| |'PRED'| . |1|))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("var" ("20"))
 			       ("var" ("2"))))
@@ -138,7 +140,7 @@ structure."
 			       ("attr" ("var" ("0")) ("'PRED'"))
 			       ("var" ("1")))))))
   (lisp-unit:assert-equal
-   '((|18| (|'o::'| . |19|)))
+   '((|18| |'o::'| . |19|))
    (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19")))))))
   (lisp-unit:assert-equal
    '((|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL)
@@ -151,7 +153,7 @@ structure."
 			       ("var" ("1"))
 			       ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))))))
   (lisp-unit:assert-equal
-   '((|3| (|'PRED'| |'kata'| |8| NIL NIL)))
+   '((|3| |'PRED'| |'kata'| |8| NIL NIL))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("attr" ("var" ("3")) ("'PRED'"))
 			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))))
@@ -161,7 +163,7 @@ structure."
 			       ("var" ("20"))
 			       ("'past'"))))))
   (lisp-unit:assert-equal 
-   '((|5| (|'CASE'| . |'erg'|)))
+   '((|5| |'CASE'| . |'erg'|))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("attr" ("var" ("5")) ("'CASE'"))
 			       ("'erg'")))))))
