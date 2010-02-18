@@ -110,6 +110,19 @@ structure."
 	  (list '|in_set| (intern (car lhs)) (clean-var rhs))))))
    raw))
 
+(defun unique-f-str (dup-f-str)
+  (let ((f-table (make-hash-table)))
+    (dolist (pair dup-f-str)
+      (let ((key (car pair))
+	    (value (cdr pair)))
+	(setf (gethash key f-table)
+	      (cons value (gethash key f-table)))))
+    f-table))
+;; (loop for value being the hash-values of (unique-f-str (clean-f-str (raw-f-str foo)))
+;;         using (hash-key key)
+;;         do (format t "~&~A -> ~A" key value))
+
+
 ;;;;;;;; TESTING:		  
 (lisp-unit:define-test test-clean-f
   (lisp-unit:assert-equal
