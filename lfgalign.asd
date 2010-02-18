@@ -13,6 +13,7 @@
   :licence "GNU GPL 3.0"
   :description "lfgalign"
   :long-description "LFG alignment algorithm"
+  :depends-on ("lisp-unit")		; but only for testing...hmm
   :components ((:file "prolog-import")
 	       (:file "lfgalign"
 		      :depends-on ("prolog-import"))))
