@@ -55,5 +55,6 @@
 	 (f-ka (raw-f-str ka-parse))
 	 (f-nb (raw-f-str nb-parse)))
     ;; assume outermost f-str has var(0) and contains a PRED
-    f-nb
+    (list (clean-f-str f-nb)
+	  (clean-f-str f-ka))
     ))
