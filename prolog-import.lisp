@@ -126,6 +126,52 @@ structure."
 
 
 ;;;;;;;; TESTING:		  
+(lisp-unit:define-test test-unique-f
+  (lisp-unit:assert-equal
+   '((|0| (|'VFORM'| . |'fin'|) (|'VTYPE'| . |'main'|) (|'STMT-TYPE'| . |'decl'|)
+      (|'TNS-ASP'| . |7|) (|'CHECK'| . |4|) (|'SUBJ'| . |5|) (|'PRED'| . |1|))
+     (|1| (|'bjeffe'| |10| (|'NULL'| |5|) NIL))
+     (|5| (|'PERS'| . |'3'|) (|'NUM'| . |'sg'|) (|'CASE'| . |'erg'|)
+      (|'SPEC'| . |10|) (|'NTYPE'| . |9|) (|'CHECK'| . |8|)
+      (|'PRED'| |'kata'| |8| NIL NIL))
+     (|8| (|'_POLARITY'| . |'neg'|) (|'_CASE-TYPE'| . |'full'|)
+      (|'_AGR-POS'| . |'left'|))
+     (|9| (|'NSYN'| . |'common'|)) (|10| (|'NUMBER'| . |12|))
+     (|12| (|'CASE'| . |'erg'|) (|'CHECK'| . |13|) (|'PRED'| |'1'| |6| NIL NIL))
+     (|13| (|'_DIGVAL'| . |'1'|) (|'_CASE-TYPE'| . |'reduced'|))
+     (|4| (|'_TENSEGROUP'| . |'aor'|) (|'_TENSE'| . |'aor'|) (|'_PERIOD'| . |'+'|)
+      (|'_MAIN-CL'| . |'+'|) (|'_AGR'| . |'both'|) (|'_MORPH-SYNT'| . |15|)
+      (|'_IN-SITU'| . |14|))
+     (|in_set| (|'NO-PV'| |19|) (|var| |14|))
+     (|15| (|'_SYNTAX'| . |'unerg'|) (|'_PERF-PV'| . |'-'|)
+      (|'_LEXID'| . |'V2746-3'|) (|'_CLASS'| . |'MV'|) (|'_AGR'| . |16|))
+     (|16| (|'_OBJ'| . |17|)) (|17| (|'PERS'| . |'3'|) (|'NUM'| . |'sg'|))
+     (|7| (|'TENSE'| . |'past'|) (|'MOOD'| . |'indicative'|))
+     (|18| (|'o::'| . |19|)))
+   (loop for v being the hash-values of
+	(unique-f-str
+	 '((|0| |'PRED'| . |1|) (|0| |'SUBJ'| . |5|) (|0| |'CHECK'| . |4|)
+	   (|0| |'TNS-ASP'| . |7|) (|0| |'STMT-TYPE'| . |'decl'|)
+	   (|0| |'VTYPE'| . |'main'|) (|0| |'VFORM'| . |'fin'|)
+	   (|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL) (|5| |'PRED'| |'kata'| |8| NIL NIL)
+	   (|5| |'CHECK'| . |8|) (|5| |'NTYPE'| . |9|) (|5| |'SPEC'| . |10|)
+	   (|5| |'CASE'| . |'erg'|) (|5| |'NUM'| . |'sg'|) (|5| |'PERS'| . |'3'|)
+	   (|8| |'_AGR-POS'| . |'left'|) (|8| |'_CASE-TYPE'| . |'full'|)
+	   (|8| |'_POLARITY'| . |'neg'|) (|9| |'NSYN'| . |'common'|)
+	   (|10| |'NUMBER'| . |12|) (|12| |'PRED'| |'1'| |6| NIL NIL)
+	   (|12| |'CHECK'| . |13|) (|12| |'CASE'| . |'erg'|)
+	   (|13| |'_CASE-TYPE'| . |'reduced'|) (|13| |'_DIGVAL'| . |'1'|)
+	   (|4| |'_IN-SITU'| . |14|) (|4| |'_MORPH-SYNT'| . |15|)
+	   (|4| |'_AGR'| . |'both'|) (|4| |'_MAIN-CL'| . |'+'|) (|4| |'_PERIOD'| . |'+'|)
+	   (|4| |'_TENSE'| . |'aor'|) (|4| |'_TENSEGROUP'| . |'aor'|)
+	   (|in_set| |var| |14|) (|15| |'_AGR'| . |16|) (|15| |'_CLASS'| . |'MV'|)
+	   (|15| |'_LEXID'| . |'V2746-3'|) (|15| |'_PERF-PV'| . |'-'|)
+	   (|15| |'_SYNTAX'| . |'unerg'|) (|16| |'_OBJ'| . |17|) (|17| |'NUM'| . |'sg'|)
+	   (|17| |'PERS'| . |'3'|) (|7| |'MOOD'| . |'indicative'|)
+	   (|7| |'TENSE'| . |'past'|) (|18| |'o::'| . |19|) (|in_set| |'NO-PV'| |19|)))
+	using (hash-key k)
+	collect (cons k v))))
+
 (lisp-unit:define-test test-clean-f
   (lisp-unit:assert-equal
    '((|in_set| |'NO-PV'| |19|))
