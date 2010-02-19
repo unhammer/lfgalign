@@ -129,9 +129,20 @@ structure."
 	(setf (gethash key f-table)
 	      (cons value (gethash key f-table)))))
     f-table))
-;; (loop for value being the hash-values of (f-str-to-tab (clean-f-str (raw-f-str foo)))
-;;         using (hash-key key)
-;;         do (format t "~&~A -> ~A" key value))
+
+(defun import-f-tab (stream)
+  "Convenience function, turn a file-stream into a table where each
+key is an f-str variable.
+TODO: generalise to the c-structures..."
+  (f-str-to-tab (clean-f-str (raw-f-str (parse-prolog stream)))))
+
+(defun table-to-alist (table)
+  "Convenience function, turn a hash table into an association list,
+printing it nicely along the way."
+  (loop for value being the hash-values of table
+     using (hash-key key)
+     do (format t "~&~A -> ~A" key value)
+     collect (cons key value)))
 
 
 ;;;;;;;; TESTING:		  
