@@ -41,20 +41,40 @@
 ;;; "'3'" and "3" are different so we can treat the first as the
 ;;; attribute value (e.g. pers '3') and the second as the symbol (var)
 
-(defun test ()
-  (let* ((ka-parse
-	  (with-open-file
-	      (stream (merge-pathnames "ka-24.pl"
-				       (asdf:component-pathname (asdf:find-system :lfgalign))))
-	    (parse-prolog stream)))
-	 (nb-parse
-	  (with-open-file
-	      (stream (merge-pathnames "nb-24.pl"
-				       (asdf:component-pathname (asdf:find-system :lfgalign))))
-	    (parse-prolog stream)))
-	 (f-ka (raw-f-str ka-parse))
-	 (f-nb (raw-f-str nb-parse)))
-    ;; assume outermost f-str has var(0) and contains a PRED
-    (list (clean-f-str f-nb)
-	  (clean-f-str f-ka))
-    ))
+(progn
+  (defun foo-pred (var tab)
+    (if (assoc '|'PRED'| (gethash var tab))
+	(assoc '|'PRED'| (gethash var tab))))
+  (defun foo-children (pred)
+    (fourth pred))
+
+  (defun foo (var tab)
+    (let* ((pred (foo-pred var tab))
+	   (children (when pred
+		       (print pred)
+		       (loop for child in (foo-children pred)
+			    collect (foo child tab)))))))
+  
+  (defun test ()
+    (let* ((ka-tab
+	    (with-open-file
+		(stream (merge-pathnames "ka-1.pl"
+					 (asdf:component-pathname (asdf:find-system :lfgalign))))
+	      (import-f-table stream)))
+	   (nb-tab
+	    (with-open-file
+		(stream (merge-pathnames "nb-1.pl"
+					 (asdf:component-pathname (asdf:find-system :lfgalign))))
+	      (import-f-table stream))))
+      ;; assume outermost f-str has var(0) and contains a PRED
+      (foo '|0| nb-tab)
+      (foo '|0| ka-tab)
+
+
+      ))
+  
+  
+      ;; => ((|'bjeffe'| |10| (|'NULL'| |5|) NIL))
+
+  (test))
+
