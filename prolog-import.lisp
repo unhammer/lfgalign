@@ -136,16 +136,13 @@ key but appears once for each attribute/projection etc., see
 get the full list of attributes by looking up with the var key."
   (let ((table (make-hash-table)))
     (dolist (pair dup-alist)
-      (let ((key (car pair))
-	    (value (if (attvalp pair)
-		       (second pair)
-		       (cdr pair))))
-	(setf (gethash key table)
-	      (if (attvalp pair)
-		  (cons value
-			(gethash key table))
-		  value			;; TODO: error if gethash key table
-		  ))))
+      (let ((key (car pair)))
+	(if (attvalp pair)
+	    (setf (gethash key table)
+		  (cons (second pair) (gethash key table)))
+	    (setf (gethash key table)
+		  ;; TODO: error if gethash key table
+		  (cdr pair)))))
     table))
 
 
