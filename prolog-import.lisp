@@ -109,18 +109,27 @@ key but appears once for each attribute/projection etc., see
        (case (intern (car assig))
 	 (|eq|
 	  (case (intern (car lhs))
-	    (|attr|
-	     (cons (clean-var (second lhs))
-		   (clean-att-val (intern (car (third lhs))) rhs)))
 	    (|var|
 	     (clean-att-val (clean-var lhs) rhs))
+	    (|attr|
+	     (list (clean-var (second lhs))
+		   (clean-att-val (intern (car (third lhs)))
+				  rhs)))
 	    (|proj|
-	     (cons (clean-var (second lhs))
+	     (list (clean-var (second lhs))
 		   (cons (intern (car (third lhs)))
 			 (clean-var rhs))))))
 	 (|in_set|
-	  (list '|in_set| (intern (car lhs)) (clean-var rhs))))))
+	  (list '|in_set|
+		(list (intern (car lhs)) (clean-var rhs)))))))
    raw))
+
+(defun attvalp (attval)
+  (and (listp attval)
+       (listp (cdr attval))
+       (cdr attval)
+       (listp (second attval))
+       (not (cddr attval))))
 
 (defun dup-alist-to-table (dup-alist)
   "Runs on `clean-f-str' output to create a hash table so that we can
@@ -128,9 +137,15 @@ get the full list of attributes by looking up with the var key."
   (let ((table (make-hash-table)))
     (dolist (pair dup-alist)
       (let ((key (car pair))
-	    (value (cdr pair)))
+	    (value (if (attvalp pair)
+		       (second pair)
+		       (cdr pair))))
 	(setf (gethash key table)
-	      (cons value (gethash key table)))))
+	      (if (attvalp pair)
+		  (cons value
+			(gethash key table))
+		  value			;; TODO: error if gethash key table
+		  ))))
     table))
 
 
@@ -140,69 +155,44 @@ key is an f-str variable.
 TODO: generalise to the c-structures..."
   (dup-alist-to-table (clean-f-str (raw-f-str (parse-prolog stream)))))
 
-(defun table-to-alist (table)
+(defun table-to-alist (table &optional print)
   "Convenience function, turn a hash table into an association list,
 printing it nicely along the way."
   (loop for value being the hash-values of table
      using (hash-key key)
-     do (format t "~&~A -> ~A" key value)
+     do (when print (format t "~&~A -> ~A" key value))
      collect (cons key value)))
 
 
-;;;;;;;; TESTING:		  
-(lisp-unit:define-test test-unique-f
+;;;;;;;; TESTING:
+(lisp-unit:define-test test-make-table
+  (lisp-unit:assert-equal '((|in_set| (|'NO-PV'| |19|)))
+   (table-to-alist (dup-alist-to-table '((|in_set| (|'NO-PV'| |19|))))))
+
+  (lisp-unit:assert-equal '((|20| . |2|)) ; or? TODO
+   (table-to-alist (dup-alist-to-table '((|20| . |2|)))))
+
+  (lisp-unit:assert-equal '((|5| (|'CASE'| . |'erg'|)))
+   (table-to-alist (dup-alist-to-table '((|5| (|'CASE'| . |'erg'|))))))
+  (lisp-unit:assert-equal '((|0| (|'PRED'| . |1|)))
+   (table-to-alist (dup-alist-to-table '((|0| (|'PRED'| . |1|))))))
   (lisp-unit:assert-equal
-   '((|0| (|'VFORM'| . |'fin'|) (|'VTYPE'| . |'main'|) (|'STMT-TYPE'| . |'decl'|)
-      (|'TNS-ASP'| . |7|) (|'CHECK'| . |4|) (|'SUBJ'| . |5|) (|'PRED'| . |1|))
-     (|1| (|'bjeffe'| |10| (|'NULL'| |5|) NIL))
-     (|5| (|'PERS'| . |'3'|) (|'NUM'| . |'sg'|) (|'CASE'| . |'erg'|)
-      (|'SPEC'| . |10|) (|'NTYPE'| . |9|) (|'CHECK'| . |8|)
-      (|'PRED'| |'kata'| |8| NIL NIL))
-     (|8| (|'_POLARITY'| . |'neg'|) (|'_CASE-TYPE'| . |'full'|)
-      (|'_AGR-POS'| . |'left'|))
-     (|9| (|'NSYN'| . |'common'|)) (|10| (|'NUMBER'| . |12|))
-     (|12| (|'CASE'| . |'erg'|) (|'CHECK'| . |13|) (|'PRED'| |'1'| |6| NIL NIL))
-     (|13| (|'_DIGVAL'| . |'1'|) (|'_CASE-TYPE'| . |'reduced'|))
-     (|4| (|'_TENSEGROUP'| . |'aor'|) (|'_TENSE'| . |'aor'|) (|'_PERIOD'| . |'+'|)
-      (|'_MAIN-CL'| . |'+'|) (|'_AGR'| . |'both'|) (|'_MORPH-SYNT'| . |15|)
-      (|'_IN-SITU'| . |14|))
-     (|in_set| (|'NO-PV'| |19|) (|var| |14|))
-     (|15| (|'_SYNTAX'| . |'unerg'|) (|'_PERF-PV'| . |'-'|)
-      (|'_LEXID'| . |'V2746-3'|) (|'_CLASS'| . |'MV'|) (|'_AGR'| . |16|))
-     (|16| (|'_OBJ'| . |17|)) (|17| (|'PERS'| . |'3'|) (|'NUM'| . |'sg'|))
-     (|7| (|'TENSE'| . |'past'|) (|'MOOD'| . |'indicative'|))
-     (|18| (|'o::'| . |19|)))
-   (loop for v being the hash-values of
-	(dup-alist-to-table
-	 '((|0| |'PRED'| . |1|) (|0| |'SUBJ'| . |5|) (|0| |'CHECK'| . |4|)
-	   (|0| |'TNS-ASP'| . |7|) (|0| |'STMT-TYPE'| . |'decl'|)
-	   (|0| |'VTYPE'| . |'main'|) (|0| |'VFORM'| . |'fin'|)
-	   (|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL) (|5| |'PRED'| |'kata'| |8| NIL NIL)
-	   (|5| |'CHECK'| . |8|) (|5| |'NTYPE'| . |9|) (|5| |'SPEC'| . |10|)
-	   (|5| |'CASE'| . |'erg'|) (|5| |'NUM'| . |'sg'|) (|5| |'PERS'| . |'3'|)
-	   (|8| |'_AGR-POS'| . |'left'|) (|8| |'_CASE-TYPE'| . |'full'|)
-	   (|8| |'_POLARITY'| . |'neg'|) (|9| |'NSYN'| . |'common'|)
-	   (|10| |'NUMBER'| . |12|) (|12| |'PRED'| |'1'| |6| NIL NIL)
-	   (|12| |'CHECK'| . |13|) (|12| |'CASE'| . |'erg'|)
-	   (|13| |'_CASE-TYPE'| . |'reduced'|) (|13| |'_DIGVAL'| . |'1'|)
-	   (|4| |'_IN-SITU'| . |14|) (|4| |'_MORPH-SYNT'| . |15|)
-	   (|4| |'_AGR'| . |'both'|) (|4| |'_MAIN-CL'| . |'+'|) (|4| |'_PERIOD'| . |'+'|)
-	   (|4| |'_TENSE'| . |'aor'|) (|4| |'_TENSEGROUP'| . |'aor'|)
-	   (|in_set| |var| |14|) (|15| |'_AGR'| . |16|) (|15| |'_CLASS'| . |'MV'|)
-	   (|15| |'_LEXID'| . |'V2746-3'|) (|15| |'_PERF-PV'| . |'-'|)
-	   (|15| |'_SYNTAX'| . |'unerg'|) (|16| |'_OBJ'| . |17|) (|17| |'NUM'| . |'sg'|)
-	   (|17| |'PERS'| . |'3'|) (|7| |'MOOD'| . |'indicative'|)
-	   (|7| |'TENSE'| . |'past'|) (|18| |'o::'| . |19|) (|in_set| |'NO-PV'| |19|)))
-	using (hash-key k)
-	collect (cons k v))))
+   '((|18| (|'o::'| . |19|))
+     (|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL)
+     (|3| (|'PRED'| |'kata'| |8| NIL NIL)))
+   (table-to-alist
+    (dup-alist-to-table
+     '((|18| (|'o::'| . |19|))
+       (|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL)
+       (|3| (|'PRED'| |'kata'| |8| NIL NIL)))))))
 
 (lisp-unit:define-test test-clean-f
   (lisp-unit:assert-equal
-   '((|in_set| |'NO-PV'| |19|))
+   '((|in_set| (|'NO-PV'| |19|)))
    (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19")))))))
   (lisp-unit:assert-equal
    '((|20| . |2|)
-     (|0| |'PRED'| . |1|))
+     (|0| (|'PRED'| . |1|)))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("var" ("20"))
 			       ("var" ("2"))))
@@ -210,7 +200,7 @@ printing it nicely along the way."
 			       ("attr" ("var" ("0")) ("'PRED'"))
 			       ("var" ("1")))))))
   (lisp-unit:assert-equal
-   '((|18| |'o::'| . |19|))
+   '((|18| (|'o::'| . |19|)))
    (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19")))))))
   (lisp-unit:assert-equal
    '((|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL)
@@ -223,7 +213,7 @@ printing it nicely along the way."
 			       ("var" ("1"))
 			       ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))))))
   (lisp-unit:assert-equal
-   '((|3| |'PRED'| |'kata'| |8| NIL NIL))
+   '((|3| (|'PRED'| |'kata'| |8| NIL NIL)))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("attr" ("var" ("3")) ("'PRED'"))
 			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))))
@@ -233,10 +223,17 @@ printing it nicely along the way."
 			       ("var" ("20"))
 			       ("'past'"))))))
   (lisp-unit:assert-equal 
-   '((|5| |'CASE'| . |'erg'|))
+   '((|5| (|'CASE'| . |'erg'|)))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("attr" ("var" ("5")) ("'CASE'"))
 			       ("'erg'")))))))
+
+(lisp-unit:define-test test-attvalp
+  (lisp-unit:assert-true (attvalp '(|5| (|'CASE'| . |'erg'|))))
+  (lisp-unit:assert-false (attvalp '(|2| |'qePa-dup'| |10| (|3|) NIL)))
+  (lisp-unit:assert-false (attvalp '(|20| . |'past'|)))
+  (lisp-unit:assert-false (attvalp '(|20|)))
+  (lisp-unit:assert-false (attvalp '|20|)))
 
 (lisp-unit:define-test test-var/pred
   (lisp-unit:assert-eq
