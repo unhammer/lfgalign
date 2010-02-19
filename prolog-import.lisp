@@ -4,6 +4,7 @@
 
 (in-package #:lfgalign)
 
+
 (defun parse-args (stream)
   "Helper for parse-pred."
   (let* ((rv (parse-pred stream))
@@ -64,17 +65,20 @@ structure."
   (cdr (parse-pred stream)))
 
 (defun raw-f-str (parse)
-  "Skip the first element, LIST"
+  "Skip the first element, LIST."
   (cdr (sixth parse)))
 (defun raw-c-str (parse)
-  "Skip the first element, LIST"
+  "Skip the first element, LIST."
   (cdr (seventh parse)))
 
 
-(defun clean-var (varnum) (if (equal (car varnum) "'NULL'")
-			(intern (car varnum))
-			(intern (caadr varnum))))
+(defun clean-var (varnum)
+  "Helper for clean-f-str."
+  (if (equal (car varnum) "'NULL'")
+      (intern (car varnum))
+      (intern (caadr varnum))))
 (defun clean-pred (semform)
+  "Helper for clean-f-str."
   (list (intern (car (second semform)))
 	(intern (car (third semform)))
 	(if (not (equal (cadr (fourth semform)) '("")))
@@ -83,6 +87,7 @@ structure."
 	    (mapcar #'clean-var (cdr (fifth semform))))))
 
 (defun clean-att-val (lhs rhs)
+  "Helper for clean-f-str."
   (cons lhs
 	(case (intern (car rhs))
 	  (|var|
@@ -93,6 +98,7 @@ structure."
 	   (intern (car rhs))))))
 
 (defun clean-f-str (raw)
+  "Runs on raw-f-str output."
   (mapcar
    (lambda (cf)
      (let* ((assig (third cf))
@@ -114,7 +120,8 @@ structure."
 	  (list '|in_set| (intern (car lhs)) (clean-var rhs))))))
    raw))
 
-(defun unique-f-str (dup-f-str)
+(defun f-str-to-tab (dup-f-str)
+  "Runs on clean-f-str output."
   (let ((f-table (make-hash-table)))
     (dolist (pair dup-f-str)
       (let ((key (car pair))
@@ -122,7 +129,7 @@ structure."
 	(setf (gethash key f-table)
 	      (cons value (gethash key f-table)))))
     f-table))
-;; (loop for value being the hash-values of (unique-f-str (clean-f-str (raw-f-str foo)))
+;; (loop for value being the hash-values of (f-str-to-tab (clean-f-str (raw-f-str foo)))
 ;;         using (hash-key key)
 ;;         do (format t "~&~A -> ~A" key value))
 
@@ -151,7 +158,7 @@ structure."
      (|7| (|'TENSE'| . |'past'|) (|'MOOD'| . |'indicative'|))
      (|18| (|'o::'| . |19|)))
    (loop for v being the hash-values of
-	(unique-f-str
+	(f-str-to-tab
 	 '((|0| |'PRED'| . |1|) (|0| |'SUBJ'| . |5|) (|0| |'CHECK'| . |4|)
 	   (|0| |'TNS-ASP'| . |7|) (|0| |'STMT-TYPE'| . |'decl'|)
 	   (|0| |'VTYPE'| . |'main'|) (|0| |'VFORM'| . |'fin'|)
