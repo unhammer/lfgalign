@@ -98,7 +98,9 @@ structure."
 	   (intern (car rhs))))))
 
 (defun clean-f-str (raw)
-  "Runs on raw-f-str output."
+  "Runs on `raw-f-str' output. Creates a pseudo-alist, each var is a
+key but appears once for each attribute/projection etc., see
+`dup-alist-to-table' and `table-to-alist'."
   (mapcar
    (lambda (cf)
      (let* ((assig (third cf))
@@ -120,21 +122,23 @@ structure."
 	  (list '|in_set| (intern (car lhs)) (clean-var rhs))))))
    raw))
 
-(defun f-str-to-tab (dup-f-str)
-  "Runs on clean-f-str output."
-  (let ((f-table (make-hash-table)))
-    (dolist (pair dup-f-str)
+(defun dup-alist-to-table (dup-alist)
+  "Runs on `clean-f-str' output to create a hash table so that we can
+get the full list of attributes by looking up with the var key."
+  (let ((table (make-hash-table)))
+    (dolist (pair dup-alist)
       (let ((key (car pair))
 	    (value (cdr pair)))
-	(setf (gethash key f-table)
-	      (cons value (gethash key f-table)))))
-    f-table))
+	(setf (gethash key table)
+	      (cons value (gethash key table)))))
+    table))
 
-(defun import-f-tab (stream)
+
+(defun import-f-table (stream)
   "Convenience function, turn a file-stream into a table where each
 key is an f-str variable.
 TODO: generalise to the c-structures..."
-  (f-str-to-tab (clean-f-str (raw-f-str (parse-prolog stream)))))
+  (dup-alist-to-table (clean-f-str (raw-f-str (parse-prolog stream)))))
 
 (defun table-to-alist (table)
   "Convenience function, turn a hash table into an association list,
@@ -169,7 +173,7 @@ printing it nicely along the way."
      (|7| (|'TENSE'| . |'past'|) (|'MOOD'| . |'indicative'|))
      (|18| (|'o::'| . |19|)))
    (loop for v being the hash-values of
-	(f-str-to-tab
+	(dup-alist-to-table
 	 '((|0| |'PRED'| . |1|) (|0| |'SUBJ'| . |5|) (|0| |'CHECK'| . |4|)
 	   (|0| |'TNS-ASP'| . |7|) (|0| |'STMT-TYPE'| . |'decl'|)
 	   (|0| |'VTYPE'| . |'main'|) (|0| |'VFORM'| . |'fin'|)
