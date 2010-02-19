@@ -31,6 +31,7 @@ Returns a pair of the previous character and the created list
 structure."
   (let ((instring nil)
 	(args nil)
+	(lastc nil)
 	(head (make-array 0
 			  :element-type 'character
 			  :fill-pointer 0
@@ -40,7 +41,7 @@ structure."
       (if instring
 	  (case c
 	    (#\'
-	     (setq instring nil)
+	     (unless (eq lastc #\\) (setq instring nil))
 	     (vector-push-extend c head))
 	    (otherwise
 	     (vector-push-extend c head)))
@@ -56,7 +57,8 @@ structure."
 	    ((#\Tab #\Newline #\ )
 	     t)
 	    (otherwise
-	     (vector-push-extend c head)))))))
+	     (vector-push-extend c head))))
+      (setq lastc c))))
 
 (defun parse-prolog (stream)
   (cdr (parse-pred stream)))
