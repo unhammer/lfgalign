@@ -19,25 +19,37 @@
 	(if (listp (cdr attval))
 	    (cdr attval)
 	    (gethash (cdr attval) tab))))
+
 (defun get-pred (var tab)
   (if (eq '|'NULL'| var)
       (format t "NULL-pred TODO~%")
       (let ((predval (assoc '|'PRED'| (gethash var tab))))
-	(unless predval (error 'no-pred-error var))
+	(unless predval (error 'no-pred-error-todo var))
 	(unravel predval tab))))
 
 (defun get-children (pred)
     (fourth pred))
 
+(defun references (parentv childv tab)
+  "Give a list of attributes of var `parentv' in `tab' which refer to
+var `childv'."
+  (loop
+     for attval in (gethash parentv tab)
+     when (eq childv (cdr attval))
+     collect attval))
+
 (progn
   (defun f-align (var1 tab1 var2 tab2)
     (let* ((pred1 (get-pred var1 tab1))
 	   (pred2 (get-pred var2 tab2)))
-      (format t "Align ~A with ~A~%" pred1 pred2)
+      (format t "Align ~A_~A with ~A_~A~%" var1 pred1 var2 pred2)
       (when (and pred1 pred2)
 	(loop
 	   for child1 in (get-children pred1)
 	   for child2 in (get-children pred2)
+	   do (format t "...aligning ~A_~A and ~A_~A...~%"
+		      var1 (references var1 child1 tab1)
+		      var2 (references var2 child2 tab2))
 	   collect (f-align child1 tab1 child2 tab2)))))
 
   (defun open-and-import (file)
@@ -47,11 +59,14 @@
       (import-f-table stream)))  
   (defun test ()
     ;; assume outermost f-str has var(0) and contains a PRED
-    (f-align '|0| (open-and-import "ka-24.pl")
-	     '|0| (open-and-import "nb-24.pl"))
+    (f-align '|0| (open-and-import "ka/23.pl")
+	     '|0| (open-and-import "nb/24.pl"))
     (format t "---~%")
-    (f-align '|0| (open-and-import "ka-1.pl")
-	     '|0| (open-and-import "nb-1.pl")))
+    (f-align '|0| (open-and-import "ka/1.pl")
+	     '|0| (open-and-import "nb/1.pl"))
+    (format t "---~% This one will be troublesome:~%~%")
+    (f-align '|0| (open-and-import "ka/4.pl")
+	     '|0| (open-and-import "nb/5.pl")))
   (test))
 
 
