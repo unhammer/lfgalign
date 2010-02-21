@@ -166,7 +166,7 @@ printing it nicely along the way."
   (lisp-unit:assert-equal '((|in_set| (|'NO-PV'| |19|)))
    (table-to-alist (dup-alist-to-table '((|in_set| (|'NO-PV'| |19|))))))
 
-  (lisp-unit:assert-equal '((|20| . |2|)) ; or? TODO
+  (lisp-unit:assert-equal '((|20| . |2|))
    (table-to-alist (dup-alist-to-table '((|20| . |2|)))))
 
   (lisp-unit:assert-equal '((|5| (|'CASE'| . |'erg'|)))
