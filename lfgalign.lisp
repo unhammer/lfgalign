@@ -14,67 +14,49 @@
   nil
   "The c-parse of the Prolog file.")
 
-;; (list ("cf" ("1") ("eq" ("attr" ("var" ("0")) ("'PRED'")) ("var" ("1"))))
-;;       ("cf" ("1") ("eq" ("attr" ("var" ("0")) ("'SUBJ'")) ("var" ("3"))))
-;;       ("cf" ("1") ("eq" ("attr" ("var" ("0")) ("'CHECK'")) ("var" ("4"))))
-;;       ("cf" ("1") ("eq" ("attr" ("var" ("0")) ("'TNS-ASP'")) ("var" ("5"))))
-;;       ("cf" ("1") ("eq" ("attr" ("var" ("0")) ("'CLAUSE-TYPE'")) ("'decl'")))
-;;       ("cf" ("1") ("eq" ("attr" ("var" ("0")) ("'NEG'")) ("'+'")))
-;;       ("cf" ("1") ("eq" ("attr" ("var" ("0")) ("'POLARITY'")) ("'neg'")))
-;;       ("cf" ("1") ("eq" ("attr" ("var" ("0")) ("'VFORM'")) ("'fin'")))
-;;       ("cf" ("1")
-;; 	    ("eq" ("var" ("1"))
-;; 		  ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST ("")))))
-;;       ("cf" ("1")
-;;        ("eq" ("attr" ("var" ("3")) ("'PRED'"))
-;;         ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))
-;; ((0
-;;   (pred (var 1))
-;;   (subj (var 3))
-;;   (check (var 4))
-;;   (tns-asp (var 5))
-;;   (clause-type decl)
-;;   (vform fin))
-;;  (1 (semform qePa 10 ((var 3)) ()))
-;;  (3 (pred (semform kata 8 (()) (())))))
-
-;;; "'3'" and "3" are different so we can treat the first as the
-;;; attribute value (e.g. pers '3') and the second as the symbol (var)
-
 (progn
-  (defun foo-pred (var tab)
-    (if (assoc '|'PRED'| (gethash var tab))
-	(assoc '|'PRED'| (gethash var tab))))
-  (defun foo-children (pred)
+  (defun unravel (attval tab)
+    (cons (car attval)
+	  (if (listp (cdr attval))
+	      (cdr attval)
+	      (gethash (cdr attval) tab))))
+  
+  (defun get-pred (var tab)
+    (let ((val (assoc '|'PRED'| (gethash var tab))))
+      (format t "~A~%" val)
+      (unravel val tab)
+	;; TODO: what if we don't find a pred?
+      ))
+  (defun get-children (pred)
     (fourth pred))
 
-  (defun foo (var tab)
-    (let* ((pred (foo-pred var tab))
-	   (children (when pred
-		       (print pred)
-		       (loop for child in (foo-children pred)
-			    collect (foo child tab)))))))
-  
+  (defun f-align (var1 tab1 var2 tab2)
+    (let* ((pred1 (get-pred var1 tab1))
+	   (pred2 (get-pred var2 tab2)))
+      (format t "Align ~A with ~A~%" pred1 pred2)
+      (when (and pred1 pred2)
+	(loop
+	   for child1 in (get-children pred1)
+	   for child2 in (get-children pred2)
+	   collect (f-align child1 tab1 child2 tab2)))))
+
+  (defun open-and-import (file)
+    (with-open-file
+	(stream (merge-pathnames file
+				 (asdf:component-pathname (asdf:find-system :lfgalign))))
+      (import-f-table stream)))  
   (defun test ()
-    (let* ((ka-tab
-	    (with-open-file
-		(stream (merge-pathnames "ka-1.pl"
-					 (asdf:component-pathname (asdf:find-system :lfgalign))))
-	      (import-f-table stream)))
-	   (nb-tab
-	    (with-open-file
-		(stream (merge-pathnames "nb-1.pl"
-					 (asdf:component-pathname (asdf:find-system :lfgalign))))
-	      (import-f-table stream))))
       ;; assume outermost f-str has var(0) and contains a PRED
-      (foo '|0| nb-tab)
-      (foo '|0| ka-tab)
-
-
-      ))
+    (f-align '|0| (open-and-import "ka-24.pl")
+	     '|0| (open-and-import "nb-24.pl"))
+    (format t "---~%")
+    (f-align '|0| (open-and-import "ka-1.pl")
+	     '|0| (open-and-import "nb-1.pl"))
+    )
   
   
       ;; => ((|'bjeffe'| |10| (|'NULL'| |5|) NIL))
 
   (test))
+
 
