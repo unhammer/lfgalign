@@ -21,9 +21,9 @@
 	    (gethash (cdr attval) tab))))
 
 (defun get-pred (var tab)
-  (if (eq '|'NULL'| var)
+  (if (equal "NULL" var)
       (format t "NULL-pred TODO~%")
-      (let ((predval (assoc '|'PRED'| (gethash var tab))))
+      (let ((predval (assoc "PRED" (gethash var tab) :test #'equal)))
 	(unless predval (error 'no-pred-error-todo var))
 	(unravel predval tab))))
 
@@ -38,8 +38,22 @@ var `childv'."
      when (eq childv (cdr attval))
      collect attval))
 
+(defun topnode (f-var tab)
+  (let ((c-ids
+	 (mapcar #'car
+		 (remove-if (lambda (phi) (not (eq (second phi) f-var)))
+			    (gethash '|phi| tab))))
+	
+	topmost)
+    (dolist (id c-ids)
+      ;; (if (member id ))
+      ))
+  )
+
 (progn
   (defun f-align (var1 tab1 var2 tab2)
+    "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
+respectively."
     (let* ((pred1 (get-pred var1 tab1))
 	   (pred2 (get-pred var2 tab2)))
       (format t "Align ~A_~A with ~A_~A~%" var1 pred1 var2 pred2)
@@ -56,7 +70,7 @@ var `childv'."
     (with-open-file
 	(stream (merge-pathnames file
 				 (asdf:component-pathname (asdf:find-system :lfgalign))))
-      (import-f-table stream)))  
+      (import-table stream)))  
   (defun test ()
     ;; assume outermost f-str has var(0) and contains a PRED
     (f-align '|0| (open-and-import "ka/23.pl")
@@ -67,23 +81,24 @@ var `childv'."
     (format t "---~% This one will be troublesome:~%~%")
     (f-align '|0| (open-and-import "ka/4.pl")
 	     '|0| (open-and-import "nb/5.pl")))
-  (test))
+;;   (test)
+  )
 
 
 ;;;;;;;; TESTING:
 (lisp-unit:define-test test-unravel
   (let ((tab (dup-alist-to-table
-	      '((|20| (|'PRED'| . |4|))
-		(|4| |'qePa'| |8| NIL NIL)
-		(|3| (|'CASE'| . |'erg'|))
-		(|3| (|'PRED'| |'kata'| |8| NIL NIL))))))
+	      '((|20| ("PRED" . |4|))
+		(|4| "qePa" |8| NIL NIL)
+		(|3| ("CASE" . "erg"))
+		(|3| ("PRED" "kata" |8| NIL NIL))))))
 
     (lisp-unit:assert-equal
-     '(|'PRED'| |'qePa'| |8| NIL NIL)
+     '("PRED" "qePa" |8| NIL NIL)
      (get-pred '|20| tab))
     (lisp-unit:assert-equal
-     '(|'PRED'| |'qePa'| |8| NIL NIL)
-     (unravel (assoc '|'PRED'| (gethash '|20| tab)) tab))
+     '("PRED" "qePa" |8| NIL NIL)
+     (unravel (assoc "PRED" (gethash '|20| tab) :test #'equal) tab))
     (lisp-unit:assert-equal
-     '(|'PRED'| |'kata'| |8| NIL NIL)
-     (unravel (assoc '|'PRED'| (gethash '|3| tab)) tab))))
+     '("PRED" "kata" |8| NIL NIL)
+     (unravel (assoc "PRED" (gethash '|3| tab) :test #'equal) tab))))
