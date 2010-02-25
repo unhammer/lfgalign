@@ -73,12 +73,21 @@ structure."
 
 
 (defun clean-var (varnum)
-  "Helper for clean-f-str."
+  "Helper for `clean-f-str' and `clean-c-str'."
   (if (equal (car varnum) "'NULL'")
       (intern (car varnum))
       (intern (caadr varnum))))
+
+(defun intern-car/var (list)
+  "Turn both 1 and var(1), ie. (\"1\") and (\"var\" \"1\"), into |1|."
+  (if (eq (intern (car list)) '|var|)
+      (clean-var list)
+      (if (cdr list)
+	  (error list)
+	  (intern (car list)))))
+
 (defun clean-pred (semform)
-  "Helper for clean-f-str."
+  "Helper for `clean-f-str'."
   (list (intern (car (second semform)))
 	(intern (car (third semform)))
 	(if (not (equal (cadr (fourth semform)) '("")))
@@ -87,15 +96,11 @@ structure."
 	    (mapcar #'clean-var (cdr (fifth semform))))))
 
 (defun clean-att-val (lhs rhs)
-  "Helper for clean-f-str."
-  (cons lhs
-	(case (intern (car rhs))
-	  (|var|
-	   (clean-var rhs))
-	  (|semform|
-	   (clean-pred rhs))
-	  (t ; symbol, should start with a ', but maybe we should check for this?
-	   (intern (car rhs))))))
+  "Helper for `clean-f-str'."
+  (cons (intern-car/var lhs)
+	(if (eq (intern (car rhs)) '|semform|)
+	    (clean-pred rhs)
+	    (intern-car/var rhs))))
 
 (defun clean-f-str (raw)
   "Runs on `raw-f-str' output. Creates a pseudo-alist, each var is a
@@ -106,22 +111,22 @@ key but appears once for each attribute/projection etc., see
      (let* ((assig (third cf))
 	    (lhs (second assig))
 	    (rhs (third assig)))
-       (case (intern (car assig))
+       (case (intern (first assig))
 	 (|eq|
 	  (case (intern (car lhs))
 	    (|var|
-	     (clean-att-val (clean-var lhs) rhs))
+	     (clean-att-val lhs rhs))
 	    (|attr|
 	     (list (clean-var (second lhs))
-		   (clean-att-val (intern (car (third lhs)))
-				  rhs)))
+		   (clean-att-val (third lhs) rhs)))
 	    (|proj|
 	     (list (clean-var (second lhs))
 		   (cons (intern (car (third lhs)))
 			 (clean-var rhs))))))
 	 (|in_set|
 	  (list '|in_set|
-		(list (intern (car lhs)) (clean-var rhs)))))))
+		(list (intern (car lhs))
+		      (clean-var rhs)))))))
    raw))
 
 (defun attvalp (attval)
@@ -145,32 +150,30 @@ get the full list of attributes by looking up with the var key."
 		  (cdr pair)))))
     table))
 
-(defun intern-car (list)
-  (when (cdr list) (error list))
-  (intern (car list)))
-
 (defun clean-c-str (raw)
-  "Runs on `raw-c-str' output. Creates a pseudo-alist, each var is a
-key but appears once for each attribute/projection etc., see
-`dup-alist-to-table' and `table-to-alist'."
+  "Runs on `raw-c-str' output. Creates a pseudo-alist, each type is a
+key but appears once for each attribute etc., see `dup-alist-to-table'
+and `table-to-alist'."
   (mapcar
    (lambda (cf)
      (let* ((assig (third cf))
 	    (type (car assig))
-	    (rest (cdr assig)))
-       (cons (intern type)
-	     (mapcar
-	      (lambda (elt)
-		(if (listp elt)
-		    (cond
-		      ((eq 'LIST (car elt))
-		       (mapcar #'intern-car (cdr elt)))
-		      ((eq '|var| (intern (car elt)))
-		       (clean-var elt))
-		      (t
-		       (intern-car elt)))
-		    (intern elt)))
-	      rest))))  
+	    (id (second assig))
+	    (rest (cddr assig)))
+       (list
+	(intern type)
+	(cons
+	 (intern-car/var id)
+	 (mapcar
+	  (lambda (elt)
+	    (if (listp elt)
+		(cond
+		  ((eq 'LIST (car elt))
+		   (mapcar #'intern-car/var (cdr elt)))
+		  (t
+		   (intern-car/var elt)))
+		(intern elt)))
+	  rest)))))  
    raw))
 
 
@@ -193,25 +196,25 @@ printing it nicely along the way."
 (lisp-unit:define-test test-clean-c
   (lisp-unit:assert-equal
    ;; can we assume all subtrees are binary?
-   '((|subtree| |387| |'ROOT'| |385| |38|))
+   '((|subtree| (|387| |'ROOT'| |385| |38|)))
    (clean-c-str '(("cf" ("1") ("subtree" ("387") ("'ROOT'") ("385") ("38"))))))
   (lisp-unit:assert-equal
-   '((|terminal| |1| |'abramsma'| (|1|)))
+   '((|terminal| (|1| |'abramsma'| (|1|))))
    (clean-c-str '(("cf" ("1") ("terminal" ("1") ("'abramsma'") (LIST ("1")))))))
   (lisp-unit:assert-equal
-   '((|phi| |387| |0|))
+   '((|phi| (|387| |0|)))
    (clean-c-str '(("cf" ("1") ("phi" ("387") ("var" ("0")))))))
   (lisp-unit:assert-equal
-   '((|cproj| |34| |13|))
+   '((|cproj| (|34| |13|)))
    (clean-c-str '(("cf" ("1") ("cproj" ("34") ("var" ("13")))))))
   (lisp-unit:assert-equal
-   '((|semform_data| |0| |2| |1| |9|))
+   '((|semform_data| (|0| |2| |1| |9|)))
    (clean-c-str '(("cf" ("1") ("semform_data" ("0") ("2") ("1") ("9"))))))
   (lisp-unit:assert-equal
-   '((|fspan| |0| |1| |16|))
+   '((|fspan| (|0| |1| |16|)))
    (clean-c-str '(("cf" ("1") ("fspan" ("var" ("0")) ("1") ("16"))))))
   (lisp-unit:assert-equal
-   '((|surfaceform| |1| |'abramsma'| |1| |9|))
+   '((|surfaceform| (|1| |'abramsma'| |1| |9|)))
    (clean-c-str '(("cf" ("1") ("surfaceform" ("1") ("'abramsma'") ("1") ("9")))))))
 
 (lisp-unit:define-test test-make-table
