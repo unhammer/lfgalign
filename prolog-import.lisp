@@ -136,20 +136,6 @@ key but appears once for each attribute/projection etc., see
        (listp (second attval))
        (not (cddr attval))))
 
-(defun dup-alist-to-table (dup-alist)
-  "Runs on `clean-f-str' output to create a hash table so that we can
-get the full list of attributes by looking up with the var key."
-  (let ((table (make-hash-table)))
-    (dolist (pair dup-alist)
-      (let ((key (car pair)))
-	(if (attvalp pair)
-	    (setf (gethash key table)
-		  (cons (second pair) (gethash key table)))
-	    (setf (gethash key table)
-		  ;; TODO: error if gethash key table
-		  (cdr pair)))))
-    table))
-
 (defun clean-c-str (raw)
   "Runs on `raw-c-str' output. Creates a pseudo-alist, each type is a
 key but appears once for each attribute etc., see `dup-alist-to-table'
@@ -176,16 +162,33 @@ and `table-to-alist'."
 	  rest)))))  
    raw))
 
+(defun dup-alist-to-table (dup-alist)
+  "Runs on `clean-f-str' or `clean-c-str' output to create a hash
+table so that we can get the full list of attributes by looking up
+with the var key."
+  (let ((table (make-hash-table)))
+    (dolist (pair dup-alist)
+      (let ((key (car pair)))
+	(if (attvalp pair)
+	    (setf (gethash key table)
+		  (cons (second pair) (gethash key table)))
+	    (setf (gethash key table)
+		  ;; TODO: error if gethash key table
+		  (cdr pair)))))
+    table))
 
-(defun import-f-table (stream)
+
+(defun import-table (stream)
   "Convenience function, turn a file-stream into a table where each
-key is an f-str variable.
-TODO: generalise to the c-structures..."
-  (dup-alist-to-table (clean-f-str (raw-f-str (parse-prolog stream)))))
+key is an f-str variable or a c-structure part (subtree, phi, fspan,
+terminal etc.)"
+  (let ((raw (parse-prolog stream)))
+    (dup-alist-to-table (cons (clean-f-str (raw-f-str raw))
+			      (clean-c-str (raw-c-str raw))))))
 
 (defun table-to-alist (table &optional print)
-  "Convenience function, turn a hash table into an association list,
-printing it nicely along the way."
+  "Convenience function, turn a hash table into an association list
+(printing it nicely along the way if `print' is true)."
   (loop for value being the hash-values of table
      using (hash-key key)
      do (when print (format t "~&~A -> ~A" key value))
