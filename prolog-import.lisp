@@ -145,6 +145,34 @@ get the full list of attributes by looking up with the var key."
 		  (cdr pair)))))
     table))
 
+(defun intern-car (list)
+  (when (cdr list) (error list))
+  (intern (car list)))
+
+(defun clean-c-str (raw)
+  "Runs on `raw-c-str' output. Creates a pseudo-alist, each var is a
+key but appears once for each attribute/projection etc., see
+`dup-alist-to-table' and `table-to-alist'."
+  (mapcar
+   (lambda (cf)
+     (let* ((assig (third cf))
+	    (type (car assig))
+	    (rest (cdr assig)))
+       (cons (intern type)
+	     (mapcar
+	      (lambda (elt)
+		(if (listp elt)
+		    (cond
+		      ((eq 'LIST (car elt))
+		       (mapcar #'intern-car (cdr elt)))
+		      ((eq '|var| (intern (car elt)))
+		       (clean-var elt))
+		      (t
+		       (intern-car elt)))
+		    (intern elt)))
+	      rest))))  
+   raw))
+
 
 (defun import-f-table (stream)
   "Convenience function, turn a file-stream into a table where each
@@ -162,17 +190,41 @@ printing it nicely along the way."
 
 
 ;;;;;;;; TESTING:
+(lisp-unit:define-test test-clean-c
+  (lisp-unit:assert-equal
+   ;; can we assume all subtrees are binary?
+   '((|subtree| |387| |'ROOT'| |385| |38|))
+   (clean-c-str '(("cf" ("1") ("subtree" ("387") ("'ROOT'") ("385") ("38"))))))
+  (lisp-unit:assert-equal
+   '((|terminal| |1| |'abramsma'| (|1|)))
+   (clean-c-str '(("cf" ("1") ("terminal" ("1") ("'abramsma'") (LIST ("1")))))))
+  (lisp-unit:assert-equal
+   '((|phi| |387| |0|))
+   (clean-c-str '(("cf" ("1") ("phi" ("387") ("var" ("0")))))))
+  (lisp-unit:assert-equal
+   '((|cproj| |34| |13|))
+   (clean-c-str '(("cf" ("1") ("cproj" ("34") ("var" ("13")))))))
+  (lisp-unit:assert-equal
+   '((|semform_data| |0| |2| |1| |9|))
+   (clean-c-str '(("cf" ("1") ("semform_data" ("0") ("2") ("1") ("9"))))))
+  (lisp-unit:assert-equal
+   '((|fspan| |0| |1| |16|))
+   (clean-c-str '(("cf" ("1") ("fspan" ("var" ("0")) ("1") ("16"))))))
+  (lisp-unit:assert-equal
+   '((|surfaceform| |1| |'abramsma'| |1| |9|))
+   (clean-c-str '(("cf" ("1") ("surfaceform" ("1") ("'abramsma'") ("1") ("9")))))))
+
 (lisp-unit:define-test test-make-table
   (lisp-unit:assert-equal '((|in_set| (|'NO-PV'| |19|)))
-   (table-to-alist (dup-alist-to-table '((|in_set| (|'NO-PV'| |19|))))))
+			  (table-to-alist (dup-alist-to-table '((|in_set| (|'NO-PV'| |19|))))))
 
   (lisp-unit:assert-equal '((|20| . |2|))
-   (table-to-alist (dup-alist-to-table '((|20| . |2|)))))
+			  (table-to-alist (dup-alist-to-table '((|20| . |2|)))))
 
   (lisp-unit:assert-equal '((|5| (|'CASE'| . |'erg'|)))
-   (table-to-alist (dup-alist-to-table '((|5| (|'CASE'| . |'erg'|))))))
+			  (table-to-alist (dup-alist-to-table '((|5| (|'CASE'| . |'erg'|))))))
   (lisp-unit:assert-equal '((|0| (|'PRED'| . |1|)))
-   (table-to-alist (dup-alist-to-table '((|0| (|'PRED'| . |1|))))))
+			  (table-to-alist (dup-alist-to-table '((|0| (|'PRED'| . |1|))))))
   (lisp-unit:assert-equal
    '((|18| (|'o::'| . |19|))
      (|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL)
