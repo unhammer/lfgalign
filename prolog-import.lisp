@@ -75,21 +75,26 @@ structure."
 (defun clean-var (varnum)
   "Helper for `clean-f-str' and `clean-c-str'."
   (if (equal (car varnum) "'NULL'")
-      (intern (car varnum))
-      (intern (caadr varnum))))
+      "NULL"
+      (parse-integer (caadr varnum))))
 
-(defun intern-car/var (list)
-  "Turn both 1 and var(1), ie. (\"1\") and (\"var\" \"1\"), into |1|."
-  (if (eq (intern (car list)) '|var|)
-      (clean-var list)
-      (if (cdr list)
-	  (error list)
-	  (intern (car list)))))
+(defun clean-car/var (list)
+  "Turn both 1 and var(1), i.e. (\"1\") and (\"var\" \"1\"), into 1;
+return Prolog strings as strings, i.e. \"'PRED'\" to \"PRED\"."
+  (let ((elt (car list)))
+    (cond ((eq (intern elt) '|var|)
+	   (clean-var list))
+	  ((cdr list)	      ; if not var, we expect only one element
+	   (error list))
+	  ((eq #\' (aref elt 0))
+	   (subseq elt 1 (1- (length elt))))
+	  (t
+	   (parse-integer (car list))))))
 
 (defun clean-pred (semform)
   "Helper for `clean-f-str'."
-  (list (intern (car (second semform)))
-	(intern (car (third semform)))
+  (list (clean-car/var (second semform))
+	(clean-car/var (third semform))
 	(if (not (equal (cadr (fourth semform)) '("")))
 	    (mapcar #'clean-var (cdr (fourth semform))))
 	(if (not (equal (cadr (fifth semform)) '("")))
@@ -97,10 +102,10 @@ structure."
 
 (defun clean-att-val (lhs rhs)
   "Helper for `clean-f-str'."
-  (cons (intern-car/var lhs)
+  (cons (clean-car/var lhs)
 	(if (eq (intern (car rhs)) '|semform|)
 	    (clean-pred rhs)
-	    (intern-car/var rhs))))
+	    (clean-car/var rhs))))
 
 (defun clean-f-str (raw)
   "Runs on `raw-f-str' output. Creates a pseudo-alist, each var is a
@@ -121,12 +126,10 @@ key but appears once for each attribute/projection etc., see
 		   (clean-att-val (third lhs) rhs)))
 	    (|proj|
 	     (list (clean-var (second lhs))
-		   (cons (intern (car (third lhs)))
-			 (clean-var rhs))))))
+		   (clean-att-val (third lhs) rhs)))))
 	 (|in_set|
 	  (list '|in_set|
-		(list (intern (car lhs))
-		      (clean-var rhs)))))))
+		(clean-att-val lhs rhs))))))
    raw))
 
 (defun attvalp (attval)
@@ -143,23 +146,17 @@ and `table-to-alist'."
   (mapcar
    (lambda (cf)
      (let* ((assig (third cf))
-	    (type (car assig))
-	    (id (second assig))
+	    (type (intern (car assig)))
+	    (id (clean-car/var (second assig)))
 	    (rest (cddr assig)))
-       (list
-	(intern type)
-	(cons
-	 (intern-car/var id)
-	 (mapcar
-	  (lambda (elt)
-	    (if (listp elt)
-		(cond
-		  ((eq 'LIST (car elt))
-		   (mapcar #'intern-car/var (cdr elt)))
-		  (t
-		   (intern-car/var elt)))
-		(intern elt)))
-	  rest)))))  
+       (list type
+	     (cons id
+		   (case type
+		     (|terminal| (list (clean-car/var (first rest))
+				       (mapcar #'clean-car/var (cdr (second rest)))))
+		     (|phi| (clean-car/var (first rest)))
+		     (|cproj| (clean-car/var (first rest)))
+		     (t (mapcar #'clean-car/var rest)))))))
    raw))
 
 (defun dup-alist-to-table (dup-alist)
@@ -199,55 +196,34 @@ terminal etc.)"
 (lisp-unit:define-test test-clean-c
   (lisp-unit:assert-equal
    ;; can we assume all subtrees are binary?
-   '((|subtree| (|387| |'ROOT'| |385| |38|)))
+   '((|subtree| (387 "ROOT" 385 38)))
    (clean-c-str '(("cf" ("1") ("subtree" ("387") ("'ROOT'") ("385") ("38"))))))
   (lisp-unit:assert-equal
-   '((|terminal| (|1| |'abramsma'| (|1|))))
+   '((|terminal| (1 "abramsma" (1))))
    (clean-c-str '(("cf" ("1") ("terminal" ("1") ("'abramsma'") (LIST ("1")))))))
   (lisp-unit:assert-equal
-   '((|phi| (|387| |0|)))
+   '((|phi| (387 . 0)))
    (clean-c-str '(("cf" ("1") ("phi" ("387") ("var" ("0")))))))
   (lisp-unit:assert-equal
-   '((|cproj| (|34| |13|)))
+   '((|cproj| (34 . 13)))
    (clean-c-str '(("cf" ("1") ("cproj" ("34") ("var" ("13")))))))
   (lisp-unit:assert-equal
-   '((|semform_data| (|0| |2| |1| |9|)))
+   '((|semform_data| (0 2 1 9)))
    (clean-c-str '(("cf" ("1") ("semform_data" ("0") ("2") ("1") ("9"))))))
   (lisp-unit:assert-equal
-   '((|fspan| (|0| |1| |16|)))
+   '((|fspan| (0 1 16)))
    (clean-c-str '(("cf" ("1") ("fspan" ("var" ("0")) ("1") ("16"))))))
   (lisp-unit:assert-equal
-   '((|surfaceform| (|1| |'abramsma'| |1| |9|)))
+   '((|surfaceform| (1 "abramsma" 1 9)))
    (clean-c-str '(("cf" ("1") ("surfaceform" ("1") ("'abramsma'") ("1") ("9")))))))
-
-(lisp-unit:define-test test-make-table
-  (lisp-unit:assert-equal '((|in_set| (|'NO-PV'| |19|)))
-			  (table-to-alist (dup-alist-to-table '((|in_set| (|'NO-PV'| |19|))))))
-
-  (lisp-unit:assert-equal '((|20| . |2|))
-			  (table-to-alist (dup-alist-to-table '((|20| . |2|)))))
-
-  (lisp-unit:assert-equal '((|5| (|'CASE'| . |'erg'|)))
-			  (table-to-alist (dup-alist-to-table '((|5| (|'CASE'| . |'erg'|))))))
-  (lisp-unit:assert-equal '((|0| (|'PRED'| . |1|)))
-			  (table-to-alist (dup-alist-to-table '((|0| (|'PRED'| . |1|))))))
-  (lisp-unit:assert-equal
-   '((|18| (|'o::'| . |19|))
-     (|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL)
-     (|3| (|'PRED'| |'kata'| |8| NIL NIL)))
-   (table-to-alist
-    (dup-alist-to-table
-     '((|18| (|'o::'| . |19|))
-       (|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL)
-       (|3| (|'PRED'| |'kata'| |8| NIL NIL)))))))
 
 (lisp-unit:define-test test-clean-f
   (lisp-unit:assert-equal
-   '((|in_set| (|'NO-PV'| |19|)))
+   '((|in_set| ("NO-PV" . 19)))
    (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19")))))))
   (lisp-unit:assert-equal
-   '((|20| . |2|)
-     (|0| (|'PRED'| . |1|)))
+   '((20 . 2)
+     (0 ("PRED" . 1)))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("var" ("20"))
 			       ("var" ("2"))))
@@ -255,11 +231,11 @@ terminal etc.)"
 			       ("attr" ("var" ("0")) ("'PRED'"))
 			       ("var" ("1")))))))
   (lisp-unit:assert-equal
-   '((|18| (|'o::'| . |19|)))
+   '((18 ("o::" . 19)))
    (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19")))))))
   (lisp-unit:assert-equal
-   '((|1| |'bjeffe'| |10| (|'NULL'| |5|) NIL)
-     (|1| |'qePa'| |10| (|3|) NIL))
+   '((1 "bjeffe" 10 ("NULL" 5) NIL)
+     (1 "qePa" 10 (3) NIL))
    (clean-f-str '(("cf" ("1")
 		   ("eq" ("var" ("1"))
 		    ("semform" ("'bjeffe'") ("10") (LIST ("'NULL'") ("var" ("5")))
@@ -268,41 +244,63 @@ terminal etc.)"
 			       ("var" ("1"))
 			       ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))))))
   (lisp-unit:assert-equal
-   '((|3| (|'PRED'| |'kata'| |8| NIL NIL)))
+   '((3 ("PRED" "kata" 8 NIL NIL)))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("attr" ("var" ("3")) ("'PRED'"))
 			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))))
   (lisp-unit:assert-equal
-   '((|20| . |'past'|))
+   '((20 . "past"))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("var" ("20"))
 			       ("'past'"))))))
   (lisp-unit:assert-equal 
-   '((|5| (|'CASE'| . |'erg'|)))
+   '((5 ("CASE" . "erg")))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("attr" ("var" ("5")) ("'CASE'"))
 			       ("'erg'")))))))
 
 (lisp-unit:define-test test-attvalp
-  (lisp-unit:assert-true (attvalp '(|5| (|'CASE'| . |'erg'|))))
-  (lisp-unit:assert-false (attvalp '(|2| |'qePa-dup'| |10| (|3|) NIL)))
-  (lisp-unit:assert-false (attvalp '(|20| . |'past'|)))
-  (lisp-unit:assert-false (attvalp '(|20|)))
-  (lisp-unit:assert-false (attvalp '|20|)))
+  (lisp-unit:assert-true (attvalp '(5 ("'CASE'" . "'erg'"))))
+  (lisp-unit:assert-false (attvalp '(2 "'qePa-dup'" 10 (3) NIL)))
+  (lisp-unit:assert-false (attvalp '(20 . "'past'")))
+  (lisp-unit:assert-false (attvalp '(20)))
+  (lisp-unit:assert-false (attvalp '20)))
 
 (lisp-unit:define-test test-var/pred
   (lisp-unit:assert-eq
-   (let ((firstvalue (clean-var '("var" ("3"))))) firstvalue)
-   '|3|)
+   3
+   (clean-var '("var" ("3"))))
   (lisp-unit:assert-equal
-   (clean-pred '("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))
-   '(|'kata'| |8| NIL NIL))
+   '("kata" 8 NIL NIL)
+   (clean-pred '("semform" ("'kata'") ("8") (LIST ("")) (LIST ("")))))
   (lisp-unit:assert-equal
-   (clean-pred '("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))
-   '(|'qePa'| |10| (|3|) NIL))
+   '("qePa" 10 (3) NIL)
+   (clean-pred '("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST ("")))))
   (lisp-unit:assert-equal
-   (clean-pred '("semform" ("'bjeffe'") ("10") (LIST ("'NULL'") ("var" ("5"))) (LIST (""))))
-   '(|'bjeffe'| |10| (|'NULL'| |5|) NIL)))
+   '("bjeffe" 10 ("NULL" 5) NIL)
+   (clean-pred '("semform" ("'bjeffe'") ("10") (LIST ("'NULL'") ("var" ("5"))) (LIST (""))))))
+
+
+(lisp-unit:define-test test-make-table
+  (lisp-unit:assert-equal '((|in_set| (|'NO-PV'| 19)))
+			  (table-to-alist (dup-alist-to-table '((|in_set| (|'NO-PV'| 19))))))
+
+  (lisp-unit:assert-equal '((20 . 2))
+			  (table-to-alist (dup-alist-to-table '((20 . 2)))))
+
+  (lisp-unit:assert-equal '((5 (|'CASE'| . |'erg'|)))
+			  (table-to-alist (dup-alist-to-table '((5 (|'CASE'| . |'erg'|))))))
+  (lisp-unit:assert-equal '((0 (|'PRED'| . 1)))
+			  (table-to-alist (dup-alist-to-table '((0 (|'PRED'| . 1))))))
+  (lisp-unit:assert-equal
+   '((18 (|'o::'| . 19))
+     (1 "'bjeffe'" 10 ("'NULL'" 5) NIL)
+     (3 ("'PRED'" "'kata'" 8 NIL NIL)))
+   (table-to-alist
+    (dup-alist-to-table
+     '((18 (|'o::'| . 19))
+       (1 "'bjeffe'" 10 ("'NULL'" 5) NIL)
+       (3 ("'PRED'" "'kata'" 8 NIL NIL)))))))
 
 (lisp-unit:define-test test-parsefile
   (lisp-unit:assert-equal
