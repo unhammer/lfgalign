@@ -183,8 +183,8 @@ with the var key."
 key is an f-str variable or a c-structure part (subtree, phi, fspan,
 terminal etc.)"
   (let ((raw (parse-prolog stream)))
-    (dup-alist-to-table (cons (clean-f-str (raw-f-str raw))
-			      (clean-c-str (raw-c-str raw))))))
+    (dup-alist-to-table (append (clean-f-str (raw-f-str raw))
+				(clean-c-str (raw-c-str raw))))))
 
 (defun table-to-alist (table &optional print)
   "Convenience function, turn a hash table into an association list
