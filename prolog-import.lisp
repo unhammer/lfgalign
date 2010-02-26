@@ -88,6 +88,8 @@ return Prolog strings as strings, i.e. \"'PRED'\" to \"PRED\"."
 	   (error list))
 	  ((eq #\' (aref elt 0))
 	   (subseq elt 1 (1- (length elt))))
+	  ((equal "-" elt)
+	   nil)
 	  (t
 	   (parse-integer (car list))))))
 
@@ -195,7 +197,10 @@ terminal etc.)"
 ;;;;;;;; TESTING:
 (lisp-unit:define-test test-clean-c
   (lisp-unit:assert-equal
-   ;; can we assume all subtrees are binary?
+   ;; can we assume all subtrees are (at most) binary?
+   '((|subtree| (19 "AInt_BASE" NIL 20)))
+   (clean-c-str '(("cf" ("1") ("subtree" ("19") ("'AInt_BASE'") ("-") ("20"))))))
+  (lisp-unit:assert-equal
    '((|subtree| (387 "ROOT" 385 38)))
    (clean-c-str '(("cf" ("1") ("subtree" ("387") ("'ROOT'") ("385") ("38"))))))
   (lisp-unit:assert-equal
