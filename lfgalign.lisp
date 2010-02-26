@@ -4,56 +4,6 @@
 
 (in-package #:lfgalign)
 
-;;; Giza++ gives us the LPT-correspondence (criterion i), our Prolog
-;;; files should have the information to use criterion ii.
-
-(defparameter f-parse
-  nil
-  "The f-parse of the Prolog file.")
-(defparameter c-parse
-  nil
-  "The c-parse of the Prolog file.")
-
-(defun unravel (attval tab)
-  (cons (car attval)
-	(if (listp (cdr attval))
-	    (cdr attval)
-	    (gethash (cdr attval) tab))))
-
-(defun get-pred (var tab)
-  (if (equal "NULL" var)
-      (format t "NULL-pred TODO~%")
-      (let ((predval (assoc "PRED" (gethash var tab) :test #'equal)))
-	(unless predval (error 'no-pred-error-todo var))
-	(unravel predval tab))))
-
-(defun get-children (pred)
-    (fourth pred))
-
-(defun references (parentv childv tab)
-  "Give a list of attributes of var `parentv' in `tab' which refer to
-var `childv'."
-  (loop
-     for attval in (gethash parentv tab)
-     when (eq childv (cdr attval))
-     collect attval))
-
-(defun treefind (c-ids tree)
-  "Unfortunately, id's aren't sorted in any smart way :-/"
-  (if (member (car tree) c-ids)
-      tree
-      (or (and (third tree) (treefind c-ids (third tree)))
-	  (and (fourth tree) (treefind c-ids (fourth tree))))))
-
-(defun topnode (f-var tab tree)
-  "`f-var' describes a functional domain, find the topmost of the
-nodes in the c-structure which project this domain"
-  (let ((c-ids
-	 (mapcar #'car
-		 (remove-if (lambda (phi) (not (eq (cdr phi) f-var)))
-			    (gethash '|phi| tab)))))
-    (treefind c-ids tree)))
-
 (define-condition unexpected-input (error) ((text :initarg :text :reader text))
   (:report (lambda (condition stream)
 	     (format stream "Unexpected input: ~A" (text condition)))))
@@ -89,7 +39,46 @@ laptop, should be OK."
        finally
 	 (if (cdr newtree)
 	     (error 'several-topnodes :text (cdr newtree))
-	     (return (values (car newtree) refs))))))
+	     (return (values (car newtree) refs))))))(defun treefind (c-ids tree)
+  "Unfortunately, id's aren't sorted in any smart way :-/"
+  (if (member (car tree) c-ids)
+      tree
+      (or (and (third tree) (treefind c-ids (third tree)))
+	  (and (fourth tree) (treefind c-ids (fourth tree))))))
+
+(defun topnode (f-var tab tree)
+  "`f-var' describes a functional domain, find the topmost of the
+nodes in the c-structure which project this domain"
+  (let ((c-ids
+	 (mapcar #'car
+		 (remove-if (lambda (phi) (not (eq (cdr phi) f-var)))
+			    (gethash '|phi| tab)))))
+    (treefind c-ids tree)))(defun unravel (attval tab)
+  (cons (car attval)
+	(if (listp (cdr attval))
+	    (cdr attval)
+	    (gethash (cdr attval) tab))))
+
+(defun get-pred (var tab)
+  (if (equal "NULL" var)
+      (format t "NULL-pred TODO~%")
+      (let ((predval (assoc "PRED" (gethash var tab) :test #'equal)))
+	(unless predval (error 'no-pred-error-todo var))
+	(unravel predval tab))))
+
+(defun get-children (pred)
+    (fourth pred))
+
+(defun references (parentv childv tab)
+  "Give a list of attributes of var `parentv' in `tab' which refer to
+var `childv'."
+  (loop
+     for attval in (gethash parentv tab)
+     when (eq childv (cdr attval))
+     collect attval))
+
+
+
 
 (progn
   (defun f-align (var1 tab1 var2 tab2)
