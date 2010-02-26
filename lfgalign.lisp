@@ -39,7 +39,9 @@ laptop, should be OK."
        finally
 	 (if (cdr newtree)
 	     (error 'several-topnodes :text (cdr newtree))
-	     (return (values (car newtree) refs))))))(defun treefind (c-ids tree)
+	     (return (values (car newtree) refs))))))
+
+(defun treefind (c-ids tree)
   "Unfortunately, id's aren't sorted in any smart way :-/"
   (if (member (car tree) c-ids)
       tree
@@ -53,7 +55,9 @@ nodes in the c-structure which project this domain"
 	 (mapcar #'car
 		 (remove-if (lambda (phi) (not (eq (cdr phi) f-var)))
 			    (gethash '|phi| tab)))))
-    (treefind c-ids tree)))(defun unravel (attval tab)
+    (treefind c-ids tree)))
+
+(defun unravel (attval tab)
   (cons (car attval)
 	(if (listp (cdr attval))
 	    (cdr attval)
@@ -76,8 +80,6 @@ var `childv'."
      for attval in (gethash parentv tab)
      when (eq childv (cdr attval))
      collect attval))
-
-
 
 
 (progn
@@ -118,17 +120,60 @@ respectively."
 ;;;;;;;; TESTING:
 (lisp-unit:define-test test-unravel
   (let ((tab (dup-alist-to-table
-	      '((|20| ("PRED" . |4|))
-		(|4| "qePa" |8| NIL NIL)
-		(|3| ("CASE" . "erg"))
-		(|3| ("PRED" "kata" |8| NIL NIL))))))
+	      '((20 ("PRED" . 4))
+		(4 "qePa" 8 NIL NIL)
+		(3 ("CASE" . "erg"))
+		(3 ("PRED" "kata" 8 NIL NIL))))))
 
     (lisp-unit:assert-equal
-     '("PRED" "qePa" |8| NIL NIL)
-     (get-pred '|20| tab))
+     '("PRED" "qePa" 8 NIL NIL)
+     (get-pred 20 tab))
     (lisp-unit:assert-equal
-     '("PRED" "qePa" |8| NIL NIL)
-     (unravel (assoc "PRED" (gethash '|20| tab) :test #'equal) tab))
+     '("PRED" "qePa" 8 NIL NIL)
+     (unravel (assoc "PRED" (gethash 20 tab) :test #'equal) tab))
     (lisp-unit:assert-equal
-     '("PRED" "kata" |8| NIL NIL)
-     (unravel (assoc "PRED" (gethash '|3| tab) :test #'equal) tab))))
+     '("PRED" "kata" 8 NIL NIL)
+     (unravel (assoc "PRED" (gethash 3 tab) :test #'equal) tab))))
+
+(lisp-unit:define-test test-topnode
+  (let* ((tab (open-and-import "dev/TEST_parse.pl"))
+	 (tree (maketree tab)))
+    (lisp-unit:assert-equal
+     '(34 "qePa-2746-3" (21))
+     (topnode 15 tab tree))
+    (lisp-unit:assert-equal
+     '(144 "PROPP" NIL (2 "PROP" NIL (1 "abramsma" (1))))
+     (topnode 3 tab tree))))
+
+(lisp-unit:define-test test-maketree
+  (multiple-value-bind (tree refs)
+      (maketree
+       (open-and-import "dev/TEST_parse.pl"))
+    (lisp-unit:assert-equal
+     '((37 38 RIGHT) (24 23 RIGHT) (26 25 RIGHT) (28 27 RIGHT) (30 29 RIGHT)
+ (32 31 RIGHT) (34 33 RIGHT) (33 172 RIGHT) (172 173 LEFT) (31 173 RIGHT)
+ (173 174 LEFT) (29 174 RIGHT) (174 175 LEFT) (27 175 RIGHT) (175 176 LEFT)
+ (25 176 RIGHT) (176 177 LEFT) (23 177 RIGHT) (177 378 RIGHT) (378 379 RIGHT)
+ (1 2 RIGHT) (2 144 RIGHT) (144 149 RIGHT) (149 381 LEFT) (379 381 RIGHT)
+ (381 385 RIGHT) (385 387 LEFT) (38 387 RIGHT))
+     refs)
+    (lisp-unit:assert-equal
+     '(387 "ROOT"
+       (385 "ROOT" NIL
+        (381 "IPfoc[main,-]"
+         (149 "IPfoc[main,-]" NIL
+          (144 "PROPP" NIL (2 "PROP" NIL (1 "abramsma" (1)))))
+         (379 "Ibar[main,-]" NIL
+          (378 "I[main,-]" NIL
+           (177 "V"
+            (176 "V"
+             (175 "V"
+              (174 "V"
+               (173 "V" (172 "V" NIL (33 "V_BASE" NIL (34 "qePa-2746-3" (21))))
+                (31 "V_SUFF_BASE" NIL (32 "+V" (21))))
+               (29 "V_SUFF_BASE" NIL (30 "+Unerg" (21))))
+              (27 "V_SUFF_BASE" NIL (28 "+Aor" (21))))
+             (25 "V_SUFF_BASE" NIL (26 "+Subj3Sg" (21))))
+            (23 "V_SUFF_BASE" NIL (24 "+Obj3" (21))))))))
+       (38 "PERIOD" NIL (37 "." (37))))
+     tree)))
