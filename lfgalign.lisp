@@ -39,16 +39,45 @@ var `childv'."
      collect attval))
 
 (defun topnode (f-var tab)
+  "`f-var' describes a functional domain, find the topmost of the
+nodes in the c-structure which project this domain"
   (let ((c-ids
 	 (mapcar #'car
-		 (remove-if (lambda (phi) (not (eq (second phi) f-var)))
+		 (remove-if (lambda (phi) (not (eq (cdr phi) f-var)))
 			    (gethash '|phi| tab))))
 	
 	topmost)
-    (dolist (id c-ids)
-      ;; (if (member id ))
-      ))
-  )
+    (print c-ids)
+    (remove-if (lambda (branch) (not (member (car branch) c-ids)))
+	       (gethash '|subtree| tab))
+  ))
+
+(defun maketree (tab)
+  "Returns a binary tree created from the |subtree| and |terminal|
+alists of the table `tab'. The second value returned contains the
+back-references from each branch ID. Does not modify the input
+table. Efficiency: 100 real-life trees takes about 0.5 seconds on a
+laptop, should be OK."
+  (let* ((subtree (copy-tree (gethash '|subtree| tab)))
+	 (tree (append subtree
+		       (copy-tree (gethash '|terminal| tab))))
+	 (refs (remove-if
+		#'null
+		(mapcan (lambda (b)
+			  (list (if (third b) (list (third b) (first b) 'left))
+				(if (fourth b) (list (fourth b) (first b) 'right))))
+			subtree))))
+    (loop
+       for branch in tree
+       for ref = (assoc (car branch) refs)
+       when ref do
+	 (case (third ref)
+	   (left  (setf (third  (assoc (second ref) tree)) branch))
+	   (right (setf (fourth (assoc (second ref) tree)) branch)))
+       else
+         collect branch into newtree
+       finally 
+         (return (values newtree refs)))))
 
 (progn
   (defun f-align (var1 tab1 var2 tab2)
