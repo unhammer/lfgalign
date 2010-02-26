@@ -38,19 +38,25 @@ var `childv'."
      when (eq childv (cdr attval))
      collect attval))
 
+
 (defun topnode (f-var tab)
   "`f-var' describes a functional domain, find the topmost of the
 nodes in the c-structure which project this domain"
   (let ((c-ids
 	 (mapcar #'car
 		 (remove-if (lambda (phi) (not (eq (cdr phi) f-var)))
-			    (gethash '|phi| tab))))
-	
-	topmost)
+			    (gethash '|phi| tab)))))
     (print c-ids)
-    (remove-if (lambda (branch) (not (member (car branch) c-ids)))
-	       (gethash '|subtree| tab))
+    
   ))
+
+(define-condition unexpected-input (error) ((text :initarg :text :reader text))
+  (:report (lambda (condition stream)
+	     (format stream "Unexpected input: ~A" (text condition)))))
+
+(define-condition several-topnodes (unexpected-input) ()
+  (:report (lambda (condition stream)
+	     (format stream "Found superfluous topmost nodes: ~A" (text condition)))))
 
 (defun maketree (tab)
   "Returns a binary tree created from the |subtree| and |terminal|
@@ -68,16 +74,18 @@ laptop, should be OK."
 				(if (fourth b) (list (fourth b) (first b) 'right))))
 			subtree))))
     (loop
-       for branch in tree
-       for ref = (assoc (car branch) refs)
+       for branch in tree 
+       for ref = (assoc (car branch) refs) 
        when ref do
 	 (case (third ref)
 	   (left  (setf (third  (assoc (second ref) tree)) branch))
 	   (right (setf (fourth (assoc (second ref) tree)) branch)))
        else
          collect branch into newtree
-       finally 
-         (return (values newtree refs)))))
+       finally
+	 (if (cdr newtree)
+	     (error 'several-topnodes :text (cdr newtree))
+	     (return (values (car newtree) refs))))))
 
 (progn
   (defun f-align (var1 tab1 var2 tab2)
