@@ -38,17 +38,21 @@ var `childv'."
      when (eq childv (cdr attval))
      collect attval))
 
+(defun treefind (c-ids tree)
+  "Unfortunately, id's aren't sorted in any smart way :-/"
+  (if (member (car tree) c-ids)
+      tree
+      (or (and (third tree) (treefind c-ids (third tree)))
+	  (and (fourth tree) (treefind c-ids (fourth tree))))))
 
-(defun topnode (f-var tab)
+(defun topnode (f-var tab tree)
   "`f-var' describes a functional domain, find the topmost of the
 nodes in the c-structure which project this domain"
   (let ((c-ids
 	 (mapcar #'car
 		 (remove-if (lambda (phi) (not (eq (cdr phi) f-var)))
 			    (gethash '|phi| tab)))))
-    (print c-ids)
-    
-  ))
+    (treefind c-ids tree)))
 
 (define-condition unexpected-input (error) ((text :initarg :text :reader text))
   (:report (lambda (condition stream)
