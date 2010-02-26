@@ -91,7 +91,7 @@ return Prolog strings as strings, i.e. \"'PRED'\" to \"PRED\"."
 	  ((equal "-" elt)
 	   nil)
 	  (t
-	   (parse-integer (car list))))))
+	   (parse-integer elt)))))
 
 (defun clean-pred (semform)
   "Helper for `clean-f-str'."
