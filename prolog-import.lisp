@@ -1,3 +1,6 @@
+;;; Documentation for the Prolog export format:
+;;; http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
+
 ;;; Tell SBCL we want full debugging info (eg. no function inlining),
 ;;; but don't care about speed:
 (declaim (optimize (speed 0) (safety 3) (debug 3)))
@@ -21,12 +24,13 @@
 
 (defun parse-pred (stream)
   "Create a list structure from a Prolog file by reading `stream'
-character by character. This function assumes that the next thing we
-see in the stream (apart from comments) is a clause head or atom;
-ie. it shouldn't start within an argument list, that's for the helper
-function `parse-args' to handle. This function reads one clause head
-or atom (predicate of zero arity), lets `parse-args' handle possible
-arguments, and then returns.
+character by character (would be faster if we slurp:
+http://www.ymeme.com/slurping-a-file-common-lisp-83.html). This
+function assumes that the next thing we see in the stream (apart from
+comments) is a clause head or atom; ie. it shouldn't start within an
+argument list, that's for the helper function `parse-args' to
+handle. This function reads one clause head or atom (predicate of zero
+arity), lets `parse-args' handle possible arguments, and then returns.
 
 Returns a pair of the previous character and the created list
 structure."
@@ -225,6 +229,7 @@ terminal etc.)"
      using (hash-key key)
      do (when print (format t "~&~A -> ~A" key value))
      collect (cons key value)))
+
 
 
 ;;;;;;;; TESTING:
@@ -503,18 +508,3 @@ terminal etc.)"
 	 (stream (merge-pathnames "dev/TEST_parse.pl"
 				  (asdf:component-pathname (asdf:find-system :lfgalign))))
        (parse-prolog stream))))
-
-
-
-
-;;;;;;;; OLD:
-(defun slurp-stream (stream)
-  ;; Viss me får store/mange filer, vil denne funksjonen vere svært
-  ;; mykje raskare til å lese inn filene enn å gå bokstav for bokstav.
-  ;; Frå http://www.ymeme.com/slurping-a-file-common-lisp-83.html,
-  ;; han fungerer ikkje om fila har «multibyte characters»
-  (let ((seq (make-string (file-length stream))))
-    (read-sequence seq stream)
-    seq))
-
-
