@@ -4,10 +4,6 @@
 
 (in-package #:lfgalign)
 
-(define-condition unexpected-input (error) ((text :initarg :text :reader text))
-  (:report (lambda (condition stream)
-	     (format stream "Unexpected input: ~A" (text condition)))))
-
 (define-condition several-topnodes (unexpected-input) ()
   (:report (lambda (condition stream)
 	     (format stream "Found superfluous topmost nodes: ~A" (text condition)))))
@@ -21,12 +17,11 @@ laptop, should be OK."
   (let* ((subtree (copy-tree (gethash '|subtree| tab)))
 	 (tree (append subtree
 		       (copy-tree (gethash '|terminal| tab))))
-	 (refs (remove-if
-		#'null
-		(mapcan (lambda (b)
-			  (list (if (third b) (list (third b) (first b) 'left))
-				(if (fourth b) (list (fourth b) (first b) 'right))))
-			subtree))))
+	 ;; subtree elts are of the form (id name left-id right-id) 
+	 (refs (mapcan-true (lambda (b)
+			      (list (aif (third b) (list it (first b) 'left))
+				    (aif (fourth b) (list it (first b) 'right))))
+			    subtree)))
     (loop
        for branch in tree 
        for ref = (assoc (car branch) refs) 
@@ -37,16 +32,17 @@ laptop, should be OK."
        else
          collect branch into newtree
        finally
-	 (if (cdr newtree)
-	     (error 'several-topnodes :text (cdr newtree))
+	 (aif (cdr newtree)
+	     (error 'several-topnodes :text it)
 	     (return (values (car newtree) refs))))))
 
 (defun treefind (c-ids tree)
   "Unfortunately, id's aren't sorted in any smart way :-/"
-  (if (member (car tree) c-ids)
-      tree
-      (or (and (third tree) (treefind c-ids (third tree)))
-	  (and (fourth tree) (treefind c-ids (fourth tree))))))
+  (and (listp tree)
+       (if (member (car tree) c-ids)
+	   tree
+	   (or (and (third tree) (treefind c-ids (third tree)))
+	       (and (fourth tree) (treefind c-ids (fourth tree)))))))
 
 (defun topnode (f-var tab tree)
   "`f-var' describes a functional domain, find the topmost of the
@@ -89,6 +85,8 @@ respectively."
     (let* ((pred1 (get-pred var1 tab1))
 	   (pred2 (get-pred var2 tab2)))
       (format t "Align ~A_~A with ~A_~A~%" var1 pred1 var2 pred2)
+      (format t "Align tree ~A~%" (topnode var1 tab1 (maketree tab1)))
+      (format t " with tree ~A~%" (topnode var2 tab2 (maketree tab2)))
       (when (and pred1 pred2)
 	(loop
 	   for child1 in (get-children pred1)

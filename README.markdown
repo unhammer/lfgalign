@@ -55,4 +55,3 @@ Plan
 Re: http://tlt8.unicatt.it/allegati/Proceedings_TLT8.pdf p.71--82,
 Giza++ gives us the LPT-correspondence (criterion i), our Prolog files
 should have the information to use criterion ii.
-

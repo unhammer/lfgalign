@@ -14,6 +14,9 @@
   :description "lfgalign"
   :long-description "LFG alignment algorithm"
   :depends-on ("lisp-unit")		; but only for testing...hmm
-  :components ((:file "prolog-import")
+  :components ((:file "cl-extra")
+	       (:file "prolog-import"
+		      :depends-on ("cl-extra"))
 	       (:file "lfgalign"
+		      :depends-on ("cl-extra")
 		      :depends-on ("prolog-import"))))
