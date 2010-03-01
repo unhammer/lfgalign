@@ -44,13 +44,23 @@ laptop, should be OK."
 	   (or (and (third tree) (treefind c-ids (third tree)))
 	       (and (fourth tree) (treefind c-ids (fourth tree)))))))
 
+(defun eqvars (f-var tab)
+  "TODO: store eqvars in clean-f-str"
+  (cons f-var
+	(mapcar-true 
+	 (lambda (x)
+	   (and (eql (cdr (last x)) f-var)
+		(car x)))
+	 (table-to-alist tab))))
+
 (defun topnode (f-var tab tree)
   "`f-var' describes a functional domain, find the topmost of the
 nodes in the c-structure which project this domain"
-  (let ((c-ids
-	 (mapcar #'car
-		 (remove-if (lambda (phi) (not (eq (cdr phi) f-var)))
-			    (gethash '|phi| tab)))))
+  (let* ((f-vars (eqvars f-var tab))
+	 (c-ids
+	  (mapcar #'car
+		  (remove-if (lambda (phi) (not (member (cdr phi) f-vars)))
+			     (gethash '|phi| tab)))))
     (treefind c-ids tree)))
 
 (defun unravel (attval tab)
