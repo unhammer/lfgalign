@@ -88,7 +88,8 @@ structure."
 	    (in-disjunction goals (cdr disjuncts))))))
 
 (defun clean-equiv (raw-equiv)
-  "Runs on `raw-equiv' output."
+  "Runs on `raw-equiv' output to create a list of Prolog variable
+names which are equivalent to \"1\" (our selected parse)."
   (let ((select1s
 	 (mapcar-true (lambda (x)
 			(and (equal "select" (first x))
@@ -104,6 +105,13 @@ structure."
 				(car (second x))))
 			 raw-equiv))))
 
+(defun filter-equiv (raw-equiv raw-cf)
+  "Use on input to `clean-f-str' and `clean-c-str' to remove cf's
+which are not part of the selected parse."
+  (let ((equivs (clean-equiv raw-equiv)))
+    (remove-if (lambda (cf)
+		 (not (in-disjunction equivs (second cf))))
+	       raw-cf)))
 
 (defun clean-var (varnum)
   "Helper for `clean-f-str' and `clean-c-str'."
@@ -142,8 +150,8 @@ return Prolog strings as strings, i.e. \"'PRED'\" to \"PRED\"."
 	    (clean-pred rhs)
 	    (clean-car/var rhs))))
 
-(defun clean-f-str (raw-f equivs)
-  "Runs on `raw-f-str' and `clean-equiv' output. Creates a pseudo-alist,
+(defun clean-f-str (raw-f)
+  "Runs on `raw-f-str' output. Creates a pseudo-alist,
 each var is a key but appears once for each attribute/projection etc.,
 see `dup-alist-to-table' and `table-to-alist'."
   (mapcar
@@ -165,9 +173,7 @@ see `dup-alist-to-table' and `table-to-alist'."
 	 (|in_set|
 	  (list '|in_set|
 		(clean-att-val lhs rhs))))))
-   (remove-if (lambda (cf)
-		(not (in-disjunction equivs (second cf))))
-	      raw-f)))
+   raw-f))
 
 (defun attvalp (attval)
   (and (listp attval)
@@ -176,7 +182,7 @@ see `dup-alist-to-table' and `table-to-alist'."
        (listp (second attval))
        (not (cddr attval))))
 
-(defun clean-c-str (raw)
+(defun clean-c-str (raw-c)
   "Runs on `raw-c-str' output. Creates a pseudo-alist, each type is a
 key but appears once for each attribute etc., see `dup-alist-to-table'
 and `table-to-alist'."
@@ -194,7 +200,7 @@ and `table-to-alist'."
 		     (|phi| (clean-car/var (first rest)))
 		     (|cproj| (clean-car/var (first rest)))
 		     (t (mapcar #'clean-car/var rest)))))))
-   raw))
+   raw-c))
 
 (defun dup-alist-to-table (dup-alist)
   "Runs on `clean-f-str' or `clean-c-str' output to create a hash
@@ -218,9 +224,10 @@ with the var key."
 key is an f-str variable or a c-structure part (subtree, phi, fspan,
 terminal etc.)"
   (let ((raw (parse-prolog stream)))
-    (dup-alist-to-table (append (clean-f-str (raw-f-str raw)
-					     (clean-equiv (raw-equiv raw)))
-				(clean-c-str (raw-c-str raw))))))
+    (dup-alist-to-table (append (clean-f-str (filter-equiv (raw-equiv raw)
+							   (raw-f-str raw)))
+				(clean-c-str (filter-equiv (raw-equiv raw)
+							   (raw-c-str raw)))))))
 
 (defun table-to-alist (table &optional print)
   "Convenience function, turn a hash table into an association list
@@ -263,7 +270,7 @@ terminal etc.)"
 (lisp-unit:define-test test-clean-f
   (lisp-unit:assert-equal
    '((|in_set| ("NO-PV" . 19)))
-   (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19"))))) '("1")))
+   (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19")))))))
   (lisp-unit:assert-equal
    '((20 . 2)
      (0 ("PRED" . 1)))
@@ -272,12 +279,10 @@ terminal etc.)"
 			       ("var" ("2"))))
 		  ("cf" ("1") ("eq"
 			       ("attr" ("var" ("0")) ("'PRED'"))
-			       ("var" ("1")))))
-		 '("1")))
+			       ("var" ("1")))))))
   (lisp-unit:assert-equal
    '((18 ("o::" . 19)))
-   (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19")))))
-		 '("1")))
+   (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19")))))))
   (lisp-unit:assert-equal
    '((1 "bjeffe" 10 ("NULL" 5) NIL)
      (1 "qePa" 10 (3) NIL))
@@ -287,26 +292,22 @@ terminal etc.)"
 			       (LIST ("")))))
 		  ("cf" ("1") ("eq"
 			       ("var" ("1"))
-			       ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))))
-		 '("1")))
+			       ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))))))
   (lisp-unit:assert-equal
    '((3 ("PRED" "kata" 8 NIL NIL)))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("attr" ("var" ("3")) ("'PRED'"))
-			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))
-		'("1")))
+			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))))
   (lisp-unit:assert-equal
    '((20 . "past"))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("var" ("20"))
-			       ("'past'"))))
-		'("1")))
+			       ("'past'"))))))
   (lisp-unit:assert-equal 
    '((5 ("CASE" . "erg")))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("attr" ("var" ("5")) ("'CASE'"))
-			       ("'erg'"))))
-		'("1"))))
+			       ("'erg'")))))))
 
 (lisp-unit:define-test test-attvalp
   (lisp-unit:assert-true (attvalp '(5 ("'CASE'" . "'erg'"))))
@@ -358,25 +359,25 @@ terminal etc.)"
 				     ("B1") ("B3")))))))
 
 (lisp-unit:define-test test-equiv
-  (let ((equivs
+  (let ((raw-equiv
 	 (with-open-file
 	     (stream (merge-pathnames "dev/TEST_equiv.pl"
 				      (asdf:component-pathname (asdf:find-system :lfgalign))))
-	   (clean-equiv (raw-equiv (parse-prolog stream))))))
+	   (raw-equiv (parse-prolog stream)))))
     (lisp-unit:assert-equal
      '("1" "D6" "A3" "CV_004" "CV_005" "CV_007" "CV_008" "CV_009")
-     equivs)
+     (clean-equiv raw-equiv))
     (lisp-unit:assert-equal
      '((3 ("PRED" "kata" 8 NIL NIL)))
-     (clean-f-str '(("cf" ("A3") ("eq"
-				  ("attr" ("var" ("3")) ("'PRED'"))
-				  ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))
-		  equivs))
+     (clean-f-str (filter-equiv	raw-equiv
+				'(("cf" ("A3") ("eq"
+						("attr" ("var" ("3")) ("'PRED'"))
+						("semform" ("'kata'") ("8") (LIST ("")) (LIST ("")))))))))
     (lisp-unit:assert-false
-     (clean-f-str '(("cf" ("A4") ("eq"
-				  ("attr" ("var" ("3")) ("'PRED'"))
-				  ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))
-		  equivs))))
+     (clean-f-str (filter-equiv raw-equiv
+				'(("cf" ("A4") ("eq"
+					       ("attr" ("var" ("3")) ("'PRED'"))
+					       ("semform" ("'kata'") ("8") (LIST ("")) (LIST ("")))))))))))
 
 (lisp-unit:define-test test-parsefile
   (lisp-unit:assert-equal
