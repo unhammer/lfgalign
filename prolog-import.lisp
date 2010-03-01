@@ -64,12 +64,41 @@ structure."
 (defun parse-prolog (stream)
   (cdr (parse-pred stream)))
 
+(defun raw-equiv (parse)
+  "Skip the first element, LIST."
+  (cdr (fifth parse)))
 (defun raw-f-str (parse)
   "Skip the first element, LIST."
   (cdr (sixth parse)))
 (defun raw-c-str (parse)
   "Skip the first element, LIST."
   (cdr (seventh parse)))
+
+(defun in-disjunction (goals disjuncts)
+  "See if any of the `disjuncts' are members of `goals'."
+  (cond ((not (consp disjuncts)) (member disjuncts goals :test #'equal))
+	((equal (car disjuncts) "and") (error 'unexpected-input disjuncts))
+	((equal (car disjuncts) "or") (in-disjunction goals (cdr disjuncts)))
+	(t (or 
+	    (in-disjunction goals (car disjuncts))
+	    (in-disjunction goals (cdr disjuncts))))))
+
+(defun clean-equiv (raw-equiv)
+  "Runs on `raw-equiv' output."
+  (let ((select1s
+	 (mapcar-true (lambda (x)
+			(and (equal "select" (first x))
+			     (equal "1" (car (third x)))
+			     (car (second x))))
+		      raw-equiv)))
+    (append '("1")
+	    select1s
+	    (mapcar-true (lambda (x)
+			   (and (equal "define" (first x))
+				(or (not (fourth x)) (error 'unexpected-input x))
+				(in-disjunction select1s (third x))
+				(car (second x))))
+			 raw-equiv))))
 
 
 (defun clean-var (varnum)
@@ -109,10 +138,10 @@ return Prolog strings as strings, i.e. \"'PRED'\" to \"PRED\"."
 	    (clean-pred rhs)
 	    (clean-car/var rhs))))
 
-(defun clean-f-str (raw)
-  "Runs on `raw-f-str' output. Creates a pseudo-alist, each var is a
-key but appears once for each attribute/projection etc., see
-`dup-alist-to-table' and `table-to-alist'."
+(defun clean-f-str (raw-f equivs)
+  "Runs on `raw-f-str' and `clean-equiv' output. Creates a pseudo-alist,
+each var is a key but appears once for each attribute/projection etc.,
+see `dup-alist-to-table' and `table-to-alist'."
   (mapcar
    (lambda (cf)
      (let* ((assig (third cf))
@@ -132,7 +161,9 @@ key but appears once for each attribute/projection etc., see
 	 (|in_set|
 	  (list '|in_set|
 		(clean-att-val lhs rhs))))))
-   raw))
+   (remove-if (lambda (cf)
+		(not (in-disjunction equivs (second cf))))
+	      raw-f)))
 
 (defun attvalp (attval)
   (and (listp attval)
@@ -171,9 +202,10 @@ with the var key."
 	(if (attvalp pair)
 	    (setf (gethash key table)
 		  (cons (second pair) (gethash key table)))
-	    (setf (gethash key table)
-		  ;; TODO: error if gethash key table
-		  (cdr pair)))))
+	    (if (gethash key table)
+		(error 'unexpected-input key)
+		(setf (gethash key table)
+		      (cdr pair))))))
     table))
 
 
@@ -182,7 +214,8 @@ with the var key."
 key is an f-str variable or a c-structure part (subtree, phi, fspan,
 terminal etc.)"
   (let ((raw (parse-prolog stream)))
-    (dup-alist-to-table (append (clean-f-str (raw-f-str raw))
+    (dup-alist-to-table (append (clean-f-str (raw-f-str raw)
+					     (clean-equiv (raw-equiv raw)))
 				(clean-c-str (raw-c-str raw))))))
 
 (defun table-to-alist (table &optional print)
@@ -225,7 +258,7 @@ terminal etc.)"
 (lisp-unit:define-test test-clean-f
   (lisp-unit:assert-equal
    '((|in_set| ("NO-PV" . 19)))
-   (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19")))))))
+   (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19"))))) '("1")))
   (lisp-unit:assert-equal
    '((20 . 2)
      (0 ("PRED" . 1)))
@@ -234,10 +267,12 @@ terminal etc.)"
 			       ("var" ("2"))))
 		  ("cf" ("1") ("eq"
 			       ("attr" ("var" ("0")) ("'PRED'"))
-			       ("var" ("1")))))))
+			       ("var" ("1")))))
+		 '("1")))
   (lisp-unit:assert-equal
    '((18 ("o::" . 19)))
-   (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19")))))))
+   (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19")))))
+		 '("1")))
   (lisp-unit:assert-equal
    '((1 "bjeffe" 10 ("NULL" 5) NIL)
      (1 "qePa" 10 (3) NIL))
@@ -247,22 +282,26 @@ terminal etc.)"
 			       (LIST ("")))))
 		  ("cf" ("1") ("eq"
 			       ("var" ("1"))
-			       ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))))))
+			       ("semform" ("'qePa'") ("10") (LIST ("var" ("3"))) (LIST (""))))))
+		 '("1")))
   (lisp-unit:assert-equal
    '((3 ("PRED" "kata" 8 NIL NIL)))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("attr" ("var" ("3")) ("'PRED'"))
-			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))))
+			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))
+		'("1")))
   (lisp-unit:assert-equal
    '((20 . "past"))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("var" ("20"))
-			       ("'past'"))))))
+			       ("'past'"))))
+		'("1")))
   (lisp-unit:assert-equal 
    '((5 ("CASE" . "erg")))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("attr" ("var" ("5")) ("'CASE'"))
-			       ("'erg'")))))))
+			       ("'erg'"))))
+		'("1"))))
 
 (lisp-unit:define-test test-attvalp
   (lisp-unit:assert-true (attvalp '(5 ("'CASE'" . "'erg'"))))
@@ -306,6 +345,33 @@ terminal etc.)"
      '((18 (|'o::'| . 19))
        (1 "'bjeffe'" 10 ("'NULL'" 5) NIL)
        (3 ("'PRED'" "'kata'" 8 NIL NIL)))))))
+
+(lisp-unit:define-test test-disj
+  (lisp-unit:assert-true 
+   (in-disjunction '("C5") (third '("define" ("CV_010")
+				    ("or" ("or" ("D5") ("D1") ("D3")) ("C5") ("or" ("C1") ("C3")) ("B5")
+				     ("B1") ("B3")))))))
+
+(lisp-unit:define-test test-equiv
+  (let ((equivs
+	 (with-open-file
+	     (stream (merge-pathnames "dev/TEST_equiv.pl"
+				      (asdf:component-pathname (asdf:find-system :lfgalign))))
+	   (clean-equiv (raw-equiv (parse-prolog stream))))))
+    (lisp-unit:assert-equal
+     '("1" "D6" "A3" "CV_004" "CV_005" "CV_007" "CV_008" "CV_009")
+     equivs)
+    (lisp-unit:assert-equal
+     '((3 ("PRED" "kata" 8 NIL NIL)))
+     (clean-f-str '(("cf" ("A3") ("eq"
+				  ("attr" ("var" ("3")) ("'PRED'"))
+				  ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))
+		  equivs))
+    (lisp-unit:assert-false
+     (clean-f-str '(("cf" ("A4") ("eq"
+				  ("attr" ("var" ("3")) ("'PRED'"))
+				  ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))
+		  equivs))))
 
 (lisp-unit:define-test test-parsefile
   (lisp-unit:assert-equal
