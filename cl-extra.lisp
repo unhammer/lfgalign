@@ -18,8 +18,14 @@ http://www.cliki.net/common-idioms"
   `(let ((it ,test))
      (declare (ignorable it))
      (if it ,conseq
+	 ;; TODO: can setf-it work on conseq too?
          (macrolet ((setf-it (val) (list 'setf ',test val)))
            ,else))))
+
+(defmacro awhen (test &body body)
+  `(let ((it ,test))
+     (declare (ignorable it))
+     (when it ,@body)))
 
 ;;; Disjoint set implementation. Remember to (setf *print-circle* t)
 ;;; if you want to use this! Also, to accumulate child-vals, don't set
