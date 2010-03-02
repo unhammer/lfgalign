@@ -163,7 +163,8 @@ see `dup-alist-to-table' and `table-to-alist'."
 	 (|eq|
 	  (case (intern (car lhs))
 	    (|var|
-	     (clean-att-val lhs rhs))
+	     (list '|eqvar|
+		   (clean-att-val lhs rhs)))
 	    (|attr|
 	     (list (clean-var (second lhs))
 		   (clean-att-val (third lhs) rhs)))
@@ -202,7 +203,9 @@ and `table-to-alist'."
 		     (t (mapcar #'clean-car/var rest)))))))
    raw-c))
 
-(defun dup-alist-to-table (dup-alist)
+
+
+(defun dup-alist-to-table (dup-alist &optional no-eq-sets)
   "Runs on `clean-f-str' or `clean-c-str' output to create a hash
 table so that we can get the full list of attributes by looking up
 with the var key."
@@ -216,6 +219,8 @@ with the var key."
 		(error 'unexpected-input key)
 		(setf (gethash key table)
 		      (cdr pair))))))
+    (unless no-eq-sets (setf (gethash '|eq-sets| table)
+			     (dset-collect (gethash '|eqvar| table))))
     table))
 
 
@@ -272,7 +277,7 @@ terminal etc.)"
    '((|in_set| ("NO-PV" . 19)))
    (clean-f-str '(("cf" ("1") ("in_set" ("'NO-PV'") ("var" ("19")))))))
   (lisp-unit:assert-equal
-   '((20 . 2)
+   '((|eqvar| (20 . 2))
      (0 ("PRED" . 1)))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("var" ("20"))
@@ -284,8 +289,8 @@ terminal etc.)"
    '((18 ("o::" . 19)))
    (clean-f-str '(("cf" ("1") ("eq" ("proj" ("var" ("18")) ("'o::'")) ("var" ("19")))))))
   (lisp-unit:assert-equal
-   '((1 "bjeffe" 10 ("NULL" 5) NIL)
-     (1 "qePa" 10 (3) NIL))
+   '((|eqvar| (1 "bjeffe" 10 ("NULL" 5) NIL))
+     (|eqvar| (1 "qePa" 10 (3) NIL)))
    (clean-f-str '(("cf" ("1")
 		   ("eq" ("var" ("1"))
 		    ("semform" ("'bjeffe'") ("10") (LIST ("'NULL'") ("var" ("5")))
@@ -299,7 +304,7 @@ terminal etc.)"
 			       ("attr" ("var" ("3")) ("'PRED'"))
 			       ("semform" ("'kata'") ("8") (LIST ("")) (LIST (""))))))))
   (lisp-unit:assert-equal
-   '((20 . "past"))
+   '((|eqvar| (20 . "past")))
    (clean-f-str '(("cf" ("1") ("eq"
 			       ("var" ("20"))
 			       ("'past'"))))))
@@ -333,15 +338,19 @@ terminal etc.)"
 
 (lisp-unit:define-test test-make-table
   (lisp-unit:assert-equal '((|in_set| (|'NO-PV'| 19)))
-			  (table-to-alist (dup-alist-to-table '((|in_set| (|'NO-PV'| 19))))))
+			  (table-to-alist (dup-alist-to-table '((|in_set| (|'NO-PV'| 19)))
+							      'no-eq-sets)))
 
-  (lisp-unit:assert-equal '((20 . 2))
-			  (table-to-alist (dup-alist-to-table '((20 . 2)))))
+  (lisp-unit:assert-equal '((|eqvar| (20 . 2)))
+			  (table-to-alist (dup-alist-to-table '((|eqvar| (20 . 2)))
+							      'no-eq-sets)))
 
   (lisp-unit:assert-equal '((5 (|'CASE'| . |'erg'|)))
-			  (table-to-alist (dup-alist-to-table '((5 (|'CASE'| . |'erg'|))))))
+			  (table-to-alist (dup-alist-to-table '((5 (|'CASE'| . |'erg'|)))
+							      'no-eq-sets)))
   (lisp-unit:assert-equal '((0 (|'PRED'| . 1)))
-			  (table-to-alist (dup-alist-to-table '((0 (|'PRED'| . 1))))))
+			  (table-to-alist (dup-alist-to-table '((0 (|'PRED'| . 1)))
+							      'no-eq-sets)))
   (lisp-unit:assert-equal
    '((18 (|'o::'| . 19))
      (1 "'bjeffe'" 10 ("'NULL'" 5) NIL)
@@ -350,7 +359,8 @@ terminal etc.)"
     (dup-alist-to-table
      '((18 (|'o::'| . 19))
        (1 "'bjeffe'" 10 ("'NULL'" 5) NIL)
-       (3 ("'PRED'" "'kata'" 8 NIL NIL)))))))
+       (3 ("'PRED'" "'kata'" 8 NIL NIL)))
+     'no-eq-sets))))
 
 (lisp-unit:define-test test-disj
   (lisp-unit:assert-true 
