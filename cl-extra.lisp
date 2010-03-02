@@ -1,3 +1,9 @@
+;;; Tell SBCL we want full debugging info (eg. no function inlining),
+;;; but don't care about speed:
+(declaim (optimize (speed 0) (safety 3) (debug 3)))
+
+(in-package #:lfgalign)
+
 (defmacro mapcar-true (fn list)
   "Like `mapcar', but remove nil elements."
   `(remove-if #'null (mapcar ,fn ,list)))
