@@ -44,37 +44,39 @@ laptop, should be OK."
 	   (or (and (third tree) (treefind c-ids (third tree)))
 	       (and (fourth tree) (treefind c-ids (fourth tree)))))))
 
-(defun eqvars (f-var tab)
-  "TODO: store eqvars in clean-f-str"
-  (cons f-var
-	(mapcar-true 
-	 (lambda (x)
-	   (and (eql (cdr (last x)) f-var)
-		(car x)))
-	 (table-to-alist tab))))
-
 (defun topnode (f-var tab tree)
   "`f-var' describes a functional domain, find the topmost of the
 nodes in the c-structure which project this domain"
-  (let* ((f-vars (eqvars f-var tab))
-	 (c-ids
+  (let* ((f-vars (adjoin f-var
+			 (dset-findall f-var (gethash '|eq-sets| tab))))
+	 (c-ids				; TODO: mapcar-true
 	  (mapcar #'car
 		  (remove-if (lambda (phi) (not (member (cdr phi) f-vars)))
 			     (gethash '|phi| tab)))))
     (treefind c-ids tree)))
 
-(defun unravel (attval tab)
-  (cons (car attval)
-	(if (listp (cdr attval))
-	    (cdr attval)
-	    (gethash (cdr attval) tab))))
+(defun unravel (att val tab)
+  (labels ((get-rhs (val)
+	     (cdr (assoc att (gethash val tab) :test #'equal))))
+    (let* ((rhs (get-rhs val)))
+      (awhen (remove-duplicates
+	      (mapcar-true (lambda (eqval)
+			     (if (numberp eqval)
+				 (get-rhs eqval)
+				 eqval))
+			   (union (if (numberp rhs)
+				      (dset-findall rhs (gethash '|eq-sets| tab))
+				      (list rhs))
+				  (dset-findall val (gethash '|eq-sets| tab)))))
+	(when (cdr it) (error 'unexpected-input :text it))
+	(cons att (car it))))))
 
 (defun get-pred (var tab)
   (if (equal "NULL" var)
-      (format t "NULL-pred TODO~%")
-      (let ((predval (assoc "PRED" (gethash var tab) :test #'equal)))
-	(unless predval (error 'no-pred-error-todo var))
-	(unravel predval tab))))
+      (error 'unexpected-input "NULL-pred TODO")
+      (aif (unravel "PRED" var tab)
+	   it
+	   (error 'no-pred-error-todo var))))
 
 (defun get-children (pred)
     (fourth pred))
@@ -129,19 +131,33 @@ respectively."
 (lisp-unit:define-test test-unravel
   (let ((tab (dup-alist-to-table
 	      '((20 ("PRED" . 4))
-		(4 "qePa" 8 NIL NIL)
+		(|eqvar| (4 "qePa" 8 NIL NIL))
 		(3 ("CASE" . "erg"))
-		(3 ("PRED" "kata" 8 NIL NIL))))))
-
+		(|eqvar| (7 . 3))
+		(3 ("PRED" "kata" 8 NIL NIL))
+		(99 ("PRED" "kata" 9 NIL NIL))
+		(0 ("PRED" . 18))
+		(|eqvar| (18 "rekke-hand" 6 (20 19 21) ("NULL")))
+		(2 ("PRED" . 150))
+		(|eqvar| (150 . 18))
+;; 		(2 ("PRED" . 100)) ; shouldn't happen, right? TODO
+		(|eqvar| (150 . 100))))))
     (lisp-unit:assert-equal
-     '("PRED" "qePa" 8 NIL NIL)
-     (get-pred 20 tab))
+     '("PRED" "qePa" 8 NIL NIL) (get-pred 20 tab))
     (lisp-unit:assert-equal
-     '("PRED" "qePa" 8 NIL NIL)
-     (unravel (assoc "PRED" (gethash 20 tab) :test #'equal) tab))
+     '("PRED" "qePa" 8 NIL NIL) (unravel "PRED" 20 tab))
     (lisp-unit:assert-equal
-     '("PRED" "kata" 8 NIL NIL)
-     (unravel (assoc "PRED" (gethash 3 tab) :test #'equal) tab))))
+     '("PRED" "kata" 9 NIL NIL) (unravel "PRED" 99 tab))
+    (lisp-unit:assert-equal
+     '("PRED" "kata" 8 NIL NIL) (unravel "PRED" 3 tab))
+    (lisp-unit:assert-equal
+     '("PRED" "kata" 8 NIL NIL) (unravel "PRED" 7 tab))
+    (lisp-unit:assert-equal
+     '("PRED" "rekke-hand" 6 (20 19 21) ("NULL")) (unravel "PRED" 18 tab))
+    (lisp-unit:assert-equal
+     '("PRED" "rekke-hand" 6 (20 19 21) ("NULL")) (unravel "PRED" 150 tab))
+    (lisp-unit:assert-equal
+     '("PRED" "rekke-hand" 6 (20 19 21) ("NULL")) (unravel "PRED" 100 tab))))
 
 (lisp-unit:define-test test-topnode
   (let* ((tab (open-and-import "dev/TEST_parse.pl"))
