@@ -94,3 +94,32 @@ their hashes are not unique."
 	 (mapcar #'dset-val
 		 (cons root (dset-child-vals root))))))
 
+
+;;; Alternative, simpler dset-implementation. TODO: which one's
+;;; better?
+(defun dset2-union (apair bpair)
+  (unless (cdr apair) (setf (cdr apair) (list apair)))
+  (unless (cdr bpair) (setf (cdr bpair) (list bpair)))
+  (setf (cdr apair)
+	(union (cdr apair) (cdr bpair)))
+  (mapcar
+   (lambda (xpair) (setf (cdr xpair) (cdr apair)))
+   (cdr apair)))
+
+(defun dset2-collect (equivs)
+  (labels ((addnew (val tab)
+	     (aif (gethash val tab)
+		  it
+		  (if (numberp val)
+		      (setf (gethash val tab) (list val))
+		      (list val)))))
+    
+      (loop for (aval . bval) in equivs
+	 with dsets = (make-hash-table)
+	 for apair = (addnew aval dsets)
+	 for bpair = (addnew bval dsets)
+	 do (dset2-union bpair apair)
+	 finally (return dsets))))
+
+(defun dset2-findall (val dsets)
+  (mapcar #'car (cdr (gethash val dsets))))
