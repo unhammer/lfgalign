@@ -33,9 +33,14 @@ http://www.cliki.net/common-idioms"
      (declare (ignorable it))
      (when it ,@body)))
 
-;;; Disjoint set implementation. Remember to (setf *print-circle* t)
-;;; if you want to use this! Also, to accumulate child-vals, don't set
-;;; `dset-parent', but use `dset-setparent' instead.
+
+;;; dset implementations. Remember to (setf *print-circle* t) 
+
+;;; Implementation 1, standard disjoint set with union-by-rank and
+;;; path compression. Unfortunately, we need to accumultate child-vals
+;;; for findall, "almost" walking the whole lists for each
+;;; union. To accumulate child-vals, don't set `dset-parent', but use
+;;; `dset-setparent' instead.
 (defstruct dset parent val (rank 0) child-vals)
 
 (defun dset-find (d)
@@ -95,8 +100,8 @@ their hashes are not unique."
 		 (cons root (dset-child-vals root))))))
 
 
-;;; Alternative, simpler dset-implementation. TODO: which one's
-;;; better?
+;;; Implementation 2, singly linked list. Simpler, but still needs to
+;;; walk both lists completely during union, resetting their cdr:
 (defun dset2-union (apair bpair)
   (unless (cdr apair) (setf (cdr apair) (list apair)))
   (unless (cdr bpair) (setf (cdr bpair) (list bpair)))
@@ -123,3 +128,49 @@ their hashes are not unique."
 
 (defun dset2-findall (val dsets)
   (mapcar #'car (cdr (gethash val dsets))))
+
+;;; Implementation 3, doubly linked lists. Probably the best one,
+;;; union is constant time; findall still needs to walk the list, but
+;;; we always have to do that to clean it up. Use `dset3-new' instead
+;;; of `make-dset3' as constructor.
+(defstruct dset3 val next prev)
+
+(defun dset3-new (val)
+  (let ((node (make-dset3 :val val)))
+    (unless (and (dset3-next node) (dset3-prev node))
+      (setf (dset3-next node) node)
+      (setf (dset3-prev node) node))
+    node))
+
+(defun dset3-union (a b)
+  "u-a-x-u
+U  v-y-b-v
+=> u-a-b-v-y-x-u"
+  (let ((x (dset3-next a))
+	(y (dset3-prev b)))
+    (setf (dset3-next a) b)
+    (setf (dset3-prev b) a)
+    (setf (dset3-next y) x)
+    (setf (dset3-prev x) y)))
+
+(defun dset3-collect (equivs)
+  (labels ((addnew (val tab)
+	     (aif (gethash val tab)
+		  it
+		  (if (numberp val)
+		      (setf (gethash val tab) (dset3-new val))
+		      (dset3-new val)))))
+
+      (loop for (aval . bval) in equivs
+	 with dsets = (make-hash-table)
+	 for apair = (addnew aval dsets)
+	 for bpair = (addnew bval dsets)
+	 do (dset3-union bpair apair)
+	 finally (return dsets))))
+
+(defun dset3-findall (val dsets)
+  (aif (gethash val dsets)
+       (loop with first = it
+	     for current = (dset3-next first) then (dset3-next current)
+	     collect (dset3-val current)
+	     until (eq current first))))

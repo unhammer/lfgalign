@@ -48,7 +48,7 @@ laptop, should be OK."
   "`f-var' describes a functional domain, find the topmost of the
 nodes in the c-structure which project this domain"
   (let* ((f-vars (adjoin f-var
-			 (dset-findall f-var (gethash '|eq-sets| tab))))
+			 (dset3-findall f-var (gethash '|eq-sets| tab))))
 	 (c-ids				; TODO: mapcar-true
 	  (mapcar #'car
 		  (remove-if (lambda (phi) (not (member (cdr phi) f-vars)))
@@ -65,9 +65,9 @@ nodes in the c-structure which project this domain"
 				 (get-rhs eqval)
 				 eqval))
 			   (union (if (numberp rhs)
-				      (dset-findall rhs (gethash '|eq-sets| tab))
+				      (dset3-findall rhs (gethash '|eq-sets| tab))
 				      (list rhs))
-				  (dset-findall val (gethash '|eq-sets| tab)))))
+				  (dset3-findall val (gethash '|eq-sets| tab)))))
 	(when (cdr it) (error 'unexpected-input :text it))
 	(cons att (car it))))))
 

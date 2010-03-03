@@ -220,7 +220,7 @@ with the var key."
 		(setf (gethash key table)
 		      (cdr pair))))))
     (unless no-eq-sets (setf (gethash '|eq-sets| table)
-			     (dset-collect (gethash '|eqvar| table))))
+			     (dset3-collect (gethash '|eqvar| table))))
     table))
 
 
