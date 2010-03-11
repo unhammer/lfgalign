@@ -69,19 +69,21 @@ nodes in the c-structure which project this domain"
 
 (defun unravel (att val tab)
   (labels ((get-rhs (val)
-	     (cdr (assoc att (gethash val tab) :test #'equal))))
+		    (cdr (assoc att (gethash val tab) :test #'equal))))
     (let* ((rhs (get-rhs val)))
       (awhen (remove-duplicates
 	      (mapcar-true (lambda (eqval)
 			     (if (numberp eqval)
 				 (get-rhs eqval)
-				 eqval))
+			       eqval))
 			   (union (if (numberp rhs)
 				      (dset3-findall rhs (gethash '|eq-sets| tab))
-				      (list rhs))
+				    (list rhs))
 				  (dset3-findall val (gethash '|eq-sets| tab)))))
-	(when (cdr it) (error 'unexpected-input :text it))
-	(cons att (car it))))))
+	     (when (cdr it) (warn "Found superfluous unravellings: ~A
+This is probably OK, but you might want to check that all rhs's of
+~A are equal or in the same eq-sets." it (dset3-findall val (gethash '|eq-sets| tab))))
+	     (cons att (car it))))))
 
 (defun get-pred (var tab)
   (if (equal "NULL" var)
