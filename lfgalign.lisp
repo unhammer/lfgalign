@@ -55,6 +55,18 @@ nodes in the c-structure which project this domain"
 			     (gethash '|phi| tab)))))
     (treefind c-ids tree)))
 
+(defun skip-suff_base (tree)
+  (when tree
+    (if (search "SUFF_BASE" (second (fourth tree)))
+	(skip-SUFF_BASE (third tree))
+      (list (first tree) (second tree)
+	    (skip-suff_base (third tree))
+	    (skip-suff_base (fourth tree))))))
+
+(defun pretty-topnode (f-var tab tree)
+  "Skip the more boring nodes."
+  (skip-suff_base (topnode f-var tab tree)))
+
 (defun unravel (att val tab)
   (labels ((get-rhs (val)
 	     (cdr (assoc att (gethash val tab) :test #'equal))))
@@ -93,12 +105,13 @@ var `childv'."
 (progn
   (defun f-align (var1 tab1 var2 tab2)
     "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
-respectively."
+respectively.
+TODO: cache/memoise maketree"
     (let* ((pred1 (get-pred var1 tab1))
 	   (pred2 (get-pred var2 tab2)))
       (format t "Align ~A_~A with ~A_~A~%" var1 pred1 var2 pred2)
-      (format t "Align tree ~A~%" (topnode var1 tab1 (maketree tab1)))
-      (format t " with tree ~A~%" (topnode var2 tab2 (maketree tab2)))
+      (format t "Align tree ~A~%" (pretty-topnode var1 tab1 (maketree tab1)))
+      (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
       (when (and pred1 pred2)
 	(loop
 	   for child1 in (get-children pred1)
