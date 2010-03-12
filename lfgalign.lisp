@@ -70,19 +70,20 @@ nodes in the c-structure which project this domain"
 (defun unravel (att val tab)
   (labels ((get-rhs (val)
 		    (cdr (assoc att (gethash val tab) :test #'equal))))
-    (let* ((rhs (get-rhs val)))
+    (let* ((rhs (get-rhs val))
+	   (ravelled (union (if (numberp rhs)
+				(dset3-findall rhs (gethash '|eq-sets| tab))
+			      (list rhs))
+			    (dset3-findall val (gethash '|eq-sets| tab)))))
       (awhen (remove-duplicates
 	      (mapcar-true (lambda (eqval)
 			     (if (numberp eqval)
 				 (get-rhs eqval)
 			       eqval))
-			   (union (if (numberp rhs)
-				      (dset3-findall rhs (gethash '|eq-sets| tab))
-				    (list rhs))
-				  (dset3-findall val (gethash '|eq-sets| tab)))))
+			   ravelled))
 	     (when (cdr it) (warn "Found superfluous unravellings: ~A
-This is probably OK, but you might want to check that all rhs's of
-~A are equal or in the same eq-sets." it (dset3-findall val (gethash '|eq-sets| tab))))
+   This is probably OK, but you might want to check that all attributes of
+   ~A are equal or in the same eq-sets.~%" it ravelled))
 	     (cons att (car it))))))
 
 (defun get-pred (var tab)
@@ -104,42 +105,35 @@ var `childv'."
      collect attval))
 
 
-(progn
-  (defun f-align (var1 tab1 var2 tab2)
-    "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
+(defun f-align (var1 tab1 var2 tab2)
+  "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
 respectively.
 TODO: cache/memoise maketree"
-    (let* ((pred1 (get-pred var1 tab1))
-	   (pred2 (get-pred var2 tab2)))
-      (format t "Align ~A_~A with ~A_~A~%" var1 pred1 var2 pred2)
-      (format t "Align tree ~A~%" (pretty-topnode var1 tab1 (maketree tab1)))
-      (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
-      (when (and pred1 pred2)
-	(loop
-	   for child1 in (get-children pred1)
-	   for child2 in (get-children pred2)
-	   do (format t "...aligning ~A_~A and ~A_~A...~%"
-		      var1 (references var1 child1 tab1)
-		      var2 (references var2 child2 tab2))
-	   collect (f-align child1 tab1 child2 tab2)))))
-
-  (defun open-and-import (file)
-    (with-open-file
-	(stream (merge-pathnames file
-				 (asdf:component-pathname (asdf:find-system :lfgalign))))
-      (import-table stream)))  
-  (defun test ()
-    ;; assume outermost f-str has var(0) and contains a PRED
-    (f-align '0 (open-and-import "ka/23.pl")
-	     '0 (open-and-import "nb/24.pl"))
-    (format t "---~%")
-    (f-align '0 (open-and-import "ka/1.pl")
-	     '0 (open-and-import "nb/1.pl"))
-    (format t "---~% This one will be troublesome:~%~%")
-    (f-align '0 (open-and-import "ka/4.pl")
-	     '0 (open-and-import "nb/5.pl")))
-;;   (test)
-  )
+  (let* ((pred1 (get-pred var1 tab1))
+	 (pred2 (get-pred var2 tab2)))
+    (format t "Align ~A_~A with ~A_~A~%" var1 pred1 var2 pred2)
+    (format t "Align tree ~A~%" (pretty-topnode var1 tab1 (maketree tab1)))
+    (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
+    (when (and pred1 pred2)
+      (loop
+       for child1 in (get-children pred1)
+       for child2 in (get-children pred2)
+       do (format t "...aligning ~A_~A and ~A_~A...~%"
+		  var1 (references var1 child1 tab1)
+		  var2 (references var2 child2 tab2))
+       collect (f-align child1 tab1 child2 tab2)))))
+  
+(defun test ()
+  "Assumes outermost f-str has a var(0) containing a PRED"
+  (f-align '0 (open-and-import "ka/23.pl")
+	   '0 (open-and-import "nb/24.pl"))
+  (format t "---~%")
+  (f-align '0 (open-and-import "ka/1.pl")
+	   '0 (open-and-import "nb/1.pl"))
+  (format t "---~% This one will be troublesome, head-switching:~%~%")
+  (f-align '0 (open-and-import "ka/4.pl")
+	   '0 (open-and-import "nb/5.pl")))
+  
 
 
 ;;;;;;;; TESTING:

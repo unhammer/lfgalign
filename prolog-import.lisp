@@ -233,6 +233,12 @@ terminal etc.)"
 							   (raw-f-str raw)))
 				(clean-c-str (filter-equiv (raw-equiv raw)
 							   (raw-c-str raw)))))))
+(defun open-and-import (file)
+  "Convenience function. `file' is relative to the lfgalign directory."
+  (with-open-file
+   (stream (merge-pathnames file
+			    (asdf:component-pathname (asdf:find-system :lfgalign))))
+   (import-table stream)))
 
 (defun table-to-alist (table &optional print)
   "Convenience function, turn a hash table into an association list
