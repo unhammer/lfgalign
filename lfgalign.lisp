@@ -115,6 +115,18 @@ selected parse (still ambiguous?)."
 		       (get-pred var tab)))))
      (table-to-alist tab))))
 
+(defun sanity-check (tab)
+  "For now only checks that the 0 variable is the
+highest (ie. unreferenced) PRED in the f-structure."
+  (let (vars backrefs)
+    (mapcar (lambda (Pr)
+	      (pushnew (first Pr) vars)
+	      (setq backrefs (union (fourth Pr) (union (fifth Pr) backrefs))))
+	    (all-preds tab))
+    (or
+     (equal '(0) (remove-if (lambda (v) (member v backrefs)) vars))
+     (error "Expected var 0 to be all and only unreferenced PRED, got:~A" vars))))
+
 (defun get-children (pred)
   (append (fourth pred) (fifth pred)))
 
