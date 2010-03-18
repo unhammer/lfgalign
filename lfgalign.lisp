@@ -106,7 +106,7 @@ add all equivalent variables and their possible expansions."
 	       (table-to-alist tab)))
 
 (defun get-children (pred)
-    (fourth pred))
+  (append (fourth pred) (fifth pred)))
 
 (defun references (parentv childv tab)
   "Give a list of attributes of var `parentv' in `tab' which refer to
@@ -128,8 +128,8 @@ verb as the first value!"
 			  (gethash '|terminal| tab)))
 	 (surfaceform (assoc (car (third terminal))
 			     (gethash '|surfaceform| tab))))
-    (when t				; debug
-      (princ (list Pr semform_id semform preterminal terminal surfaceform)))
+    (when nil				; debug
+      (print (list Pr semform_id semform preterminal terminal surfaceform)))
     (values (second surfaceform) (second Pr))))
 
 (defun in-LPT (l1 l2 LPTs)
