@@ -94,8 +94,16 @@ add all equivalent variables and their possible expansions."
   (if (equal "NULL" var)
       (error 'unexpected-input "NULL-pred TODO")
       (aif (unravel "PRED" var tab)
-	   it
+	   (cons var (cdr it))
 	   (error 'no-pred-error-todo var))))
+
+(defun all-preds (tab)
+  "TODO: cache/memoise in table?"
+  (mapcar-true (lambda (x)
+		 (when (and (numberp (car x))
+			    (assoc "PRED" (cdr x) :test #'equal))
+		   (get-pred (car x) tab)))
+	       (table-to-alist tab)))
 
 (defun get-children (pred)
     (fourth pred))
@@ -110,7 +118,8 @@ var `childv'."
 
 (defun L (Pr tab)
   "Return the lexical expression of PRED `Pr', and the 'lemma' of Pr
-as the second return value."
+as the second return value. Note: a \"pro\" argument will return its
+verb as the first value!"
   (let* ((semform_id (third Pr))
 	 (semform (assoc semform_id (gethash '|semform_data| tab)))
 	 (preterminal (assoc (second semform)
@@ -167,7 +176,7 @@ respectively.
 TODO: cache/memoise maketree"
   (let* ((pred1 (get-pred var1 tab1))
 	 (pred2 (get-pred var2 tab2)))
-    (format t "Align ~A_~A with ~A_~A~%" var1 pred1 var2 pred2)
+    (format t "Align ~A with ~A~%" pred1 pred2)
     (format t "Align tree ~A~%" (pretty-topnode var1 tab1 (maketree tab1)))
     (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
     (when (and pred1 pred2)
