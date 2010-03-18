@@ -104,6 +104,20 @@ var `childv'."
      when (eq childv (cdr attval))
      collect attval))
 
+(defun L (Pr tab)
+  "Return the lexical expression of PRED `Pr', and the 'lemma' of Pr
+as the second return value."
+  (let* ((semform_id (third Pr))
+	 (semform (assoc semform_id (gethash '|semform_data| tab)))
+	 (preterminal (assoc (second semform)
+			     (gethash '|subtree| tab)))
+	 (terminal (assoc (fourth preterminal)
+			  (gethash '|terminal| tab)))
+	 (surfaceform (assoc (car (third terminal))
+			     (gethash '|surfaceform| tab))))
+    (when t				; debug
+      (princ (list Pr semform_id semform preterminal terminal surfaceform)))
+    (values (second surfaceform) (second Pr))))
 
 (defun f-align (var1 tab1 var2 tab2)
   "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
