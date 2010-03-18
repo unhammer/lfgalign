@@ -150,25 +150,27 @@ there, it's a trivial match."
   "TODO: do all and only nouns have an NTYPE?"
   (assoc "NTYPE" (gethash var tab) :test #'equal))
 
-(defun LPT? (var1 tab1 var2 tab2 LPTs)
-  "Are the lexical expressions of the pred of `var1' and of `var2',
-L(Pr1) and L(Pr2), Linguistically Predictable Translations? 
+(defun LPT? (Pr1 tab1 Pr2 tab2 LPTs)
+  "Are the lexical expressions of `Pr1' and `Pr2',
+L(Pr1) and L(Pr2), Linguistically Predictable Translations?
 
 True if we find no translations in `LPTs' using `in-LPT', or they're
 both `in-LPT' as translations, or one is a pro and the other is a
-noun (see `noun?')."
-  (let ((Pr1 (get-pred var1 tab1))
-	(Pr2 (get-pred var2 tab2)))
-    (multiple-value-bind (LPr1 lem1) (L Pr1 tab1)
-      (multiple-value-bind (LPr2 lem2) (L Pr2 tab2)
-	(or (and (equal LPr1 "pro")
-		 (equal LPr2 "pro"))
-	    (and (equal LPr1 "pro")
-		 (noun? var2 tab2))
-	    (and (equal LPr2 "pro")
-		 (noun? var1 tab1))
-	    (in-LPT LPr1 LPr2 LPTs)
-	    (in-LPT lem1 lem2 LPTs))))))
+noun (see `noun?').
+
+TODO: The pro of a verb has that verb as its L, while the pro of a
+reflexive has that reflexive... At the moment, we look up the L of
+the pro no matter what, but will this give us trouble?"
+  (multiple-value-bind (LPr1 lem1) (L Pr1 tab1)
+    (multiple-value-bind (LPr2 lem2) (L Pr2 tab2)
+      (or (and (equal lem1 "pro")
+	       (equal lem2 "pro"))
+	  (and (equal lem1 "pro")
+	       (noun? (car Pr2) tab2))
+	  (and (equal lem2 "pro")
+	       (noun? (car Pr1) tab1))
+	  (in-LPT LPr1 LPr2 LPTs)
+	  (in-LPT lem1 lem2 LPTs)))))
 
 (defun f-align (var1 tab1 var2 tab2)
   "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
