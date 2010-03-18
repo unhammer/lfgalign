@@ -119,6 +119,44 @@ as the second return value."
       (princ (list Pr semform_id semform preterminal terminal surfaceform)))
     (values (second surfaceform) (second Pr))))
 
+(defun in-LPT (l1 l2 LPTs)
+  "For now, LPTs is just a cons of hash-tables, where the first lets
+you look up a list of possible `l2' matches using `l1' as key, and the
+second vice versa. Does not assume all keys in the first table are
+values in the second (and vice versa). If neither `l1' nor `l2' are in
+there, it's a trivial match."
+  (let ((LPT1 (car LPTs))
+	(LPT2 (cdr LPTs)))
+    (or (member l2 (gethash l1 LPT1) :test #'equal)
+	(member l1 (gethash l2 LPT2) :test #'equal)
+	(and (null (gethash l1 LPT1))
+	     (null (gethash l2 LPT2))
+	     (or (warn "No translations recorded for ~A and ~A" l1 l2) t)))))
+
+(defun noun? (var tab)
+  "TODO: do all and only nouns have an NTYPE?"
+  (assoc "NTYPE" (gethash var tab) :test #'equal))
+
+(defun LPT? (var1 tab1 var2 tab2 LPTs)
+  "Are the lexical expressions of the pred of `var1' and of `var2',
+L(Pr1) and L(Pr2), Linguistically Predictable Translations? 
+
+True if we find no translations in `LPTs' using `in-LPT', or they're
+both `in-LPT' as translations, or one is a pro and the other is a
+noun (see `noun?')."
+  (let ((Pr1 (get-pred var1 tab1))
+	(Pr2 (get-pred var2 tab2)))
+    (multiple-value-bind (LPr1 lem1) (L Pr1 tab1)
+      (multiple-value-bind (LPr2 lem2) (L Pr2 tab2)
+	(or (and (equal LPr1 "pro")
+		 (equal LPr2 "pro"))
+	    (and (equal LPr1 "pro")
+		 (noun? var2 tab2))
+	    (and (equal LPr2 "pro")
+		 (noun? var1 tab1))
+	    (in-LPT LPr1 LPr2 LPTs)
+	    (in-LPT lem1 lem2 LPTs))))))
+
 (defun f-align (var1 tab1 var2 tab2)
   "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
 respectively.
