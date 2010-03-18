@@ -67,24 +67,28 @@ nodes in the c-structure which project this domain"
   "Skip the more boring nodes."
   (skip-suff_base (topnode f-var tab tree)))
 
+(defun unravel-helper (att stack seen tab)
+  "Call with empty `seen' and a `stack' containing the variable you
+want to unravel the attribute `att' of. This function makes sure to
+add all equivalent variables and their possible expansions."
+  (when stack
+    (let ((x (pop stack)))
+      (pushnew x seen)
+      (if (numberp x)
+	  (progn (awhen (assoc att (gethash x tab) :test #'equal) ; add rhs
+		   (pushnew (cdr it) stack))
+		 (mapcar (lambda (equiv)             ; add all eq variables
+			   (unless (member equiv seen)
+			     (pushnew equiv stack)))
+			 (dset3-findall x (gethash '|eq-sets| tab)))
+		 (unravel-helper att stack seen tab))
+	  (cons x (unravel-helper att stack seen tab))))))
+
 (defun unravel (att val tab)
-  (labels ((get-rhs (val)
-		    (cdr (assoc att (gethash val tab) :test #'equal))))
-    (let* ((rhs (get-rhs val))
-	   (ravelled (union (if (numberp rhs)
-				(dset3-findall rhs (gethash '|eq-sets| tab))
-			      (list rhs))
-			    (dset3-findall val (gethash '|eq-sets| tab)))))
-      (awhen (remove-duplicates
-	      (mapcar-true (lambda (eqval)
-			     (if (numberp eqval)
-				 (get-rhs eqval)
-			       eqval))
-			   ravelled))
-	     (when (cdr it) (warn "Found superfluous unravellings: ~A
-   This is probably OK, but you might want to check that all attributes of
-   ~A are equal or in the same eq-sets.~%" it ravelled))
-	     (cons att (car it))))))
+  (awhen (remove-duplicates (unravel-helper att (list val) nil tab)
+			    :test #'equal)
+    (when (cdr it) (error "Found superfluous, non-equal unravellings: ~A~%" it))
+    (cons att (car it))))
 
 (defun get-pred (var tab)
   (if (equal "NULL" var)
@@ -201,10 +205,13 @@ TODO: cache/memoise maketree"
 		(|eqvar| (18 "rekke-hand" 6 (20 19 21) ("NULL")))
 		(2 ("PRED" . 150))
 		(|eqvar| (150 . 18))
-;; 		(2 ("PRED" . 100)) ; shouldn't happen, right? TODO
-		(|eqvar| (150 . 100))))))
+		(|eqvar| (150 . 100))
+		(|eqvar| (11 "PanJara" 0 NIL NIL))
+		(51 ("PRED" "PanJara" 0 NIL NIL))
+		(50 ("PRED" . 11))
+		(|eqvar| (51 . 50))))))
     (lisp-unit:assert-equal
-     '("PRED" "qePa" 8 NIL NIL) (get-pred 20 tab))
+     '(20 "qePa" 8 NIL NIL) (get-pred 20 tab))
     (lisp-unit:assert-equal
      '("PRED" "qePa" 8 NIL NIL) (unravel "PRED" 20 tab))
     (lisp-unit:assert-equal
@@ -218,7 +225,13 @@ TODO: cache/memoise maketree"
     (lisp-unit:assert-equal
      '("PRED" "rekke-hand" 6 (20 19 21) ("NULL")) (unravel "PRED" 150 tab))
     (lisp-unit:assert-equal
-     '("PRED" "rekke-hand" 6 (20 19 21) ("NULL")) (unravel "PRED" 100 tab))))
+     '("PRED" "rekke-hand" 6 (20 19 21) ("NULL")) (unravel "PRED" 100 tab))
+    (lisp-unit:assert-equal
+     '("PRED" "PanJara" 0 NIL NIL) (unravel "PRED" 51 tab))
+    (lisp-unit:assert-equal
+     '("PRED" "PanJara" 0 NIL NIL) (unravel "PRED" 11 tab))
+    (lisp-unit:assert-equal
+     '("PRED" "PanJara" 0 NIL NIL) (unravel "PRED" 50 tab))))
 
 (lisp-unit:define-test test-topnode
   (let* ((tab (open-and-import "dev/TEST_parse.pl"))
