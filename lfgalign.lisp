@@ -8,6 +8,9 @@
   (:report (lambda (condition stream)
 	     (format stream "Found superfluous topmost nodes: ~A" (text condition)))))
 
+(defun get-equivs (val tab)
+  (dset3-findall val (gethash '|eq-sets| tab)))
+
 (defun maketree (tab)
   "Returns a binary tree created from the |subtree| and |terminal|
 alists of the table `tab'. The second value returned contains the
@@ -44,11 +47,12 @@ laptop, should be OK."
 	   (or (and (third tree) (treefind c-ids (third tree)))
 	       (and (fourth tree) (treefind c-ids (fourth tree)))))))
 
+
 (defun topnode (f-var tab tree)
   "`f-var' describes a functional domain, find the topmost of the
 nodes in the c-structure which project this domain"
   (let* ((f-vars (adjoin f-var
-			 (dset3-findall f-var (gethash '|eq-sets| tab))))
+			 (get-equivs f-var tab)))
 	 (c-ids				; TODO: mapcar-true
 	  (mapcar #'car
 		  (remove-if (lambda (phi) (not (member (cdr phi) f-vars)))
@@ -80,7 +84,7 @@ add all equivalent variables and their possible expansions."
 		 (mapcar (lambda (equiv)             ; add all eq variables
 			   (unless (member equiv seen)
 			     (pushnew equiv stack)))
-			 (dset3-findall x (gethash '|eq-sets| tab)))
+			 (get-equivs x tab))
 		 (unravel-helper att stack seen tab))
 	  (cons x (unravel-helper att stack seen tab))))))
 
@@ -91,19 +95,25 @@ add all equivalent variables and their possible expansions."
     (cons att (car it))))
 
 (defun get-pred (var tab)
+  "The `no-pred-error-todo' happens with ka/3.pl -- this file has no
+selected parse (still ambiguous?)."
   (if (equal "NULL" var)
-      (error 'unexpected-input "NULL-pred TODO")
+      var
       (aif (unravel "PRED" var tab)
 	   (cons var (cdr it))
 	   (error 'no-pred-error-todo var))))
 
 (defun all-preds (tab)
   "TODO: cache/memoise in table?"
-  (mapcar-true (lambda (x)
-		 (when (and (numberp (car x))
-			    (assoc "PRED" (cdr x) :test #'equal))
-		   (get-pred (car x) tab)))
-	       (table-to-alist tab)))
+  (let (seen)
+    (mapcar-true
+     (lambda (x) (let ((var (car x)))
+		   (when (and (numberp var)
+			      (assoc "PRED" (cdr x) :test #'equal))
+		     (unless (intersection seen (get-equivs var tab))
+		       (pushnew var seen)
+		       (get-pred var tab)))))
+     (table-to-alist tab))))
 
 (defun get-children (pred)
   (append (fourth pred) (fifth pred)))
@@ -116,10 +126,14 @@ var `childv'."
      when (eq childv (cdr attval))
      collect attval))
 
+
+;;; LPT stuff:
+
+(defun lemma (Pr) (second Pr))
+
 (defun L (Pr tab)
-  "Return the lexical expression of PRED `Pr', and the 'lemma' of Pr
-as the second return value. Note: a \"pro\" argument will return its
-verb as the first value!"
+  "Return the lexical expression of PRED `Pr'. Note: a \"pro\"
+argument will return its verb as the first value!"
   (let* ((semform_id (third Pr))
 	 (semform (assoc semform_id (gethash '|semform_data| tab)))
 	 (preterminal (assoc (second semform)
@@ -130,21 +144,27 @@ verb as the first value!"
 			     (gethash '|surfaceform| tab))))
     (when nil				; debug
       (print (list Pr semform_id semform preterminal terminal surfaceform)))
-    (values (second surfaceform) (second Pr))))
+    (second surfaceform)))
 
-(defun in-LPT (l1 l2 LPTs)
+(defun get-LPT (w1 w2 LPTs)
   "For now, LPTs is just a cons of hash-tables, where the first lets
-you look up a list of possible `l2' matches using `l1' as key, and the
+you look up a list of possible `w2' matches using `w1' as key, and the
 second vice versa. Does not assume all keys in the first table are
-values in the second (and vice versa). If neither `l1' nor `l2' are in
-there, it's a trivial match."
-  (let ((LPT1 (car LPTs))
-	(LPT2 (cdr LPTs)))
-    (or (member l2 (gethash l1 LPT1) :test #'equal)
-	(member l1 (gethash l2 LPT2) :test #'equal)
-	(and (null (gethash l1 LPT1))
-	     (null (gethash l2 LPT2))
-	     (or (warn "No translations recorded for ~A and ~A" l1 l2) t)))))
+values in the second (and vice versa). If neither `w1' nor `w2' are in
+there, it's a trivial match.
+
+As with hash tables, the second return value tells us whether either
+\"key\" was in its table."
+  (let* ((LPT1 (car LPTs))
+	 (LPT2 (cdr LPTs))
+	 (tr1 (gethash w1 LPT1))
+	 (tr2 (gethash w2 LPT2)))
+    (values
+     (or (member w2 tr1 :test #'equal)
+	 (member w1 tr2 :test #'equal)
+	 (and (null tr1)
+	      (null tr2)))
+     (or tr1 tr2))))
 
 (defun noun? (var tab)
   "TODO: do all and only nouns have an NTYPE?"
@@ -154,23 +174,36 @@ there, it's a trivial match."
   "Are the lexical expressions of `Pr1' and `Pr2',
 L(Pr1) and L(Pr2), Linguistically Predictable Translations?
 
-True if we find no translations in `LPTs' using `in-LPT', or they're
-both `in-LPT' as translations, or one is a pro and the other is a
-noun (see `noun?').
+True if both are in `get-LPT' as translations (or neither is), or one
+is a pro and the other is a noun (see `noun?') or a pro.
 
 TODO: The pro of a verb has that verb as its L, while the pro of a
 reflexive has that reflexive... At the moment, we look up the L of
 the pro no matter what, but will this give us trouble?"
-  (multiple-value-bind (LPr1 lem1) (L Pr1 tab1)
-    (multiple-value-bind (LPr2 lem2) (L Pr2 tab2)
-      (or (and (equal lem1 "pro")
-	       (equal lem2 "pro"))
-	  (and (equal lem1 "pro")
-	       (noun? (car Pr2) tab2))
-	  (and (equal lem2 "pro")
-	       (noun? (car Pr1) tab1))
-	  (in-LPT LPr1 LPr2 LPTs)
-	  (in-LPT lem1 lem2 LPTs)))))
+  (let ((LPr1 (L Pr1 tab1)) (lem1 (lemma Pr1))
+	(LPr2 (L Pr2 tab2)) (lem2 (lemma Pr2)))
+    (or (and (equal lem1 "pro")
+	     (equal lem2 "pro"))
+	(and (equal lem1 "pro")
+	     (noun? (car Pr2) tab2))
+	(and (equal lem2 "pro")
+	     (noun? (car Pr1) tab1))
+	(multiple-value-bind (L-tr L-in) (get-LPT LPr1 LPr2 LPTs)
+	  (multiple-value-bind (lem-tr lem-in) (get-LPT lem1 lem2 LPTs)
+	    (unless (or L-in lem-in)
+	      (warn "No translations recorded for ~A and ~A" LPr1 LPr2))
+	    (or L-tr lem-tr))))))
+
+(defun all-LPT (tab1 tab2 LPTs)
+  (mapcan-true
+   (lambda (Pr1)
+     (mapcar-true
+      (lambda (Pr2) (when (LPT? Pr1 tab1 Pr2 tab2 LPTs)
+		      (list Pr1 Pr2)))
+      (all-preds tab2)))
+   (all-preds tab1)))
+
+;;; The actual alignment:
 
 (defun f-align (var1 tab1 var2 tab2)
   "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
@@ -179,16 +212,17 @@ TODO: cache/memoise maketree"
   (let* ((pred1 (get-pred var1 tab1))
 	 (pred2 (get-pred var2 tab2)))
     (format t "Align ~A with ~A~%" pred1 pred2)
-    (format t "Align tree ~A~%" (pretty-topnode var1 tab1 (maketree tab1)))
-    (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
-    (when (and pred1 pred2)
-      (loop
-       for child1 in (get-children pred1)
-       for child2 in (get-children pred2)
-       do (format t "...aligning ~A_~A and ~A_~A...~%"
-		  var1 (references var1 child1 tab1)
-		  var2 (references var2 child2 tab2))
-       collect (f-align child1 tab1 child2 tab2)))))
+    (unless (or (equal pred1 "NULL") (equal pred2 "NULL"))
+      (format t "Align tree ~A~%" (pretty-topnode var1 tab1 (maketree tab1)))
+      (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
+      (when (and pred1 pred2)
+	(loop
+	   for child1 in (get-children pred1)
+	   for child2 in (get-children pred2)
+	   do (format t "...aligning ~A_~A and ~A_~A...~%"
+		      var1 (references var1 child1 tab1)
+		      var2 (references var2 child2 tab2))
+	   collect (f-align child1 tab1 child2 tab2))))))
   
 (defun test ()
   "Assumes outermost f-str has a var(0) containing a PRED"
