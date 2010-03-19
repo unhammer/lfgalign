@@ -91,17 +91,19 @@ add all equivalent variables and their possible expansions."
 (defun unravel (att val tab)
   (awhen (remove-duplicates (unravel-helper att (list val) nil tab)
 			    :test #'equal)
-    (when (cdr it) (error "Found superfluous, non-equal unravellings: ~A~%" it))
+    (when (cdr it)
+      (error "Found superfluous, non-equal unravellings of ~A ~A:~%~A~%" val att it))
     (cons att (car it))))
 
-(defun get-pred (var tab)
+(defun get-pred (var tab &optional no-error)
   "The `no-pred-error-todo' happens with ka/3.pl -- this file has no
-selected parse (still ambiguous?)."
+selected parse (still ambiguous?). Use `no-error' to return nil if no
+PRED was found."
   (if (equal "NULL" var)
       var
       (aif (unravel "PRED" var tab)
 	   (cons var (cdr it))
-	   (error 'no-pred-error-todo var))))
+	   (unless no-error (error 'no-pred-error-todo var)))))
 
 (defun all-preds (tab)
   "TODO: cache/memoise in table?"
@@ -115,20 +117,59 @@ selected parse (still ambiguous?)."
 		       (get-pred var tab)))))
      (table-to-alist tab))))
 
-(defun sanity-check (tab)
-  "For now only checks that the 0 variable is the
-highest (ie. unreferenced) PRED in the f-structure."
+(defun unreferenced-preds (tab)
+  "Return a list of variables of those PRED's which are not children
+of others."
   (let (vars backrefs)
     (mapcar (lambda (Pr)
 	      (pushnew (first Pr) vars)
 	      (setq backrefs (union (fourth Pr) (union (fifth Pr) backrefs))))
 	    (all-preds tab))
-    (or
-     (equal '(0) (remove-if (lambda (v) (member v backrefs)) vars))
-     (error "Expected var 0 to be all and only unreferenced PRED, got:~A" vars))))
+    (remove-if (lambda (v) (member v backrefs)) vars)))
+
+
+(defun outer>-LPT (Pr1 tab1 var2 tab2 LPTs)
+  "Return a list of the outermost possible `LPTs' of `Pr1' in `tab2'
+starting at `var1'."
+  (let ((Pr2 (get-pred var2 tab2 'noerror)))
+    (when (and Pr1 Pr2)  
+      (if (LPT? Pr1 tab1 Pr2 tab2 LPTs)
+	  (list var2)
+	  (loop 
+	     for c in (get-children Pr2)
+	     for outer = (outer>-LPT Pr1 tab1 c tab2 LPTs)
+	     when outer append it)))))
+
+(defun all-outer>-LPT (tab1 tab2 LPTs)
+  "Return an association list of all possible outermost LPTs, using
+the variables of the PRED entries from `tab1' as keys. So the
+alist-entry (0 9 8) means that var 0 is an outermost PRED in `tab1',
+and 9 and 8 are outermost PRED's in `tab2', and they are all possible
+LPT's."
+  (loop
+     for var1 in (unreferenced-preds tab1)
+     for Pr1 = (get-pred var1 tab1 'no-error)
+     collect (cons var1
+		   (loop 
+		      for var2 in (unreferenced-preds tab2) 
+		      for o = (outer>-LPT Pr1 tab1 var2 tab2 LPTs)
+		      when o append it))))
+
+(defun outer> (Pr1 Pr2 tab) 
+  "Is `Pr1' a predecessor of `Pr2' (outermore in the f-structure)?
+Note: we actually only look at the car of `Pr2', which has to be its
+variable (ie. what `get-pred' returns)."
+  (let ((children (get-children Pr1)))
+    (or (member (car Pr2) children)
+	(loop for c in children
+	   for Prc = (unravel "PRED" c tab)
+	   thereis (and Prc
+			(not (equal "NULL" c))
+			(outer> Prc Pr2 tab))))))
+
 
 (defun get-children (pred)
-  (append (fourth pred) (fifth pred)))
+  (union (fourth pred) (fifth pred)))
 
 (defun references (parentv childv tab)
   "Give a list of attributes of var `parentv' in `tab' which refer to
@@ -204,7 +245,7 @@ the pro no matter what, but will this give us trouble?"
 	  (multiple-value-bind (lem-tr lem-in) (get-LPT lem1 lem2 LPTs)
 	    (unless (or L-in lem-in)
 	      (warn "No translations recorded for ~A and ~A" LPr1 LPr2))
-	    (or L-tr lem-tr))))))
+	    (and L-tr lem-tr))))))
 
 (defun all-LPT (tab1 tab2 LPTs)
   (mapcan-true
@@ -247,7 +288,12 @@ TODO: cache/memoise maketree"
   (f-align '0 (open-and-import "ka/4.pl")
 	   '0 (open-and-import "nb/5.pl")))
   
-
+(defun sanity-check ()
+  (loop for i from 1 to 106
+     for f = (concatenate 'string "nb/" (prin1-to-string i) ".pl")
+     for unref = (unreferenced-preds (open-and-import f))
+     when (not (equal '(0) unref)) do
+     (format t "f:~A unref:~A~%" f unref)))
 
 ;;;;;;;; TESTING:
 (lisp-unit:define-test test-unravel
