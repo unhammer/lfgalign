@@ -128,33 +128,6 @@ of others."
     (remove-if (lambda (v) (member v backrefs)) vars)))
 
 
-(defun outer>-LPT (Pr1 tab1 var2 tab2 LPTs)
-  "Return a list of the outermost possible `LPTs' of `Pr1' in `tab2'
-starting at `var1'."
-  (let ((Pr2 (get-pred var2 tab2 'noerror)))
-    (when (and Pr1 Pr2)  
-      (if (LPT? Pr1 tab1 Pr2 tab2 LPTs)
-	  (list var2)
-	  (loop 
-	     for c in (get-children Pr2)
-	     for outer = (outer>-LPT Pr1 tab1 c tab2 LPTs)
-	     when outer append it)))))
-
-(defun all-outer>-LPT (tab1 tab2 LPTs)
-  "Return an association list of all possible outermost LPTs, using
-the variables of the PRED entries from `tab1' as keys. So the
-alist-entry (0 9 8) means that var 0 is an outermost PRED in `tab1',
-and 9 and 8 are outermost PRED's in `tab2', and they are all possible
-LPT's."
-  (loop
-     for var1 in (unreferenced-preds tab1)
-     for Pr1 = (get-pred var1 tab1 'no-error)
-     collect (cons var1
-		   (loop 
-		      for var2 in (unreferenced-preds tab2) 
-		      for o = (outer>-LPT Pr1 tab1 var2 tab2 LPTs)
-		      when o append it))))
-
 (defun outer> (Pr1 Pr2 tab) 
   "Is `Pr1' a predecessor of `Pr2' (outermore in the f-structure)?
 Note: we actually only look at the car of `Pr2', which has to be its
@@ -195,8 +168,6 @@ argument will return its verb as the first value!"
 			  (gethash '|terminal| tab)))
 	 (surfaceform (assoc (car (third terminal))
 			     (gethash '|surfaceform| tab))))
-    (when nil				; debug
-      (print (list Pr semform_id semform preterminal terminal surfaceform)))
     (second surfaceform)))
 
 (defun get-LPT (w1 w2 LPTs)
@@ -255,6 +226,34 @@ the pro no matter what, but will this give us trouble?"
 		      (list Pr1 Pr2)))
       (all-preds tab2)))
    (all-preds tab1)))
+
+(defun outer>-LPT (Pr1 tab1 var2 tab2 LPTs)
+  "Return a list of the outermost possible `LPTs' of `Pr1' in `tab2'
+starting at `var1'."
+  (let ((Pr2 (get-pred var2 tab2 'noerror)))
+    (when (and Pr1 Pr2)  
+      (if (LPT? Pr1 tab1 Pr2 tab2 LPTs)
+	  (list var2)
+	  (loop 
+	     for c in (get-children Pr2)
+	     for outer = (outer>-LPT Pr1 tab1 c tab2 LPTs)
+	     when outer append it)))))
+
+(defun all-outer>-LPT (tab1 tab2 LPTs)
+  "Return an association list of all possible outermost LPTs, using
+the variables of the PRED entries from `tab1' as keys. So the
+alist-entry (0 9 8) means that var 0 is an outermost PRED in `tab1',
+and 9 and 8 are outermost PRED's in `tab2', and they are all possible
+LPT's."
+  (loop
+     for var1 in (unreferenced-preds tab1)
+     for Pr1 = (get-pred var1 tab1 'no-error)
+     collect (cons var1
+		   (loop 
+		      for var2 in (unreferenced-preds tab2) 
+		      for o = (outer>-LPT Pr1 tab1 var2 tab2 LPTs)
+		      when o append it))))
+
 
 ;;; The actual alignment:
 
@@ -335,6 +334,13 @@ TODO: cache/memoise maketree"
      '("PRED" "PanJara" 0 NIL NIL) (unravel "PRED" 11 tab))
     (lisp-unit:assert-equal
      '("PRED" "PanJara" 0 NIL NIL) (unravel "PRED" 50 tab))))
+
+(lisp-unit:define-test test-L
+  (let* ((tab (open-and-import "dev/TEST_parse.pl")))
+    (lisp-unit:assert-equal "abramsma"
+			    (L (get-pred 3 tab) tab))
+    (lisp-unit:assert-equal "iqePa"
+			    (L (get-pred 0 tab) tab))))
 
 (lisp-unit:define-test test-topnode
   (let* ((tab (open-and-import "dev/TEST_parse.pl"))
