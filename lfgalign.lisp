@@ -194,9 +194,9 @@ As with hash tables, the second return value tells us whether either
   "TODO: do all and only nouns have an NTYPE?"
   (assoc "NTYPE" (gethash var tab) :test #'equal))
 
-(defun LPT? (Pr1 tab1 Pr2 tab2 LPTs)
-  "Are the lexical expressions of `Pr1' and `Pr2',
-L(Pr1) and L(Pr2), Linguistically Predictable Translations?
+(defun LPT? (Pr_s tab_s Pr_t tab_t LPTs)
+  "Are the lexical expressions of `Pr_s' and `Pr_t',
+L(Pr_s) and L(Pr_t), Linguistically Predictable Translations?
 
 True if both are in `get-LPT' as translations (or neither is), or one
 is a pro and the other is a noun (see `noun?') or a pro.
@@ -204,58 +204,116 @@ is a pro and the other is a noun (see `noun?') or a pro.
 TODO: The pro of a verb has that verb as its L, while the pro of a
 reflexive has that reflexive... At the moment, we look up the L of
 the pro no matter what, but will this give us trouble?"
-  (let ((LPr1 (L Pr1 tab1)) (lem1 (lemma Pr1))
-	(LPr2 (L Pr2 tab2)) (lem2 (lemma Pr2)))
-    (or (and (equal lem1 "pro")
-	     (equal lem2 "pro"))
-	(and (equal lem1 "pro")
-	     (noun? (car Pr2) tab2))
-	(and (equal lem2 "pro")
-	     (noun? (car Pr1) tab1))
-	(multiple-value-bind (L-tr L-in) (get-LPT LPr1 LPr2 LPTs)
-	  (multiple-value-bind (lem-tr lem-in) (get-LPT lem1 lem2 LPTs)
+  (let ((LPr_s (L Pr_s tab_s)) (lem_s (lemma Pr_s))
+	(LPr_t (L Pr_t tab_t)) (lem_t (lemma Pr_t)))
+    (or (and (equal lem_s "pro")
+	     (equal lem_t "pro"))
+	(and (equal lem_s "pro")
+	     (noun? (car Pr_t) tab_t))
+	(and (equal lem_t "pro")
+	     (noun? (car Pr_s) tab_s))
+	(multiple-value-bind (L-tr L-in) (get-LPT LPr_s LPr_t LPTs)
+	  (multiple-value-bind (lem-tr lem-in) (get-LPT lem_s lem_t LPTs)
 	    (unless (or L-in lem-in)
-	      (warn "No translations recorded for ~A and ~A" LPr1 LPr2))
+	      (warn "Neither ~A/~A nor ~A/~A are in LPTs" LPr_s lem_s LPr_t lem_t))
 	    (and L-tr lem-tr))))))
 
-(defun all-LPT (tab1 tab2 LPTs)
+(defun all-LPT (tab_s tab_t LPTs)
   (mapcan-true
-   (lambda (Pr1)
+   (lambda (Pr_s)
      (mapcar-true
-      (lambda (Pr2) (when (LPT? Pr1 tab1 Pr2 tab2 LPTs)
-		      (list Pr1 Pr2)))
-      (all-preds tab2)))
-   (all-preds tab1)))
+      (lambda (Pr_t) (when (LPT? Pr_s tab_s Pr_t tab_t LPTs)
+		      (list Pr_s Pr_t)))
+      (all-preds tab_t)))
+   (all-preds tab_s)))
 
-(defun outer>-LPT (Pr1 tab1 var2 tab2 LPTs)
-  "Return a list of the outermost possible `LPTs' of `Pr1' in `tab2'
-starting at `var1'."
-  (let ((Pr2 (get-pred var2 tab2 'noerror)))
-    (when (and Pr1 Pr2)  
-      (if (LPT? Pr1 tab1 Pr2 tab2 LPTs)
-	  (list var2)
+(defun outer>-LPT (Pr_s tab_s var_t tab_t LPTs)
+  "Return a list of the outermost possible `LPTs' of `Pr_s' in `tab_t'
+starting at `var_s'."
+  (let ((Pr_t (get-pred var_t tab_t 'noerror)))
+    (when (and Pr_s Pr_t)  
+      (if (LPT? Pr_s tab_s Pr_t tab_t LPTs)
+	  (list var_t)
 	  (loop 
-	     for c in (get-children Pr2)
-	     for outer = (outer>-LPT Pr1 tab1 c tab2 LPTs)
+	     for c in (get-children Pr_t)
+	     for outer = (outer>-LPT Pr_s tab_s c tab_t LPTs)
 	     when outer append it)))))
 
-(defun all-outer>-LPT (tab1 tab2 LPTs)
+(defun all-outer>-LPT (tab_s tab_t LPTs)
   "Return an association list of all possible outermost LPTs, using
-the variables of the PRED entries from `tab1' as keys. So the
-alist-entry (0 9 8) means that var 0 is an outermost PRED in `tab1',
-and 9 and 8 are outermost PRED's in `tab2', and they are all possible
+the variables of the PRED entries from `tab_s' as keys. So the
+alist-entry (0 9 8) means that var 0 is an outermost PRED in `tab_s',
+and 9 and 8 are outermost PRED's in `tab_t', and they are all possible
 LPT's."
   (loop
-     for var1 in (unreferenced-preds tab1)
-     for Pr1 = (get-pred var1 tab1 'no-error)
-     collect (cons var1
+     for var_s in (unreferenced-preds tab_s)
+     for Pr_s = (get-pred var_s tab_s 'no-error)
+     collect (cons var_s
 		   (loop 
-		      for var2 in (unreferenced-preds tab2) 
-		      for o = (outer>-LPT Pr1 tab1 var2 tab2 LPTs)
+		      for var_t in (unreferenced-preds tab_t) 
+		      for o = (outer>-LPT Pr_s tab_s var_t tab_t LPTs)
 		      when o append it))))
 
 
 ;;; The actual alignment:
+
+(defun foo (tab_s tab_t LPTs)
+  "Intuition: Starting the alignment from outers and then going
+inwards should have the effect that  
+
+1. we don't get 'crossing' alignments, as we would have if 
+   a-d and b-c where tab_s:[a [b ]] tab_t:[c [d ]], and
+2. we prioritise alignments of outer elements with outer 
+   elements.
+
+However, it might turn out to be really hard in practice to keep
+possible pairings prioritised when aligning. Eg. if we have
+
+tab_s:[a [b]] tab_t:[c [d [e]] [f [g]]
+and all LPT's are allowed except a-d, do we go
+a-c,a-e,a-f,a-g
+or
+a-c,a-f,a-e,a-g 
+or 
+a-c,a-f,a-g,a-e (here counting e as deeper than g)
+?
+
+And if tab_s were [a [b]] [h [i]], when do we start considering h?
+
+----
+
+The alternative to ordering is of course just trying all permutations
+of LPT-pairings. But would it still be simplest to follow some sort of
+ordering? And how do we prioritise the full over the half-finished
+alignments?
+
+Proposal: do all pairings. Start with a pair of unreferenced-preds,
+aligning inwards.
+
+Another difficulty is that we can merge certain pairings, eg. where we
+have a single causative PRED that aligns to a make PRED and a do PRED,
+or an object PRED that's incorporated into an 'action'
+PRED ('bilvaskingen'). 
+
+Proposal: `LPT-permute' churns out all configurations of single
+pairings allowed by LPT, while a `merge' function creates new possible
+configurations (pushed last in the queue) based on sane merges. So
+far, I don't think we'll want to merge where where two PRED's are on
+the same level (eg. a subject and an object of the same PRED we
+wouldn't merge), but a PRED and XCOMP (causative) or a PRED and its
+object ('bilvaskingen') would be mergeable, these have exactly one
+level between them (ie. one is the parent of another). I'm not sure
+that we want to stop there though (we might want to go both deeper in
+the f-structure and wider, ie. merge a pred with both its subject and
+its object, or with both its daughter and granddaughter); but we can
+leave that for later probably. ADJUNCTs should probably be mergeable
+too.
+"
+  (loop for (Pr_s Pr_t) in (all-lpt tab_s tab_t LPTs)
+       
+
+       )
+  )
 
 (defun f-align (var1 tab1 var2 tab2)
   "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
