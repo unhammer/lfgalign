@@ -7,7 +7,7 @@
 #+EMAIL: Kevin.Unhammer hos student uib no
 #+LANGUAGE: nn
 #+OPTIONS: H:4 toc:nil f:t skip:t num:t
-#+LaTeX_CLASS: ps
+#+LaTeX_CLASS: master
 #+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
 
 Nytt denne før INNLEVERING:
@@ -15,9 +15,15 @@ Nytt denne før INNLEVERING:
 
 nyttig sparse tree: SKRIV
 
-[[file:~/V09/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
+[[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
 
-* Kapittel x: Den ideelle frasesamanstillinga
+* Introduksjon (+ samandrag/abstract)
+* Bakgrunn og relaterte metodar
+   - reine n-gram-samanstillingar, dependensbaserte
+   - ulike formål for samanstilling gir ulike metodar
+   - kort introduksjon til LFG 
+
+* Den ideelle frasesamanstillinga
 ** SKRIV	LPT						     :ROTETE:
 «a source word WS and a target word WT are taken to correspond
 translationally only if (i) WT can in general (out of context) be
@@ -559,7 +565,7 @@ For å gjere dette konkret kan me sjå på setning 7 i MRS-suiten
 
 I følgje LFG-parsen til desse setningane har hovudpredikata svært ulik
 argumentstruktur[fn:14]. Det norske /vedde/ har _fire_ argument, medan
-/da-najleveba/ har _to_ (/Abrams/ og /Browne/ ), kor at-setninga på
+\emph{da-najleveba} har _to_ (/Abrams/ og /Browne/), kor at-setninga på
 norsk og /rom cvimda/ uttrykkjer same proposisjon og speler same rolle
 i verbsituasjonen. Den engelske LFG-parsen av den tilsvarande setninga
 (mine omsetjingar) gir _tre_ argument, /with/ blir her adjunkt, medan
@@ -879,14 +885,18 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 
 
 
-** evt. oppsummering
+* Korleis fungerer implementasjonen min
+* Resultat av å automatisk samanstille norske og georgiske setningar
+   - om kjeldematerialet
+   - manglar med implementasjonen
+   - samanlikning av lenkjing basert på f-struktur og lenkjing basert
+     på n-gram
+* Avslutning
+
 # tom inndeling for å halde bibliografien sist
 
-
-
-\bibliography{master}
 \bibliographystyle{apacite}
-
+\bibliography{master}
 
 
 * Footnotes

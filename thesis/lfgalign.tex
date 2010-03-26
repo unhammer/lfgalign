@@ -1,5 +1,5 @@
-% Created 2010-03-26 Fri 23:30
-\documentclass[11pt,a4paper]{article}
+% Created 2010-03-26 Fri 23:53
+\documentclass[11pt,a4paper]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
@@ -33,11 +33,22 @@
 
 \maketitle
 
-\section{Kapittel x: Den ideelle frasesamanstillinga}
+\chapter{Introduksjon (+ samandrag/abstract)}
 \label{sec-1}
 
-\subsection{Introduksjon}
-\label{sec-1.1}
+\chapter{Bakgrunn og relaterte metodar}
+\label{sec-2}
+
+\begin{itemize}
+\item reine n-gram-samanstillingar, dependensbaserte
+\item ulike formål for samanstilling gir ulike metodar
+\item kort introduksjon til LFG
+\end{itemize}
+\chapter{Den ideelle frasesamanstillinga}
+\label{sec-3}
+
+\section{Introduksjon}
+\label{sec-3.1}
 
 I denne delen prøver eg å finne fram til kva som er den best moglege
 frasesamanstillinga. Eg argumenterer for at «best» her må tolkast i
@@ -47,8 +58,8 @@ formålet er utvikling av fasesamanstilte trebankar må ein revidere
 kravet om likskap i argumentstruktur, og gir eit forslag til krav for
 frasesamanstilling i trebankar.
 
-\subsection{Kva er formålet med ei frasesamanstilling?}
-\label{sec-1.2}
+\section{Kva er formålet med ei frasesamanstilling?}
+\label{sec-3.2}
 
 I frasebasert statistisk maskinomsetjing (PBSMT) skal ei
 fraselenkje\footnote{Eg nyttar her termane \emph{lenkjing} og \emph{samanstilling} om
@@ -129,8 +140,8 @@ Nedanfor utviklar eg eit forslag til krav for ei frasesamanstilling,
 med desse formåla i tankane. Om alle krava er moglege å implementere,
 er eit separat problem.
 
-\subsection{Krav / skrankar for frasesamanstilling i ein LFG-trebank}
-\label{sec-1.3}
+\section{Krav / skrankar for frasesamanstilling i ein LFG-trebank}
+\label{sec-3.3}
 
 
 Samanstilte frasar bør ha nok semantisk likskap til å kunne opptre som
@@ -205,8 +216,8 @@ teoriar.
 Eg byggjar vidare på krava frå \citet{thunes2003eal} nedanfor, men
 kjem som nemnd med visse endringsforslag.
 
-\subsection{Kva kan samanstillast?}
-\label{sec-1.4}
+\section{Kva kan samanstillast?}
+\label{sec-3.4}
 
 
 Viss to uttrykk er samanstilt på setningsnivå (slik at me dimed kan gå
@@ -293,13 +304,13 @@ Alle nodar i c-strukturen (alle syntaktiske \emph{frasar/konstituentar} i
 setninga) som kan koplast til PRED-haldande f-strukturar, vil altså
 vere kandidatar for samanstilling på c-strukturnivå (dette inkluderer
 diskontinuerlege konstituentar), men ikkje alle vil bli samanstilt.
-\subsubsection{\textbf{TOGROK} finst det tilfelle der ordlenkjer ikkje impliserer PRED-lenkjer?}
-\label{sec-1.4.1}
+\subsection{\textbf{TOGROK} finst det tilfelle der ordlenkjer ikkje impliserer PRED-lenkjer?}
+\label{sec-3.4.1}
 
    hypotese: det er alltid slik at \\
    ordlenkjing av predikerande ord => PRED-lenkje
-\subsection{Funksjonsord}
-\label{sec-1.5}
+\section{Funksjonsord}
+\label{sec-3.5}
 
 \label{SEC:fnord}
 I tillegg kan me ha ord i setninga som ikkje tilsvarer PRED-element i
@@ -344,8 +355,8 @@ vil vere oppfylt om me kan samanstille \emph{cvimda} med \emph{det regnet}.
 \caption{Mogleg samanstilling av funksjonsord mellom georgisk og norsk (bokmål)}
  \label{fig:fnord}
 \end{figure}
-\subsection{Lenkjing av underordna c-strukturnodar}
-\label{sec-1.6}
+\section{Lenkjing av underordna c-strukturnodar}
+\label{sec-3.6}
 
 \label{SEC:subnode}
 
@@ -447,8 +458,8 @@ georgisk spesifikator som var lenkja til den norske PRONP.
  \label{fig:ikkjesub}
 \end{figure}
 
-\subsection{Lik ordklasse?}
-\label{sec-1.7}
+\section{Lik ordklasse?}
+\label{sec-3.7}
 
 Ulike språk leksikaliserer same konsept på ulike
 måtar. \citet[s.~3]{cheung2002scg} skriv at det engelske ordet
@@ -469,8 +480,8 @@ mellom visse \emph{trekk}, t.d. kan to predikerande ord lenkjast, eller to
 krevje ein viss likskap i argumentstruktur. 
 
 
-\subsection{Krav om lik argumentstruktur}
-\label{sec-1.8}
+\section{Krav om lik argumentstruktur}
+\label{sec-3.8}
 
 \label{SEC:lik-argstr}
 
@@ -510,7 +521,7 @@ I følgje LFG-parsen til desse setningane har hovudpredikata svært ulik
 argumentstruktur\footnote{Analysane er henta 18. mai, 2009, frå
         \href{http://decentius.aksis.uib.no/logon/xle.xml}{http://decentius.aksis.uib.no/logon/xle.xml}, som implementerer
         LFG-grammatikkane frå ParGram-prosjektet \citep{butt2002pgp}. }. Det norske \emph{vedde} har \underline{fire} argument, medan
-\emph{da-najleveba\} har \underline{to} (\emph{Abrams} og \emph{Browne} ), kor at-setninga på
+\emph{da-najleveba} har \underline{to} (\emph{Abrams} og \emph{Browne}), kor at-setninga på
 norsk og \emph{rom cvimda} uttrykkjer same proposisjon og speler same rolle
 i verbsituasjonen. Den engelske LFG-parsen av den tilsvarande setninga
 (mine omsetjingar) gir \underline{tre} argument, \emph{with} blir her adjunkt, medan
@@ -552,8 +563,8 @@ plukker ut si eiga rolle der argument får rolla tildelt frå verbet, og
 f-strukturane har ingen hierarkisk inndeling av desse slik me har for
 verb og argument, dei er i staden representert som \emph{uordna mengder}.
 
-\subsubsection{\textbf{TODO} Sitere eigen korpusundersøkjing av variasjon i arg-str?}
-\label{sec-1.8.1}
+\subsection{\textbf{TODO} Sitere eigen korpusundersøkjing av variasjon i arg-str?}
+\label{sec-3.8.1}
 
 Ei undersøkjing av den frasesamanstilte trebanken SMULTRON
 \citep{samuelsson2006pap} mot LFG-grammatikkane for engelsk og tysk
@@ -564,8 +575,8 @@ innhaldsverb fekk analysar kor argument korresponderte med adjunkt
 \citep{unhammer2009aaa}.
 
 
-\subsubsection{\textbf{TODO} Ulik følgje i argumentstruktur}
-\label{sec-1.8.2}
+\subsection{\textbf{TODO} Ulik følgje i argumentstruktur}
+\label{sec-3.8.2}
 
 I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
 argument ha ulik følgje i argumentstrukturen. Det er klart at me vil
@@ -591,8 +602,8 @@ nytta til å sikre lenkjinga \emph{sie/dem} og \emph{ihnen/de}. Igjen ser det ut
 til at bottom-up-informasjon trengst.
 
 
-\paragraph{\textbf{TODO} Flytte til kapittel om metodar for å oppdage lenkjer?:}
-\label{sec-1.8.2.1}
+\subsubsection{\textbf{TODO} Flytte til kapittel om metodar for å oppdage lenkjer?:}
+\label{sec-3.8.2.1}
 
 Kanskje me kan nytte data frå fleire førekomstar med andre subjekt
 og objekt til å lære slike argumentstrukturalternasjonar?  Om me
@@ -600,8 +611,8 @@ observerer \emph{sie gefällt mir/jeg liker henne} vil me jo ha
 f-strukturinformasjon som kan nyttast til å informere
 argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.).
 
-\subsection{\textbf{TODO} Konstruksjonar og komposisjonell inekvivalens}
-\label{sec-1.9}
+\section{\textbf{TODO} Konstruksjonar og komposisjonell inekvivalens}
+\label{sec-3.9}
 
 \xbar-teori føreset at det finst éi dotter i kvart ledd som kan
 reknast som predikatet for dette leddet. Ei utfordring for
@@ -644,15 +655,25 @@ iallfall eit omsetjingsforhold:
 (kan me få den siste generaliseringa frå trebanken?)
 
 
-\subsection{evt. oppsummering}
-\label{sec-1.10}
+\chapter{Korleis fungerer implementasjonen min}
+\label{sec-4}
+
+\chapter{Resultat av å automatisk samanstille norske og georgiske setningar}
+\label{sec-5}
+
+\begin{itemize}
+\item om kjeldematerialet
+\item manglar med implementasjonen
+\item samanlikning av lenkjing basert på f-struktur og lenkjing basert
+     på n-gram
+\end{itemize}
+\chapter{Avslutning}
+\label{sec-6}
 
 
 
-
-\bibliography{master}
 \bibliographystyle{apacite}
-
+\bibliography{master}
 
 
 
