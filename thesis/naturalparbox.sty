@@ -1,0 +1,153 @@
+% File: naturalparbox.sty 
+% 
+% Crude attempt at making parboxes of `natural' width. 
+% 
+% Author: Stephan Lehmke <Stephan.Leh...@cs.uni-dortmund.de> 
+% 
+ 
+\NeedsTeXFormat{LaTeX2e} 
+ 
+\ProvidesPackage{naturalparbox} 
+ [2001/11/11 Attempt at making parboxes of `natural' width] 
+ 
+\RequirePackage{ifthen} 
+ \RequirePackage{calc} 
+ 
+% User-configurable: Which `resolution' should be used when searching for `best' width? 
+ \newcommand{\optwidthsteps}{100} 
+ 
+% User-configurable: Which badness should be tolerated as `perfect' (stopping the search for a better one). 
+ \newcommand{\optwidthlinetolerance}{200} 
+ 
+% Internal parameter: Badness of the parbox currently under consideration. 
+ \let\maxbadness@NPB=\@tempcnta 
+ 
+\newlength{\maxheight@NPB} 
+ \newlength{\optwidth@NPB} 
+ \newlength{\tempdima@NPB} 
+ \newcounter{probe@NPB} 
+ \newboolean{carryon@NPB} 
+ \newbox\tempbox@NPB 
+ 
+% \naturalparbox[<max width>][<max height>]{<contents>} will (try to) 
+ % automatically calculate the `best' width of a \parbox to contain 
+ % <contents> and then set <contents> into a \parbox of this width. 
+ % 
+ % The optional parameters <max width> (default \linewidth) and <max 
+ % height> (default \textheight) limit the growth of the box. If not 
+ % both can be respected, <max width> will be respected and <max 
+ % height> violated. 
+ % 
+ % Owing to limitations set by TeX, there are certain limits to the 
+ % sophistication of the procedure for finding the `optimal' width. For 
+ % instance, any `whatsits' (specials (like color changes), file 
+ % accesses (like \label), or hyper anchors) or rules which are 
+ % inserted directly in the vertical list of the parbox `block' the 
+ % analysis, so the procedure can't `see' past them (starting at the 
+ % bottom of the box) when analysing the contents of the parbox. The 
+ % user should make sure such items are set in horizontal mode (by 
+ % using \leavevmode or enclosing stuff in boxes). Furthermore, only 
+ % overfull and underfull hboxes which occur while setting the parbox 
+ % are considered when judging which width is `best'. This will 
+ % reliably make the width large enough to contain `wide' objects like 
+ % tabulars or included graphics, but might not give optimal results 
+ % for justified text. 
+ % vboxes occurring directly in the parbox are ignored. 
+ % Note further that hboxes with fixed width (made by \hbox to...) 
+ % which occur directly in the vbox may disturb the procedure, because 
+ % the fixed width cannot be recovered. These hboxes will be 
+ % reformatted with the width of the vbox, generating an extremely 
+ % large badness, unsettling the calculation of maximum badness. To 
+ % avoid this such hboxes should be either contained in a vbox or set 
+ % in horizontal mode with appropriate glue at the end. 
+ \newcommand{\naturalparbox}[1][\linewidth]{\def\maxwidth@NPB{#1}\@naturalparbox} 
+ 
+\newcommand{\@naturalparbox}[2][\textheight] 
+ {% 
+ % Calculate `best' width of a parbox. The current algorithm will set the textual contents into parboxes of increasing 
+ % width, starting from 0pt and ending with the maximum width given, in \optwidthsteps steps. The `badness' of every 
+ % parbox is measured. If it is below the threshold defined by \optwidthlinetolerance, the process is stopped and the 
+ % found width accepted. If this doesn't happen, the width of the parbox with the least badness is returned. 
+   \setcounter{probe@NPB}{0}%                                    Initialize `probe counter' for box width. 
+   \let\best@cnt@NPB=\empty%                                     Initialize number of best `probe' so far. 
+   \def\bestbadness@NPB{1000000}%                                Initialize badness of best `probe'. 
+   \setboolean{carryon@NPB}{true}%                               Flag for breaking out of loop. 
+   \setlength{\maxheight@NPB}{#1}%                               Store maximal box height. 
+   \whiledo 
+   {\value{probe@NPB}<\optwidthsteps\and\boolean{carryon@NPB}}%   Probes done or break of loop? 
+   {% 
+     \stepcounter{probe@NPB}%                                     Start next probe. 
+     \setbox\@tempboxa=\vbox%                                      The trick with vbox/lastbox is to get the vbox 
+     {%                                                           produced by \parbox `immediately' into a box register. 
+       \parbox[b]{(\maxwidth@NPB)/\optwidthsteps*\value{probe@NPB}}% Make the next parbox. 
+       {\hfuzz\maxdimen\hbadness\@M\relax#2}% 
+       \global\setbox\tempbox@NPB=\lastbox%                       ... and assign \tempbox@NPB to it. 
+       }% 
+     \setlength{\tempdima@NPB}{\ht\tempbox@NPB+\dp\tempbox@NPB}%  Measure total height. 
+     \ifthenelse{\lengthtest{\tempdima@NPB>\maxheight@NPB}}%      If it exceeds the maximum height given, the box isn't 
+     {}%                                                          acceptable anyway. 
+     {% 
+       \calcmaxbadness@NPB{\maxbadness@NPB}{\tempbox@NPB}%      Calculate `worst badness' of any hbox appearing in parbox. 
+       \ifthenelse{\not\maxbadness@NPB>\optwidthlinetolerance}%   Below Threshold? 
+       {% Yes. Accept this width. 
+         \edef\best@cnt@NPB{\theprobe@NPB}%                       Store this probe number. 
+         \setboolean{carryon@NPB}{false}%                         Break loop. 
+         } 
+       {% No. Carry on. 
+         \ifthenelse{\maxbadness@NPB<\bestbadness@NPB}%           Below lowest badness found so far? 
+         {% Yes. Store probe number. 
+           \edef\bestbadness@NPB{\number\maxbadness@NPB}%         Store badness value. 
+           \edef\best@cnt@NPB{\theprobe@NPB}%                     Store probe number. 
+           } 
+         {}% No. Try next probe. 
+         }% matches second argument of \ifthenelse{\not\maxbadness@NPB>\optwidthlinetolerance}% 
+       }% matches second argument of \ifthenelse{\lengthtest{\tempdima@NPB>\maxheight@NPB}}% 
+     }% matches \whiledo{\value{probe@NPB}<\optwidthsteps\and\boolean{carryon@NPB}}{% 
+   \ifx\best@cnt@NPB\empty%                                      Was _any_ badness below the initialization value found? 
+     \setlength{\optwidth@NPB}{\maxwidth@NPB}%                   No; return max width.                                   
+    \else 
+     \setlength{\optwidth@NPB}{(\maxwidth@NPB)/\optwidthsteps*\best@cnt@NPB}% Yes; return width of best probe. 
+   \fi 
+   \parbox{\optwidth@NPB}{#2}% 
+   } 
+ 
+% Calculate maximal badness of any hbox occurring in a vbox. 
+ \newcommand{\calcmaxbadness@NPB}[2] 
+ {% 
+   \let\@resultcnt@NPB=#1%           Here we store the result. 
+   \global\@resultcnt@NPB=\z@\relax% Just in case no hbox occurs... 
+   \setlength{\@tempdima}{\wd#2}%    This is the width to which every hbox is stretched for finding its badness. 
+   \setbox\@tempboxa=\vbox%          A dummy vbox for recursively analysing the vbox contents using \lastbox 
+   {% 
+     \hfuzz\maxdimen\hbadness\@M 
+     \unvbox#2%                     `free' the contents of the vbox. 
+     \measureboxes@NPB%              Analyse `tail to head' using \lastbox. 
+     }% 
+   } 
+ 
+% Recursively analyse vertical list using \lastbox, to find maximum badness of any contained hbox. 
+ \newcommand{\measureboxes@NPB}% 
+ {% 
+   \unskip\unpenalty\unkern%    This is a kluge for TeX, because there is no certain way of finding out whether there's a 
+   \unskip\unpenalty\unkern%    penalty, glue or kern on the vertical list. \lastpenalty will give its value, but a 
+   \unskip\unpenalty\unkern%    value of 0 might mean there was none or there was one of value 0. 
+   \unskip\unpenalty\unkern%    This is different in eTeX. I might make a switch to a smarter solution. 
+   \unskip\unpenalty\unkern 
+   \unskip\unpenalty\unkern 
+   \unskip\unpenalty\unkern 
+   \unskip\unpenalty\unkern 
+   \unskip\unpenalty\unkern 
+   \unskip\unpenalty\unkern 
+   \setbox\@tempboxa=\lastbox% Grab last box. 
+   \ifhbox\@tempboxa%          Was this an hbox? 
+     \setbox0=\hb@xt@\@tempdima{\unhbox\@tempboxa}% Yes. Reformat with given width. 
+     \ifnum\badness>\@resultcnt@NPB%                 Badness larger than largest recorded badness? 
+       \global\@resultcnt@NPB=\badness%              Yes. Memorize. 
+     \fi 
+     \expandafter\measureboxes@NPB%                  Recursive call. 
+    \else 
+     \ifvbox\@tempboxa%                                       Was this a vbox? 
+       \expandafter\expandafter\expandafter\measureboxes@NPB% Ignore, but execute recursive call. 
+     \fi 
+   \fi 
+   }
