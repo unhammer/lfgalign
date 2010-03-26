@@ -1,3 +1,7 @@
+# Do
+# $ export TEXINPUTS=".:./texmf/:${TEXINPUTS}"
+# before make (not sure why it doesn't work to have this in Makefile)
+
 # From http://www.wlug.org.nz/LatexMakefiles
 TARGET=lfgalign
 BIBTAG=master
@@ -7,15 +11,15 @@ all: ${TARGET}.pdf
 
 # it doesn't really need the .dvi, but this way all the refs are right
 %.pdf : %.dvi
-	pdflatex $*
+	@pdflatex $*
 
 ${TARGET}.bbl: ${BIBTAG}.bib
 # in case we don't already have a .aux file listing citations
 # this should probably be a separate makefile target/dependency instead
 # of doing it every time... but *shrug*
-	latex ${TARGET}.tex
+	@latex ${TARGET}.tex
 # get the citations out of the bibliography
-	bibtex ${TARGET}
+	@bibtex ${TARGET}
 # do it again in case there are out-of-order cross-references
 	@latex ${TARGET}.tex
 
@@ -29,10 +33,10 @@ ${TARGET}.ps: ${TARGET}.dvi
 	@dvips -t a4 ${TARGET}.dvi
 
 clean:
-	rm -f ${TARGET}.{log,aux,ps,dvi,bbl,blg,log}
+	rm -f ${TARGET}.{log,aux,ps,dvi,bbl,blg,log,lox,out,toc}
 
 reallyclean: clean
-	rm -f ${TARGET}.{ps,pdf}
+	rm -f ${TARGET}.{pdf}
 
 getbib:
 	wget "http://bibsonomy.org/bib/user/unhammer/${BIBTAG}?bibtex.entriesPerPage=100" -O apertium.bib
