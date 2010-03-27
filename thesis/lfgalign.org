@@ -571,27 +571,31 @@ Om \Last[a og -b] er oppfylt, kan me få samanstillinga vist i figur
 vil vere oppfylt om me kan samanstille /cvimda/ med /det regnet/.
 
 #+BEGIN_LaTeX
-\begin{figure}[htp]
- \vfill{} % how todo?
-\Tree
-[.IPfoc
-  [.PROPP [.PROP abramsma ] ] 
-  [.I' \qroof{iCoda}.I 
-           [.S [.CPsub
-                [.\node(Csub){Csub};  rom ]
-                \qroof{cvimda}.IP ]]]]
-\Tree
-[.IP
-  [.PROPP [.PROP Abrams ] ]
-   [.I' [.Vfin visste ]
-            [.S [.VPmain [.CPnom
-                         [.\node(Cnom){Cnom};  at ] 
-                          \qroof{det regnet}.Ssub ]]]]]
-			 
-{\makedash{4pt} \nodecurve[b]{Csub}[b]{Cnom}{30pt} }
-\caption{Mogleg samanstilling av funksjonsord mellom georgisk og norsk (bokmål)}
- \label{fig:fnord}
-\end{figure}
+  \begin{figure}[htp]
+   \vfill{} % how todo?
+  
+  \begin{tikzpicture}
+  \Tree
+  [.IPfoc
+    [.PROPP [.PROP abramsma ] ] 
+    [.I' [.I \edge[roof]; {iCoda} ]
+             [.S [.CPsub
+                  [.\node(Csub){Csub};  rom ]
+                  [.IP \edge[roof]; {cvimda} ]]]]]
+      \begin{scope}[shift={(2in,0in)}]
+  \Tree
+  [.IP
+    [.PROPP [.PROP Abrams ] ]
+     [.I' [.Vfin visste ]
+              [.S [.VPmain [.CPnom
+                           [.\node(Cnom){Cnom};  at ] 
+                            [.Ssub \edge[roof]; {det regnet} ]]]]] ]
+  \end{scope}                      
+  \draw[dashed,-] (Csub)..controls +(south west:3) and +(south:1) .. (Cnom) ;
+  \end{tikzpicture}
+  \caption{Mogleg samanstilling av funksjonsord mellom georgisk og norsk (bokmål)}
+   \label{fig:fnord}
+  \end{figure}
 #+END_LaTeX
 *** TOGROK cvimda<PRO> men regne<>expletive -- lenkje? 		     :ROTETE:
 
@@ -618,18 +622,21 @@ f-domenet?
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
- \vfill{} % how todo?
-\Tree  [.\node(XP){XP};  \node(YP){YP};  
-                                  \node(X'){X'};   ]
-\Tree  [.\node(ZP){ZP};  \node(WP){WP};  
-                                  \node(Z'){Z'};   ]
-\barnodeconnect[5pt]{XP}{ZP}
-{\makedash{4pt}
- \nodecurve[b]{YP}[b]{WP}{15pt} 
-}
- \caption{Lenkjing av underordna c-strukturnodar}
- \label{fig:subnode}
-\end{figure}
+   \vfill{} % how todo?
+   \begin{tikzpicture}
+  \Tree  [.\node(XP){XP};  \node(YP){YP};  
+                                    \node(X'){X'};   ]
+      \begin{scope}[shift={(2in,0in)}]
+  \Tree  [.\node(ZP){ZP};  \node(WP){WP};  
+                                    \node(Z'){Z'};   ]
+\end{scope}
+\draw[-] (XP)..controls +(north:1) and +(north:1) .. (ZP) ;
+  \draw[dashed,-] (YP)..controls +(south:1) and +(south:1) .. (WP) ;
+
+\end{tikzpicture}
+   \caption{Lenkjing av underordna c-strukturnodar}
+   \label{fig:subnode}
+  \end{figure}
 #+END_LaTeX
 
 I figur \ref{fig:subnode} der XP og ZP er lenkja, vil YP og WP -- i
@@ -681,22 +688,22 @@ georgisk spesifikator som var lenkja til den norske PRONP.
 #+BEGIN_LaTeX
 \begin{figure}[htp]
  \vfill{} % how todo?
-\Tree
-[.\node(IPk){IP}; 
+\begin{tikzpicture}
+\Tree [.\node(IPb){IP}; 
+  [.PRONP \edge[roof]; {det} ] 
+  [.\node(Ibarb){I'};  [.Vfin \node(åpnet){åpnet};  ]
+       [.S \edge[roof]; {seg} ] ] ]
+      \begin{scope}[shift={(2in,0in)}]
+\Tree [.\node(IPk){IP}; 
   [.\node(Ibark){I'};  [.V    \node(gaiGo){gaiGo};  ]
   ] ]
-\Tree
-[.\node(IPb){IP}; 
-  \qroof{det}.PRONP 
-  [.\node(Ibarb){I'};  [.Vfin \node(åpnet){åpnet};  ]
-       \qroof{seg}.S ] ]
+\end{scope}
+ \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
+  \draw[dashed,-] (Ibark)..controls +(north:1) and +(north:1) .. (Ibarb) ;
+ \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
 
-{\makedash{4pt}
-\nodecurve[r]{Ibark}[t]{Ibarb}{38pt} 
-}
-\barnodeconnect[-10pt]{gaiGo}{åpnet} 
-\nodecurve[t]{IPk}[t]{IPb}{15pt} 
- \caption{Umogleg samanstilling av funksjonsord mellom georgisk og norsk (bokmål)}
+\end{tikzpicture}
+\caption{Umogleg samanstilling av funksjonsord mellom bokmål og georgisk}
  \label{fig:ikkjesub}
 \end{figure}
 #+END_LaTeX
@@ -911,20 +918,23 @@ argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.).
 
 **** c- og f-strukturar for dømet over				     :ROTETE:
 #+BEGIN_LaTeX
+\begin{tikzpicture}
 \Tree
 [.CP
-  \qroof{sie}.DP
-  [.C'
-    \qroof{gefallen}.V
-    \qroof{ihnen}.DP
+  [.DP \edge[roof]; {sie} ]   [.C'
+    [.V
+ \edge[roof]; {gefallen} ]     [.DP \edge[roof]; {ihnen} ]  
 ]]
+\begin{scope}[shift={(2in,0in)}]
 \Tree
 [.IP
-  \qroof{de}.PRONP
+  [.PRONP \edge[roof]; {de} ] 
   [.I'
-    \qroof{liker}.V
-    \qroof{dem}.S
+    [.V \edge[roof]; {liker} ] 
+    [.S \edge[roof]; {dem} ] 
 ]]
+  \end{scope}
+\end{tikzpicture}
 
 \avmoptions{}
 \begin{avm}
