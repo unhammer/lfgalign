@@ -6,8 +6,8 @@ BIBTAG=master
 all: ${TARGET}.pdf
 
 # it doesn't really need the .dvi, but this way all the refs are right
-%.pdf : %.ps
-	ps2pdf $*.ps
+%.pdf : %.dvi
+	pdflatex $*
 
 ${TARGET}.bbl: ${BIBTAG}.bib
 # in case we don't already have a .aux file listing citations
@@ -26,7 +26,7 @@ ${TARGET}.dvi: ${TARGET}.bbl ${TARGET}.tex
 ps: ${TARGET}.ps
 
 %.ps: %.dvi
-	@dvips -o $@ $*.dvi
+	@dvips -z -o $@ $*.dvi
 
 clean:
 	rm -f ${TARGET}.{log,aux,ps,dvi,bbl,blg,log,lox,out,toc,rel,brf}
@@ -35,7 +35,7 @@ reallyclean: clean
 	rm -f ${TARGET}.{pdf}
 
 getbib:
-	wget "http://bibsonomy.org/bib/user/unhammer/${BIBTAG}?bibtex.entriesPerPage=100" -O ${BIBTAG}.bib
+	wget "http://bibsonomy.org/bib/user/unhammer/${BIBTAG}?bibtex.entriesPerPage=500" -O ${BIBTAG}.bib
 	touch ${BIBTAG}.bib
 
 PHONY : ps all clean reallyclean getbib
