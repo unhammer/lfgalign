@@ -296,7 +296,7 @@ level of word correspondences.»
 ie. non-monotonic phrase linking on top of the word linking.
 
 
-** TOGROK korleis gjenfinne there is/es gibt?			     :ROTETE:
+** TOGROK korleis gjenfinne there is/es gibt? 			     :ROTETE:
 1. n-gram kjem like ofte som heile konstruksjonen, då kan dette
    gjenfinnast
    - dvs., /there is NP/es gibt NP/-samanstilling kjem like ofte som
@@ -1148,6 +1148,31 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 
 
 * Korleis fungerer implementasjonen min
+Programmet =lfgalign= [fn:2] tek inn LFG-analysane av to setningar som
+me veit er omsetjingar av kvarandre. LFG-analysane må vere
+disambiguerte og i Prolog-formatet frå XLE[fn:5]. Programmet les inn
+dei to filene og oppretter ein intern representasjon av
+LFG-analysen. 
+
+=lfgalign= kan i tillegg ta inn ein representasjon av moglege
+LPT-korrespondansar.
+
+LPT-korrespondansane utgjer utgangspunktet for samanstillinga. 
+
+Der det ikkje finst informasjon om eit ord i LPT-basen, føreset me at
+alle ord kan lenkjast til dette. Pronomen/pro-element og
+substantiv/pronomen kan alltid lenkjast.
+
+=permute= finn alle moglege permutasjonar av 1-1
+LPT-korrespondansar. 
+
+Dette blir sendt gjennom =merge= som finn moglege
+mange-til-mange-korrespondansar av PRED-element. Moglege samanføyingar
+er: PRED til (X)COMP-dotter, ADJUNCT, ....
+
+Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
+eit filter som sjekker om skrankane er oppfylte.
+
 * Resultat av å automatisk samanstille norske og georgiske setningar
    - om kjeldematerialet
    - manglar med implementasjonen
@@ -1234,4 +1259,9 @@ MRS-suiten, med mindre anna er opplyst.
 [fn:15] 25 om ein inkluderer analysar kor minst eitt av argumenta
         ikkje hadde korrekt analyse (t.d. eit \textsc{PRO} der
         grammatikken burde funne eit substantiv).
+
+[fn:2] Tilgjengeleg frå http://github.com/unhammer/lfgalign under GNU
+       General Public License.
+
+[fn:5] Dokumentert på http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
 

@@ -1,5 +1,5 @@
-% Created 2010-03-27 Sat 15:56
-\documentclass[11pt,a4paper,oneside,draft]{book}
+% Created 2010-03-27 Sat 16:55
+\documentclass[11pt,a4paper,oneside]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
@@ -1249,6 +1249,32 @@ seie noko \emph{a priori} om kva for vanskar ein kan finne).
 \chapter{Korleis fungerer implementasjonen min}
 \label{sec-4}
 
+Programmet \texttt{lfgalign} \footnote{Tilgjengeleg frå \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign} under GNU
+       General Public License. } tek inn LFG-analysane av to setningar som
+me veit er omsetjingar av kvarandre. LFG-analysane må vere
+disambiguerte og i Prolog-formatet frå XLE\footnote{Dokumentert på \href{http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html}{http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html} }. Programmet les inn
+dei to filene og oppretter ein intern representasjon av
+LFG-analysen. 
+
+\texttt{lfgalign} kan i tillegg ta inn ein representasjon av moglege
+LPT-korrespondansar.
+
+LPT-korrespondansane utgjer utgangspunktet for samanstillinga. 
+
+Der det ikkje finst informasjon om eit ord i LPT-basen, føreset me at
+alle ord kan lenkjast til dette. Pronomen/pro-element og
+substantiv/pronomen kan alltid lenkjast.
+
+\texttt{permute} finn alle moglege permutasjonar av 1-1
+LPT-korrespondansar. 
+
+Dette blir sendt gjennom \texttt{merge} som finn moglege
+mange-til-mange-korrespondansar av PRED-element. Moglege samanføyingar
+er: PRED til (X)COMP-dotter, ADJUNCT, \ldots{}.
+
+Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
+eit filter som sjekker om skrankane er oppfylte.
+
 \chapter{Resultat av å automatisk samanstille norske og georgiske setningar}
 \label{sec-5}
 
@@ -1266,6 +1292,8 @@ seie noko \emph{a priori} om kva for vanskar ein kan finne).
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
+
 
 
 
