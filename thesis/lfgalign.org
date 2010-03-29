@@ -57,21 +57,24 @@ i større grad krev syntaktisk likskap.
 Automatiske metodar for tekstsamanstilling kan nyttast til ulike
 metodar for maskinell omsetjing, i tillegg til oppbygging av
 parallelle korpora for meir teoretiske språkstudie. I samanheng med
-XPar-prosjektet \citep{xpar2008rcn} granskar eg metodar for automatisk
-frasesamanstilling, dvs. omsetjingsforhold mellom fleire
-ord. \citet{samuelsson2007apa} skildrar ein metode kor
-frasesamanstilling blir oppnådd vha. ordsamanstilling på ein parallell
-trebank der berre N-gram som svarer til ein syntaktisk node blir
-samanstilt som frasar. \citet{tinsley2007ept, hearne2008ccd} viser at
-slike syntaktisk motiverte metodar kan forbetre frasebasert stokastisk
-maskinomsetjing (/PBSMT/). I XPar vil ein finne ut om frasesamanstilling
-kan forbetrast ved å utnytte det at LFG-grammatikkane for dei ulike
-språka er skrivne med same prinsipp lagt til grunn; to parallellstilte
-setningar bør ha f-strukturar som er like nok til at me kan
-samanstille frasar ved hjelp av likskapen mellom f-strukturane. Sidan
-avbildinga frå c-strukturnodar til f-struktur er mange-til-ein, kan me
-innanfor eitt tre ha fleire N-gram per f-strukturhovud; slike
-relasjonar får me ikkje fram i metoden til
+XPar-prosjektet \citep{xpar2008rcn} har eg sett på metodar for
+automatisk frasesamanstilling, dvs. for å finne omsetjingsforhold
+mellom fleire ord. Dei første metodane for dette kom frå statistisk
+maskinomsetjing, der ein berre nytta sannsyn av N-gram-omsetjingar,
+utan nokon form for syntaktisk informasjon.  \citet{samuelsson2007apa}
+skildrar ein metode kor frasesamanstilling blir oppnådd
+vha. ordsamanstilling på ein parallell trebank der berre N-gram som
+svarer til ein syntaktisk node blir samanstilt som
+frasar. \citet{tinsley2007ept, hearne2008ccd} viser at slike
+syntaktisk motiverte metodar kan forbetre frasebasert stokastisk
+maskinomsetjing (/PBSMT/). I XPar vil ein finne ut om
+frasesamanstilling kan forbetrast ved å utnytte det at
+LFG-grammatikkane for dei ulike språka er skrivne med same prinsipp
+lagt til grunn; to parallellstilte setningar bør ha f-strukturar som
+er like nok til at me kan samanstille frasar ved hjelp av likskapen
+mellom f-strukturane. Sidan avbildinga frå c-strukturnodar til
+f-struktur er mange-til-ein, kan me innanfor eitt tre ha fleire N-gram
+per f-strukturhovud; slike relasjonar får me ikkje fram i metoden til
 \citet{samuelsson2007apa}. Eg vil i masteroppgåva prøve å samanlikne
 desse metodane, m.a. i forhold til dei ikkje-kontinuerlege
 konstituentane til språk som georgisk, og utfordringane ved
@@ -208,7 +211,7 @@ at mornodar ikkje skal samanstillast; ein formalisering dette steget,
 med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
 * Bakgrunn og relaterte metodar
-   - reine n-gram-samanstillingar, dependensbaserte
+   - reine N-gram-samanstillingar, dependensbaserte
    - ulike formål for samanstilling gir ulike metodar
    - kort introduksjon til LFG 
 
@@ -296,13 +299,7 @@ level of word correspondences.»
 ie. non-monotonic phrase linking on top of the word linking.
 
 
-** TOGROK korleis gjenfinne there is/es gibt? 			     :ROTETE:
-1. n-gram kjem like ofte som heile konstruksjonen, då kan dette
-   gjenfinnast
-   - dvs., /there is NP/es gibt NP/-samanstilling kjem like ofte som
-     /there is/ eller /es gibt/ førekjem. Eit TigerXML-type søk etter
-     /there is NP/es gibt NP/ burde jo vere mogleg, sjekk om dette er
-     delmengd av /there is/es gibt/. 
+
 ** Introduksjon
 I denne delen prøver eg å finne fram til kva som er den best moglege
 frasesamanstillinga. Eg argumenterer for at «best» her må tolkast i
@@ -371,7 +368,7 @@ me godtek blir då avgjort av formålet med samanstillinga.
 
 Eg føreset her at eitt av formåla med samanstillinga er å kunne
 oppdage korleis ulike språk realiserer semantiske roller syntaktisk;
-då spesielt i forhold til hypotesane gitt i \citet[s.~7]{xpar2009pd},
+då spesielt i forhold til hypotesane gitt i \citet[s.~7]{xpar2008rcn},
 t.d. at «case marking might be useful to further determine a given
 argument's semantic role». (Skal me finne det siste, må me altså kunne
 samanstille frasar med ulik kasusmarkering, men ha krav om lik
@@ -473,8 +470,8 @@ omsetjinga, men /a priori/ kan me ikkje utelukke at eit ord ikkje har ei
 lenkjing, og me kan heller ikkje utelate mange-til-mange-lenkjing. Det
 same gjeld nodane i c-strukturen.
 
-# (i tillegg vil samanstilling av andre trekk vere endå eit
-# steg lenger vekk frå observerte data)
+\fxnote{i tillegg vil samanstilling av andre trekk vere endå eit steg
+lenger vekk frå observerte data}
 
 Når det gjeld f-strukturane er det ganske mange element me teoretisk
 sett kunne ha samanstilt, t.d. enkelttrekk som bestemtheit eller dei
@@ -506,6 +503,8 @@ Eg føreslår følgjande føringar:
 visse krav, gitt nedanfor, er oppfylt. Me kan altså gjerne ha
 c-strukturnodar som ikkje er lenkja til andre nodar.)
 
+\fxnote{backe det med eksemplar i trebank; kople til adj-arg-lenkje}
+
 Påstandane over må forsvarast. Punkt \ref{f-links-substr} og
 \ref{f-links-domain} over seier at viss PRED-elementa projisert av
 t.d. to verb i verbfrasar er lenkja, vil /heile/ VP-ane vere lenkja
@@ -523,6 +522,14 @@ transitive verb au:
      $\leftrightarrow$
      \b. Grashoppene har ingen konge, berre støy og krasse ord
 
+\fxnote{der ADJUNKT ikkje er realisert, lenkjer me ikkje PRED.  skal
+me då ikkje lenkje ord heller?}
+
+\fxnote{PRED->ord :: iallfall\\
+PRED<-ord :: ?\\
+PRED<->ord\\
+PRED, ord}
+
 #+BEGIN_LaTeX
 \emph{have/har} tek del i VP-samanstillinga \emph{have no king.../har ingen konge...}.
 
@@ -536,7 +543,7 @@ det som i \Last mogleg å skilje ut delsamanstillingar, som
 argumentstruktur og adjunkt. 
 #+END_LaTeX
 
-#  avsnittet over er litt rotete TODO
+\fxnote{avsnittet over er litt rotete TODO}
 
 Alle nodar i c-strukturen (alle syntaktiske /frasar/konstituentar/ i
 setninga) som kan koplast til PRED-haldande f-strukturar, vil altså
@@ -714,7 +721,7 @@ georgisk spesifikator som var lenkja til den norske PRONP.
 (og kva skal me med dei?)
 
 «Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
-(/There/ never /is/) som opptrer utanfor n-grammet på det andre
+(/There/ never /is/) som opptrer utanfor N-grammet på det andre
 språket.»
 
 ** TOGROK mange-til-mange-lenkjing i f-strukturane? 		     :ROTETE:
@@ -880,7 +887,7 @@ fann at 2 av 15 korresponderande verbtoken[fn:15] for høgfrekvente
 innhaldsverb fekk analysar kor argument korresponderte med adjunkt
 \citep{unhammer2009aaa}.
 
-
+\fxnote{LCS, dorr}
 *** SKRIV kvifor lik arg-str er bra, så kvifor det er eit problem    :ROTETE:
 *** TODO Ulik følgje i argumentstruktur
 I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
@@ -1027,6 +1034,8 @@ argstr til $PRED_{L2}$.
      vedde<a,d,b,c> og vedde<d,a,b,c> -- men sannsynlegvis er altså
      a,b,c i same rekkjefølgje uansett...)
 
+** TOGROK kva var poenget med dette?				     :ROTETE:
+«etter og uten er dei einaste prep som tek setn utan å vere arg»
 ** ULEST Cyrus, FuSe-prosjektet					     :ROTETE:
 \citet{cyrus2004apa}
 «Abstract: We report on a recently initiated project which aims at
@@ -1177,8 +1186,14 @@ eit filter som sjekker om skrankane er oppfylte.
    - om kjeldematerialet
    - manglar med implementasjonen
    - samanlikning av lenkjing basert på f-struktur og lenkjing basert
-     på n-gram
-* Avslutning
+     på N-gram
+** TOGROK korleis gjenfinne there is/es gibt?			     :ROTETE:
+1. N-gram kjem like ofte som heile konstruksjonen, då kan dette
+   gjenfinnast
+   - dvs., /there is NP/es gibt NP/-samanstilling kjem like ofte som
+     /there is/ eller /es gibt/ førekjem. Eit TigerXML-type søk etter
+     /there is NP/es gibt NP/ burde jo vere mogleg, sjekk om dette er
+     delmengd av /there is/es gibt/. * Avslutning
 
 
 # tom inndeling for å halde bibliografien sist

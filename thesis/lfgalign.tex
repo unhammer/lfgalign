@@ -1,8 +1,8 @@
-% Created 2010-03-27 Sat 16:55
-\documentclass[11pt,a4paper,oneside]{book}
+% Created 2010-03-27 Sat 18:01
+\documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{hyperref}
+\usepackage[draft=false]{hyperref}
 \usepackage[english,nynorsk]{babel} % or whatever language
 \usepackage{apacite} % after babel
 \usepackage{natbib}
@@ -73,21 +73,24 @@ i større grad krev syntaktisk likskap.
 Automatiske metodar for tekstsamanstilling kan nyttast til ulike
 metodar for maskinell omsetjing, i tillegg til oppbygging av
 parallelle korpora for meir teoretiske språkstudie. I samanheng med
-XPar-prosjektet \citep{xpar2008rcn} granskar eg metodar for automatisk
-frasesamanstilling, dvs. omsetjingsforhold mellom fleire
-ord. \citet{samuelsson2007apa} skildrar ein metode kor
-frasesamanstilling blir oppnådd vha. ordsamanstilling på ein parallell
-trebank der berre N-gram som svarer til ein syntaktisk node blir
-samanstilt som frasar. \citet{tinsley2007ept, hearne2008ccd} viser at
-slike syntaktisk motiverte metodar kan forbetre frasebasert stokastisk
-maskinomsetjing (\emph{PBSMT}). I XPar vil ein finne ut om frasesamanstilling
-kan forbetrast ved å utnytte det at LFG-grammatikkane for dei ulike
-språka er skrivne med same prinsipp lagt til grunn; to parallellstilte
-setningar bør ha f-strukturar som er like nok til at me kan
-samanstille frasar ved hjelp av likskapen mellom f-strukturane. Sidan
-avbildinga frå c-strukturnodar til f-struktur er mange-til-ein, kan me
-innanfor eitt tre ha fleire N-gram per f-strukturhovud; slike
-relasjonar får me ikkje fram i metoden til
+XPar-prosjektet \citep{xpar2008rcn} har eg sett på metodar for
+automatisk frasesamanstilling, dvs. for å finne omsetjingsforhold
+mellom fleire ord. Dei første metodane for dette kom frå statistisk
+maskinomsetjing, der ein berre nytta sannsyn av N-gram-omsetjingar,
+utan nokon form for syntaktisk informasjon.  \citet{samuelsson2007apa}
+skildrar ein metode kor frasesamanstilling blir oppnådd
+vha. ordsamanstilling på ein parallell trebank der berre N-gram som
+svarer til ein syntaktisk node blir samanstilt som
+frasar. \citet{tinsley2007ept, hearne2008ccd} viser at slike
+syntaktisk motiverte metodar kan forbetre frasebasert stokastisk
+maskinomsetjing (\emph{PBSMT}). I XPar vil ein finne ut om
+frasesamanstilling kan forbetrast ved å utnytte det at
+LFG-grammatikkane for dei ulike språka er skrivne med same prinsipp
+lagt til grunn; to parallellstilte setningar bør ha f-strukturar som
+er like nok til at me kan samanstille frasar ved hjelp av likskapen
+mellom f-strukturane. Sidan avbildinga frå c-strukturnodar til
+f-struktur er mange-til-ein, kan me innanfor eitt tre ha fleire N-gram
+per f-strukturhovud; slike relasjonar får me ikkje fram i metoden til
 \citet{samuelsson2007apa}. Eg vil i masteroppgåva prøve å samanlikne
 desse metodane, m.a. i forhold til dei ikkje-kontinuerlege
 konstituentane til språk som georgisk, og utfordringane ved
@@ -222,7 +225,7 @@ med diskusjon rundt problema, vil au inngå i masteroppgåva.
 \label{sec-2}
 
 \begin{itemize}
-\item reine n-gram-samanstillingar, dependensbaserte
+\item reine N-gram-samanstillingar, dependensbaserte
 \item ulike formål for samanstilling gir ulike metodar
 \item kort introduksjon til LFG
 \end{itemize}
@@ -311,23 +314,9 @@ level of word correspondences.»
 ie. non-monotonic phrase linking on top of the word linking.
 
 
-\section{\textbf{TOGROK} korleis gjenfinne there is/es gibt? \textbf{:ROTETE:}}
-\label{sec-3.2}
 
-\begin{enumerate}
-\item n-gram kjem like ofte som heile konstruksjonen, då kan dette
-   gjenfinnast
-
-\begin{itemize}
-\item dvs., \emph{there is NP/es gibt NP}-samanstilling kjem like ofte som
-     \emph{there is} eller \emph{es gibt} førekjem. Eit TigerXML-type søk etter
-     \emph{there is NP/es gibt NP} burde jo vere mogleg, sjekk om dette er
-     delmengd av \emph{there is/es gibt}.
-\end{itemize}
-
-\end{enumerate}
 \section{Introduksjon}
-\label{sec-3.3}
+\label{sec-3.2}
 
 I denne delen prøver eg å finne fram til kva som er den best moglege
 frasesamanstillinga. Eg argumenterer for at «best» her må tolkast i
@@ -338,7 +327,7 @@ kravet om likskap i argumentstruktur, og gir eit forslag til krav for
 frasesamanstilling i trebankar.
 
 \section{Kva er formålet med ei frasesamanstilling?}
-\label{sec-3.4}
+\label{sec-3.3}
 
 I frasebasert statistisk maskinomsetjing (PBSMT) skal ei
 fraselenkje\footnote{Eg nyttar her termane \emph{lenkjing} og \emph{samanstilling} om
@@ -402,7 +391,7 @@ me godtek blir då avgjort av formålet med samanstillinga.
 
 Eg føreset her at eitt av formåla med samanstillinga er å kunne
 oppdage korleis ulike språk realiserer semantiske roller syntaktisk;
-då spesielt i forhold til hypotesane gitt i \citet[s.~7]{xpar2009pd},
+då spesielt i forhold til hypotesane gitt i \citet[s.~7]{xpar2008rcn},
 t.d. at «case marking might be useful to further determine a given
 argument's semantic role». (Skal me finne det siste, må me altså kunne
 samanstille frasar med ulik kasusmarkering, men ha krav om lik
@@ -423,7 +412,7 @@ med desse formåla i tankane. Om alle krava er moglege å implementere,
 er eit separat problem.
 
 \section{Krav / skrankar for frasesamanstilling i ein LFG-trebank}
-\label{sec-3.5}
+\label{sec-3.4}
 
 
 Samanstilte frasar bør ha nok semantisk likskap til å kunne opptre som
@@ -499,7 +488,7 @@ Eg byggjar vidare på krava frå \citet{thunes2003eal} nedanfor, men
 kjem som nemnd med visse endringsforslag.
 
 \section{Kva kan samanstillast?}
-\label{sec-3.6}
+\label{sec-3.5}
 
 
 Viss to uttrykk er samanstilt på setningsnivå (slik at me dimed kan gå
@@ -516,6 +505,8 @@ omsetjinga, men \emph{a priori} kan me ikkje utelukke at eit ord ikkje har ei
 lenkjing, og me kan heller ikkje utelate mange-til-mange-lenkjing. Det
 same gjeld nodane i c-strukturen.
 
+\fxnote{i tillegg vil samanstilling av andre trekk vere endå eit steg
+lenger vekk frå observerte data}
 
 Når det gjeld f-strukturane er det ganske mange element me teoretisk
 sett kunne ha samanstilt, t.d. enkelttrekk som bestemtheit eller dei
@@ -555,6 +546,8 @@ Eg føreslår følgjande føringar:
 visse krav, gitt nedanfor, er oppfylt. Me kan altså gjerne ha
 c-strukturnodar som ikkje er lenkja til andre nodar.)
 
+\fxnote{backe det med eksemplar i trebank; kople til adj-arg-lenkje}
+
 Påstandane over må forsvarast. Punkt \ref{f-links-substr} og
 \ref{f-links-domain} over seier at viss PRED-elementa projisert av
 t.d. to verb i verbfrasar er lenkja, vil \emph{heile} VP-ane vere lenkja
@@ -570,6 +563,14 @@ transitive verb au:
      $\leftrightarrow$
      \b. Grashoppene har ingen konge, berre støy og krasse ord
 
+\fxnote{der ADJUNKT ikkje er realisert, lenkjer me ikkje PRED.  skal
+me då ikkje lenkje ord heller?}
+
+\fxnote{PRED->ord :: iallfall\\
+PRED<-ord :: ?\\
+PRED<->ord\\
+PRED, ord}
+
 \emph{have/har} tek del i VP-samanstillinga \emph{have no king.../har ingen konge...}.
 
 Som nemnd over; ordsamanstillinga treng ikkje vere ein-til-ein, det
@@ -581,26 +582,27 @@ det som i \Last mogleg å skilje ut delsamanstillingar, som
 \emph{have/har}. Eg kjem tilbake til dette i del \ref{SEC:lik-argstr} om
 argumentstruktur og adjunkt. 
 
+\fxnote{avsnittet over er litt rotete TODO}
 
 Alle nodar i c-strukturen (alle syntaktiske \emph{frasar/konstituentar} i
 setninga) som kan koplast til PRED-haldande f-strukturar, vil altså
 vere kandidatar for samanstilling på c-strukturnivå (dette inkluderer
 diskontinuerlege konstituentar), men ikkje alle vil bli samanstilt.
 \subsection{\textbf{TOGROK} finst det tilfelle der ordlenkjer ikkje impliserer PRED-lenkjer?}
-\label{sec-3.6.1}
+\label{sec-3.5.1}
 
    hypotese: det er alltid slik at \\
    ordlenkjing av predikerande ord => PRED-lenkje
 \section{\textbf{TOGROK} kva med ekspletivar? ingen PRED men heller ikkje C/F/I \textbf{:ROTETE:}}
-\label{sec-3.7}
+\label{sec-3.6}
 
 Kandidatane på f-strukturnivå må jo inkludere desse au\ldots{}
 \section{\textbf{TODO} Gi enkelt døme kor alt fungerer \textbf{:ROTETE:}}
-\label{sec-3.8}
+\label{sec-3.7}
 
 
 \section{Funksjonsord}
-\label{sec-3.9}
+\label{sec-3.8}
 
 \label{SEC:fnord}
 I tillegg kan me ha ord i setninga som ikkje tilsvarer PRED-element i
@@ -650,11 +652,11 @@ vil vere oppfylt om me kan samanstille \emph{cvimda} med \emph{det regnet}.
    \label{fig:fnord}
   \end{figure}
 \subsection{\textbf{TOGROK} cvimda<PRO> men regne<>expletive -- lenkje? \textbf{:ROTETE:}}
-\label{sec-3.9.1}
+\label{sec-3.8.1}
 
 
 \section{Lenkjing av underordna c-strukturnodar}
-\label{sec-3.10}
+\label{sec-3.9}
 
 \label{SEC:subnode}
 
@@ -760,22 +762,22 @@ georgisk spesifikator som var lenkja til den norske PRONP.
 \end{figure}
 
 \subsection{\textbf{SKRIV} døme! \textbf{:ROTETE:}}
-\label{sec-3.10.1}
+\label{sec-3.9.1}
 
 \subsection{\textbf{TOGROK} me$_{\mathrm{OBJ}}$ gusta X$_{\mathrm{SUBJ}}$ // I$_{\mathrm{SUBJ}}$ like X$_{\mathrm{OBJ}}$ ?? \textbf{:ROTETE:}}
-\label{sec-3.10.2}
+\label{sec-3.9.2}
 
 \subsection{\textbf{TOGROK} korleis finn me \emph{there is}-lenkjer då? \textbf{:ROTETE:}}
-\label{sec-3.10.3}
+\label{sec-3.9.3}
 
 (og kva skal me med dei?)
 
 «Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
-(\emph{There} never \emph{is}) som opptrer utanfor n-grammet på det andre
+(\emph{There} never \emph{is}) som opptrer utanfor N-grammet på det andre
 språket.»
 
 \section{\textbf{TOGROK} mange-til-mange-lenkjing i f-strukturane? \textbf{:ROTETE:}}
-\label{sec-3.11}
+\label{sec-3.10}
 
     Eg er litt usikker på om me skal ha slike
     mange-til-mange-korrespondansar i f-strukturane; eg har rekna med
@@ -799,11 +801,11 @@ og \{ \emph{a, deep, appreciation} \} på den andre.
 
 
 \subsection{\textbf{SKRIV} Kva inneber ei mange-til-mange-lenkjing? \textbf{:ROTETE:}}
-\label{sec-3.11.1}
+\label{sec-3.10.1}
 
 
 \section{\textbf{SKRIV} Mangel på samsvar i syntaks og semantikk \textbf{:ROTETE:}}
-\label{sec-3.12}
+\label{sec-3.11}
 
 \cite[s.~5]{kruijffkorbayova2006agc} gir følgjande døme: 
 \ex.  nikdy nebyl \\
@@ -816,7 +818,7 @@ mellom \emph{never} og \emph{nikby}.
 
 
 \section{\textbf{TOGROK} Diskontinuerlege einingar \textbf{:ROTETE:}}
-\label{sec-3.13}
+\label{sec-3.12}
 
 \begin{itemize}
 \item diskontinuerlege einingar \cite[s.~4]{cheung2002scg}
@@ -824,16 +826,16 @@ mellom \emph{never} og \emph{nikby}.
      gir dei i forhold til c-strukturnivåsamanstilling?
 \end{itemize}
 \subsection{\textbf{TODO} døme på diskontinuerlege konstituentar som er lenkja \textbf{:ROTETE:}}
-\label{sec-3.13.1}
+\label{sec-3.12.1}
 
 \section{\textbf{TOGROK} Er «compounds» frasar? \textbf{:ROTETE:}}
-\label{sec-3.14}
+\label{sec-3.13}
 
  \citep[p.~1]{giegerich2006aea}
 
 
 \section{Lik ordklasse?}
-\label{sec-3.15}
+\label{sec-3.14}
 
 Ulike språk leksikaliserer same konsept på ulike
 måtar. \citet[s.~3]{cheung2002scg} skriv at det engelske ordet
@@ -855,7 +857,7 @@ krevje ein viss likskap i argumentstruktur.
 
 
 \section{Krav om lik argumentstruktur}
-\label{sec-3.16}
+\label{sec-3.15}
 
 \label{SEC:lik-argstr}
 
@@ -938,12 +940,12 @@ f-strukturane har ingen hierarkisk inndeling av desse slik me har for
 verb og argument, dei er i staden representert som \emph{uordna mengder}.
 
 \subsection{forsvare «tilsvarande» \textbf{:ROTETE:}}
-\label{sec-3.16.1}
+\label{sec-3.15.1}
 
 Tilsvarande på engelsk: \footnote{''wagered * with * that *'' på Google gir 215 treff, kor 9 av dei
 første 10 følgjer det intenderte mønsteret. }
 \subsection{\textbf{TODO} Sitere eigen korpusundersøkjing av variasjon i arg-str?}
-\label{sec-3.16.2}
+\label{sec-3.15.2}
 
 Ei undersøkjing av den frasesamanstilte trebanken SMULTRON
 \citep{samuelsson2006pap} mot LFG-grammatikkane for engelsk og tysk
@@ -953,12 +955,12 @@ fann at 2 av 15 korresponderande verbtoken\footnote{25 om ein inkluderer analysa
 innhaldsverb fekk analysar kor argument korresponderte med adjunkt
 \citep{unhammer2009aaa}.
 
-
+\fxnote{LCS, dorr}
 \subsection{\textbf{SKRIV} kvifor lik arg-str er bra, så kvifor det er eit problem \textbf{:ROTETE:}}
-\label{sec-3.16.3}
+\label{sec-3.15.3}
 
 \subsection{\textbf{TODO} Ulik følgje i argumentstruktur}
-\label{sec-3.16.4}
+\label{sec-3.15.4}
 
 I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
 argument ha ulik følgje i argumentstrukturen. Det er klart at me vil
@@ -985,7 +987,7 @@ til at bottom-up-informasjon trengst.
 
 
 \subsubsection{\textbf{TODO} Flytte til kapittel om metodar for å oppdage lenkjer?:}
-\label{sec-3.16.4.1}
+\label{sec-3.15.4.1}
 
 Kanskje me kan nytte data frå fleire førekomstar med andre subjekt
 og objekt til å lære slike argumentstrukturalternasjonar?  Om me
@@ -994,7 +996,7 @@ f-strukturinformasjon som kan nyttast til å informere
 argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.).
 
 \subsubsection{c- og f-strukturar for dømet over \textbf{:ROTETE:}}
-\label{sec-3.16.4.2}
+\label{sec-3.15.4.2}
 
 \begin{tikzpicture}
 \Tree
@@ -1063,11 +1065,11 @@ argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.).
 
 
 \subsection{\textbf{SKRIV} døme med wager/3 og vedde/4 og gewettet/3 \textbf{:ROTETE:}}
-\label{sec-3.16.5}
+\label{sec-3.15.5}
 
 
 \subsection{\textbf{SKRIV} (reinskriv) \textbf{:ROTETE:}}
-\label{sec-3.16.6}
+\label{sec-3.15.6}
 
 Same globale tyding krev i det minste at, i situasjonen verbet
 denoterer, speler deltakarane same rolle. Men dette er endå meir
@@ -1093,7 +1095,7 @@ Alternativt ein konstruksjonslenkjing\ldots{}
 Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slags delmengd av
 argstr til $PRED_{L2}$. 
 \subsection{\textbf{SKRIV} True Arguments vs True Adjuncts, Pustejovsky \textbf{:ROTETE:}}
-\label{sec-3.16.7}
+\label{sec-3.15.7}
 
 \begin{itemize}
 \item Treng døme først\ldots{}
@@ -1117,6 +1119,10 @@ argstr til $PRED_{L2}$.
      vedde<a,d,b,c> og vedde<d,a,b,c> -- men sannsynlegvis er altså
      a,b,c i same rekkjefølgje uansett\ldots{})
 \end{itemize}
+\section{\textbf{TOGROK} kva var poenget med dette? \textbf{:ROTETE:}}
+\label{sec-3.16}
+
+«etter og uten er dei einaste prep som tek setn utan å vere arg»
 \section{\textbf{ULEST} Cyrus, FuSe-prosjektet \textbf{:ROTETE:}}
 \label{sec-3.17}
 
@@ -1282,14 +1288,23 @@ eit filter som sjekker om skrankane er oppfylte.
 \item om kjeldematerialet
 \item manglar med implementasjonen
 \item samanlikning av lenkjing basert på f-struktur og lenkjing basert
-     på n-gram
+     på N-gram
 \end{itemize}
-\chapter{Avslutning}
-\label{sec-6}
+\section{\textbf{TOGROK} korleis gjenfinne there is/es gibt? \textbf{:ROTETE:}}
+\label{sec-5.1}
 
+\begin{enumerate}
+\item N-gram kjem like ofte som heile konstruksjonen, då kan dette
+   gjenfinnast
 
+\begin{itemize}
+\item dvs., \emph{there is NP/es gibt NP}-samanstilling kjem like ofte som
+     \emph{there is} eller \emph{es gibt} førekjem. Eit TigerXML-type søk etter
+     \emph{there is NP/es gibt NP} burde jo vere mogleg, sjekk om dette er
+     delmengd av \emph{there is/es gibt}. * Avslutning
+\end{itemize}
 
-
+\end{enumerate}
 \bibliographystyle{apacite}
 \bibliography{master}
 
