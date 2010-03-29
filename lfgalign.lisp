@@ -8,8 +8,7 @@
   (:report (lambda (condition stream)
 	     (format stream "Found superfluous topmost nodes: ~A" (text condition)))))
 
-(defun get-equivs (val tab)
-  (dset3-findall val (gethash '|eq-sets| tab)))
+;;;;;;;; C-STRUCTURE TREE:
 
 (defun maketree (tab)
   "Returns a binary tree created from the |subtree| and |terminal|
@@ -70,6 +69,12 @@ nodes in the c-structure which project this domain"
 (defun pretty-topnode (f-var tab tree)
   "Skip the more boring nodes."
   (skip-suff_base (topnode f-var tab tree)))
+
+
+;;;;;;;; VARIOUS HELPERS:
+
+(defun get-equivs (val tab)
+  (dset3-findall val (gethash '|eq-sets| tab)))
 
 (defun unravel-helper (att stack seen tab)
   "Call with empty `seen' and a `stack' containing the variable you
@@ -153,7 +158,7 @@ var `childv'."
      collect attval))
 
 
-;;; LPT stuff:
+;;;;;;;; LPT stuff:
 
 (defun lemma (Pr) (second Pr))
 
@@ -219,6 +224,7 @@ the pro no matter what, but will this give us trouble?"
 	    (and L-tr lem-tr))))))
 
 (defun all-LPT (tab_s tab_t LPTs)
+  "Return all possible LPTs of each PRED, as pairs of PREDs."
   (mapcan-true
    (lambda (Pr_s)
      (mapcar-true
@@ -227,6 +233,38 @@ the pro no matter what, but will this give us trouble?"
       (all-preds tab_t)))
    (all-preds tab_s)))
 
+(defun all-LPT-vars (tab_s tab_t LPTs)
+  "Return an association list of all possible LPTs, using the
+variables of the PRED entries from `tab_s' as keys. So the
+alist-entry (0 9 8) means that var 0 is a PRED in `tab_s', and 9 and 8
+are outermost PRED's in `tab_t', and they are all possible LPT's."
+  (loop
+     for Pr_s in (all-preds tab_s)
+     collect (cons (car Pr_s)
+		   (loop 
+		    for Pr_t in (all-preds tab_t)
+		    for o = (LPT? Pr_s tab_s Pr_t tab_t LPTs)
+		    when o append (list (car Pr_t))))))
+
+(defun LPT-permute (all-LPT)
+  "Run on the output of `all-LPT-vars'."
+  (let ((this (car all-LPT)))
+    (if (cdr all-LPT)
+	(let ((others (LPT-permute (cdr all-LPT)))
+	      (pairs (mapcar
+		      (lambda (m) (cons (car this) m))
+		      (cdr this))))
+	  (mapcan 
+	   (lambda (m)
+	     (mapcar
+	      (lambda (o) (cons m o))
+	      others))
+	   pairs))
+      (mapcar
+       (lambda (m) (list (cons (car this) m)))
+       (cdr this)))))
+
+;;;;;;;; (all-)outer>-LPT is deprecated (for now?)
 (defun outer>-LPT (Pr_s tab_s var_t tab_t LPTs)
   "Return a list of the outermost possible `LPTs' of `Pr_s' in `tab_t'
 starting at `var_s'."
@@ -238,7 +276,6 @@ starting at `var_s'."
 	     for c in (get-children Pr_t)
 	     for outer = (outer>-LPT Pr_s tab_s c tab_t LPTs)
 	     when outer append it)))))
-
 (defun all-outer>-LPT (tab_s tab_t LPTs)
   "Return an association list of all possible outermost LPTs, using
 the variables of the PRED entries from `tab_s' as keys. So the
@@ -255,7 +292,7 @@ LPT's."
 		      when o append it))))
 
 
-;;; The actual alignment:
+;;;;;;;; ALIGNMENT (a real mess at the moment)
 
 (defun foo (tab_s tab_t LPTs)
   "Intuition: Starting the alignment from outers and then going
@@ -334,7 +371,7 @@ TODO: cache/memoise maketree"
 		      var2 (references var2 child2 tab2))
 	   collect (f-align child1 tab1 child2 tab2))))))
   
-(defun test ()
+(defun test-f-align ()
   "Assumes outermost f-str has a var(0) containing a PRED"
   (f-align '0 (open-and-import "ka/23.pl")
 	   '0 (open-and-import "nb/24.pl"))
@@ -344,8 +381,8 @@ TODO: cache/memoise maketree"
   (format t "---~% This one will be troublesome, head-switching:~%~%")
   (f-align '0 (open-and-import "ka/4.pl")
 	   '0 (open-and-import "nb/5.pl")))
-  
-(defun sanity-check ()
+
+(defun find-multiple-unreferenced () "Fluff"
   (loop for i from 1 to 106
      for f = (concatenate 'string "nb/" (prin1-to-string i) ".pl")
      for unref = (unreferenced-preds (open-and-import f))
@@ -400,15 +437,35 @@ TODO: cache/memoise maketree"
     (lisp-unit:assert-equal "iqePa"
 			    (L (get-pred 0 tab) tab))))
 
+(lisp-unit:define-test test-LPT-permute
+ (lisp-unit:assert-equal
+  '(((0 . 1) (4 . 5))
+    ((0 . 1) (4 . 6))
+    ((0 . 2) (4 . 5))
+    ((0 . 2) (4 . 6))
+    ((0 . 3) (4 . 5))
+    ((0 . 3) (4 . 6)))
+  (LPT-permute '((0 1 2 3)
+		 (4 5 6))))
+ (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
+       (tab_t (open-and-import "dev/TEST_permute_t.pl"))
+       (LPT (cons (make-hash-table :test #'equal)
+		  (make-hash-table :test #'equal))))
+   (lisp-unit:assert-equal
+    '(((0 . 0) (5 . 0) (6 . 0)) ((0 . 0) (5 . 0) (6 . 3)) ((0 . 0) (5 . 3) (6 . 0))
+      ((0 . 0) (5 . 3) (6 . 3)) ((0 . 3) (5 . 0) (6 . 0)) ((0 . 3) (5 . 0) (6 . 3))
+      ((0 . 3) (5 . 3) (6 . 0)) ((0 . 3) (5 . 3) (6 . 3)))
+    (LPT-permute (all-LPT-vars tab_s tab_t LPT)))))
+
 (lisp-unit:define-test test-topnode
-  (let* ((tab (open-and-import "dev/TEST_parse.pl"))
-	 (tree (maketree tab)))
-    (lisp-unit:assert-equal
-     '(34 "qePa-2746-3" (21))
-     (topnode 15 tab tree))
-    (lisp-unit:assert-equal
-     '(144 "PROPP" NIL (2 "PROP" NIL (1 "abramsma" (1))))
-     (topnode 3 tab tree))))
+		       (let* ((tab (open-and-import "dev/TEST_parse.pl"))
+			      (tree (maketree tab)))
+			 (lisp-unit:assert-equal
+			  '(34 "qePa-2746-3" (21))
+			  (topnode 15 tab tree))
+			 (lisp-unit:assert-equal
+			  '(144 "PROPP" NIL (2 "PROP" NIL (1 "abramsma" (1))))
+			  (topnode 3 tab tree))))
 
 (lisp-unit:define-test test-maketree
   (multiple-value-bind (tree refs)
