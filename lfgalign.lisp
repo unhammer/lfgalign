@@ -264,6 +264,20 @@ are outermost PRED's in `tab_t', and they are all possible LPT's."
        (lambda (m) (list (cons (car this) m)))
        (cdr this)))))
 
+(defun merge-PREDs (perms)
+  "TODO: this should create new permutations from the ones given by
+`LPT-permute' where we 'merge' alignments. We can create new
+merged permutations only if: 
+- This PRED has an (X)COMP f-daughter and both can LPT to the same PRED
+- Two adjuncts of the same PRED p can LPT to an adjunct whose f-mother 
+  can LPT to p
+- ...what else?
+
+Idea: would it be possible to do merging like this _after_ the other 
+f-alignment checking? Ie. on only the permutations that have been through 
+f-align or whatever?"
+  perms)
+
 ;;;;;;;; (all-)outer>-LPT is deprecated (for now?)
 (defun outer>-LPT (Pr_s tab_s var_t tab_t LPTs)
   "Return a list of the outermost possible `LPTs' of `Pr_s' in `tab_t'
