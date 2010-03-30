@@ -70,7 +70,7 @@ structure."
 	 (stats (caadr (assoc "'statistics'" (cdr (third raw)) :test #'equal))))
     (princ stats)
     (if (not (equal "1" (subseq stats 1 (position #\  stats))))
-	(error ">1 solutions")
+	(error "More than one solution. lfgalign only works on completely disambiguated files.")
       raw)))
 
 (defun raw-equiv (parse)
