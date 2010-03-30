@@ -123,7 +123,7 @@ PRED was found."
      (table-to-alist tab))))
 
 (defun unreferenced-preds (tab)
-  "Return a list of variables of those PRED's which are not children
+  "Return a list of variables of those PRED's which are not arguments
 of others."
   (let (vars backrefs)
     (mapcar (lambda (Pr)
@@ -137,16 +137,16 @@ of others."
   "Is `Pr1' a predecessor of `Pr2' (outermore in the f-structure)?
 Note: we actually only look at the car of `Pr2', which has to be its
 variable (ie. what `get-pred' returns)."
-  (let ((children (get-children Pr1)))
-    (or (member (car Pr2) children)
-	(loop for c in children
+  (let ((args (get-args Pr1)))
+    (or (member (car Pr2) args)
+	(loop for c in args
 	   for Prc = (unravel "PRED" c tab)
 	   thereis (and Prc
 			(not (equal "NULL" c))
 			(outer> Prc Pr2 tab))))))
 
 
-(defun get-children (pred)
+(defun get-args (pred)
   (union (fourth pred) (fifth pred)))
 
 (defun references (parentv childv tab)
@@ -247,7 +247,8 @@ are outermost PRED's in `tab_t', and they are all possible LPT's."
 		    when o append (list (car Pr_t))))))
 
 (defun LPT-permute (all-LPT)
-  "Run on the output of `all-LPT-vars'."
+  "Run on the output of `all-LPT-vars'. 
+TODO: filter out illegal merges"
   (let ((this (car all-LPT)))
     (if (cdr all-LPT)
 	(let ((others (LPT-permute (cdr all-LPT)))
@@ -275,8 +276,58 @@ merged permutations only if:
 
 Idea: would it be possible to do merging like this _after_ the other 
 f-alignment checking? Ie. on only the permutations that have been through 
-f-align or whatever?"
+f-align or whatever?
+
+Note: at the moment, `LPT-permute' includes all merges."
   perms)
+
+(defun get-adjuncts (var tab)
+  "TODO"
+  nil)
+
+(defun filter-perms (perms tab_s tab_t)
+  "Given `perms' from `LPT-permute', remove-if the f-structure constraints 
+are not respected."
+  (mapcar-true
+   (lambda (perm) (try-f-align perm tab_s tab_t))
+   perms))
+
+(defun try-f-align (perm tab_s tab_t)
+  " (i) the number of arguments n and m may or may not differ
+is trivially true, while 
+ (ii) there is LPT-correspondence between L(Pr_s) and L(Pr_t)
+we already know is true because `perm' came from `LPT-permute'."
+  (loop for link in perm
+	for var_s = (car link)
+	for var_t = (cdr link)
+	for Pr_s = (get-pred var_s tab_s)
+	for Pr_t = (get-pred var_t tab_t)
+	for adjuncts_t = (get-adjuncts var_t tab_t)
+	for adjuncts_s = (get-adjuncts var_s tab_s)
+	for args_t = (get-args Pr_t)
+	for args_s = (get-args Pr_s)
+	;; these loops have overlapping responsibilities, TODO
+	(loop for c_s in args_s		; (iii)
+	      always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
+			    (or (member (cdr it) args_t)
+				(member (cdr it) adjuncts_t))))
+	(loop for c_t in args_t		; (iv)
+	      always (awhen (rassoc c_t perm) ; this assumes <=1-1 PRED alignments
+			    (or (member (cdr it) args_s)
+				(member (cdr it) adjuncts_s))))
+	; TODO: (v) the LPT-correspondences can be aligned one-to-one
+	(loop for adj_s in adjuncts_s		; (vi)
+	      always (aif (assoc adj_s perm) ; this assumes <=1-1 PRED alignments
+			  (not (outer> (get-pred it tab_t)
+				       Pr_t))
+			  ; unaligned adjuncts are OK:
+			  t))
+	(loop for adj_t in adjuncts_t		; (vi) vice versa
+	      always (aif (rassoc adj_t perm) ; this assumes <=1-1 PRED alignments
+			  (not (outer> (get-pred it tab_s)
+				       Pr_s))
+			  ; unaligned adjuncts are OK:
+			  t))))
 
 ;;;;;;;; (all-)outer>-LPT is deprecated (for now?)
 (defun outer>-LPT (Pr_s tab_s var_t tab_t LPTs)
@@ -287,9 +338,10 @@ starting at `var_s'."
       (if (LPT? Pr_s tab_s Pr_t tab_t LPTs)
 	  (list var_t)
 	  (loop 
-	     for c in (get-children Pr_t)
+	     for c in (get-args Pr_t)
 	     for outer = (outer>-LPT Pr_s tab_s c tab_t LPTs)
 	     when outer append it)))))
+
 (defun all-outer>-LPT (tab_s tab_t LPTs)
   "Return an association list of all possible outermost LPTs, using
 the variables of the PRED entries from `tab_s' as keys. So the
@@ -378,12 +430,12 @@ TODO: cache/memoise maketree"
       (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
       (when (and pred1 pred2)
 	(loop
-	   for child1 in (get-children pred1)
-	   for child2 in (get-children pred2)
+	   for arg1 in (get-args pred1)
+	   for arg2 in (get-args pred2)
 	   do (format t "...aligning ~A_~A and ~A_~A...~%"
-		      var1 (references var1 child1 tab1)
-		      var2 (references var2 child2 tab2))
-	   collect (f-align child1 tab1 child2 tab2))))))
+		      var1 (references var1 arg1 tab1)
+		      var2 (references var2 arg2 tab2))
+	   collect (f-align arg1 tab1 arg2 tab2))))))
   
 (defun test-f-align ()
   "Assumes outermost f-str has a var(0) containing a PRED"
@@ -450,6 +502,14 @@ TODO: cache/memoise maketree"
 			    (L (get-pred 3 tab) tab))
     (lisp-unit:assert-equal "iqePa"
 			    (L (get-pred 0 tab) tab))))
+
+(lisp-unit:define-test test-f-align
+ (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
+       (tab_t (open-and-import "dev/TEST_permute_t.pl"))
+       (LPT (cons (make-hash-table :test #'equal)
+		  (make-hash-table :test #'equal))))
+   (lisp-unit:assert-true
+    (try-f-align '((0 . 0) (5 . 3)) tab_s tab_t))))
 
 (lisp-unit:define-test test-LPT-permute
  (lisp-unit:assert-equal
