@@ -1,6 +1,10 @@
 ;;; Documentation for the Prolog export format:
 ;;; http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
 
+;;; Limitations: 
+;;; - Expects completely disambiguated files. 
+;;; - Expects the "selected" solution to have index 1, eg. select(A3,1).
+
 ;;; Tell SBCL we want full debugging info (eg. no function inlining),
 ;;; but don't care about speed:
 (declaim (optimize (speed 0) (safety 3) (debug 3)))
@@ -65,13 +69,32 @@ structure."
 	     (vector-push-extend c head))))
       (setq lastc c))))
 
+(defun disambiguated? (raw)
+  "Signal an error if the file has more than one solution."
+  (let ((selected (mapcar-true
+		   (lambda (x)
+		     (and (equal "select" (first x))
+			  ;; TODO: will we ever care about non-1's?
+			  (equal '("1") (third x))
+			  (car (second x))))
+		   (raw-equiv raw)))
+	(choices (mapcar-true
+		  (lambda (x)
+		    (and (equal "choice" (first x))
+			 (cons (car (third x)) (mapcar #'car (cdr (second x))))))
+		  (cdr (fourth raw)))))
+    (unless (do*
+	     ((current "1" ; TODO: will the intersection ever have >1?
+		       (car (intersection (cdr curchoice) selected :test #'equal)))
+	      (curchoice (assoc current choices :test #'equal)
+			 (assoc current choices :test #'equal)))
+	     ((not curchoice) current))      
+      (error ">1 solutions"))))
+
 (defun parse-prolog (stream)
-  (let* ((raw (cdr (parse-pred stream)))
-	 (stats (caadr (assoc "'statistics'" (cdr (third raw)) :test #'equal))))
-    (princ stats)
-    (if (not (equal "1" (subseq stats 1 (position #\  stats))))
-	(error "More than one solution. lfgalign only works on completely disambiguated files.")
-      raw)))
+  (let* ((raw (cdr (parse-pred stream))))
+    (and (disambiguated? raw)
+	 raw)))
 
 (defun raw-equiv (parse)
   "Skip the first element, LIST."
