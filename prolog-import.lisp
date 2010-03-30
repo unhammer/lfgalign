@@ -66,7 +66,12 @@ structure."
       (setq lastc c))))
 
 (defun parse-prolog (stream)
-  (cdr (parse-pred stream)))
+  (let* ((raw (cdr (parse-pred stream)))
+	 (stats (caadr (assoc "'statistics'" (cdr (third raw)) :test #'equal))))
+    (princ stats)
+    (if (not (equal "1" (subseq stats 1 (position #\  stats))))
+	(error ">1 solutions")
+      raw)))
 
 (defun raw-equiv (parse)
   "Skip the first element, LIST."
