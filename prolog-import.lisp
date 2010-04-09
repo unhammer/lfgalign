@@ -83,13 +83,13 @@ structure."
 		    (and (equal "choice" (first x))
 			 (cons (car (third x)) (mapcar #'car (cdr (second x))))))
 		  (cdr (fourth raw)))))
-    (unless (do*
-	     ((current "1" ; TODO: will the intersection ever have >1?
-		       (car (intersection (cdr curchoice) selected :test #'equal)))
-	      (curchoice (assoc current choices :test #'equal)
-			 (assoc current choices :test #'equal)))
-	     ((not curchoice) current))      
-      (error ">1 solutions"))))
+    (or (do*
+	    ((current "1"  ; TODO: will the intersection ever have >1?
+		      (car (intersection (cdr curchoice) selected :test #'equal)))
+	     (curchoice (assoc current choices :test #'equal)
+			(assoc current choices :test #'equal)))
+	    ((not curchoice) current))
+	(error ">1 solutions"))))
 
 (defun parse-prolog (stream)
   (let* ((raw (cdr (parse-pred stream))))
@@ -256,11 +256,11 @@ with the var key."
   "Convenience function, turn a file-stream into a table where each
 key is an f-str variable or a c-structure part (subtree, phi, fspan,
 terminal etc.)"
-  (let ((raw (parse-prolog stream)))
-    (dup-alist-to-table (append (clean-f-str (filter-equiv (raw-equiv raw)
-							   (raw-f-str raw)))
-				(clean-c-str (filter-equiv (raw-equiv raw)
-							   (raw-c-str raw)))))))
+  (awhen (parse-prolog stream)
+	 (dup-alist-to-table (append (clean-f-str (filter-equiv (raw-equiv it)
+								(raw-f-str it)))
+				     (clean-c-str (filter-equiv (raw-equiv it)
+								(raw-c-str it)))))))
 (defun open-and-import (file)
   "Convenience function. `file' is relative to the lfgalign directory."
   (with-open-file
