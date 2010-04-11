@@ -89,7 +89,7 @@ structure."
 	     (curchoice (assoc current choices :test #'equal)
 			(assoc current choices :test #'equal)))
 	    ((not curchoice) current))
-	(error ">1 solutions"))))
+	(error ">1 solutions, selected: ~A, choices: ~A" selected choices))))
 
 (defun parse-prolog (stream)
   (let* ((raw (cdr (parse-pred stream))))
