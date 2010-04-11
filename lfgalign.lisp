@@ -175,6 +175,10 @@ argument will return its verb as the first value!"
 			     (gethash '|surfaceform| tab))))
     (second surfaceform)))
 
+(defun make-LPT () "TODO"
+  (cons (make-hash-table :test #'equal)
+	(make-hash-table :test #'equal)))
+
 (defun get-LPT (w1 w2 LPTs)
   "For now, LPTs is just a cons of hash-tables, where the first lets
 you look up a list of possible `w2' matches using `w1' as key, and the
@@ -289,45 +293,56 @@ Note: at the moment, `LPT-permute' includes all merges."
   "Given `perms' from `LPT-permute', remove-if the f-structure constraints 
 are not respected."
   (mapcar-true
-   (lambda (perm) (try-f-align perm tab_s tab_t))
+   (lambda (perm) (try-f-align-perm perm tab_s tab_t))
    perms))
 
-(defun try-f-align (perm tab_s tab_t)
+;;; Idea being:
+;; (mapcar (lambda (perm)
+;; 		    (try-f-align perm nb4 ka4))
+;; 		  (LPT-permute (all-LPT-vars nb4 ka4 (make-LPT))))
+
+(defun try-f-align-perm (perm tab_s tab_t)
+  (loop for link in perm
+	always (try-f-align-link link tab_s tab_t perm)))
+(defun try-f-align-link (link tab_s tab_t perm)
   " (i) the number of arguments n and m may or may not differ
 is trivially true, while 
  (ii) there is LPT-correspondence between L(Pr_s) and L(Pr_t)
 we already know is true because `perm' came from `LPT-permute'."
-  (loop for link in perm
-	for var_s = (car link)
-	for var_t = (cdr link)
-	for Pr_s = (get-pred var_s tab_s)
-	for Pr_t = (get-pred var_t tab_t)
-	for adjuncts_t = (get-adjuncts var_t tab_t)
-	for adjuncts_s = (get-adjuncts var_s tab_s)
-	for args_t = (get-args Pr_t)
-	for args_s = (get-args Pr_s)
-	;; these loops have overlapping responsibilities, TODO
-	(loop for c_s in args_s		; (iii)
-	      always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
-			    (or (member (cdr it) args_t)
-				(member (cdr it) adjuncts_t))))
-	(loop for c_t in args_t		; (iv)
-	      always (awhen (rassoc c_t perm) ; this assumes <=1-1 PRED alignments
-			    (or (member (cdr it) args_s)
-				(member (cdr it) adjuncts_s))))
-	; TODO: (v) the LPT-correspondences can be aligned one-to-one
-	(loop for adj_s in adjuncts_s		; (vi)
-	      always (aif (assoc adj_s perm) ; this assumes <=1-1 PRED alignments
-			  (not (outer> (get-pred it tab_t)
-				       Pr_t))
-			  ; unaligned adjuncts are OK:
-			  t))
-	(loop for adj_t in adjuncts_t		; (vi) vice versa
-	      always (aif (rassoc adj_t perm) ; this assumes <=1-1 PRED alignments
-			  (not (outer> (get-pred it tab_s)
-				       Pr_s))
-			  ; unaligned adjuncts are OK:
-			  t))))
+  (let* ((var_s (car link))
+	 (var_t (cdr link))
+	 (Pr_s (get-pred var_s tab_s))
+	 (Pr_t (get-pred var_t tab_t))
+	 (adjuncts_t (get-adjuncts var_t tab_t))
+	 (adjuncts_s (get-adjuncts var_s tab_s))
+	 (args_t (get-args Pr_t))
+	 (args_s (get-args Pr_s)))
+    (when
+	(and
+	 ;; these loops have overlapping responsibilities, TODO
+	 (loop for c_s in args_s	      ; (iii)
+	       always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
+			     (or (member (cdr it) args_t)
+				 (member (cdr it) adjuncts_t))))
+	 (loop for c_t in args_t	       ; (iv)
+	       always (awhen (rassoc c_t perm) ; this assumes <=1-1 PRED alignments
+			     (or (member (cdr it) args_s)
+				 (member (cdr it) adjuncts_s))))
+					; TODO: (v) the LPT-correspondences can be aligned one-to-one
+	 (loop for adj_s in adjuncts_s	; (vi)
+	       always (aif (assoc adj_s perm) ; this assumes <=1-1 PRED alignments
+			   (not (outer> (get-pred it tab_t)
+					Pr_t))
+					; unaligned adjuncts are OK:
+			   t))
+	 (loop for adj_t in adjuncts_t	; (vi) vice versa
+	       always (aif (rassoc adj_t perm) ; this assumes <=1-1 PRED alignments
+			   (not (outer> (get-pred it tab_s)
+					Pr_s))
+					; unaligned adjuncts are OK:
+			   t)))
+      link)))
+
 
 ;;;;;;;; (all-)outer>-LPT is deprecated (for now?)
 (defun outer>-LPT (Pr_s tab_s var_t tab_t LPTs)
@@ -436,7 +451,7 @@ TODO: cache/memoise maketree"
 		      var1 (references var1 arg1 tab1)
 		      var2 (references var2 arg2 tab2))
 	   collect (f-align arg1 tab1 arg2 tab2))))))
-  
+
 (defun test-f-align ()
   "Assumes outermost f-str has a var(0) containing a PRED"
   (f-align '0 (open-and-import "ka/23.pl")
