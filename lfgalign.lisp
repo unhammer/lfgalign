@@ -251,8 +251,7 @@ are outermost PRED's in `tab_t', and they are all possible LPT's."
 		    when o append (list (car Pr_t))))))
 
 (defun LPT-permute (all-LPT)
-  "Run on the output of `all-LPT-vars'. 
-TODO: filter out illegal merges"
+  "Run on the output of `all-LPT-vars'."
   (let ((this (car all-LPT)))
     (if (cdr all-LPT)
 	(let ((others (LPT-permute (cdr all-LPT)))
@@ -260,9 +259,10 @@ TODO: filter out illegal merges"
 		      (lambda (m) (cons (car this) m))
 		      (cdr this))))
 	  (mapcan 
-	   (lambda (m)
-	     (mapcar
-	      (lambda (o) (cons m o))
+	   (lambda (p)
+	     (mapcar-true
+	      (lambda (o) (unless (rassoc (cdr p) o) ; no merges
+			    (cons p o)))
 	      others))
 	   pairs))
       (mapcar
