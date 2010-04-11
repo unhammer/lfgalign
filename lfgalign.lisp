@@ -146,8 +146,11 @@ variable (ie. what `get-pred' returns)."
 			(outer> Prc Pr2 tab))))))
 
 
-(defun get-args (pred)
-  (union (fourth pred) (fifth pred)))
+(defun get-args (pred &optional no-nulls)
+  (if no-nulls
+      (remove-if (lambda (p) (equal "NULL" p))
+		 (union (fourth pred) (fifth pred)))
+    (union (fourth pred) (fifth pred))))
 
 (defun references (parentv childv tab)
   "Give a list of attributes of var `parentv' in `tab' which refer to
@@ -302,8 +305,9 @@ are not respected."
 ;; 		  (LPT-permute (all-LPT-vars nb4 ka4 (make-LPT))))
 
 (defun try-f-align-perm (perm tab_s tab_t)
-  (loop for link in perm
-	always (try-f-align-link link tab_s tab_t perm)))
+  (when (loop for link in perm
+	      always (try-f-align-link link tab_s tab_t perm))
+    perm))
 (defun try-f-align-link (link tab_s tab_t perm)
   " (i) the number of arguments n and m may or may not differ
 is trivially true, while 
@@ -315,32 +319,41 @@ we already know is true because `perm' came from `LPT-permute'."
 	 (Pr_t (get-pred var_t tab_t))
 	 (adjuncts_t (get-adjuncts var_t tab_t))
 	 (adjuncts_s (get-adjuncts var_s tab_s))
-	 (args_t (get-args Pr_t))
-	 (args_s (get-args Pr_s)))
+	 (args_t (get-args Pr_t 'no-nulls))
+	 (args_s (get-args Pr_s 'no-nulls)))
+    (format t "~A ~A~%" Pr_s Pr_t)
     (when
 	(and
 	 ;; these loops have overlapping responsibilities, TODO
-	 (loop for c_s in args_s	      ; (iii)
-	       always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
-			     (or (member (cdr it) args_t)
-				 (member (cdr it) adjuncts_t))))
-	 (loop for c_t in args_t	       ; (iv)
-	       always (awhen (rassoc c_t perm) ; this assumes <=1-1 PRED alignments
-			     (or (member (cdr it) args_s)
-				 (member (cdr it) adjuncts_s))))
+	 (or 
+	  (loop for c_s in args_s	      ; (iii)
+		always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
+			      (or (member (cdr it) args_t)
+				  (member (cdr it) adjuncts_t))))
+	  (format t "iii, args_s: ~A, args_t: ~A, adjs_t: ~A~%" args_s args_t adjuncts_t))	 
+	 (or
+	  (loop for c_t in args_t	       ; (iv)
+		always (awhen (rassoc c_t perm) ; this assumes <=1-1 PRED alignments
+			      (or (member (car it) args_s)
+				  (member (car it) adjuncts_s))))
+	  (format t "iv, args_t: ~A, args_s: ~A, adjs_s: ~A~%" args_t args_s adjuncts_s))
 					; TODO: (v) the LPT-correspondences can be aligned one-to-one
-	 (loop for adj_s in adjuncts_s	; (vi)
-	       always (aif (assoc adj_s perm) ; this assumes <=1-1 PRED alignments
-			   (not (outer> (get-pred it tab_t)
-					Pr_t))
+	 (or
+	  (loop for adj_s in adjuncts_s	; (vi)
+		always (aif (assoc adj_s perm) ; this assumes <=1-1 PRED alignments
+			    (not (outer> (get-pred it tab_t)
+					 Pr_t))
 					; unaligned adjuncts are OK:
-			   t))
-	 (loop for adj_t in adjuncts_t	; (vi) vice versa
-	       always (aif (rassoc adj_t perm) ; this assumes <=1-1 PRED alignments
-			   (not (outer> (get-pred it tab_s)
-					Pr_s))
+			    t))
+	  (format t "vi"))
+	 (or
+	  (loop for adj_t in adjuncts_t	; (vi) vice versa
+		always (aif (rassoc adj_t perm) ; this assumes <=1-1 PRED alignments
+			    (not (outer> (get-pred it tab_s)
+					 Pr_s))
 					; unaligned adjuncts are OK:
-			   t)))
+			    t))
+	  (format t "vi")))
       link)))
 
 
