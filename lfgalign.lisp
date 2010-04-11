@@ -166,8 +166,8 @@ var `childv'."
 (defun lemma (Pr) (second Pr))
 
 (defun L (Pr tab)
-  "Return the lexical expression of PRED `Pr'. Note: a \"pro\"
-argument will return its verb as the first value!"
+  "Return the lexical expression (ie. surfaceform) of PRED `Pr'. 
+Note: a \"pro\" argument will return its verb!"
   (let* ((semform_id (third Pr))
 	 (semform (assoc semform_id (gethash '|semform_data| tab)))
 	 (preterminal (assoc (second semform)
@@ -299,10 +299,12 @@ are not respected."
    (lambda (perm) (try-f-align-perm perm tab_s tab_t))
    perms))
 
-;;; Idea being:
-;; (mapcar (lambda (perm)
-;; 		    (try-f-align perm nb4 ka4))
-;; 		  (LPT-permute (all-LPT-vars nb4 ka4 (make-LPT))))
+
+(defun try-f-align-all (tab_s tab_t &optional LPT)
+  (mapcar (lambda (perm)
+	    (try-f-align perm tab_s tab_t))
+	  (LPT-permute (all-LPT-vars tab_s tab_t (or LPT
+						     (make-LPT))))))
 
 (defun try-f-align-perm (perm tab_s tab_t)
   (when (loop for link in perm
