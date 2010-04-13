@@ -101,9 +101,7 @@ add all equivalent variables and their possible expansions."
     (cons att (car it))))
 
 (defun get-pred (var tab &optional no-error)
-  "The `no-pred-error-todo' happens with ka/3.pl -- this file has no
-selected parse (still ambiguous?). Use `no-error' to return nil if no
-PRED was found."
+  "Use `no-error' to return nil if no PRED was found."
   (if (equal "NULL" var)
       var
       (aif (unravel "PRED" var tab)
@@ -253,24 +251,30 @@ are outermost PRED's in `tab_t', and they are all possible LPT's."
 		    for o = (LPT? Pr_s tab_s Pr_t tab_t LPTs)
 		    when o append (list (car Pr_t))))))
 
+(defun longest-sublists (lists)
+  (let ((maxlen (loop for l in lists maximize (length l))))
+    (mapcar-true (lambda (l) (when (>= (length l) maxlen) l))
+		 lists)))
+
 (defun LPT-permute (all-LPT)
-  "Run on the output of `all-LPT-vars'."
-  (let ((this (car all-LPT)))
-    (if (cdr all-LPT)
-	(let ((others (LPT-permute (cdr all-LPT)))
-	      (pairs (mapcar
-		      (lambda (m) (cons (car this) m))
-		      (cdr this))))
-	  (mapcan 
-	   (lambda (p)
-	     (mapcar-true
-	      (lambda (o) (unless (rassoc (cdr p) o) ; no merges
-			    (cons p o)))
-	      others))
-	   pairs))
-      (mapcar
-       (lambda (m) (list (cons (car this) m)))
-       (cdr this)))))
+  "This quickly gets too slow to be usable. Even for just the longest
+sublists, there are 40320 results for nb/6.pl vs ka/5.pl."
+  (labels ((unseen (new seq)
+	     (dolist (old seq t) (if (or (eq (car old) (car new))
+					 (eq (cdr old) (cdr new)))
+				     (return nil)))))
+    (let ((pairs (mapcan (lambda (l)
+			   (mapcar (lambda (var_t) (cons (car l) var_t)) (cdr l)))
+			 all-LPT))
+	  seqs)
+      (loop for p in pairs
+	 do (setq seqs (append
+			seqs
+			(mapcar-true (lambda (seq) (and (unseen p seq)
+							(cons p seq)))
+				     seqs)
+			(list (list p))))
+	 finally (return (longest-sublists seqs))))))
 
 (defun merge-PREDs (perms)
   "TODO: this should create new permutations from the ones given by
@@ -288,17 +292,17 @@ f-align or whatever?
 Note: at the moment, `LPT-permute' includes all merges."
   perms)
 
-(defun get-adjuncts (var tab)
-  "TODO"
-  nil)
-
-(defun filter-perms (perms tab_s tab_t)
-  "Given `perms' from `LPT-permute', remove-if the f-structure constraints 
-are not respected."
-  (mapcar-true
-   (lambda (perm) (try-f-align-perm perm tab_s tab_t))
-   perms))
-
+(defun get-adjs (var tab &optional no-error)
+  "Use `no-error' to return nil if no ADJUNCT was found.
+TODO: find example to test where we need `unravel' / eq-sets."
+  (let ((adjvar (assoc "ADJUNCT" (gethash var tab) :test #'equal)))
+    (if adjvar
+	(if (get-equivs (cdr adjvar) tab)
+	    (error 'unexpected-input "eqvar of ADJUNCT, TODO")
+	    (mapcar-true (lambda (pair) (when (eq (cdr pair) (cdr adjvar))
+					  (car pair)))
+			 (cdr (gethash '|in_set| tab))))
+	(unless no-error (error 'no-adjs-error-todo var)))))
 
 (defun try-f-align-all (tab_s tab_t &optional LPT)
   (mapcar (lambda (perm)
@@ -319,8 +323,8 @@ we already know is true because `perm' came from `LPT-permute'."
 	 (var_t (cdr link))
 	 (Pr_s (get-pred var_s tab_s))
 	 (Pr_t (get-pred var_t tab_t))
-	 (adjuncts_t (get-adjuncts var_t tab_t))
-	 (adjuncts_s (get-adjuncts var_s tab_s))
+	 (adjuncts_t (get-adjs var_t tab_t 'no-error))
+	 (adjuncts_s (get-adjs var_s tab_s 'no-error))
 	 (args_t (get-args Pr_t 'no-nulls))
 	 (args_s (get-args Pr_s 'no-nulls)))
     (format t "~A ~A~%" Pr_s Pr_t)
