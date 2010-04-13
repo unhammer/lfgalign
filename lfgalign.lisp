@@ -224,7 +224,7 @@ the pro no matter what, but will this give us trouble?"
 	     (noun? (car Pr_s) tab_s))
 	(multiple-value-bind (L-tr L-in) (get-LPT LPr_s LPr_t LPTs)
 	  (multiple-value-bind (lem-tr lem-in) (get-LPT lem_s lem_t LPTs)
-	    (unless (or L-in lem-in)
+	    (unless (or L-in lem-in *no-warnings*)
 	      (warn "Neither ~A/~A nor ~A/~A are in LPTs" LPr_s lem_s LPr_t lem_t))
 	    (and L-tr lem-tr))))))
 
@@ -452,6 +452,106 @@ too.
        )
   )
 
+(defun filter-LPT (args_s tab_s args_t tab_t LPTs)
+  (mapcan-true
+   (lambda (arg_s)
+     (let ((Pr_s (get-pred arg_s tab_s t)))
+       (mapcar-true (lambda (arg_t)
+		      (when (LPT? Pr_s tab_s (get-pred arg_t tab_t t) tab_t LPTs)
+			(cons arg_s arg_t)))
+	args_t)))
+   args_s))
+
+(defun foo1 (link tab_s tab_t LPTs)
+  (let* ((var_s (car link))
+	 (var_t (cdr link))
+	 (Pr_s (get-pred var_s tab_s t))
+	 (Pr_t (get-pred var_t tab_t t))
+	 (adjuncts_s (get-adjs var_s tab_s 'no-error))
+	 (adjuncts_t (get-adjs var_t tab_t 'no-error))
+	 (args_s (get-args Pr_s 'no-nulls))
+	 (args_t (get-args Pr_t 'no-nulls)))
+    (format t "~A:~A; ~A:~A~%" Pr_s args_s Pr_t args_t)
+    (mapcan-true
+     (lambda (arg_s)
+       (let ((Pr_s (get-pred arg_s tab_s t)))
+	 (mapcar-true (lambda (arg_t)
+			(when (LPT? Pr_s tab_s (get-pred arg_t tab_t t) tab_t LPTs)
+			  (cons arg_s arg_t)))
+		      args_t)))
+     args_s)
+    
+    (or (mapcar
+	 (lambda (alignment) (cons link alignment))
+	 (loop for link in (filter-LPT args_s tab_s args_t tab_t LPTs) ; (ii)
+	    for alignment = (f-align2 link tab_s tab_t LPTs)
+	    when alignment 
+	    append it))
+	(list (list link))))
+  )
+
+(defun unseen (new seq)
+  "Return true as long as neither (member new seq :key #'car) 
+nor (member new seq :key #'cdr)."
+  (dolist (old seq t) (if (or (eq (car old) (car new))
+			      (eq (cdr old) (cdr new)))
+			  (return nil))))
+
+(defun expand (link news olds)
+  (loop for old in olds
+     when (unseen link old)
+       append (mapcar (lambda (new) (append new old)) news)))
+
+(defun f-align2 (link tab_s tab_t LPTs)
+  " (i) the number of arguments n and m may or may not differ
+is trivially true
+ (ii), LPT, should be covered for `link' on all calls."
+  (let* ((var_s (car link))
+	 (var_t (cdr link))
+	 (Pr_s (get-pred var_s tab_s t))
+	 (Pr_t (get-pred var_t tab_t t))
+	 (adjs_s (get-adjs var_s tab_s 'no-error))
+	 (adjs_t (get-adjs var_t tab_t 'no-error))
+	 (args_s (get-args Pr_s 'no-nulls))
+	 (args_t (get-args Pr_t 'no-nulls))
+	 argaligns)
+    (loop for arglink in (filter-LPT args_s tab_s args_t tab_t LPTs) ; (ii)
+       for alignments = (f-align2 arglink tab_s tab_t LPTs)
+       when alignments do
+       (setq argaligns (append argaligns
+			       (expand arglink alignments argaligns)
+			       alignments)))
+    (mapcar
+     (lambda (alignment) (cons link alignment))
+     (or (longest-sublists argaligns)	; prefer to align as much as possible
+	 (list nil)))))
+;;     (when
+;; 	(and
+;; 	 (LPT? Pr_s tab_s Pr_t tab_t LPTs) ; (ii)
+;; 	 ;; these loops have overlapping responsibilities, TODO
+;; 	 (loop for c_s in args_s	   ; (iii)
+;; 	    always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
+;; 		     (or (member (cdr it) args_t)
+;; 			 (member (cdr it) adjuncts_t))))	 
+;; 	 (loop for c_t in args_t	    ; (iv)
+;; 	    always (awhen (rassoc c_t perm) ; this assumes <=1-1 PRED alignments
+;; 		     (or (member (car it) args_s)
+;; 			 (member (car it) adjuncts_s))))
+;; 					; TODO: (v) the LPT-correspondences can be aligned one-to-one
+;; 	 (loop for adj_s in adjuncts_s	; (vi)
+;; 	    always (aif (assoc adj_s perm) ; this assumes <=1-1 PRED alignments
+;; 			(not (outer> (get-pred it tab_t)
+;; 				     Pr_t))
+;; 					; unaligned adjuncts are OK:
+;; 			t))	 
+;; 	 (loop for adj_t in adjuncts_t	; (vi) vice versa
+;; 	    always (aif (rassoc adj_t perm) ; this assumes <=1-1 PRED alignments
+;; 			(not (outer> (get-pred it tab_s)
+;; 				     Pr_s))
+;; 					; unaligned adjuncts are OK:
+;; 			t)))
+;;       link)
+
 (defun f-align (var1 tab1 var2 tab2)
   "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
 respectively.
@@ -537,33 +637,54 @@ TODO: cache/memoise maketree"
     (lisp-unit:assert-equal "iqePa"
 			    (L (get-pred 0 tab) tab))))
 
-(lisp-unit:define-test test-f-align
+(lisp-unit:define-test test-try-f-align-perm
+ (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
+       (tab_t (open-and-import "dev/TEST_permute_t.pl")))
+   (lisp-unit:assert-false
+    (try-f-align-perm '((0 . 0) (5 . 3)) tab_s tab_t))))
+
+(defun equal-alignments (a1 a2)
+  (not (set-exclusive-or a1 a2 :test #'equal)))
+(defun equal-alignment-set (as1 as2)
+  (not (set-exclusive-or as1 as2 :test #'equal-alignments)))
+
+(lisp-unit:define-test test-f-align2
+  (let ((tab_s  (open-and-import "nb/4.pl"))
+	(tab_t  (open-and-import "ka/4.pl")))
+    (lisp-unit:assert-true
+     (equal-alignment-set
+      (f-align2 (cons 0 0) tab_s tab_t (make-LPT))
+      '(((0 . 0) (11 . 3) (9 . 9) (10 . 6))
+	((0 . 0) (11 . 3) (9 . 6) (10 . 9))
+	((0 . 0) (11 . 9) (9 . 3) (10 . 6))
+	((0 . 0) (11 . 9) (9 . 6) (10 . 3))
+	((0 . 0) (11 . 6) (9 . 3) (10 . 9))
+	((0 . 0) (11 . 6) (9 . 9) (10 . 3)))))))
+
+(lisp-unit:define-test test-LPT-permute
+ (lisp-unit:assert-true
+  (equal-alignment-set
+   '(((0 . 1) (4 . 5))
+     ((0 . 1) (4 . 6))
+     ((0 . 2) (4 . 5))
+     ((0 . 2) (4 . 6))
+     ((0 . 3) (4 . 5))
+     ((0 . 3) (4 . 6)))
+   (LPT-permute '((0 1 2 3)
+		  (4 5 6)))))
  (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
        (tab_t (open-and-import "dev/TEST_permute_t.pl"))
        (LPT (cons (make-hash-table :test #'equal)
 		  (make-hash-table :test #'equal))))
    (lisp-unit:assert-true
-    (try-f-align '((0 . 0) (5 . 3)) tab_s tab_t))))
-
-(lisp-unit:define-test test-LPT-permute
- (lisp-unit:assert-equal
-  '(((0 . 1) (4 . 5))
-    ((0 . 1) (4 . 6))
-    ((0 . 2) (4 . 5))
-    ((0 . 2) (4 . 6))
-    ((0 . 3) (4 . 5))
-    ((0 . 3) (4 . 6)))
-  (LPT-permute '((0 1 2 3)
-		 (4 5 6))))
- (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
-       (tab_t (open-and-import "dev/TEST_permute_t.pl"))
-       (LPT (cons (make-hash-table :test #'equal)
-		  (make-hash-table :test #'equal))))
-   (lisp-unit:assert-equal
-    '(((0 . 0) (5 . 0) (6 . 0)) ((0 . 0) (5 . 0) (6 . 3)) ((0 . 0) (5 . 3) (6 . 0))
-      ((0 . 0) (5 . 3) (6 . 3)) ((0 . 3) (5 . 0) (6 . 0)) ((0 . 3) (5 . 0) (6 . 3))
-      ((0 . 3) (5 . 3) (6 . 0)) ((0 . 3) (5 . 3) (6 . 3)))
-    (LPT-permute (all-LPT-vars tab_s tab_t LPT)))))
+    (equal-alignment-set
+     '(((5 . 0) (6 . 3))
+       ((5 . 0) (0 . 3))
+       ((0 . 0) (5 . 3))
+       ((0 . 0) (6 . 3))
+       ((6 . 0) (5 . 3))
+       ((6 . 0) (0 . 3)))
+     (LPT-permute (all-LPT-vars tab_s tab_t LPT))))))
 
 (lisp-unit:define-test test-topnode
 		       (let* ((tab (open-and-import "dev/TEST_parse.pl"))
