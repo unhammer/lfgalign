@@ -452,15 +452,7 @@ too.
        )
   )
 
-(defun filter-LPT (args_s tab_s args_t tab_t LPTs)
-  (mapcan-true
-   (lambda (arg_s)
-     (let ((Pr_s (get-pred arg_s tab_s t)))
-       (mapcar-true (lambda (arg_t)
-		      (when (LPT? Pr_s tab_s (get-pred arg_t tab_t t) tab_t LPTs)
-			(cons arg_s arg_t)))
-	args_t)))
-   args_s))
+
 
 (defun foo1 (link tab_s tab_t LPTs)
   (let* ((var_s (car link))
@@ -489,6 +481,16 @@ too.
 	    append it))
 	(list (list link))))
   )
+
+(defun filter-LPT (args_s tab_s args_t tab_t LPTs)
+  (mapcan-true
+   (lambda (arg_s)
+     (let ((Pr_s (get-pred arg_s tab_s t)))
+       (mapcar-true (lambda (arg_t)
+		      (when (LPT? Pr_s tab_s (get-pred arg_t tab_t t) tab_t LPTs)
+			(cons arg_s arg_t)))
+	args_t)))
+   args_s))
 
 (defun unseen (new seq)
   "Return true as long as neither (member new seq :key #'car) 
