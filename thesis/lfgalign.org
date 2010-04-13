@@ -29,6 +29,11 @@ nyttig sparse tree: SKRIV
 
 [[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
 
+Konsekvent terminologi:
+- samanstilling: ei mengd lenkjer mellom to setningar
+- lenkje: éin korrespondanse mellom f-strukturar på kjelde- og
+  målspråket, men dette inkluderer au kausativ-situasjonen der to på
+  kjeldespråket korresponderer med éin på målspråket.
 
 * Introduksjon (+ samandrag/abstract)
 Denne masteroppgåva utforskar kva det vil seie at to uttrykk er
@@ -1162,7 +1167,7 @@ me veit er omsetjingar av kvarandre. LFG-analysane må vere
 disambiguerte og i Prolog-formatet frå XLE[fn:5]. Programmet les inn
 dei to filene og oppretter ein intern representasjon av
 LFG-analysen. 
-
+** gjer ikkje dette lenger					     :ROTETE:
 =lfgalign= kan i tillegg ta inn ein representasjon av moglege
 LPT-korrespondansar.
 
@@ -1181,6 +1186,25 @@ er: PRED til (X)COMP-dotter, ADJUNCT, ....
 
 Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
 eit filter som sjekker om skrankane er oppfylte.
+
+** fullstendig bottom-up
+Eitt alternativ er å byrje med alle moglege permutasjonar av
+LPT-korrespondansar, og så sile ut dei som ikkje svarer til krava. Men
+dette er problematisk, sidan avskjeringa skjer så seint at
+utrekningane for lengre setningar blir ganske umogleg. 
+
+Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
+(ingenting er LPT), slik at kvart kjeldeord kan lenkjast til kvart
+målord. Viss båe setningane er 4 ord, får me 16 moglege
+samanstillingar der alle ord er med i nøyaktig éi lenkje (2^l, kor l
+er setningslengd). Men ofte har me null-lenkjer, me må altså i tillegg
+tillate samanstillingar der minst eitt ord er ulenkja, utan at me
+treng å vite kva for ord det er; med desse kortare listene inkludert
+får me endå fleire moglege samanstillingar per setning (4 ord gir 26,
+8 ord gir 2186 moglege samanstillingar). Sjølv om me heile tida vel
+dei samanstillingane som lenkjar flest ord, ville maskinen raskt fått
+problem. I tillegg har me problemet med 1-mange-lenkjer, som skaper
+endå fleire moglege samanstillingar.
 
 * Resultat av å automatisk samanstille norske og georgiske setningar
    - om kjeldematerialet

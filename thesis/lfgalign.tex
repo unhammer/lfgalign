@@ -1,4 +1,4 @@
-% Created 2010-03-27 Sat 18:01
+% Created 2010-04-12 Mon 18:53
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -35,7 +35,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{27/03, 2010}
+\date{12/04, 2010}
 
 \begin{document}
 
@@ -1281,6 +1281,18 @@ er: PRED til (X)COMP-dotter, ADJUNCT, \ldots{}.
 Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
 eit filter som sjekker om skrankane er oppfylte.
 
+\section{fullstendig bottom-up}
+\label{sec-4.1}
+
+Eitt alternativ er å byrje med alle moglege permutasjonar av
+LPT-korrespondansar, og så sile ut dei som ikkje svarer til krava. Men
+dette er problematisk, sidan avskjeringa skjer så seint at
+utrekningane for lengre setningar blir ganske umogleg. 
+
+Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
+(ingenting er LPT), slik at kvart kjeldeord kan lenkjast til kvart
+målord. Viss båe setningane er 4 ord, får me 16 moglege lenkjingar der
+alle ord er med i nøyaktig éi lenkje (2$^l$, kor l er setningslengd).
 \chapter{Resultat av å automatisk samanstille norske og georgiske setningar}
 \label{sec-5}
 
