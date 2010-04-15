@@ -8,7 +8,7 @@
   (:report (lambda (condition stream)
 	     (format stream "Found superfluous topmost nodes: ~A" (text condition)))))
 
-(setq *no-warnings* t)
+(defvar *no-warnings* t)
 
 ;;;;;;;; C-STRUCTURE TREE:
 
@@ -194,31 +194,39 @@ Note: a \"pro\" argument will return its verb!"
   (cons (make-hash-table :test #'equal)
 	(make-hash-table :test #'equal)))
 
-(defun get-LPT (w1 w2 LPTs)
+(defun get-LPT (w_s w_t LPTs)
   "For now, LPTs is just a cons of hash-tables, where the first lets
-you look up a list of possible `w2' matches using `w1' as key, and the
+you look up a list of possible `w_t' matches using `w_s' as key, and the
 second vice versa. Does not assume all keys in the first table are
-values in the second (and vice versa). If neither `w1' nor `w2' are in
+values in the second (and vice versa). If neither `w_s' nor `w_t' are in
 there, it's a trivial match.
 
 As with hash tables, the second return value tells us whether either
 \"key\" was in its table."
-  (let* ((LPT1 (car LPTs))
-	 (LPT2 (cdr LPTs))
-	 (tr1 (gethash w1 LPT1))
-	 (tr2 (gethash w2 LPT2)))
+  (let* ((LPT-s-t (car LPTs))
+	 (LPT-t-s (cdr LPTs))
+	 (tr_s (gethash w_s LPT-s-t))
+	 (tr_t (gethash w_t LPT-t-s)))
     (values
-     (or (member w2 tr1 :test #'equal)
-	 (member w1 tr2 :test #'equal)
-	 (and (null tr1)
-	      (null tr2)))
-     (or tr1 tr2))))
+     (or (member w_t tr_s :test #'equal)
+	 (member w_s tr_t :test #'equal)
+	 (and (null tr_s)
+	      (null tr_t)))
+     (or tr_s tr_t))))
+
+(defun add-to-LPT (w_s w_t LPTs)
+  "Add `w_s' and `w_t' to `LPTs' as translations of each other."
+  (setf (gethash w_s (car LPTs))
+	(pushnew w_t (gethash w_s (car LPTs)) :test #'equal))
+  (setf (gethash w_t (cdr LPTs))
+	(pushnew w_t (gethash w_t (cdr LPTs)) :test #'equal))
+  LPTs)
 
 (defun noun? (var tab)
   "TODO: do all and only nouns have an NTYPE?"
   (assoc "NTYPE" (gethash var tab) :test #'equal))
 
-(defun LPT? (Pr_s tab_s Pr_t tab_t LPTs)
+(defun LPT? (src tab_s trg tab_t LPTs)
   "Are the lexical expressions of `Pr_s' and `Pr_t',
 L(Pr_s) and L(Pr_t), Linguistically Predictable Translations?
 
@@ -228,8 +236,10 @@ is a pro and the other is a noun (see `noun?') or a pro.
 TODO: The pro of a verb has that verb as its L, while the pro of a
 reflexive has that reflexive... At the moment, we look up the L of
 the pro no matter what, but will this give us trouble?"
-  (let ((LPr_s (L Pr_s tab_s)) (lem_s (lemma Pr_s))
-	(LPr_t (L Pr_t tab_t)) (lem_t (lemma Pr_t)))
+  (let* ((Pr_s (if (numberp src) (get-pred src tab_s) src))
+	 (Pr_t (if (numberp trg) (get-pred trg tab_t) trg))
+	 (LPr_s (L Pr_s tab_s)) (lem_s (lemma Pr_s))
+	 (LPr_t (L Pr_t tab_t)) (lem_t (lemma Pr_t)))
     (or (and (equal lem_s "pro")
 	     (equal lem_t "pro"))
 	(and (equal lem_s "pro")
@@ -308,7 +318,7 @@ Note: at the moment, `LPT-permute' includes all merges."
 
 (defun try-f-align-all (tab_s tab_t &optional LPT)
   (mapcar (lambda (perm)
-	    (try-f-align perm tab_s tab_t))
+	    (try-f-align-perm perm tab_s tab_t))
 	  (LPT-permute (all-LPT-vars tab_s tab_t (or LPT
 						     (make-LPT))))))
 
@@ -350,7 +360,7 @@ we already know is true because `perm' came from `LPT-permute'."
 	  (loop for adj_s in adjuncts_s	; (vi)
 		always (aif (assoc adj_s perm) ; this assumes <=1-1 PRED alignments
 			    (not (outer> (get-pred it tab_t)
-					 Pr_t))
+					 Pr_t tab_t))
 					; unaligned adjuncts are OK:
 			    t))
 	  (format t "vi"))
@@ -358,7 +368,7 @@ we already know is true because `perm' came from `LPT-permute'."
 	  (loop for adj_t in adjuncts_t	; (vi) vice versa
 		always (aif (rassoc adj_t perm) ; this assumes <=1-1 PRED alignments
 			    (not (outer> (get-pred it tab_s)
-					 Pr_s))
+					 Pr_s tab_s))
 					; unaligned adjuncts are OK:
 			    t))
 	  (format t "vi")))
@@ -461,8 +471,8 @@ too.
 	 (var_t (cdr link))
 	 (Pr_s (get-pred var_s tab_s t))
 	 (Pr_t (get-pred var_t tab_t t))
-	 (adjuncts_s (get-adjs var_s tab_s 'no-error))
-	 (adjuncts_t (get-adjs var_t tab_t 'no-error))
+;; 	 (adjs_s (get-adjs var_s tab_s 'no-error))
+;; 	 (adjs_t (get-adjs var_t tab_t 'no-error))
 	 (args_s (get-args Pr_s 'no-nulls))
 	 (args_t (get-args Pr_t 'no-nulls)))
     (format t "~A:~A; ~A:~A~%" Pr_s args_s Pr_t args_t)
@@ -478,7 +488,7 @@ too.
     (or (mapcar
 	 (lambda (alignment) (cons link alignment))
 	 (loop for link in (filter-LPT args_s tab_s args_t tab_t LPTs) ; (ii)
-	    for alignment = (f-align2 link tab_s tab_t LPTs)
+	    for alignment = (foo1 link tab_s tab_t LPTs)
 	    when alignment 
 	    append it))
 	(list (list link))))
@@ -514,8 +524,8 @@ is trivially true
 	 (var_t (cdr link))
 	 (Pr_s (get-pred var_s tab_s t))
 	 (Pr_t (get-pred var_t tab_t t))
-	 (adjs_s (get-adjs var_s tab_s 'no-error))
-	 (adjs_t (get-adjs var_t tab_t 'no-error))
+;; 	 (adjs_s (get-adjs var_s tab_s 'no-error))
+;; 	 (adjs_t (get-adjs var_t tab_t 'no-error))
 	 (args_s (get-args Pr_s 'no-nulls))
 	 (args_t (get-args Pr_t 'no-nulls))
 	 argaligns)
@@ -530,30 +540,15 @@ is trivially true
      (or (longest-sublists argaligns)	; prefer to align as much as possible
 	 (list nil)))))
 
-(defun argaligns (link tab_s tab_t LPTs)
-  (let* ((var_s (car link))
-	 (var_t (cdr link))
-	 (Pr_s (get-pred var_s tab_s t))
-	 (Pr_t (get-pred var_t tab_t t))
-	 (adjs_s (get-adjs var_s tab_s 'no-error))
-	 (adjs_t (get-adjs var_t tab_t 'no-error))
-	 (args_s (get-args Pr_s 'no-nulls))
-	 (args_t (get-args Pr_t 'no-nulls)))
-    ;; return all possible permutations of LPT pairs s.t. all args_s
-    ;; and args_t are linked to members of either args or adjs,
-    ;; respectively. Don't link adjs to adjs.
-    ;; This should cover (iii) and (iv)
-    
-    ))
 
-(lisp-unit:define-test test-argaligns2
+
+(lisp-unit:define-test test-argaligns
  (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
        (tab_t (open-and-import "dev/TEST_permute_t.pl")))
-   (lisp-unit:assert-true
-    (equal-alignment-set
-     '(((6 . 3))
-       ((5 . 3)))
-     (argaligns '(0 . 0) tab_s tab_t (make-LPT)))))
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '()
+    (argaligns '(0 . 0) tab_s tab_t (make-LPT))))
  (let ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
        (tab_t (open-and-import "dev/TEST_argadj_t.pl")))
    (lisp-unit:assert-equality
@@ -561,26 +556,76 @@ is trivially true
     '(((30 . 46) (27 . 10) (29 . 37) (28 . 2))
       ((30 . 46) (27 . 10) (29 . 2) (28 . 37))
       ((30 . 46) (27 . 37) (29 . 10) (28 . 2))
-      ((30 . 46) (27 . 37) (29 . 10) (28 . 2)))
-    (argaligns '(0 . 0) tab_s tab_t (make-LPT)))))
+      ((30 . 46) (27 . 37) (29 . 2) (28 . 10))
+      ((30 . 46) (27 . 2) (29 . 10) (28 . 37))
+      ((30 . 46) (27 . 2) (29 . 37) (28 . 10))
+      ((30 . 10) (27 . 46) (29 . 37) (28 . 2))
+      ((30 . 10) (27 . 46) (29 . 2) (28 . 37))
+      ((30 . 10) (27 . 37) (29 . 46) (28 . 2))
+      ((30 . 10) (27 . 37) (29 . 2) (28 . 46))
+      ((30 . 10) (27 . 2) (29 . 46) (28 . 37))
+      ((30 . 10) (27 . 2) (29 . 37) (28 . 46))
+      ((30 . 37) (27 . 46) (29 . 10) (28 . 2))
+      ((30 . 37) (27 . 46) (29 . 2) (28 . 10))
+      ((30 . 37) (27 . 10) (29 . 46) (28 . 2))
+      ((30 . 37) (27 . 10) (29 . 2) (28 . 46))
+      ((30 . 37) (27 . 2) (29 . 46) (28 . 10))
+      ((30 . 37) (27 . 2) (29 . 10) (28 . 46))
+      ((30 . 2) (27 . 46) (29 . 10) (28 . 37))
+      ((30 . 2) (27 . 46) (29 . 37) (28 . 10))
+      ((30 . 2) (27 . 10) (29 . 46) (28 . 37))
+      ((30 . 2) (27 . 10) (29 . 37) (28 . 46))
+      ((30 . 2) (27 . 37) (29 . 46) (28 . 10))
+      ((30 . 2) (27 . 37) (29 . 10) (28 . 46)))
+    (argaligns '(0 . 0) tab_s tab_t (make-LPT)))
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '(((30 . 46) (27 . 10) (29 . 37) (28 . 2))
+      ((30 . 46) (27 . 10) (29 . 2) (28 . 37))
+      ((30 . 46) (27 . 37) (29 . 10) (28 . 2))
+      ((30 . 46) (27 . 37) (29 . 2) (28 . 10))
+      ((30 . 46) (27 . 2) (29 . 10) (28 . 37))
+      ((30 . 46) (27 . 2) (29 . 37) (28 . 10)))
+    (argaligns '(0 . 0) tab_s tab_t (add-to-LPT "regnet" "cvimda" (make-LPT))))))
 
-(defun argaligns-p (args_s adjs_s args_t adjs_t)
-  "Return all possible combinations of pairs from `args_s'/`adjs_s'
-and `args_t'/`adjs_t' that include all members of `args_s' and
-`args_t'. An arg_s may also be paired with a member of `adjs_t' (and
-vice versa), ie. return all pairs of 
+(defun argaligns (link tab_s tab_t LPTs)
+  "Return all possible combinations of links from `args_s'/`adjs_s' to
+`args_t'/`adjs_t' that include all members of `args_s' and `args_t',
+ie. return all pairs of
+
  (args_s X (args_t U adjs_t)) U ((args_s U adjs_s) X args_t) 
-s.t. all args are in the set.  No pairs of adj_s and adj_t are included."
+
+s.t. all args are in the set.  An arg_s may be linked to a member of
+`adjs_t' (and vice versa), but no pairs of adj_s and adj_t are
+included.
+
+If `LPTs', `tab_s' and `tab_t' are supplied, only return those
+combinations where all pairs are LPT. This should cover (iii)
+and (iv). See `argaligns-p'."
+  (let* ((var_s (car link))
+	 (var_t (cdr link))
+	 (adjs_s (get-adjs var_s tab_s 'no-error))
+	 (adjs_t (get-adjs var_t tab_t 'no-error))
+	 (args_s (get-args (get-pred var_s tab_s t) 'no-nulls))
+	 (args_t (get-args (get-pred var_t tab_t t) 'no-nulls)))
+;;     (format t "~A ~A~%~A ~A~%" args_s adjs_s args_t adjs_t)
+    (argaligns-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
+
+(defun argaligns-p (args_s adjs_s args_t adjs_t &optional tab_s tab_t LPTs)
+  "Helper for `argaligns'."
   (macrolet
       ((mapalign (srcs trgs)
 	 "Within one call, we have the same src, but loop through possible `trgs',
 the recursion loops through all possible `srcs'."
 	 `(mapcan			; for each target arg/adj
 	   (lambda (trg)		   
-	     (mapcar-true		; for each permuation w/o src and trg
-	      (lambda (perm) (cons (cons (car ,srcs)
-					 trg)
-				   perm))
+	     (mapcar-true	 ; for each permuation w/o src and trg
+	      (lambda (perm)
+		(when (or (not LPTs)
+			  (LPT? (get-pred (car ,srcs) tab_s) tab_s (get-pred trg tab_t) tab_t LPTs))
+		  (cons (cons (car ,srcs)
+			      trg)
+			perm)))
 	      ;; recurse, removing the arg/adj that we used:
 	      (argaligns-p (if (eq ,srcs args_s) (cdr args_s) args_s)
 			   (if (eq ,srcs adjs_s) (cdr adjs_s) adjs_s)
@@ -745,16 +790,16 @@ TODO: cache/memoise maketree"
      (f-align2 (cons 0 0) tab_s tab_t (make-LPT)))))
 
 (lisp-unit:define-test test-LPT-permute
-  (lisp-unit:assert-true
-   (equal-alignment-set
-    '(((0 . 1) (4 . 5))
-      ((0 . 1) (4 . 6))
-      ((0 . 2) (4 . 5))
-      ((0 . 2) (4 . 6))
-      ((0 . 3) (4 . 5))
-      ((0 . 3) (4 . 6)))
-    (LPT-permute '((0 1 2 3)
-		   (4 5 6)))))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((0 . 1) (4 . 5))
+     ((0 . 1) (4 . 6))
+     ((0 . 2) (4 . 5))
+     ((0 . 2) (4 . 6))
+     ((0 . 3) (4 . 5))
+     ((0 . 3) (4 . 6)))
+   (LPT-permute '((0 1 2 3)
+		  (4 5 6))))
   (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
 	(tab_t (open-and-import "dev/TEST_permute_t.pl")))
     (lisp-unit:assert-equality

@@ -1210,6 +1210,21 @@ endå fleire moglege samanstillingar.
 (iii) og (iv) i \citet[s.~5]{dyvik2009lmp} krev LPT-korrespondanse
 mellom (L av Pr av) kvart kjeldeargument og målargument/-adjunkt. Eg
 krev i tillegg at f-strukturane deira kan samanstillast.
+** merge
+filene 
+: ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
+:  (tab_t (open-and-import "dev/TEST_argadj_t.pl")))
+viser at me kan trenge samanføying av pred på ulike nivå.
+
+"sigaretten" og "sigaretze" er ikkje på same nivå i dei respektive
+f-strukturane, me har
+: 0[ PRED vedde<28,29,27,30>
+:    29[ PRED sigarett<> ] ]
+og
+: 0[ PRED da-najleveba<37,10,46>
+:    ADJUNCT { 2 }
+:    2[ ze<5>
+:       OBJ 5[ sigareti ] ] ]
 
 * Resultat av å automatisk samanstille norske og georgiske setningar
    - om kjeldematerialet
