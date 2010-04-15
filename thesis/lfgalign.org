@@ -1206,6 +1206,11 @@ dei samanstillingane som lenkjar flest ord, ville maskinen raskt fått
 problem. I tillegg har me problemet med 1-mange-lenkjer, som skaper
 endå fleire moglege samanstillingar.
 
+** min metode
+(iii) og (iv) i \citet[s.~5]{dyvik2009lmp} krev LPT-korrespondanse
+mellom (L av Pr av) kvart kjeldeargument og målargument/-adjunkt. Eg
+krev i tillegg at f-strukturane deira kan samanstillast.
+
 * Resultat av å automatisk samanstille norske og georgiske setningar
    - om kjeldematerialet
    - manglar med implementasjonen

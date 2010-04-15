@@ -529,10 +529,122 @@ is trivially true
      (lambda (alignment) (cons link alignment))
      (or (longest-sublists argaligns)	; prefer to align as much as possible
 	 (list nil)))))
-;;     (when
-;; 	(and
-;; 	 (LPT? Pr_s tab_s Pr_t tab_t LPTs) ; (ii)
-;; 	 ;; these loops have overlapping responsibilities, TODO
+
+(defun argaligns (link tab_s tab_t LPTs)
+  (let* ((var_s (car link))
+	 (var_t (cdr link))
+	 (Pr_s (get-pred var_s tab_s t))
+	 (Pr_t (get-pred var_t tab_t t))
+	 (adjs_s (get-adjs var_s tab_s 'no-error))
+	 (adjs_t (get-adjs var_t tab_t 'no-error))
+	 (args_s (get-args Pr_s 'no-nulls))
+	 (args_t (get-args Pr_t 'no-nulls)))
+    ;; return all possible permutations of LPT pairs s.t. all args_s
+    ;; and args_t are linked to members of either args or adjs,
+    ;; respectively. Don't link adjs to adjs.
+    ;; This should cover (iii) and (iv)
+    
+    ))
+
+
+(defun argaligns-p (args_s adjs_s args_t adjs_t)
+    (if args_s
+	(append
+	 (mapcan
+	  (lambda (arg_t)
+	    (mapcar (lambda (perm)
+		      (cons (cons (car args_s) arg_t)
+			    perm))
+		    (argaligns-p
+		     (cdr args_s) adjs_s (remove arg_t args_t :count 1) adjs_t)))
+	  args_t)
+	 (mapcan
+	  (lambda (adj_t)
+	    (mapcar (lambda (perm)
+		      (cons (cons (car args_s) adj_t)
+			    perm))
+		    (argaligns-p
+		     (cdr args_s) adjs_s args_t (remove adj_t adjs_t :count 1))))
+	  adjs_t))
+	(if args_t
+	    (if adjs_s
+		(mapcan
+		 (lambda (arg_t)
+		   (mapcar (lambda (perm)
+			     (cons (cons (car adjs_s) arg_t)
+				   perm))
+			   (argaligns-p
+			    args_s (cdr adjs_s) (remove arg_t args_t :count 1) adjs_t)))
+		 args_t)
+		nil)
+	    (list nil))))
+
+(lisp-unit:define-test test-argaligns-p
+  (lisp-unit:assert-equality
+   #'set-of-set-equal			; ignore (C . 3), both adj
+   '(((A . 1) (B . 2)) ((A . 1) (B . 3) (C . 2)) 
+     ((A . 2) (B . 1)) ((A . 2) (B . 3) (C . 1))
+                       ((A . 3) (B . 1) (C . 2))
+                       ((A . 3) (B . 2) (C . 1)))
+   (argaligns-p '(a b) '(c) '(1 2) '(3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '()					; breaks constraint (iii)
+   (argaligns-p '(a b) '(c) '(1) '()))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '()					; breaks constraint (iv)
+   (argaligns-p '(a) '() '(1 2) '(3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal			; ignore (C . 3), both adj
+   '(((A . 1) (C . 2)) ((A . 2) (C . 1)))
+   (argaligns-p '(a) '(c) '(1 2) '(3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal			; ignore (C . 3), both adj
+   '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
+   (argaligns-p '(a b) '(c) '(1) '(3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
+   (argaligns-p '(a b) '() '(1) '(3))))
+
+(lisp-unit:define-test test-argaligns2
+ (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
+       (tab_t (open-and-import "dev/TEST_permute_t.pl")))
+   (lisp-unit:assert-true
+    (equal-alignment-set
+     '(((6 . 3))
+       ((5 . 3)))
+     (argaligns '(0 . 0) tab_s tab_t (make-LPT)))))
+ (let ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
+       (tab_t (open-and-import "dev/TEST_argadj_t.pl")))
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '(((30 . 46) (27 . 10) (29 . 37) (28 . 2))
+      ((30 . 46) (27 . 10) (29 . 2) (28 . 37))
+      ((30 . 46) (27 . 37) (29 . 10) (28 . 2))
+      ((30 . 46) (27 . 37) (29 . 10) (28 . 2)))
+    (argaligns '(0 . 0) tab_s tab_t (make-LPT)))))
+
+(defun f-align3 (link tab_s tab_t LPTs)
+  " (i) the number of arguments n and m may or may not differ
+is trivially true
+ (ii), LPT, should be covered for `link' on all calls."
+  (let* ((var_s (car link))
+	 (var_t (cdr link))
+	 (Pr_s (get-pred var_s tab_s t))
+	 (Pr_t (get-pred var_t tab_t t))
+	 (adjs_s (get-adjs var_s tab_s 'no-error))
+	 (adjs_t (get-adjs var_t tab_t 'no-error))
+	 (args_s (get-args Pr_s 'no-nulls))
+	 (args_t (get-args Pr_t 'no-nulls))
+	 (aligntab (make-hash-table :test #'equal))
+	 (argaligns (argaligns link tab_s tab_t LPTs))) ; (iii) and (iv)
+    (loop for alignment in argaligns do 
+	 (loop for link in alignment
+	    for linkaligns = (f-align3 link tab_s tab_t LPTs)
+	    do (setf (gethash link aligntab) linkaligns)))))
+
 ;; 	 (loop for c_s in args_s	   ; (iii)
 ;; 	    always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
 ;; 		     (or (member (cdr it) args_t)
@@ -746,3 +858,12 @@ TODO: cache/memoise maketree"
      for unref = (unreferenced-preds (open-and-import f))
      when (not (equal '(0) unref)) do
      (format t "f:~A unref:~A~%" f unref)))
+
+
+(defun p (l)
+  (if (null l) '(())
+      (mapcan
+       (lambda (elt)
+	 (mapcar (lambda (perm) (cons elt perm))
+		 (p (remove elt l :count 1))))
+       l)))
