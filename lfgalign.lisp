@@ -546,68 +546,6 @@ is trivially true
     
     ))
 
-
-(defun argaligns-p (args_s adjs_s args_t adjs_t)
-    (if args_s
-	(append
-	 (mapcan
-	  (lambda (arg_t)
-	    (mapcar (lambda (perm)
-		      (cons (cons (car args_s) arg_t)
-			    perm))
-		    (argaligns-p
-		     (cdr args_s) adjs_s (remove arg_t args_t :count 1) adjs_t)))
-	  args_t)
-	 (mapcan
-	  (lambda (adj_t)
-	    (mapcar (lambda (perm)
-		      (cons (cons (car args_s) adj_t)
-			    perm))
-		    (argaligns-p
-		     (cdr args_s) adjs_s args_t (remove adj_t adjs_t :count 1))))
-	  adjs_t))
-	(if args_t
-	    (if adjs_s
-		(mapcan
-		 (lambda (arg_t)
-		   (mapcar (lambda (perm)
-			     (cons (cons (car adjs_s) arg_t)
-				   perm))
-			   (argaligns-p
-			    args_s (cdr adjs_s) (remove arg_t args_t :count 1) adjs_t)))
-		 args_t)
-		nil)
-	    (list nil))))
-
-(lisp-unit:define-test test-argaligns-p
-  (lisp-unit:assert-equality
-   #'set-of-set-equal			; ignore (C . 3), both adj
-   '(((A . 1) (B . 2)) ((A . 1) (B . 3) (C . 2)) 
-     ((A . 2) (B . 1)) ((A . 2) (B . 3) (C . 1))
-                       ((A . 3) (B . 1) (C . 2))
-                       ((A . 3) (B . 2) (C . 1)))
-   (argaligns-p '(a b) '(c) '(1 2) '(3)))
-  (lisp-unit:assert-equality
-   #'set-of-set-equal
-   '()					; breaks constraint (iii)
-   (argaligns-p '(a b) '(c) '(1) '()))
-  (lisp-unit:assert-equality
-   #'set-of-set-equal
-   '()					; breaks constraint (iv)
-   (argaligns-p '(a) '() '(1 2) '(3)))
-  (lisp-unit:assert-equality
-   #'set-of-set-equal			; ignore (C . 3), both adj
-   '(((A . 1) (C . 2)) ((A . 2) (C . 1)))
-   (argaligns-p '(a) '(c) '(1 2) '(3)))
-  (lisp-unit:assert-equality
-   #'set-of-set-equal			; ignore (C . 3), both adj
-   '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
-   (argaligns-p '(a b) '(c) '(1) '(3)))
-  (lisp-unit:assert-equality
-   #'set-of-set-equal
-   '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
-   (argaligns-p '(a b) '() '(1) '(3))))
-
 (lisp-unit:define-test test-argaligns2
  (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
        (tab_t (open-and-import "dev/TEST_permute_t.pl")))
@@ -625,6 +563,40 @@ is trivially true
       ((30 . 46) (27 . 37) (29 . 10) (28 . 2))
       ((30 . 46) (27 . 37) (29 . 10) (28 . 2)))
     (argaligns '(0 . 0) tab_s tab_t (make-LPT)))))
+
+(defun argaligns-p (args_s adjs_s args_t adjs_t)
+  "Return all possible combinations of pairs from `args_s'/`adjs_s'
+and `args_t'/`adjs_t' that include all members of `args_s' and
+`args_t'. An arg_s may also be paired with a member of `adjs_t' (and
+vice versa), ie. return all pairs of 
+ (args_s X (args_t U adjs_t)) U ((args_s U adjs_s) X args_t) 
+s.t. all args are in the set.  No pairs of adj_s and adj_t are included."
+  (macrolet
+      ((mapalign (srcs trgs)
+	 "Within one call, we have the same src, but loop through possible `trgs',
+the recursion loops through all possible `srcs'."
+	 `(mapcan			; for each target arg/adj
+	   (lambda (trg)		   
+	     (mapcar-true		; for each permuation w/o src and trg
+	      (lambda (perm) (cons (cons (car ,srcs)
+					 trg)
+				   perm))
+	      ;; recurse, removing the arg/adj that we used:
+	      (argaligns-p (if (eq ,srcs args_s) (cdr args_s) args_s)
+			   (if (eq ,srcs adjs_s) (cdr adjs_s) adjs_s)
+			   (if (eq ,trgs args_t) (remove trg args_t :count 1) args_t)
+			   (if (eq ,trgs adjs_t) (remove trg adjs_t :count 1) adjs_t))))
+	   ,trgs)))
+    (if args_s
+	(append (mapalign args_s args_t)
+		(mapalign args_s adjs_t))
+	(if args_t			; no args_s
+	    (if adjs_s
+		(mapalign adjs_s args_t)
+		;; no adjs_s, fail:
+		nil)
+	    ;; all args_s and args_t used up, make end-of-list:
+	    (list nil)))))
 
 (defun f-align3 (link tab_s tab_t LPTs)
   " (i) the number of arguments n and m may or may not differ
@@ -794,6 +766,43 @@ TODO: cache/memoise maketree"
        ((6 . 0) (5 . 3))
        ((6 . 0) (0 . 3)))
      (LPT-permute (all-LPT-vars tab_s tab_t (make-LPT))))))
+
+
+(lisp-unit:define-test test-argaligns-p
+  (lisp-unit:assert-equality
+   #'set-of-set-equal			; ignore (C . 3), both adj
+   '(((A . 1) (B . 2)) ((A . 1) (B . 3) (C . 2)) 
+     ((A . 2) (B . 1)) ((A . 2) (B . 3) (C . 1))
+                       ((A . 3) (B . 1) (C . 2))
+                       ((A . 3) (B . 2) (C . 1)))
+   (argaligns-p '(a b) '(c) '(1 2) '(3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal			; ignore (C . 3) and (C . 4)
+   '(((A . 1) (B . 2)) ((A . 1) (B . 3) (C . 2)) ((A . 1) (B . 4) (C . 2))
+     ((A . 2) (B . 1)) ((A . 2) (B . 3) (C . 1)) ((A . 2) (B . 4) (C . 1))
+     ((A . 3) (B . 1) (C . 2)) ((A . 3) (B . 2) (C . 1))
+     ((A . 4) (B . 1) (C . 2)) ((A . 4) (B . 2) (C . 1)))
+   (argaligns-p '(a b) '(c) '(1 2) '(3 4)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '()					; breaks constraint (iii)
+   (argaligns-p '(a b) '(c) '(1) '()))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '()					; breaks constraint (iv)
+   (argaligns-p '(a) '() '(1 2) '(3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal			; ignore (C . 3), both adj
+   '(((A . 1) (C . 2)) ((A . 2) (C . 1)))
+   (argaligns-p '(a) '(c) '(1 2) '(3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal			; ignore (C . 3), both adj
+   '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
+   (argaligns-p '(a b) '(c) '(1) '(3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
+   (argaligns-p '(a b) '() '(1) '(3))))
 
 (lisp-unit:define-test test-topnode
 		       (let* ((tab (open-and-import "dev/TEST_parse.pl"))
