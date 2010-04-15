@@ -8,6 +8,8 @@
   (:report (lambda (condition stream)
 	     (format stream "Found superfluous topmost nodes: ~A" (text condition)))))
 
+(setq *no-warnings* t)
+
 ;;;;;;;; C-STRUCTURE TREE:
 
 (defun maketree (tab)
@@ -150,6 +152,18 @@ variable (ie. what `get-pred' returns)."
 		 (union (fourth pred) (fifth pred)))
     (union (fourth pred) (fifth pred))))
 
+(defun get-adjs (var tab &optional no-error)
+  "Use `no-error' to return nil if no ADJUNCT was found.
+TODO: find example to test where we need `unravel' / eq-sets."
+  (let ((adjvar (assoc "ADJUNCT" (gethash var tab) :test #'equal)))
+    (if adjvar
+	(if (get-equivs (cdr adjvar) tab)
+	    (error 'unexpected-input "eqvar of ADJUNCT, TODO")
+	    (mapcar-true (lambda (pair) (when (eq (cdr pair) (cdr adjvar))
+					  (car pair)))
+			 (cdr (gethash '|in_set| tab))))
+	(unless no-error (error 'no-adjs-error-todo var)))))
+
 (defun references (parentv childv tab)
   "Give a list of attributes of var `parentv' in `tab' which refer to
 var `childv'."
@@ -291,18 +305,6 @@ f-align or whatever?
 
 Note: at the moment, `LPT-permute' includes all merges."
   perms)
-
-(defun get-adjs (var tab &optional no-error)
-  "Use `no-error' to return nil if no ADJUNCT was found.
-TODO: find example to test where we need `unravel' / eq-sets."
-  (let ((adjvar (assoc "ADJUNCT" (gethash var tab) :test #'equal)))
-    (if adjvar
-	(if (get-equivs (cdr adjvar) tab)
-	    (error 'unexpected-input "eqvar of ADJUNCT, TODO")
-	    (mapcar-true (lambda (pair) (when (eq (cdr pair) (cdr adjvar))
-					  (car pair)))
-			 (cdr (gethash '|in_set| tab))))
-	(unless no-error (error 'no-adjs-error-todo var)))))
 
 (defun try-f-align-all (tab_s tab_t &optional LPT)
   (mapcar (lambda (perm)
@@ -554,6 +556,7 @@ is trivially true
 ;; 			t)))
 ;;       link)
 
+
 (defun f-align (var1 tab1 var2 tab2)
   "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
 respectively.
@@ -584,14 +587,13 @@ TODO: cache/memoise maketree"
   (f-align '0 (open-and-import "ka/4.pl")
 	   '0 (open-and-import "nb/5.pl")))
 
-(defun find-multiple-unreferenced () "Fluff"
-  (loop for i from 1 to 106
-     for f = (concatenate 'string "nb/" (prin1-to-string i) ".pl")
-     for unref = (unreferenced-preds (open-and-import f))
-     when (not (equal '(0) unref)) do
-     (format t "f:~A unref:~A~%" f unref)))
 
 ;;;;;;;; TESTING:
+(defun set-equal (a1 a2)
+  (ignore-errors (not (set-exclusive-or a1 a2 :test #'equal))))
+(defun set-of-set-equal (as1 as2)
+  (ignore-errors (not (set-exclusive-or as1 as2 :test #'set-equal))))
+
 (lisp-unit:define-test test-unravel
   (let ((tab (dup-alist-to-table
 	      '((20 ("PRED" . 4))
@@ -645,48 +647,41 @@ TODO: cache/memoise maketree"
    (lisp-unit:assert-false
     (try-f-align-perm '((0 . 0) (5 . 3)) tab_s tab_t))))
 
-(defun equal-alignments (a1 a2)
-  (not (set-exclusive-or a1 a2 :test #'equal)))
-(defun equal-alignment-set (as1 as2)
-  (not (set-exclusive-or as1 as2 :test #'equal-alignments)))
-
 (lisp-unit:define-test test-f-align2
   (let ((tab_s  (open-and-import "nb/4.pl"))
 	(tab_t  (open-and-import "ka/4.pl")))
-    (lisp-unit:assert-true
-     (equal-alignment-set
-      (f-align2 (cons 0 0) tab_s tab_t (make-LPT))
-      '(((0 . 0) (11 . 3) (9 . 9) (10 . 6))
-	((0 . 0) (11 . 3) (9 . 6) (10 . 9))
-	((0 . 0) (11 . 9) (9 . 3) (10 . 6))
-	((0 . 0) (11 . 9) (9 . 6) (10 . 3))
-	((0 . 0) (11 . 6) (9 . 3) (10 . 9))
-	((0 . 0) (11 . 6) (9 . 9) (10 . 3)))))))
+    (lisp-unit:assert-equality
+     #'set-of-set-equal
+     '(((0 . 0) (11 . 3) (9 . 9) (10 . 6))
+       ((0 . 0) (11 . 3) (9 . 6) (10 . 9))
+       ((0 . 0) (11 . 9) (9 . 3) (10 . 6))
+       ((0 . 0) (11 . 9) (9 . 6) (10 . 3))
+       ((0 . 0) (11 . 6) (9 . 3) (10 . 9))
+       ((0 . 0) (11 . 6) (9 . 9) (10 . 3)))
+     (f-align2 (cons 0 0) tab_s tab_t (make-LPT)))))
 
 (lisp-unit:define-test test-LPT-permute
- (lisp-unit:assert-true
-  (equal-alignment-set
-   '(((0 . 1) (4 . 5))
-     ((0 . 1) (4 . 6))
-     ((0 . 2) (4 . 5))
-     ((0 . 2) (4 . 6))
-     ((0 . 3) (4 . 5))
-     ((0 . 3) (4 . 6)))
-   (LPT-permute '((0 1 2 3)
-		  (4 5 6)))))
- (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
-       (tab_t (open-and-import "dev/TEST_permute_t.pl"))
-       (LPT (cons (make-hash-table :test #'equal)
-		  (make-hash-table :test #'equal))))
-   (lisp-unit:assert-true
-    (equal-alignment-set
+  (lisp-unit:assert-true
+   (equal-alignment-set
+    '(((0 . 1) (4 . 5))
+      ((0 . 1) (4 . 6))
+      ((0 . 2) (4 . 5))
+      ((0 . 2) (4 . 6))
+      ((0 . 3) (4 . 5))
+      ((0 . 3) (4 . 6)))
+    (LPT-permute '((0 1 2 3)
+		   (4 5 6)))))
+  (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
+	(tab_t (open-and-import "dev/TEST_permute_t.pl")))
+    (lisp-unit:assert-equality
+     #'set-of-set-equal
      '(((5 . 0) (6 . 3))
        ((5 . 0) (0 . 3))
        ((0 . 0) (5 . 3))
        ((0 . 0) (6 . 3))
        ((6 . 0) (5 . 3))
        ((6 . 0) (0 . 3)))
-     (LPT-permute (all-LPT-vars tab_s tab_t LPT))))))
+     (LPT-permute (all-LPT-vars tab_s tab_t (make-LPT))))))
 
 (lisp-unit:define-test test-topnode
 		       (let* ((tab (open-and-import "dev/TEST_parse.pl"))
@@ -730,3 +725,24 @@ TODO: cache/memoise maketree"
             (23 "V_SUFF_BASE" NIL (24 "+Obj3" (21))))))))
        (38 "PERIOD" NIL (37 "." (37))))
      tree)))
+
+;;;;;;;; DEPRECATED:
+(defun permute (list)
+  (cond
+    ((endp list) list)                  ; no permutations of ()
+    ((endp (cdr list)) (list list))     ; one permutation of (x)
+    (t (loop :for subpermutation :in (permute (cdr list)) :nconc
+          (loop :for i :from 0 :to (length subpermutation)
+             :collecting (append (subseq subpermutation 0 i)
+                                 (cons (car list) (subseq subpermutation i)))))))) 
+(defun zip (l1 l2) (if (null l1) '()
+				 (cons (cons (car l1)(car l2))
+				       (zip (cdr l1)(cdr l2)))))
+
+
+(defun find-multiple-unreferenced () "Fluff"
+  (loop for i from 1 to 106
+     for f = (concatenate 'string "nb/" (prin1-to-string i) ".pl")
+     for unref = (unreferenced-preds (open-and-import f))
+     when (not (equal '(0) unref)) do
+     (format t "f:~A unref:~A~%" f unref)))
