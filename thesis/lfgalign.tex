@@ -1,4 +1,4 @@
-% Created 2010-04-12 Mon 18:53
+% Created 2010-04-15 Thu 14:08
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -35,7 +35,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{12/04, 2010}
+\date{15/04, 2010}
 
 \begin{document}
 
@@ -1119,12 +1119,29 @@ argstr til $PRED_{L2}$.
      vedde<a,d,b,c> og vedde<d,a,b,c> -- men sannsynlegvis er altså
      a,b,c i same rekkjefølgje uansett\ldots{})
 \end{itemize}
-\section{\textbf{TOGROK} kva var poenget med dette? \textbf{:ROTETE:}}
+\section{\textbf{SKRIV} Kan adjunkt lenkjast til nodar \underline{under} mor-lenkja?}
 \label{sec-3.16}
+
+Krav (vi) i \citet[s.~5]{dyvik2009lmt} krev at viss F$_s$ og F$_t$ er
+lenkja, så kan ingen adjunkt D$_s$ til F$_s$ vere lenkja til nodar utanfor
+F$_t$. Men kan ein D$_s$ lenkjast til ei dotternode av argument eller
+adjunkt til F$_t$?
+
+R$_t$ er dotter til F$_t$, og må då vere lenkja til ei dotter av F$_s$,
+A$_s$. Då må au alle argument til R$_t$ vere lenkja til døtre av A$_s$, så
+D$_s$ kan ikkje lenkjast til argument av dotternodar til F$_t$. Kva med
+adjunkt? Om me finn eit ulenkja adjunkt til R$_t$ kan me heller ikkje
+lenkje dette til D$_s$ ved krav (vi) igjen, sidan D$_s$ står utanfor
+A$_s$.
+
+Men om D$_t$ er ei ulenkja \emph{adjunkt}dotter av F$_t$, så vil døtre av
+D$_t$ kunne lenkjast til D$_s$, så lenge D$_t$ forblir ulenkja.
+\section{\textbf{TOGROK} kva var poenget med dette? \textbf{:ROTETE:}}
+\label{sec-3.17}
 
 «etter og uten er dei einaste prep som tek setn utan å vere arg»
 \section{\textbf{ULEST} Cyrus, FuSe-prosjektet \textbf{:ROTETE:}}
-\label{sec-3.17}
+\label{sec-3.18}
 
 \citet{cyrus2004apa}
 «Abstract: We report on a recently initiated project which aims at
@@ -1136,7 +1153,7 @@ conceptual decisions and aspects of their technical realisation. We
 discuss some selected problems and conclude with a few remarks on how
 this project relates to similar projects in the field.»
 \section{\textbf{TODO} Konstruksjonar og komposisjonell inekvivalens}
-\label{sec-3.18}
+\label{sec-3.19}
 
 \xbar-teori føreset at det finst éi dotter i kvart ledd som kan
 reknast som predikatet for dette leddet. Ei utfordring for
@@ -1180,10 +1197,10 @@ iallfall eit omsetjingsforhold:
 
 
 \section{\textbf{SKRIV} definer sitering frå MRS-suiten \textbf{:ROTETE:}}
-\label{sec-3.19}
+\label{sec-3.20}
 
 \section{\textbf{SKRIV} setning 7 i MRS-suiten \textbf{:ROTETE:}}
-\label{sec-3.20}
+\label{sec-3.21}
 
 
 
@@ -1210,11 +1227,11 @@ Ein samanstilling bør i det minste gi følgjande:
 
  
 \section{\textbf{TOGROK} og så finst jo større forskjellar, stilistiske osb\ldots{} \textbf{:ROTETE:}}
-\label{sec-3.21}
+\label{sec-3.22}
 
 
 \section{\textbf{TOGROK} prosessering, kognitive modellar? \textbf{:ROTETE:}}
-\label{sec-3.22}
+\label{sec-3.23}
 
 finne empiri frå korleis menneske samanstillar? (dvs., korleis skjer
 omsetjing)
@@ -1244,7 +1261,7 @@ bilinguals in the specific context of translation.»
   sånn ute i naturen?
 \end{itemize}
 \section{\textbf{TOGROK} Retningslinjer for samanstilling \textbf{:ROTETE:}}
-\label{sec-3.23}
+\label{sec-3.24}
 
 Ved korpusbygging er det vanleg at retningslinjer for samanstilling
 blir utvikla \emph{etter kvart som ein finn problem}\ldots{} (det er vanskeleg å
@@ -1261,6 +1278,8 @@ me veit er omsetjingar av kvarandre. LFG-analysane må vere
 disambiguerte og i Prolog-formatet frå XLE\footnote{Dokumentert på \href{http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html}{http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html} }. Programmet les inn
 dei to filene og oppretter ein intern representasjon av
 LFG-analysen. 
+\section{gjer ikkje dette lenger \textbf{:ROTETE:}}
+\label{sec-4.1}
 
 \texttt{lfgalign} kan i tillegg ta inn ein representasjon av moglege
 LPT-korrespondansar.
@@ -1282,7 +1301,7 @@ Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
 eit filter som sjekker om skrankane er oppfylte.
 
 \section{fullstendig bottom-up}
-\label{sec-4.1}
+\label{sec-4.2}
 
 Eitt alternativ er å byrje med alle moglege permutasjonar av
 LPT-korrespondansar, og så sile ut dei som ikkje svarer til krava. Men
@@ -1291,8 +1310,50 @@ utrekningane for lengre setningar blir ganske umogleg.
 
 Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
 (ingenting er LPT), slik at kvart kjeldeord kan lenkjast til kvart
-målord. Viss båe setningane er 4 ord, får me 16 moglege lenkjingar der
-alle ord er med i nøyaktig éi lenkje (2$^l$, kor l er setningslengd).
+målord. Viss båe setningane er 4 ord, får me 16 moglege
+samanstillingar der alle ord er med i nøyaktig éi lenkje (2$^l$, kor l
+er setningslengd). Men ofte har me null-lenkjer, me må altså i tillegg
+tillate samanstillingar der minst eitt ord er ulenkja, utan at me
+treng å vite kva for ord det er; med desse kortare listene inkludert
+får me endå fleire moglege samanstillingar per setning (4 ord gir 26,
+8 ord gir 2186 moglege samanstillingar). Sjølv om me heile tida vel
+dei samanstillingane som lenkjar flest ord, ville maskinen raskt fått
+problem. I tillegg har me problemet med 1-mange-lenkjer, som skaper
+endå fleire moglege samanstillingar.
+
+\section{min metode}
+\label{sec-4.3}
+
+(iii) og (iv) i \citet[s.~5]{dyvik2009lmp} krev LPT-korrespondanse
+mellom (L av Pr av) kvart kjeldeargument og målargument/-adjunkt. Eg
+krev i tillegg at f-strukturane deira kan samanstillast.
+\section{merge}
+\label{sec-4.4}
+
+filene 
+\begin{verbatim}
+ ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
+  (tab_t (open-and-import "dev/TEST_argadj_t.pl")))
+\end{verbatim}
+
+viser at me kan trenge samanføying av pred på ulike nivå.
+
+``sigaretten'' og ``sigaretze'' er ikkje på same nivå i dei respektive
+f-strukturane, me har
+\begin{verbatim}
+ 0[ PRED vedde<28,29,27,30>
+    29[ PRED sigarett<> ] ]
+\end{verbatim}
+
+og
+\begin{verbatim}
+ 0[ PRED da-najleveba<37,10,46>
+    ADJUNCT { 2 }
+    2[ ze<5>
+       OBJ 5[ sigareti ] ] ]
+\end{verbatim}
+
+
 \chapter{Resultat av å automatisk samanstille norske og georgiske setningar}
 \label{sec-5}
 

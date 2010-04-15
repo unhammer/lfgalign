@@ -1039,6 +1039,26 @@ argstr til $PRED_{L2}$.
      vedde<a,d,b,c> og vedde<d,a,b,c> -- men sannsynlegvis er altså
      a,b,c i same rekkjefølgje uansett...)
 
+** SKRIV Kan adjunkt lenkjast til nodar _under_ mor-lenkja?
+Krav (vi) i \citet[s.~5]{dyvik2009lmt} krev at viss F_s og F_t er
+lenkja, så kan ingen adjunkt D_s til F_s vere lenkja til nodar utanfor
+F_t. Men kan ein D_s lenkjast til ei dotternode av argument eller
+adjunkt til F_t?
+
+R_t er dotter til F_t, og må då vere lenkja til ei dotter av F_s,
+A_s. Då må au alle argument til R_t vere lenkja til døtre av A_s, så
+D_s kan ikkje lenkjast til argument av dotternodar til F_t. Kva med
+adjunkt? Om me finn eit ulenkja adjunkt til R_t kan me heller ikkje
+lenkje dette til D_s ved krav (vi) igjen, sidan D_s står utanfor
+A_s.
+
+Men om D_t er ei ulenkja \emph{adjunkt}dotter av F_t, så vil døtre av
+D_t kunne lenkjast til D_s, så lenge D_t forblir ulenkja. Me kan altså
+sjå ned i adjunktdøtre av F_t for å lenkje D_s. 
+
+På same måte bør ein kunne rekursivt sjå ned i ulenkja adjunktdøtre av
+R_t, men ein bør kanskje ikkje kunne lenkje så djupt uansett? Ikkje
+automatisk, uansett.
 ** TOGROK kva var poenget med dette?				     :ROTETE:
 «etter og uten er dei einaste prep som tek setn utan å vere arg»
 ** ULEST Cyrus, FuSe-prosjektet					     :ROTETE:
