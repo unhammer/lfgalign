@@ -519,7 +519,7 @@ is trivially true
 	 (args_s (get-args Pr_s 'no-nulls))
 	 (args_t (get-args Pr_t 'no-nulls))
 	 argaligns)
-    (loop for arglink in (filter-LPT args_s tab_s args_t tab_t LPTs) ; (ii)
+    (loop for arglink in (argaligns link tab_s tab_t LPTs) ; (ii)
        for alignments = (f-align2 arglink tab_s tab_t LPTs)
        when alignments do
        (setq argaligns (append argaligns
