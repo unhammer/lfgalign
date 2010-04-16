@@ -1,6 +1,26 @@
 Progress
 ==========
 
+lfgalign
+----------
+lfgalign.lisp currently does the following:
+- collect c-structure trees: `maketree`
+- find the topmost c-node in an f-domain: `topnode`
+- find a c-node referenced by f-structure variable: `treefind`
+- find f-structure predicate from variable, traversing equivalent
+  f-vars: `get-pred` and `unravel`
+- find arguments, adjuncts, lemma and lexical expression of a
+  predicate/f-var: `get-args`, `get-adjs`, `lemma`, `L`
+- keep tables of LPT correspondences (lookup with `LPT?` ensures a
+  "pro" is an LPT of a noun as defined by `noun?`)
+- find all set-unique combinations of links of source arguments with
+  target args/adjuncts, and target arguments with source args/adjuncts
+  (excluding adj-adj links): `argalign` (if given LPT tables, this
+  removes combinations where at least one link is non-LPT)
+ 
+ 
+prolog-import
+----------
 prolog-import.lisp parses an XLE Prolog file and puts everything into
 a hash table. Keys are f-structure variable numbers for the
 f-structure, while the c-structure parts are referenced on the names
@@ -41,16 +61,30 @@ it all back into an assoc-list, we get e.g.:
      (|fspan| (3 1 9) (0 1 16))
      (|surfaceform| (22 "." 15 16) (3 "iqePa" 10 15) (1 "abramsma" 1 9)))
 
-lfgalign.lisp currently just aligns PRED and their arguments
-recursively, not caring about head-switching problems etc.
+We collect the eq-vars (equivalent variables) into a doubly-linked
+circular list (so we can easily look up a member and get all
+equivalents). 
 
-Plan
+We signal an error if the file is not disambiguated (as indicated by
+the `select` and `choice` fields in the Prolog file). Otherwise, we
+filter out non-selected parses from the file, keeping only the ones
+equivalent to the selected parse (see `filter-equiv`, `in-disjunction`
+and `disambiguated?`). 
+
+TODO
 ==========
 
-1. Show c-structure consequences of PRED-alignments by following
- the `rassoc` of `phi` 
-2. ???
-3. Profit
+- `argalign` only aligns daughters of the same f-var (PRED), there are
+  two problems here:
+  1. A causative **make-do<SUBJ,OBJ>** may be translated to
+  **make<SUBJ,OBJ,do>**. Here it would seem natural that **make-do**
+  is linked with both **make** and **do**. If the remaining arguments
+  are linked (**SUBJ-SUBJ**, **OBJ-OBJ**)
+  2. 
+- Show c-structure consequences of PRED-alignments by following the
+ `rassoc` of `phi`
+
+
 
 Re: http://tlt8.unicatt.it/allegati/Proceedings_TLT8.pdf p.71--82,
 Giza++ gives us the LPT-correspondence (criterion i), our Prolog files
