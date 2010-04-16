@@ -74,18 +74,26 @@ and `disambiguated?`).
 TODO
 ==========
 
-- `argalign` only aligns daughters of the same f-var (PRED), there are
+- `argalign` only links daughters of the same f-var (PRED), there are
   two problems here:
   1. A causative **make-do<SUBJ,OBJ>** may be translated to
   **make<SUBJ,OBJ,do>**. Here it would seem natural that **make-do**
   is linked with both **make** and **do**. If the remaining arguments
-  are linked (**SUBJ-SUBJ**, **OBJ-OBJ**)
-  2. 
+  are linked (**SUBJ-SUBJ**, **OBJ-OBJ**), we have in a sense
+  fullfilled the requirements that all arguments of linked
+  f-structures be linked, if we imagine that **make** and **do** are
+  *merged*.
+  2. A (possibly case-marked) f-structure may be linked to an object
+  picked out by a preposition. This is what we get when the argument
+  **sigarett** is linked to the adjunct **sigaretze** analysed as
+  **ze<sigareti>**. Here, merging seems wrong, so either we link to
+  **ze** and loosen the LMT-constraint to include substructures, or we
+  link to **sigareti**, and allow arguments to be linked to daughters
+  of adjuncts (possibly also to daughters of arguments).
+
 - Show c-structure consequences of PRED-alignments by following the
- `rassoc` of `phi`
+ `rassoc` of `phi`, should be simple once f-alignments are done?
 
-
-
-Re: http://tlt8.unicatt.it/allegati/Proceedings_TLT8.pdf p.71--82,
-Giza++ gives us the LPT-correspondence (criterion i), our Prolog files
-should have the information to use criterion ii.
+- Run Giza++ to get LPT-correspondence (criterion i in
+   http://tlt8.unicatt.it/allegati/Proceedings_TLT8.pdf p.71--82, our
+   Prolog files should have the information to use criterion ii).
