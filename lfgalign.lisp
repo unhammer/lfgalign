@@ -146,11 +146,11 @@ variable (ie. what `get-pred' returns)."
 			(outer> Prc Pr2 tab))))))
 
 
-(defun get-args (pred &optional no-nulls)
+(defun get-args (Pr &optional no-nulls)
   (if no-nulls
       (remove-if (lambda (p) (equal "NULL" p))
-		 (union (fourth pred) (fifth pred)))
-    (union (fourth pred) (fifth pred))))
+		 (union (fourth Pr) (fifth Pr)))
+    (union (fourth Pr) (fifth Pr))))
 
 (defun get-adjs (var tab &optional no-error)
   "Use `no-error' to return nil if no ADJUNCT was found.
@@ -529,7 +529,7 @@ is trivially true
 	 (args_s (get-args Pr_s 'no-nulls))
 	 (args_t (get-args Pr_t 'no-nulls))
 	 argaligns)
-    (loop for arglink in (argaligns link tab_s tab_t LPTs) ; (ii)
+    (loop for arglink in (argalign link tab_s tab_t LPTs) ; (ii)
        for alignments = (f-align2 arglink tab_s tab_t LPTs)
        when alignments do
        (setq argaligns (append argaligns
@@ -542,13 +542,13 @@ is trivially true
 
 
 
-(lisp-unit:define-test test-argaligns
+(lisp-unit:define-test test-argalign
  (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
        (tab_t (open-and-import "dev/TEST_permute_t.pl")))
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '()
-    (argaligns '(0 . 0) tab_s tab_t (make-LPT))))
+    (argalign '(0 . 0) tab_s tab_t (make-LPT))))
  (let ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
        (tab_t (open-and-import "dev/TEST_argadj_t.pl")))
    (lisp-unit:assert-equality
@@ -577,7 +577,7 @@ is trivially true
       ((30 . 2) (27 . 10) (29 . 37) (28 . 46))
       ((30 . 2) (27 . 37) (29 . 46) (28 . 10))
       ((30 . 2) (27 . 37) (29 . 10) (28 . 46)))
-    (argaligns '(0 . 0) tab_s tab_t (make-LPT)))
+    (argalign '(0 . 0) tab_s tab_t (make-LPT)))
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((30 . 46) (27 . 10) (29 . 37) (28 . 2))
@@ -586,9 +586,9 @@ is trivially true
       ((30 . 46) (27 . 37) (29 . 2) (28 . 10))
       ((30 . 46) (27 . 2) (29 . 10) (28 . 37))
       ((30 . 46) (27 . 2) (29 . 37) (28 . 10)))
-    (argaligns '(0 . 0) tab_s tab_t (add-to-LPT "regnet" "cvimda" (make-LPT))))))
+    (argalign '(0 . 0) tab_s tab_t (add-to-LPT "regnet" "cvimda" (make-LPT))))))
 
-(defun argaligns (link tab_s tab_t LPTs)
+(defun argalign (link tab_s tab_t LPTs)
   "Return all possible combinations of links from `args_s'/`adjs_s' to
 `args_t'/`adjs_t' that include all members of `args_s' and `args_t',
 ie. return all pairs of
@@ -601,7 +601,7 @@ included.
 
 If `LPTs', `tab_s' and `tab_t' are supplied, only return those
 combinations where all pairs are LPT. This should cover (iii)
-and (iv). See `argaligns-p'."
+and (iv). See `argalign-p'."
   (let* ((var_s (car link))
 	 (var_t (cdr link))
 	 (adjs_s (get-adjs var_s tab_s 'no-error))
@@ -609,10 +609,10 @@ and (iv). See `argaligns-p'."
 	 (args_s (get-args (get-pred var_s tab_s t) 'no-nulls))
 	 (args_t (get-args (get-pred var_t tab_t t) 'no-nulls)))
 ;;     (format t "~A ~A~%~A ~A~%" args_s adjs_s args_t adjs_t)
-    (argaligns-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
+    (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
 
-(defun argaligns-p (args_s adjs_s args_t adjs_t &optional tab_s tab_t LPTs)
-  "Helper for `argaligns'."
+(defun argalign-p (args_s adjs_s args_t adjs_t &optional tab_s tab_t LPTs)
+  "Helper for `argalign'."
   (macrolet
       ((mapalign (srcs trgs)
 	 "Within one call, we have the same src, but loop through possible `trgs',
@@ -627,7 +627,7 @@ the recursion loops through all possible `srcs'."
 			      trg)
 			perm)))
 	      ;; recurse, removing the arg/adj that we used:
-	      (argaligns-p (if (eq ,srcs args_s) (cdr args_s) args_s)
+	      (argalign-p (if (eq ,srcs args_s) (cdr args_s) args_s)
 			   (if (eq ,srcs adjs_s) (cdr adjs_s) adjs_s)
 			   (if (eq ,trgs args_t) (remove trg args_t :count 1) args_t)
 			   (if (eq ,trgs adjs_t) (remove trg adjs_t :count 1) adjs_t))))
@@ -656,8 +656,8 @@ is trivially true
 	 (args_s (get-args Pr_s 'no-nulls))
 	 (args_t (get-args Pr_t 'no-nulls))
 	 (aligntab (make-hash-table :test #'equal))
-	 (argaligns (argaligns link tab_s tab_t LPTs))) ; (iii) and (iv)
-    (loop for alignment in argaligns do 
+	 (argalign (argalign link tab_s tab_t LPTs))) ; (iii) and (iv)
+    (loop for alignment in argalign do 
 	 (loop for link in alignment
 	    for linkaligns = (f-align3 link tab_s tab_t LPTs)
 	    do (setf (gethash link aligntab) linkaligns)))))
@@ -813,41 +813,41 @@ TODO: cache/memoise maketree"
      (LPT-permute (all-LPT-vars tab_s tab_t (make-LPT))))))
 
 
-(lisp-unit:define-test test-argaligns-p
+(lisp-unit:define-test test-argalign-p
   (lisp-unit:assert-equality
    #'set-of-set-equal			; ignore (C . 3), both adj
    '(((A . 1) (B . 2)) ((A . 1) (B . 3) (C . 2)) 
      ((A . 2) (B . 1)) ((A . 2) (B . 3) (C . 1))
                        ((A . 3) (B . 1) (C . 2))
                        ((A . 3) (B . 2) (C . 1)))
-   (argaligns-p '(a b) '(c) '(1 2) '(3)))
+   (argalign-p '(a b) '(c) '(1 2) '(3)))
   (lisp-unit:assert-equality
    #'set-of-set-equal			; ignore (C . 3) and (C . 4)
    '(((A . 1) (B . 2)) ((A . 1) (B . 3) (C . 2)) ((A . 1) (B . 4) (C . 2))
      ((A . 2) (B . 1)) ((A . 2) (B . 3) (C . 1)) ((A . 2) (B . 4) (C . 1))
      ((A . 3) (B . 1) (C . 2)) ((A . 3) (B . 2) (C . 1))
      ((A . 4) (B . 1) (C . 2)) ((A . 4) (B . 2) (C . 1)))
-   (argaligns-p '(a b) '(c) '(1 2) '(3 4)))
+   (argalign-p '(a b) '(c) '(1 2) '(3 4)))
   (lisp-unit:assert-equality
    #'set-of-set-equal
    '()					; breaks constraint (iii)
-   (argaligns-p '(a b) '(c) '(1) '()))
+   (argalign-p '(a b) '(c) '(1) '()))
   (lisp-unit:assert-equality
    #'set-of-set-equal
    '()					; breaks constraint (iv)
-   (argaligns-p '(a) '() '(1 2) '(3)))
+   (argalign-p '(a) '() '(1 2) '(3)))
   (lisp-unit:assert-equality
    #'set-of-set-equal			; ignore (C . 3), both adj
    '(((A . 1) (C . 2)) ((A . 2) (C . 1)))
-   (argaligns-p '(a) '(c) '(1 2) '(3)))
+   (argalign-p '(a) '(c) '(1 2) '(3)))
   (lisp-unit:assert-equality
    #'set-of-set-equal			; ignore (C . 3), both adj
    '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
-   (argaligns-p '(a b) '(c) '(1) '(3)))
+   (argalign-p '(a b) '(c) '(1) '(3)))
   (lisp-unit:assert-equality
    #'set-of-set-equal
    '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
-   (argaligns-p '(a b) '() '(1) '(3))))
+   (argalign-p '(a b) '() '(1) '(3))))
 
 (lisp-unit:define-test test-topnode
 		       (let* ((tab (open-and-import "dev/TEST_parse.pl"))
