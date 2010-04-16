@@ -5,14 +5,20 @@ lfgalign
 ----------
 lfgalign.lisp currently does the following:
 - collect c-structure trees: `maketree`
+
 - find the topmost c-node in an f-domain: `topnode`
+
 - find a c-node referenced by f-structure variable: `treefind`
+
 - find f-structure predicate from variable, traversing equivalent
   f-vars: `get-pred` and `unravel`
+  
 - find arguments, adjuncts, lemma and lexical expression of a
   predicate/f-var: `get-args`, `get-adjs`, `lemma`, `L`
+  
 - keep tables of LPT correspondences (lookup with `LPT?` ensures a
   "pro" is an LPT of a noun as defined by `noun?`)
+  
 - find all set-unique combinations of links of source arguments with
   target args/adjuncts, and target arguments with source args/adjuncts
   (excluding adj-adj links): `argalign` (if given LPT tables, this
