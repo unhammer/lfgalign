@@ -397,7 +397,7 @@ er eit separat problem.
 
 Samanstilte frasar bør ha nok semantisk likskap til å kunne opptre som
 omsetjingar i liknande omgivnader
-\citep{dyvik2009pc}. \citet{thunes2003eal} gir nokre passande prinsipp
+\citep[s.~74]{dyvik2009lmp}. \citet{thunes2003eal} gir nokre passande prinsipp
 for å fastslå det som kan kallast /omsetjingsmessig korrespondanse/, for
 ordsamanstilling. Dette er prinsipp som skal gjelde for eit litt forskjellig
 formål[fn:typetoken], men som au «ligger nær opp til det vi intuitivt
@@ -574,7 +574,7 @@ til funksjonelle kategoriar (C, I, P) ein funksjonell ko-kjerne.
    samanstilt, og
 \b. dei er båe c-strukturhovud.
 
-#c-strukturen må vere tilstrekkeleg parallell \citep{dyvik2009pc} til
+#c-strukturen må vere tilstrekkeleg parallell \citep{dyvik2009lmp} til
 #    å lenkje dei preterminale nodane, jf. krav \ref{subnodekrav} (gitt
 #    i del \ref{SEC:subnode} nedanfor, om underordna c-strukturnodar).
 
@@ -1040,7 +1040,7 @@ argstr til $PRED_{L2}$.
      a,b,c i same rekkjefølgje uansett...)
 
 ** SKRIV Kan adjunkt lenkjast til nodar _under_ mor-lenkja?
-Krav (vi) i \citet[s.~5]{dyvik2009lmt} krev at viss F_s og F_t er
+Krav (vi) i \citet[s.~75]{dyvik2009lmt} krev at viss F_s og F_t er
 lenkja, så kan ingen adjunkt D_s til F_s vere lenkja til nodar utanfor
 F_t. Men kan ein D_s lenkjast til ei dotternode av argument eller
 adjunkt til F_t?
@@ -1227,9 +1227,17 @@ problem. I tillegg har me problemet med 1-mange-lenkjer, som skaper
 endå fleire moglege samanstillingar.
 
 ** min metode
-(iii) og (iv) i \citet[s.~5]{dyvik2009lmp} krev LPT-korrespondanse
-mellom (L av Pr av) kvart kjeldeargument og målargument/-adjunkt. Eg
-krev i tillegg at f-strukturane deira kan samanstillast.
+(iii) og (iv) i \citet[s.~75]{dyvik2009lmp} krev LPT-korrespondanse
+mellom (L av Pr av) kvart kjeldeargument og målargument/-adjunkt. 
+
+Eg krev i tillegg at f-strukturane deira kan samanstillast. Dette
+utelukk lenkjing av 0 og 0 nedanfor:
+
+: 0[ PRED planlegge<eg,1>      0[ PRED plan<I,1>
+:    XCOMP 1[gi (opp)]      ]       XCOMP 1[ give<I,him,it> ]
+
+
+
 ** merge
 filene 
 : ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
