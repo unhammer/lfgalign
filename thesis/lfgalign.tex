@@ -1,4 +1,4 @@
-% Created 2010-04-15 Thu 14:08
+% Created 2010-04-19 Mon 08:27
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -35,7 +35,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{15/04, 2010}
+\date{19/04, 2010}
 
 \begin{document}
 
@@ -417,7 +417,7 @@ er eit separat problem.
 
 Samanstilte frasar bør ha nok semantisk likskap til å kunne opptre som
 omsetjingar i liknande omgivnader
-\citep{dyvik2009pc}. \citet{thunes2003eal} gir nokre passande prinsipp
+\citep[s.~74]{dyvik2009lmp}. \citet{thunes2003eal} gir nokre passande prinsipp
 for å fastslå det som kan kallast \emph{omsetjingsmessig korrespondanse}, for
 ordsamanstilling. Dette er prinsipp som skal gjelde for eit litt forskjellig
 formål\footnote{\cite[s.~2]{thunes2003eal}: «Våre prinsipper er satt
@@ -1122,7 +1122,7 @@ argstr til $PRED_{L2}$.
 \section{\textbf{SKRIV} Kan adjunkt lenkjast til nodar \underline{under} mor-lenkja?}
 \label{sec-3.16}
 
-Krav (vi) i \citet[s.~5]{dyvik2009lmt} krev at viss F$_s$ og F$_t$ er
+Krav (vi) i \citet[s.~75]{dyvik2009lmp} krev at viss F$_s$ og F$_t$ er
 lenkja, så kan ingen adjunkt D$_s$ til F$_s$ vere lenkja til nodar utanfor
 F$_t$. Men kan ein D$_s$ lenkjast til ei dotternode av argument eller
 adjunkt til F$_t$?
@@ -1135,7 +1135,166 @@ lenkje dette til D$_s$ ved krav (vi) igjen, sidan D$_s$ står utanfor
 A$_s$.
 
 Men om D$_t$ er ei ulenkja \emph{adjunkt}dotter av F$_t$, så vil døtre av
-D$_t$ kunne lenkjast til D$_s$, så lenge D$_t$ forblir ulenkja.
+D$_t$ kunne lenkjast til D$_s$, så lenge D$_t$ forblir ulenkja. Me kan altså
+sjå ned i adjunktdøtre av F$_t$ for å lenkje D$_s$. 
+
+På same måte bør ein kunne rekursivt sjå ned i ulenkja adjunktdøtre av
+R$_t$, men ein bør kanskje ikkje kunne lenkje så djupt uansett? Ikkje
+automatisk, uansett.
+
+
+
+Programmet mitt vil, gitt to initielle f-strukturar med
+LPT-korrespondanse, finne alle moglege kombinasjonar av lenkjer som
+inneheld alle argument og kanskje adjunkt, dvs. om me har
+
+\begin{verbatim}
+ F_s [ PRED p<1,2> ADJUNCT { 3 } ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_t [ PRED p<4> ADJUNCT { 5,6 } ]
+\end{verbatim}
+
+
+vil dette vere logisk moglege samanstillingar av «f-strukturdøtre»:
+
+\begin{verbatim}
+    (((1 . 4) (2 . 5)) ((1 . 4) (2 . 6)) ((1 . 5) (2 . 4))
+     ((1 . 5) (2 . 6) (3 . 4)) ((1 . 6) (2 . 4)) ((1 . 6) (2 . 5) (3 . 4)))
+\end{verbatim}
+
+
+Me luker ut kombinasjonar som bryt med LPT-korrespondanse. Med full
+informasjon bør me sjølvsagt berre ende opp med éin kombinasjon,
+t.d. \texttt{((1 . 4) (2 . 5))}.
+
+Så langt bør altså krav (i-iv) frå \citet{dyvik2009lmp} vere dekkja.
+
+Me \underline{kan} krevje at f strukturane-til f strukturdøtre-kan lenkjast
+rekursivt for at F$_s$ og F$_t$ skal lenkjast, t.d. både \texttt{(1 . 4)} og \texttt{(2 . 5)}. Men her kjem det (iallfall) to problem.
+
+
+\subsection{1. Kausativar og inkorporering}
+\label{sec-3.16.1}
+
+Om me har 
+
+\begin{verbatim}
+ F_s [ PRED p<SUBJ, 1, 2> XCOMP 2[ PRED q<1> ] ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_t [ PRED pq<SUBJ,OBJ> ]
+\end{verbatim}
+
+
+kor pq er t.d. ein kausativ som tilsvarer \texttt{p<..., q>}, så vil me ikkje
+kunne lenkje F$_s$ og F$_t$ sidan det bryt med krav (iii), F$_s$ har eit
+argument for mykje. Men her vil det kanskje vere naturleg å ha ei
+ein-mange-lenkje:
+
+\begin{verbatim}
+ ((F_s 2) . F_t)
+\end{verbatim}
+
+
+No kan me sjå på unionen av argument av F$_s$ (minus XCOMP) og argument
+av XCOMP, alle argument i denne unionen må då ha LPT-korrespondanse
+med argument/adjunkt av F$_t$, og alle argument av F$_t$ må ha
+LPT-korrespondanse med argument/adjunkt av unionen.
+
+Det same bør kanskje skje ved vanleg inkorporering av substantiv, då
+må det altså vere mogleg å føye saman t.d. verb og objekt; ein
+kombinasjon av dette og kausativ bør vel vere mogleg, t.d.
+
+\begin{verbatim}
+ F_s [ PRED la<SUBJ, 1>  XCOMP 2[ få<1, 3:pengar> ] ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_ t [ PRED belønn<SUBJ, 1> ]
+\end{verbatim}
+
+
+Igjen ser me på argument frå unionen av \texttt{(F\_s 2 3)} minus 2 og 3, og
+om det er mogleg å lenkje dei til argument/adjunkt av F$_t$, og omvendt.
+
+Men det bør kanskje vere grenser for kor langt samanføying kan gå… eg
+kan ikkje tenkje meg at me vil lenkje \texttt{((F\_s 2) . F\_t)} eller \texttt{((F\_s 1 2) . F\_t)} her:
+
+\begin{verbatim}
+ F_s [ PRED p<…, 1> XCOMP 1[ PRED q<…, 2> XCOMP 2[ PRED r<…> ] ] ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_t [ PRED pr<…> ]
+\end{verbatim}
+
+
+\ldots{}men det kan jo hende det finst situasjonar der dette au vil vere
+rett. Problemet er altså kor me skal setje grensene i
+implementasjonen. Om me skal prøve å samanføye på alle moglege måtar
+(altså, der me ikkje har informasjon om LPT), i tillegg til «vanlege»
+lenkjer, blir det fort komputasjonelt vanskeleg. Me kan sjølvsagt snu
+på LPT-kravet her, og seie at dette er berre lov der me har positiv
+informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
+me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
+vanskeleg å finne prinsipelle avgrensingar her. 
+\subsubsection{\textbf{TOGROK} adjunkt bør ikkje samanføyast? eller?}
+\label{sec-3.16.1.1}
+
+Det einaste eg kan
+tenkje meg er at adjunkt ikkje bør vere kandidatar for samanføying (i
+såfall burde dei vel heller vore analysert som argument?).
+
+\subsection{2. Adposisjonsobjekt}
+\label{sec-3.16.2}
+
+
+I følgjande setningspar har me eit objekt «sigarett» som svarer til
+PP-en «sigaretze» («sigareti» + «ze»):
+
+\begin{verbatim}
+ Abrams veddet en sigarett med Browne på at det regnet.
+ abramsi brouns daenajleva sigaretze, rom cvimda.
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_s [ PRED sigarett ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_t [ PRED ze<1> 1[ PRED sigareti ] ]
+\end{verbatim}
+
+
+F$_s$ og F$_t$ er døtre av dei ytre predikata i kvar setning, krav (iii)
+seier at det må vere LPT-korrespondanse mellom desse for at me skal
+kunne lenkje «veddet» og «daenajleva».  Her synest det feil å føye
+saman «sigareti» og «ze», \texttt{(F\_s . (F\_t 1))}, sidan «sigarett» ikkje
+inneheld informasjonen gitt av «ze».
+
+Eg ser to løysingar. Me kan slakke på LMT-kravet ved å la \texttt{L'(F\_t) = \{sigaretze, ze\}} (evt. \texttt{\{sigaret, ze\}}), då kan me lenkje \texttt{(F\_s . F\_t)}, medan 1 er ulenkja.
+
+Eller me kan lenkje \texttt{(F\_s . 1)}, kor me har skikkeleg
+LMT-korrespondanse, men då må me slakke på (iii) og (iv), og altså ha
+lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
+«daenajleva». F$_t$ er då ulenkja.
+
+For meg synest det mest naturleg å lenkje NP til PP, om ein skal
+studere relasjonar mellom kasus, argumentstruktur og tematiske
+roller. 
+\subsubsection{\textbf{TOGROK} Eller finst det gode argument for å lenkje (F$_s$ . 1) ?}
+\label{sec-3.16.2.1}
+
+
 \section{\textbf{TOGROK} kva var poenget med dette? \textbf{:ROTETE:}}
 \label{sec-3.17}
 
@@ -1324,9 +1483,20 @@ endå fleire moglege samanstillingar.
 \section{min metode}
 \label{sec-4.3}
 
-(iii) og (iv) i \citet[s.~5]{dyvik2009lmp} krev LPT-korrespondanse
-mellom (L av Pr av) kvart kjeldeargument og målargument/-adjunkt. Eg
-krev i tillegg at f-strukturane deira kan samanstillast.
+(iii) og (iv) i \citet[s.~75]{dyvik2009lmp} krev LPT-korrespondanse
+mellom (L av Pr av) kvart kjeldeargument og målargument/-adjunkt. 
+
+Eg krev i tillegg at f-strukturane deira kan samanstillast. Dette
+utelukk lenkjing av 0 og 0 nedanfor:
+
+\begin{verbatim}
+ 0[ PRED planlegge<eg,1>      0[ PRED plan<I,1>
+    XCOMP 1[gi (opp)]      ]       XCOMP 1[ give<I,him,it> ]
+\end{verbatim}
+
+
+
+
 \section{merge}
 \label{sec-4.4}
 
