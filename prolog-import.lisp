@@ -279,6 +279,7 @@ terminal etc.)"
 
 
 ;;;;;;;; TESTING:
+;;;;;;;; --------
 (lisp-unit:define-test test-clean-c
   (lisp-unit:assert-equal
    ;; can we assume all subtrees are (at most) binary?

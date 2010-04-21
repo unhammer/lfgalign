@@ -4,6 +4,8 @@
 
 (in-package #:lfgalign)
 
+;;;;;;;; HELPER MACROS:
+;;;;;;;; --------------
 (defmacro mapcar-true (fn list)
   "Like `mapcar', but remove nil elements."
   `(remove-if #'null (mapcar ,fn ,list)))
@@ -34,7 +36,8 @@ http://www.cliki.net/common-idioms"
      (when it ,@body)))
 
 
-;;; dset implementations. Remember to (setf *print-circle* t) 
+;;;;;;;; DSET implementations. Remember to (setf *print-circle* t) 
+;;;;;;;; ----------------------------------------------------------
 
 ;;; Implementation 1, standard disjoint set with union-by-rank and
 ;;; path compression. Unfortunately, we need to accumultate child-vals
