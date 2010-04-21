@@ -1293,30 +1293,56 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 
 
 * Korleis fungerer implementasjonen min
+For å finne ut av kor godt krava i forrige kapittel fungerer til å
+avgrense kva for lenkjer som er moglege, har eg implementert dei etter
+beste evne i eit Lisp[fn:16]-program. Ei implementering gjer det au
+svært synleg kor det finst manglar i eit formelt krav, eller om noko
+ikkje er godt nok spesifisert.
+
 Programmet =lfgalign= [fn:2] tek inn LFG-analysane av to setningar som
 me veit er omsetjingar av kvarandre. LFG-analysane må vere
 disambiguerte og i Prolog-formatet frå XLE[fn:5]. Programmet les inn
-dei to filene og oppretter ein intern representasjon av
-LFG-analysen. 
-** gjer ikkje dette lenger					     :ROTETE:
-=lfgalign= kan i tillegg ta inn ein representasjon av moglege
-LPT-korrespondansar.
+dei to filene og oppretter ein intern representasjon av LFG-analysen.
 
-LPT-korrespondansane utgjer utgangspunktet for samanstillinga. 
+Me kan i tillegg gi programmet informasjon om kva for ord-omsetjingar
+som er lingvistisk prediktable.
 
-Der det ikkje finst informasjon om eit ord i LPT-basen, føreset me at
-alle ord kan lenkjast til dette. Pronomen/pro-element og
-substantiv/pronomen kan alltid lenkjast.
+Hovudalgoritmen er vist i figur \ref{f-align}. Funksjonen =f-align=
+returnerer ei liste med samanstillingar, kvar $alignment$ er ei liste
+med par, lenkjer. =argalign= gir alle moglege samanstillingar av
+/argumenta/ til $src$ og $trg$. 
 
-=permute= finn alle moglege permutasjonar av 1-1
-LPT-korrespondansar. 
+Det er sjølvsagt slik at ei lenkje frå éi samanstilling kan finnast i
+andre samanstillingar, difor lagrar me alle resultat i
+$aligntable$. Dette føreset sjølvsagt at =f-align= $(s,t,LPT)$
+uavhengig av konteksten rundt, t.d. at samanstillingane som kjem ved å
+lenkje subjekt av $F_s$ mot subjekt av $F_t$ er like uavhengig av om
+objektet til $F_s$ er lenkja mot eit objekt eller eit adjunkt osb. av
+$F_t$. \fixme{nemne dette «kravet» i forrige kapittel!}
 
-Dette blir sendt gjennom =merge= som finn moglege
-mange-til-mange-korrespondansar av PRED-element. Moglege samanføyingar
-er: PRED til (X)COMP-dotter, ADJUNCT, ....
+#+BEGIN_LaTeX
+\begin{algorithm}
+  \caption{f-align}
+\label{f-align}
+\begin{algorithmic}
+\newcommand{\algorithmicprocedure}{\textbf{procedure}\ }
+\newcommand{\algorithmicfunction}{\textbf{function}\ }
+\newcommand{\algorithmicprocend}{\textbf{end procedure}\ }
+\newcommand{\algorithmicfunctionend}{\textbf{end function}\ }
 
-Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
-eit filter som sjekker om skrankane er oppfylte.
+\STATE \algorithmicfunction f-align($src$, $trg$, $LPT$) : alignments
+  \FORALL{alignment in argalign($src$, $trg$, $LPTs$)}
+     \FORALL{$src_a$, $trg_a$ in alignment}
+       \IF{aligntable[$src$,$trg$] $eq$ $null$}
+         \STATE aligntable[$src$,$trg$] $\gets$ f-align($src_a$, $trg_a$, $LPT$)
+       \ENDIF
+       \STATE $a \gets \{ (src, trg) , \}$
+    \ENDFOR
+  \ENDFOR
+\STATE \algorithmicfunctionend
+\end{algorithmic}
+\end{algorithm}
+#+END_LaTeX
 
 ** fullstendig bottom-up
 Eitt alternativ er å byrje med alle moglege permutasjonar av
@@ -1336,6 +1362,57 @@ får me endå fleire moglege samanstillingar per setning (4 ord gir 26,
 dei samanstillingane som lenkjar flest ord, ville maskinen raskt fått
 problem. I tillegg har me problemet med 1-mange-lenkjer, som skaper
 endå fleire moglege samanstillingar.
+*** notat							     :ROTETE:
+Intuition: Starting the alignment from outers and then going
+inwards should have the effect that  
+
+1. we don't get 'crossing' alignments, as we would have if 
+   a-d and b-c where tab_s:[a [b ]] tab_t:[c [d ]], and
+2. we prioritise alignments of outer elements with outer 
+   elements.
+
+However, it might turn out to be really hard in practice to keep
+possible pairings prioritised when aligning. Eg. if we have
+
+tab_s:[a [b]] tab_t:[c [d [e]] [f [g]]
+and all LPT's are allowed except a-d, do we go
+a-c,a-e,a-f,a-g
+or
+a-c,a-f,a-e,a-g 
+or 
+a-c,a-f,a-g,a-e (here counting e as deeper than g)
+?
+
+And if tab_s were [a [b]] [h [i]], when do we start considering h?
+
+----
+
+The alternative to ordering is of course just trying all permutations
+of LPT-pairings. But would it still be simplest to follow some sort of
+ordering? And how do we prioritise the full over the half-finished
+alignments?
+
+Proposal: do all pairings. Start with a pair of unreferenced-preds,
+aligning inwards.
+
+Another difficulty is that we can merge certain pairings, eg. where we
+have a single causative PRED that aligns to a make PRED and a do PRED,
+or an object PRED that's incorporated into an 'action'
+PRED ('bilvaskingen'). 
+
+Proposal: `LPT-permute' churns out all configurations of single
+pairings allowed by LPT, while a `merge' function creates new possible
+configurations (pushed last in the queue) based on sane merges. So
+far, I don't think we'll want to merge where where two PRED's are on
+the same level (eg. a subject and an object of the same PRED we
+wouldn't merge), but a PRED and XCOMP (causative) or a PRED and its
+object ('bilvaskingen') would be mergeable, these have exactly one
+level between them (ie. one is the parent of another). I'm not sure
+that we want to stop there though (we might want to go both deeper in
+the f-structure and wider, ie. merge a pred with both its subject and
+its object, or with both its daughter and granddaughter); but we can
+leave that for later probably. ADJUNCTs should probably be mergeable
+too.
 
 ** min metode
 (iii) og (iv) i \citet[s.~75]{dyvik2009lmp} krev LPT-korrespondanse
@@ -1364,6 +1441,26 @@ og
 :    ADJUNCT { 2 }
 :    2[ ze<5>
 :       OBJ 5[ sigareti ] ] ]
+
+** gjer ikkje dette lenger					     :ROTETE:
+=lfgalign= kan i tillegg ta inn ein representasjon av moglege
+LPT-korrespondansar.
+
+LPT-korrespondansane utgjer utgangspunktet for samanstillinga. 
+
+Der det ikkje finst informasjon om eit ord i LPT-basen, føreset me at
+alle ord kan lenkjast til dette. Pronomen/pro-element og
+substantiv/pronomen kan alltid lenkjast.
+
+=permute= finn alle moglege permutasjonar av 1-1
+LPT-korrespondansar. 
+
+Dette blir sendt gjennom =merge= som finn moglege
+mange-til-mange-korrespondansar av PRED-element. Moglege samanføyingar
+er: PRED til (X)COMP-dotter, ADJUNCT, ....
+
+Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
+eit filter som sjekker om skrankane er oppfylte.
 
 * Resultat av å automatisk samanstille norske og georgiske setningar
    - om kjeldematerialet
@@ -1462,4 +1559,7 @@ MRS-suiten, med mindre anna er opplyst.
        General Public License.
 
 [fn:5] Dokumentert på http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
+
+[fn:16] Common Lisp ser ut til å vere standardspråket for høynivåkode
+        til LFG-formål.
 

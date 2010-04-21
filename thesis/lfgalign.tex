@@ -1,4 +1,4 @@
-% Created 2010-04-19 Mon 08:27
+% Created 2010-04-21 Wed 16:26
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -22,6 +22,9 @@
 \avmoptions{sorted,active}
 \avmvalfont{\rm}
 \avmsortfont{\scriptsize\it}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+
 \newcommand{\xbar}{$\rm\overline{X}$}
 \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
 \newcommand{\OBLben}{\F{obl}{ben}}
@@ -35,7 +38,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{19/04, 2010}
+\date{21/04, 2010}
 
 \begin{document}
 
@@ -1431,36 +1434,59 @@ seie noko \emph{a priori} om kva for vanskar ein kan finne).
 \chapter{Korleis fungerer implementasjonen min}
 \label{sec-4}
 
+For å finne ut av kor godt krava i forrige kapittel fungerer til å
+avgrense kva for lenkjer som er moglege, har eg implementert dei etter
+beste evne i eit Lisp\footnote{Common Lisp ser ut til å vere standardspråket for høynivåkode
+        til LFG-formål. }-program. Ei implementering gjer det au
+svært synleg kor det finst manglar i eit formelt krav, eller om noko
+ikkje er godt nok spesifisert.
+
 Programmet \texttt{lfgalign} \footnote{Tilgjengeleg frå \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign} under GNU
        General Public License. } tek inn LFG-analysane av to setningar som
 me veit er omsetjingar av kvarandre. LFG-analysane må vere
 disambiguerte og i Prolog-formatet frå XLE\footnote{Dokumentert på \href{http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html}{http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html} }. Programmet les inn
-dei to filene og oppretter ein intern representasjon av
-LFG-analysen. 
-\section{gjer ikkje dette lenger \textbf{:ROTETE:}}
-\label{sec-4.1}
+dei to filene og oppretter ein intern representasjon av LFG-analysen.
 
-\texttt{lfgalign} kan i tillegg ta inn ein representasjon av moglege
-LPT-korrespondansar.
+Me kan i tillegg gi programmet informasjon om kva for ord-omsetjingar
+som er lingvistisk prediktable.
 
-LPT-korrespondansane utgjer utgangspunktet for samanstillinga. 
+Hovudalgoritmen er vist i figur \ref{f-align}. Funksjonen \texttt{f-align}
+returnerer ei liste med samanstillingar, kvar $alignment$ er ei liste
+med par, lenkjer. \texttt{argalign} gir alle moglege samanstillingar av
+\emph{argumenta} til $src$ og $trg$. 
 
-Der det ikkje finst informasjon om eit ord i LPT-basen, føreset me at
-alle ord kan lenkjast til dette. Pronomen/pro-element og
-substantiv/pronomen kan alltid lenkjast.
+Det er sjølvsagt slik at ei lenkje frå éi samanstilling kan finnast i
+andre samanstillingar, difor lagrar me alle resultat i
+$aligntable$. Dette føreset sjølvsagt at \texttt{f-align} $(s,t,LPT)$
+uavhengig av konteksten rundt, t.d. at samanstillingane som kjem ved å
+lenkje subjekt av $F_s$ mot subjekt av $F_t$ er like uavhengig av om
+objektet til $F_s$ er lenkja mot eit objekt eller eit adjunkt osb. av
+$F_t$. \fixme{nemne dette «kravet» i forrige kapittel!}
 
-\texttt{permute} finn alle moglege permutasjonar av 1-1
-LPT-korrespondansar. 
+\begin{algorithm}
+  \caption{somecaption}
+\label{f-align}
+\begin{algorithmic}
+\newcommand{\algorithmicprocedure}{\textbf{procedure}\ }
+\newcommand{\algorithmicfunction}{\textbf{function}\ }
+\newcommand{\algorithmicprocend}{\textbf{end procedure}\ }
+\newcommand{\algorithmicfunctionend}{\textbf{end function}\ }
 
-Dette blir sendt gjennom \texttt{merge} som finn moglege
-mange-til-mange-korrespondansar av PRED-element. Moglege samanføyingar
-er: PRED til (X)COMP-dotter, ADJUNCT, \ldots{}.
-
-Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
-eit filter som sjekker om skrankane er oppfylte.
+\STATE \algorithmicfunction f-align($src$, $trg$, $LPT$) : alignments
+  \FORALL{alignment in argalign($src$, $trg$, $LPTs$)}
+     \FORALL{$src_a$, $trg_a$ in alignment}
+       \IF{aligntable[$src$,$trg$] $eq$ $null$}
+         \STATE aligntable[$src$,$trg$] $\gets$ f-align($src_a$, $trg_a$, $LPT$)
+       \ENDIF
+       \STATE $a \gets \{ (src, trg) , \}$
+    \ENDFOR
+  \ENDFOR
+\STATE \algorithmicfunctionend
+\end{algorithmic}
+\end{algorithm}
 
 \section{fullstendig bottom-up}
-\label{sec-4.2}
+\label{sec-4.1}
 
 Eitt alternativ er å byrje med alle moglege permutasjonar av
 LPT-korrespondansar, og så sile ut dei som ikkje svarer til krava. Men
@@ -1479,9 +1505,63 @@ får me endå fleire moglege samanstillingar per setning (4 ord gir 26,
 dei samanstillingane som lenkjar flest ord, ville maskinen raskt fått
 problem. I tillegg har me problemet med 1-mange-lenkjer, som skaper
 endå fleire moglege samanstillingar.
+\subsection{notat \textbf{:ROTETE:}}
+\label{sec-4.1.1}
+
+Intuition: Starting the alignment from outers and then going
+inwards should have the effect that  
+
+\begin{enumerate}
+\item we don't get `crossing' alignments, as we would have if 
+   a-d and b-c where tab$_s$:[a [b ]] tab$_t$:[c [d ]], and
+\item we prioritise alignments of outer elements with outer 
+   elements.
+\end{enumerate}
+However, it might turn out to be really hard in practice to keep
+possible pairings prioritised when aligning. Eg. if we have
+
+tab$_s$:[a [b]] tab$_t$:[c [d [e]] [f [g]]
+and all LPT's are allowed except a-d, do we go
+a-c,a-e,a-f,a-g
+or
+a-c,a-f,a-e,a-g 
+or 
+a-c,a-f,a-g,a-e (here counting e as deeper than g)
+?
+
+And if tab$_s$ were [a [b]] [h [i]], when do we start considering h?
+
+----
+
+The alternative to ordering is of course just trying all permutations
+of LPT-pairings. But would it still be simplest to follow some sort of
+ordering? And how do we prioritise the full over the half-finished
+alignments?
+
+Proposal: do all pairings. Start with a pair of unreferenced-preds,
+aligning inwards.
+
+Another difficulty is that we can merge certain pairings, eg. where we
+have a single causative PRED that aligns to a make PRED and a do PRED,
+or an object PRED that's incorporated into an `action'
+PRED (`bilvaskingen'). 
+
+Proposal: `LPT-permute' churns out all configurations of single
+pairings allowed by LPT, while a `merge' function creates new possible
+configurations (pushed last in the queue) based on sane merges. So
+far, I don't think we'll want to merge where where two PRED's are on
+the same level (eg. a subject and an object of the same PRED we
+wouldn't merge), but a PRED and XCOMP (causative) or a PRED and its
+object (`bilvaskingen') would be mergeable, these have exactly one
+level between them (ie. one is the parent of another). I'm not sure
+that we want to stop there though (we might want to go both deeper in
+the f-structure and wider, ie. merge a pred with both its subject and
+its object, or with both its daughter and granddaughter); but we can
+leave that for later probably. ADJUNCTs should probably be mergeable
+too.
 
 \section{min metode}
-\label{sec-4.3}
+\label{sec-4.2}
 
 (iii) og (iv) i \citet[s.~75]{dyvik2009lmp} krev LPT-korrespondanse
 mellom (L av Pr av) kvart kjeldeargument og målargument/-adjunkt. 
@@ -1498,7 +1578,7 @@ utelukk lenkjing av 0 og 0 nedanfor:
 
 
 \section{merge}
-\label{sec-4.4}
+\label{sec-4.3}
 
 filene 
 \begin{verbatim}
@@ -1523,6 +1603,28 @@ og
        OBJ 5[ sigareti ] ] ]
 \end{verbatim}
 
+
+\section{gjer ikkje dette lenger \textbf{:ROTETE:}}
+\label{sec-4.4}
+
+\texttt{lfgalign} kan i tillegg ta inn ein representasjon av moglege
+LPT-korrespondansar.
+
+LPT-korrespondansane utgjer utgangspunktet for samanstillinga. 
+
+Der det ikkje finst informasjon om eit ord i LPT-basen, føreset me at
+alle ord kan lenkjast til dette. Pronomen/pro-element og
+substantiv/pronomen kan alltid lenkjast.
+
+\texttt{permute} finn alle moglege permutasjonar av 1-1
+LPT-korrespondansar. 
+
+Dette blir sendt gjennom \texttt{merge} som finn moglege
+mange-til-mange-korrespondansar av PRED-element. Moglege samanføyingar
+er: PRED til (X)COMP-dotter, ADJUNCT, \ldots{}.
+
+Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
+eit filter som sjekker om skrankane er oppfylte.
 
 \chapter{Resultat av å automatisk samanstille norske og georgiske setningar}
 \label{sec-5}
@@ -1550,6 +1652,7 @@ og
 \end{enumerate}
 \bibliographystyle{apacite}
 \bibliography{master}
+
 
 
 

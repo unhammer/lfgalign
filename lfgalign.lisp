@@ -358,12 +358,15 @@ is trivially true
 	 (adjs_t (get-adjs var_t tab_t 'no-error))
 	 (args_s (get-args Pr_s 'no-nulls))
 	 (args_t (get-args Pr_t 'no-nulls))
-	 (aligntab (make-hash-table :test #'equal))
-	 (argalign (argalign link tab_s tab_t LPTs))) ; (iii) and (iv)
-    (loop for alignment in argalign do 
-	 (loop for link in alignment
-	    for linkaligns = (f-align link tab_s tab_t LPTs)
-	    do (setf (gethash link aligntab) linkaligns)))))
+	 (aligntab (make-hash-table :test #'equal)))
+					; argalign covers (iii) and (iv)
+    (loop for alignment in (argalign link tab_s tab_t LPTs)
+	  collect
+	  (loop for link_a in alignment
+		do
+		(unless (gethash link_a aligntab)
+		  (setf (gethash link_a aligntab) (f-align link_a tab_s tab_t LPTs)))
+		collect (cons link (gethash link_a aligntab))))))
 
 ;; 	 (loop for c_s in args_s	   ; (iii)
 ;; 	    always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
