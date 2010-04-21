@@ -1,4 +1,4 @@
-% Created 2010-04-21 Wed 16:26
+% Created 2010-04-21 Wed 21:39
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -22,8 +22,7 @@
 \avmoptions{sorted,active}
 \avmvalfont{\rm}
 \avmsortfont{\scriptsize\it}
-\usepackage{algorithmic}
-\usepackage{algorithm}
+\usepackage{algorithm2e}
 
 \newcommand{\xbar}{$\rm\overline{X}$}
 \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
@@ -1451,9 +1450,12 @@ Me kan i tillegg gi programmet informasjon om kva for ord-omsetjingar
 som er lingvistisk prediktable.
 
 Hovudalgoritmen er vist i figur \ref{f-align}. Funksjonen \texttt{f-align}
-returnerer ei liste med samanstillingar, kvar $alignment$ er ei liste
-med par, lenkjer. \texttt{argalign} gir alle moglege samanstillingar av
-\emph{argumenta} til $src$ og $trg$. 
+returnerer ei liste med samanstillingar. Kvar samanstilling er ei
+liste med par av tal, desse representerer lenkjer frå f-struktur på
+kjeldespråket til f-struktur på målspråket. 
+
+\texttt{argalign} (figur \ref{argalign}) gir alle moglege samanstillingar av
+\emph{argumenta} til $src$ og $trg$.
 
 Det er sjølvsagt slik at ei lenkje frå éi samanstilling kan finnast i
 andre samanstillingar, difor lagrar me alle resultat i
@@ -1463,27 +1465,58 @@ lenkje subjekt av $F_s$ mot subjekt av $F_t$ er like uavhengig av om
 objektet til $F_s$ er lenkja mot eit objekt eller eit adjunkt osb. av
 $F_t$. \fixme{nemne dette «kravet» i forrige kapittel!}
 
-\begin{algorithm}
-  \caption{somecaption}
-\label{f-align}
-\begin{algorithmic}
-\newcommand{\algorithmicprocedure}{\textbf{procedure}\ }
-\newcommand{\algorithmicfunction}{\textbf{function}\ }
-\newcommand{\algorithmicprocend}{\textbf{end procedure}\ }
-\newcommand{\algorithmicfunctionend}{\textbf{end function}\ }
-
-\STATE \algorithmicfunction f-align($src$, $trg$, $LPT$) : alignments
-  \FORALL{alignment in argalign($src$, $trg$, $LPTs$)}
-     \FORALL{$src_a$, $trg_a$ in alignment}
-       \IF{aligntable[$src$,$trg$] $eq$ $null$}
-         \STATE aligntable[$src$,$trg$] $\gets$ f-align($src_a$, $trg_a$, $LPT$)
-       \ENDIF
-       \STATE $a \gets \{ (src, trg) , \}$
-    \ENDFOR
-  \ENDFOR
-\STATE \algorithmicfunctionend
-\end{algorithmic}
-\end{algorithm}
+  \SetAlgorithmName{Algoritme}{algoritme}{liste over algoritmar}
+  \SetAlgoFuncName{Funksjon}{fn}
+  
+    \begin{function}[]
+    \caption{f-align($F_s$, $F_t$, $LPT$)}
+    \label{f-align}
+    
+    $alignments \gets \emptyset$  \;
+    \ForAll{argperm in argalign($F_s$, $F_t$, $LPTs$)} {
+       \ForAll{$A_s$, $A_t$ in argperm} {
+         \If{aligntable[$F_s$,$F_t$] $=$ $null$} {
+         aligntable[$F_s$,$F_t$] $\gets$ f-align($A_s$, $A_t$, $LPT$)\;
+         }
+         $new \gets \{ (F_s, F_t) \} \bigcup$ aligntable[$F_s$,$F_t$] \;
+         $alignments \gets \{ new \} \bigcup alignments$\;
+       }
+     }
+     \end{function}
+  
+  
+  
+    \begin{function}[]
+    \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
+    \label{argalign}
+  
+    \SetKwInOut{Input}{input}\SetKwInOut{Output}{output} 
+    \Input{Kalt av argalign slik: argalign-p(arguments($F_s$),
+    adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$), $LPT$)}
+    \BlankLine
+    
+    \lIf{$args_s$} {
+        mapalign($args_s$, $args_t$) $\bigcup$ mapalign($args_s$, $adjs_t$)\;
+        }
+        \ElseIf{$args_t$} {
+          \If{$adjs_s$}{
+            \ForAll{$t$ in $trg$} {
+              $s \in adjs_s$\;
+              \ForAll{$perm$ in argalign-p($args_s$, $adjs_s-s$, $args_t-t$,
+                $adjs_t$)}{
+                $foo \gets \{(s,t)\} \bigcup perm$
+              }
+            }
+            mapalign\;
+          }\lElse{
+            $\emptyset$\;
+          }
+        }
+      \lElse {
+         \{$\emptyset$\}\;
+      }
+   
+    \end{function}
 
 \section{fullstendig bottom-up}
 \label{sec-4.1}

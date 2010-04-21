@@ -360,9 +360,9 @@ is trivially true
 	 (args_t (get-args Pr_t 'no-nulls))
 	 (aligntab (make-hash-table :test #'equal)))
 					; argalign covers (iii) and (iv)
-    (loop for alignment in (argalign link tab_s tab_t LPTs)
+    (loop for argperm in (argalign link tab_s tab_t LPTs)
 	  collect
-	  (loop for link_a in alignment
+	  (loop for link_a in argperm
 		do
 		(unless (gethash link_a aligntab)
 		  (setf (gethash link_a aligntab) (f-align link_a tab_s tab_t LPTs)))
