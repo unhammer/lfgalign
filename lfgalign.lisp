@@ -349,7 +349,9 @@ the recursion loops through all possible `srcs'."
 (defun f-align (link tab_s tab_t LPTs)
   " (i) the number of arguments n and m may or may not differ
 is trivially true
- (ii), LPT, should be covered for `link' on all calls."
+ (ii), LPT, should be covered for `link' on all calls.
+TODO: (v) the LPT-correspondences can be aligned one-to-one
+TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
   (let* ((var_s (car link))
 	 (var_t (cdr link))
 	 (Pr_s (get-pred var_s tab_s t))
@@ -358,38 +360,24 @@ is trivially true
 	 (adjs_t (get-adjs var_t tab_t 'no-error))
 	 (args_s (get-args Pr_s 'no-nulls))
 	 (args_t (get-args Pr_t 'no-nulls))
-	 (aligntab (make-hash-table :test #'equal)))
+	 (aligntab (make-hash-table :test #'equal))
+	 alignments)
 					; argalign covers (iii) and (iv)
     (loop for argperm in (argalign link tab_s tab_t LPTs)
-	  collect
-	  (loop for link_a in argperm
-		do
-		(unless (gethash link_a aligntab)
-		  (setf (gethash link_a aligntab) (f-align link_a tab_s tab_t LPTs)))
-		collect (cons link (gethash link_a aligntab))))))
+	  do
+	  (pushnew
+	   (loop for link_a in argperm
+		 do
+		 (unless (gethash link_a aligntab)
+		   (setf (gethash link_a aligntab) (f-align link_a tab_s tab_t LPTs)))
+		 collect (gethash link_a aligntab))
+	   alignments))
+    (when alignments (cons link alignments))))
 
-;; 	 (loop for c_s in args_s	   ; (iii)
-;; 	    always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
-;; 		     (or (member (cdr it) args_t)
-;; 			 (member (cdr it) adjuncts_t))))	 
-;; 	 (loop for c_t in args_t	    ; (iv)
-;; 	    always (awhen (rassoc c_t perm) ; this assumes <=1-1 PRED alignments
-;; 		     (or (member (car it) args_s)
-;; 			 (member (car it) adjuncts_s))))
-;; 					; TODO: (v) the LPT-correspondences can be aligned one-to-one
-;; 	 (loop for adj_s in adjuncts_s	; (vi)
-;; 	    always (aif (assoc adj_s perm) ; this assumes <=1-1 PRED alignments
-;; 			(not (outer> (get-pred it tab_t)
-;; 				     Pr_t))
-;; 					; unaligned adjuncts are OK:
-;; 			t))	 
-;; 	 (loop for adj_t in adjuncts_t	; (vi) vice versa
-;; 	    always (aif (rassoc adj_t perm) ; this assumes <=1-1 PRED alignments
-;; 			(not (outer> (get-pred it tab_s)
-;; 				     Pr_s))
-;; 					; unaligned adjuncts are OK:
-;; 			t)))
-;;       link)
+(lisp-unit:define-test test-f-align
+ (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
+       (tab_t (open-and-import "dev/TEST_permute_t.pl")))
+   'TODO))
 
 
 (defun f-align-naive (var1 tab1 var2 tab2)
