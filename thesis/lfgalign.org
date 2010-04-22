@@ -13,6 +13,7 @@
 #+LaTeX_HEADER: \newcommand{\OBLben}{\F{obl}{ben}}
 #+LaTeX_HEADER: \newcommand{\OBJben}{\F{obj}{ben}}
 #+LaTeX_HEADER: \newcommand{\OBJ}{\F{obj}{}}
+#+LaTeX_HEADER: \newcommand{\ADJ}{\F{adj}{}}
 #+LaTeX_HEADER: \newcommand{\XCOMP}{\F{xcomp}{}}
 #+LaTeX_HEADER: \newcommand{\SUBJ}{\F{subj}{}}
 #+LaTeX_HEADER: \newcommand{\PRED}{\F{pred}{}}
@@ -1295,107 +1296,178 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 * Korleis fungerer implementasjonen min
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
-beste evne i eit Lisp[fn:16]-program. Ei implementering gjer det au
-svært synleg kor det finst manglar i eit formelt krav, eller om noko
-ikkje er godt nok spesifisert.
+beste evne i eit Lisp[fn:16]-program.
 
-Programmet =lfgalign= [fn:2] tek inn LFG-analysane av to setningar som
-me veit er omsetjingar av kvarandre. LFG-analysane må vere
-disambiguerte og i Prolog-formatet frå XLE[fn:5]. Programmet les inn
-dei to filene og oppretter ein intern representasjon av LFG-analysen.
+\fxnote{intro todo} Ei implementering gjer det svært synleg om det
+finst manglar i eit formelt krav, eller om noko ikkje er godt nok
+spesifisert.
+
+Programmet \texttt{lfgalign}[fn:2] tek inn LFG-analysane av to
+setningar som me av uavhengige grunnar trur er omsetjingar av
+kvarandre. LFG-analysane må vere disambiguerte og i Prolog-formatet
+frå XLE[fn:5]. Programmet les inn dei to filene og opprettar ein
+intern representasjon av LFG-analysen.
 
 Me kan i tillegg gi programmet informasjon om kva for ord-omsetjingar
-som er lingvistisk prediktable.
+me ser på som lingvistisk prediktable (t.d. informert av
+omsetjingstabellen frå eit automatisk ordsamanstillingsprogram, eller
+av handskrivne omsetjingsordbøker).
 
-Hovudalgoritmen er vist i figur \ref{f-align}. Funksjonen =f-align=
-returnerer ei liste med samanstillingar. Kvar samanstilling er ei
-liste med par av tal, desse representerer lenkjer frå f-struktur på
-kjeldespråket til f-struktur på målspråket. 
+** f-struktursamanstilling
+\fixme{intro, c-str er derivativ}
 
-=argalign= (figur \ref{argalign}) gir alle moglege samanstillingar av
-/argumenta/ til $src$ og $trg$.
+Hovudalgoritmen er vist i kodefigur \ref{algo:f-align}. Funksjonen
+=f-align= returnerer ei mengd med moglege samanstillingar. Kvar
+samanstilling er ei mengd med par av f-strukturar[fn:18]. Eit par
+$(F_s,F_t)$ representerer ei lenkje frå ein f-struktur på
+kjeldespråket, til ein f-struktur på målspråket. Me føreset at dette
+paret har LPT-korrespondanse[fn:17], dette blir sjekka før alle kall
+på =f-align=.
 
-Det er sjølvsagt slik at ei lenkje frå éi samanstilling kan finnast i
-andre samanstillingar, difor lagrar me alle resultat i
-$aligntable$. Dette føreset sjølvsagt at =f-align= $(s,t,LPT)$
-uavhengig av konteksten rundt, t.d. at samanstillingane som kjem ved å
-lenkje subjekt av $F_s$ mot subjekt av $F_t$ er like uavhengig av om
-objektet til $F_s$ er lenkja mot eit objekt eller eit adjunkt osb. av
-$F_t$. \fixme{nemne dette «kravet» i forrige kapittel!}
+Hjelpefunksjonen =argalign= (som igjen kallar =argalign-p=, vist i
+kodefigur \ref{algo:argalign-p}) gir alle moglege
+«argumentpermutasjonar», dvs. moglege kombinasjonar av lenkjer mellom
+argumenta til $F_s$ og $F_t$ som tilfredsstiller kravet om
+LPT-korrespondanse, men utan å sjekke at desse argumenta igjen kan
+samanstillast. Funksjonen prøver å lenkje kvart argument til eit
+argument eller eit adjunkt, men gir ingen lenkjer mellom to
+adjunkt. Funksjonen gir heller ikkje kombinasjonar der minst eitt
+argument ikkje er lenkja -- alle kombinasjonane må inkludere alle
+argument frå $F_s$ og $F_t$, jf. krav (iii) og (iv) i
+\citet[s.~75]{dyvik2009lmp}; krav (i) er tautologisk oppfylt, medan me
+som nemnt føreset at krav (ii) er oppfylt før alle kall på =f-align=.
+
+Eit døme: viss $F_s$ har argumenta \SUBJ og \OBJ og ingen adjunkt, og
+$F_t$ har argumentet \SUBJ og eitt adjunkt \ADJ, der alle
+ord-omsetjingar er moglege, vil =argalign= gi dei to samanstillingane
+$\{(\SUBJ,\SUBJ), (\OBJ,\ADJ)\}$ og $\{(\SUBJ,\ADJ),
+(\OBJ,\SUBJ)\}$. Viss adjunktet til $F_t$ ikkje fantest, eller ikkje
+hadde LPT-korrespondanse med nokon av argumenta til $F_s$, får me
+ingen samanstillingar; medan viss berre $(\SUBJ,\SUBJ)$ ikkje hadde
+LPT-korrespondanse, får me berre ut den siste samanstillinga.
+
+Funksjonen =f-align= går så gjennom kvar lenkje i kvar
+argumentpermutasjon, og prøver å kalle =f-align= på alle
+lenkjene. Sidan lenkjene som =argalign= gir har LPT-korrespondanse,
+vil alle f-strukturane i dei rekursive kalla i =f-align= ha
+LPT-korrespondanse. Eit rekursivt kall kan gi nye samanstillingar i
+dei indre f-strukturane, viss dei relevante krava er oppfylte. Då
+lagrar me samanstillinga av understrukturane saman med paret
+$(F_s,F_t)$.
+
+Det er mogleg at ei lenkje frå éi samanstilling kan finnast i andre
+samanstillingar, difor lagrar me alle delvise samanstillingar i
+tabellen $aligntable$. Dette føreset sjølvsagt at
+\texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt, t.d. at
+mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
+mot subjektet til $F_t$ er uavhengig av om objektet til
+$F_s$ er lenkja mot eit objekt eller eit adjunkt osb. av
+$F_t$. \fxnote{nemne dette «kravet» / føresetnaden i kapittelet
+over}  
 
 #+BEGIN_LaTeX
-  \SetAlgorithmName{Algoritme}{algoritme}{liste over algoritmar}
-  \SetAlgoFuncName{Funksjon}{fn}
-  
-    \begin{function}[]
-    \caption{f-align($F_s$, $F_t$, $LPT$)}
-    \label{f-align}
-    
-    $alignments \gets \emptyset$  \;
-    \ForAll{argperm in argalign($F_s$, $F_t$, $LPTs$)} {
-       \ForAll{$A_s$, $A_t$ in argperm} {
-         \If{aligntable[$F_s$,$F_t$] $=$ $null$} {
-         aligntable[$F_s$,$F_t$] $\gets$ f-align($A_s$, $A_t$, $LPT$)\;
-         }
-         $new \gets \{ (F_s, F_t) \} \bigcup$ aligntable[$F_s$,$F_t$] \;
-         $alignments \gets \{ new \} \bigcup alignments$\;
+     \begin{algorithm}[]
+      \caption{f-align($F_s$, $F_t$)}
+      \label{algo:f-align}
+      
+      $alignments \gets \emptyset$  \;
+      \ForAll{argperm in argalign($F_s$, $F_t$)} {
+        $p \gets \emptyset$ \;
+         \ForAll{$A_s$, $A_t$ in argperm} {
+           \uIf{unset(aligntable[$F_s$,$F_t$])} {
+           aligntable[$F_s$,$F_t$] $\gets$ f-align($A_s$, $A_t$)\;
+           }
+          add aligntable[$F_s$,$F_t$] to $p$\;
+        }
+        add $p$ to $alignments$ \;
        }
-     }
-     \end{function}
-  
-  
-  
-    \begin{function}[]
-    \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
-    \label{argalign}
-  
-    \SetKwInOut{Input}{input}\SetKwInOut{Output}{output} 
-    \Input{Kalt av argalign slik: argalign-p(arguments($F_s$),
-    adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$), $LPT$)}
-    \BlankLine
+       \Return $((F_s, F_t), alignments)$ \;
+       \end{algorithm}
     
-    \lIf{$args_s$} {
-        mapalign($args_s$, $args_t$) $\bigcup$ mapalign($args_s$, $adjs_t$)\;
-        }
-        \ElseIf{$args_t$} {
-          \If{$adjs_s$}{
-            \ForAll{$t$ in $trg$} {
-              $s \in adjs_s$\;
-              \ForAll{$perm$ in argalign-p($args_s$, $adjs_s-s$, $args_t-t$,
-                $adjs_t$)}{
-                $foo \gets \{(s,t)\} \bigcup perm$
-              }
+    
+    
+      \begin{algorithm}[]
+      \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
+      \label{algo:argalign-p}
+    
+      \SetKwComment{Comment}{ // }{}
+      \SetKwInOut{Input}{usage}
+      \Input{Kalt av argalign slik: \\ argalign-p(arguments($F_s$),
+      adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))}
+      \BlankLine
+    
+    
+     $a \gets \emptyset$\;
+     \uIf{$args_s$} {
+           $s \in args_s$\;
+           \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
+               \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t-\{t\}$,$adjs_t$)}{
+  add $\{(s,t)\} \bigcup p$ to $a$\;
+             }
             }
-            mapalign\;
-          }\lElse{
-            $\emptyset$\;
+           \ForAll{$t \in adjs_t$ \textbf{where} LPT($s$,$t$)} {
+               \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t$,$adjs_t-\{t\}$)}{
+  add $\{(s,t)\} \bigcup p$ to $a$\;
+                }
+           }
+             \Return $a$\;
+         }
+          \uElseIf{$args_t$} {
+            \uIf{$adjs_s$}{
+                $s \in adjs_s$\;
+           \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
+               \lForAll{$p \in$ argalign-p($args_s$, $adjs_s-\{s\}$, $args_t-\{t\}$,$adjs_t$)}{
+  add $\{(s,t)\} \bigcup p$ to $a$\;
+             }
+            }
+             \Return $a$\;
+        }\uElse{
+              \Return $\emptyset$  \Comment*[l]{Fail}
+            }
           }
-        }
-      \lElse {
-         \{$\emptyset$\}\;
-      }
-   
-    \end{function}
+        \uElse {
+          \Return \{$\emptyset$\} \Comment*[l]{End}
+        }     
+      \end{algorithm}
 #+END_LaTeX
 
-** fullstendig bottom-up
-Eitt alternativ er å byrje med alle moglege permutasjonar av
+Sjølv om det er krav om LPT-korrespondanse mellom kvart argument og
+eit argument/adjunkt, er det ikkje eit krav om at alle desse para
+tilfredsstiller alle lenkjingskrava for at $F_s$ og $F_t$ skal
+lenkjast. Viss \texttt{f-align}$(\OBJ,\ADJ)$ frå dømet over gir null,
+og ikkje kan lenkjast, medan \texttt{f-align}$(\SUBJ,\SUBJ)$ kan
+lenkjast, får me ei delvis lenkjing av argumenta i den
+argumentpermutasjonen.
+
+Om me i tillegg krev at f-strukturane deira kan samanstillast kan me
+utelukke lenkjing av $F_s$ og $F_t$ nedanfor\fxnote{nemne dette i kapittelet over}:
+
+: F_s[ PRED planlegge<eg,1>      F_t[ PRED plan<I,3>
+  :    XCOMP 1[gi (opp)]      ]       XCOMP 3[ give<I,him,it> ]
+
+Men det kan vere at me ikkje /vil/ krevje dette i alle tilfellet. Den
+enklaste løysinga blir då å spørje etter dei argumentpermutasjonane
+som har flest medlem.
+
+** Kan me gjere f-struktursamanstillinga fullstendig bottom-up?
+Ein alternativ metode er å byrje med alle moglege permutasjonar av
 LPT-korrespondansar, og så sile ut dei som ikkje svarer til krava. Men
-dette er problematisk, sidan avskjeringa skjer så seint at
-utrekningane for lengre setningar blir ganske umogleg. 
+dette er problematisk, sidan avskjeringa då skjer så seint at
+utrekningane for lengre setningar blir ganske umogleg.
 
 Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
-(ingenting er LPT), slik at kvart kjeldeord kan lenkjast til kvart
-målord. Viss båe setningane er 4 ord, får me 16 moglege
-samanstillingar der alle ord er med i nøyaktig éi lenkje (2^l, kor l
-er setningslengd). Men ofte har me null-lenkjer, me må altså i tillegg
-tillate samanstillingar der minst eitt ord er ulenkja, utan at me
-treng å vite kva for ord det er; med desse kortare listene inkludert
-får me endå fleire moglege samanstillingar per setning (4 ord gir 26,
-8 ord gir 2186 moglege samanstillingar). Sjølv om me heile tida vel
-dei samanstillingane som lenkjar flest ord, ville maskinen raskt fått
-problem. I tillegg har me problemet med 1-mange-lenkjer, som skaper
-endå fleire moglege samanstillingar.
+(me har ingen informasjon om LPT-korrespondanse), slik at kvart
+kjeldeord kan lenkjast til kvart målord. Viss båe setningane er 4 ord,
+får me 16 moglege samanstillingar der alle ord er med i nøyaktig éi
+lenkje ($2^l$, kor $l$ er setningslengd). Men ofte har me
+null-lenkjer, me må altså i tillegg tillate samanstillingar der minst
+eitt ord er ulenkja, utan at me treng å vite kva for ord det er; med
+desse kortare listene inkludert får me endå fleire moglege
+samanstillingar per setning (4 ord gir 26, 8 ord gir 2186 moglege
+samanstillingar). Sjølv om me heile tida vel dei samanstillingane som
+lenkjar flest ord, ville maskinen raskt fått problem. I tillegg har me
+problemet med 1-mange-lenkjer, som skaper endå fleire moglege
+samanstillingar.
 *** notat							     :ROTETE:
 Intuition: Starting the alignment from outers and then going
 inwards should have the effect that  
@@ -1447,16 +1519,6 @@ the f-structure and wider, ie. merge a pred with both its subject and
 its object, or with both its daughter and granddaughter); but we can
 leave that for later probably. ADJUNCTs should probably be mergeable
 too.
-
-** min metode
-(iii) og (iv) i \citet[s.~75]{dyvik2009lmp} krev LPT-korrespondanse
-mellom (L av Pr av) kvart kjeldeargument og målargument/-adjunkt. 
-
-Eg krev i tillegg at f-strukturane deira kan samanstillast. Dette
-utelukk lenkjing av 0 og 0 nedanfor:
-
-: 0[ PRED planlegge<eg,1>      0[ PRED plan<I,1>
-:    XCOMP 1[gi (opp)]      ]       XCOMP 1[ give<I,him,it> ]
 
 
 
@@ -1589,11 +1651,27 @@ MRS-suiten, med mindre anna er opplyst.
         ikkje hadde korrekt analyse (t.d. eit \textsc{PRO} der
         grammatikken burde funne eit substantiv).
 
-[fn:2] Tilgjengeleg frå http://github.com/unhammer/lfgalign under GNU
-       General Public License.
+[fn:2] Tilgjengeleg frå http://github.com/unhammer/lfgalign som fri og
+       open programvare under GNU General Public License.
 
-[fn:5] Dokumentert på http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
+[fn:5] Dokumentert på
+       http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html. Importeringa
+       til Lisp-strukturar handterer «pakka representasjonar» og
+       kjenner igjen ekvivalensforhold (t.d. der fleire variablar
+       refererer til same f-struktur, eller til same analyseval); men
+       filene eg har testa utnyttar ikkje det fulle spennet til
+       formatet, så det finst ganske sikkert feil.
 
-[fn:16] Common Lisp ser ut til å vere standardspråket for høynivåkode
-        til LFG-formål.
+[fn:16] Common Lisp er m.a. nytta i LFG Parsebanker
+        \citep{rosen2009lpt}.
+
+[fn:17] Når eg her skriv at to f-strukturar har LPT-korrespondanse,
+        meiner eg sjølvsagt at ordformen til PRED-verdien til kvar
+        f-struktur har LPT-korrespondanse.
+
+[fn:18] Eigentleg eit slags avgjerdstre; kvart element er eit par, kor
+        første element er lenkja mellom dei yttarste f-strukturane, og
+        andre element er dei moglege samanstillingane for dei indre
+        strukturane. Denne strukturen kan vere nyttig for å rangere
+        samanstillingar.
 
