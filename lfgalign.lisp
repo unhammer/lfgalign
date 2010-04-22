@@ -321,18 +321,18 @@ and (iv). See `argalign-p'."
 the recursion loops through all possible `srcs'."
 	 `(mapcan			; for each target arg/adj
 	   (lambda (trg)		   
-	     (mapcar-true	 ; for each permuation w/o src and trg
-	      (lambda (perm)
-		(when (or (not LPTs)
-			  (LPT? (get-pred (car ,srcs) tab_s) tab_s (get-pred trg tab_t) tab_t LPTs))
-		  (cons (cons (car ,srcs)
-			      trg)
-			perm)))
-	      ;; recurse, removing the arg/adj that we used:
-	      (argalign-p (if (eq ,srcs args_s) (cdr args_s) args_s)
-			   (if (eq ,srcs adjs_s) (cdr adjs_s) adjs_s)
-			   (if (eq ,trgs args_t) (remove trg args_t :count 1) args_t)
-			   (if (eq ,trgs adjs_t) (remove trg adjs_t :count 1) adjs_t))))
+	     (when (or (not LPTs)
+		       (LPT? (get-pred (car ,srcs) tab_s) tab_s
+			     (get-pred     trg     tab_t) tab_t LPTs))
+	       (mapcar-true	 ; for each permuation w/o src and trg
+		(lambda (perm)
+		  (cons (cons (car ,srcs) trg)
+			perm))
+		;; recurse, removing the arg/adj that we used:
+		(argalign-p (if (eq ,srcs args_s) (cdr args_s) args_s)
+			    (if (eq ,srcs adjs_s) (cdr adjs_s) adjs_s)
+			    (if (eq ,trgs args_t) (remove trg args_t :count 1) args_t)
+			    (if (eq ,trgs adjs_t) (remove trg adjs_t :count 1) adjs_t)))))
 	   ,trgs)))
     (if args_s
 	(append (mapalign args_s args_t)
@@ -806,39 +806,3 @@ nor (member new seq :key #'cdr)."
      when (unseen link old)
        append (mapcar (lambda (new) (append new old)) news)))
 
-(defun f-align-no-adjs (link tab_s tab_t LPTs)
-  " (i) the number of arguments n and m may or may not differ
-is trivially true
- (ii), LPT, should be covered for `link' on all calls."
-  (let* ((var_s (car link))
-	 (var_t (cdr link))
-	 (Pr_s (get-pred var_s tab_s t))
-	 (Pr_t (get-pred var_t tab_t t))
-;; 	 (adjs_s (get-adjs var_s tab_s 'no-error))
-;; 	 (adjs_t (get-adjs var_t tab_t 'no-error))
-	 (args_s (get-args Pr_s 'no-nulls))
-	 (args_t (get-args Pr_t 'no-nulls))
-	 argaligns)
-    (loop for arglink in (argalign link tab_s tab_t LPTs) ; (ii)
-       for alignments = (f-align-no-adjs arglink tab_s tab_t LPTs)
-       when alignments do
-       (setq argaligns (append argaligns
-			       (expand arglink alignments argaligns)
-			       alignments)))
-    (mapcar
-     (lambda (alignment) (cons link alignment))
-     (or (longest-sublists argaligns)	; prefer to align as much as possible
-	 (list nil)))))
-
-(lisp-unit:define-test test-f-align-no-adjs
-  (let ((tab_s  (open-and-import "nb/4.pl"))
-	(tab_t  (open-and-import "ka/4.pl")))
-    (lisp-unit:assert-equality
-     #'set-of-set-equal
-     '(((0 . 0) (11 . 3) (9 . 9) (10 . 6))
-       ((0 . 0) (11 . 3) (9 . 6) (10 . 9))
-       ((0 . 0) (11 . 9) (9 . 3) (10 . 6))
-       ((0 . 0) (11 . 9) (9 . 6) (10 . 3))
-       ((0 . 0) (11 . 6) (9 . 3) (10 . 9))
-       ((0 . 0) (11 . 6) (9 . 9) (10 . 3)))
-     (f-align-no-adjs (cons 0 0) tab_s tab_t (make-LPT)))))
