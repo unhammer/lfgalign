@@ -1311,7 +1311,7 @@ intern representasjon av LFG-analysen.
 Me kan i tillegg gi programmet informasjon om kva for ord-omsetjingar
 me ser på som lingvistisk prediktable (t.d. informert av
 omsetjingstabellen frå eit automatisk ordsamanstillingsprogram, eller
-av handskrivne omsetjingsordbøker).
+av handskrivne omsetjingsordbøker). 
 
 ** Lenkjer mellom f-strukturar
 \fixme{intro, c-str er derivativ}
@@ -1322,7 +1322,9 @@ samanstilling er ei mengd med par av f-strukturar[fn:18]. Eit par
 $(F_s,F_t)$ representerer ei lenkje frå ein f-struktur på
 kjeldespråket, til ein f-struktur på målspråket. Me føreset at dette
 paret har LPT-korrespondanse[fn:17], dette blir sjekka før alle kall
-på =f-align=.
+på =f-align=. Der me ikkje har informasjon om LPT-korrespondanse
+mellom to ord (orda er ukjende), er lenkjing lov. Pro-element og
+substantiv kan alltid lenkjast med kvarandre.
 
 Hjelpefunksjonen =argalign= (som igjen kallar =argalign-p=, vist i
 kodefigur \ref{algo:argalign-p}) gir alle moglege
@@ -1461,80 +1463,8 @@ tilfelle. Me kan uansett rangere ulike løysingar seinare ved å spørje
 etter dei argumentsamanstillingane som har flest medlem.
 
 ** SKRIV Når lenkjene ikkje er 1-1
-** Kan me gjere f-struktursamanstillinga bottom-up?
-Ein alternativ metode er å byrje med alle moglege permutasjonar av
-LPT-korrespondansar, og så sile ut dei som ikkje svarer til krava. Men
-dette er problematisk, sidan avskjeringa då skjer så seint at
-utrekningane for lengre setningar blir ganske umogleg.
 
-Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
-(me har ingen informasjon om LPT-korrespondanse), slik at kvart
-kjeldeord kan lenkjast til kvart målord. Viss båe setningane er 4 ord,
-får me 16 moglege samanstillingar der alle ord er med i nøyaktig éi
-lenkje ($2^l$, kor $l$ er setningslengd). Men ofte har me
-null-lenkjer, me må altså i tillegg tillate samanstillingar der minst
-eitt ord er ulenkja, utan at me treng å vite kva for ord det er; med
-desse kortare listene inkludert får me endå fleire moglege
-samanstillingar per setning (4 ord gir 26, 8 ord gir 2186 moglege
-samanstillingar). Sjølv om me heile tida vel dei samanstillingane som
-lenkjar flest ord, ville maskinen raskt fått problem. I tillegg har me
-problemet med 1-mange-lenkjer, som skaper endå fleire moglege
-samanstillingar.
-*** notat							     :ROTETE:
-Intuition: Starting the alignment from outers and then going
-inwards should have the effect that  
-
-1. we don't get 'crossing' alignments, as we would have if 
-   a-d and b-c where tab_s:[a [b ]] tab_t:[c [d ]], and
-2. we prioritise alignments of outer elements with outer 
-   elements.
-
-However, it might turn out to be really hard in practice to keep
-possible pairings prioritised when aligning. Eg. if we have
-
-tab_s:[a [b]] tab_t:[c [d [e]] [f [g]]
-and all LPT's are allowed except a-d, do we go
-a-c,a-e,a-f,a-g
-or
-a-c,a-f,a-e,a-g 
-or 
-a-c,a-f,a-g,a-e (here counting e as deeper than g)
-?
-
-And if tab_s were [a [b]] [h [i]], when do we start considering h?
-
-----
-
-The alternative to ordering is of course just trying all permutations
-of LPT-pairings. But would it still be simplest to follow some sort of
-ordering? And how do we prioritise the full over the half-finished
-alignments?
-
-Proposal: do all pairings. Start with a pair of unreferenced-preds,
-aligning inwards.
-
-Another difficulty is that we can merge certain pairings, eg. where we
-have a single causative PRED that aligns to a make PRED and a do PRED,
-or an object PRED that's incorporated into an 'action'
-PRED ('bilvaskingen'). 
-
-Proposal: `LPT-permute' churns out all configurations of single
-pairings allowed by LPT, while a `merge' function creates new possible
-configurations (pushed last in the queue) based on sane merges. So
-far, I don't think we'll want to merge where where two PRED's are on
-the same level (eg. a subject and an object of the same PRED we
-wouldn't merge), but a PRED and XCOMP (causative) or a PRED and its
-object ('bilvaskingen') would be mergeable, these have exactly one
-level between them (ie. one is the parent of another). I'm not sure
-that we want to stop there though (we might want to go both deeper in
-the f-structure and wider, ie. merge a pred with both its subject and
-its object, or with both its daughter and granddaughter); but we can
-leave that for later probably. ADJUNCTs should probably be mergeable
-too.
-
-
-
-** merge
+*** notat 							     :ROTETE:
 filene 
 : ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
 :  (tab_t (open-and-import "dev/TEST_argadj_t.pl")))
@@ -1549,18 +1479,14 @@ og
 :    ADJUNCT { 2 }
 :    2[ ze<5>
 :       OBJ 5[ sigareti ] ] ]
+** Kan me gjere f-struktursamanstillinga bottom-up?
+Ein alternativ metode er å byrje med alle logisk moglege permutasjonar
+av LPT-korrespondansar, og så sile ut dei som ikkje svarer til
+krava. Men dette er problematisk, sidan avskjeringa då skjer så seint
+at utrekningane for lengre setningar blir ganske umogleg.
 
-** gjer ikkje dette lenger					     :ROTETE:
-=lfgalign= kan i tillegg ta inn ein representasjon av moglege
-LPT-korrespondansar.
 
-LPT-korrespondansane utgjer utgangspunktet for samanstillinga. 
-
-Der det ikkje finst informasjon om eit ord i LPT-basen, føreset me at
-alle ord kan lenkjast til dette. Pronomen/pro-element og
-substantiv/pronomen kan alltid lenkjast.
-
-=permute= finn alle moglege permutasjonar av 1-1
+\fixme{=permute= finn alle moglege permutasjonar av 1-1
 LPT-korrespondansar. 
 
 Dette blir sendt gjennom =merge= som finn moglege
@@ -1568,7 +1494,31 @@ mange-til-mange-korrespondansar av PRED-element. Moglege samanføyingar
 er: PRED til (X)COMP-dotter, ADJUNCT, ....
 
 Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
-eit filter som sjekker om skrankane er oppfylte.
+eit filter som sjekker om skrankane er oppfylte.}
+ 
+Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
+(me har ingen informasjon om LPT-korrespondanse), slik at kvart
+kjeldeord kan lenkjast til kvart målord. Viss båe setningane er 4 ord,
+får me 16 moglege samanstillingar der alle ord er med i nøyaktig éi
+lenkje ($2^l$, kor $l$ er setningslengd). Men ofte har me
+null-lenkjer, me må altså i tillegg tillate samanstillingar der minst
+eitt ord er ulenkja, utan at me treng å vite kva for ord det er; med
+desse kortare listene inkludert får me endå fleire moglege
+samanstillingar per setning (4 ord gir 26, 8 ord gir 2186 moglege
+samanstillingar). Sjølv om me heile tida vel dei samanstillingane som
+lenkjar flest ord, ville maskinen raskt fått problem. I tillegg har me
+problemet med 1-mange-lenkjer, som skaper endå fleire moglege
+samanstillingar.
+
+Ein sideverknad av å byrje med ytre lenkjer og gå innover er at me
+automatisk unngår å prøve «kryssande» lenkjer, t.d. å lenkje $F_s$ med
+\XCOMP av $F_t$, og \XCOMP av $F_s$ med $F_t$ (denne kombinasjonen av
+lenkjer vil jo vere ein del av alle logisk moglege permutasjonar). Me
+får au prioritert å lenkje ytre element, som jo er sikrare lenkjer
+(gitt to f-strukturar for setningar som er omsetjingar av kvarandre
+vil dei to ytre f-strukturane ha størst sjanse for å korrespondere med
+kvarandre, for kvart steg du går innover har du sjansen for å trå
+feil).
 
 * Resultat av å automatisk samanstille norske og georgiske setningar
    - om kjeldematerialet
