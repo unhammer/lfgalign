@@ -1,4 +1,4 @@
-% Created 2010-04-22 Thu 14:10
+% Created 2010-04-22 Thu 15:26
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -1470,13 +1470,17 @@ av handskrivne omsetjingsordbøker).
 
 Hovudalgoritmen er vist i kodefigur \ref{algo:f-align}. Funksjonen
 \texttt{f-align} returnerer ei mengd med moglege samanstillingar. Kvar
-samanstilling er ei mengd med par av f-strukturar. Eit par $(F_s,F_t)$
-representerer ei lenkje frå ein f-struktur på kjeldespråket, til ein
-f-struktur på målspråket. Me føreset at dette paret har
-LPT-korrespondanse\footnote{Når eg her skriv at to f-strukturar har LPT-korrespondanse,
+samanstilling er ei mengd med par av f-strukturar\footnote{Eigentleg eit slags avgjerdstre; kvart element er eit par, kor
+        første element er lenkja mellom dei yttarste f-strukturane, og
+        andre element er dei moglege samanstillingane for dei indre
+        strukturane. Denne strukturen kan vere nyttig for å rangere
+        samanstillingar. }. Eit par
+$(F_s,F_t)$ representerer ei lenkje frå ein f-struktur på
+kjeldespråket, til ein f-struktur på målspråket. Me føreset at dette
+paret har LPT-korrespondanse\footnote{Når eg her skriv at to f-strukturar har LPT-korrespondanse,
         meiner eg sjølvsagt at ordformen til PRED-verdien til kvar
-        f-struktur har LPT-korrespondanse. }, dette blir sjekka før alle kall på
-\texttt{f-align}.
+        f-struktur har LPT-korrespondanse. }, dette blir sjekka før alle kall
+på \texttt{f-align}.
 
 Hjelpefunksjonen \texttt{argalign} (som igjen kallar \texttt{argalign-p}, vist i
 kodefigur \ref{algo:argalign-p}) gir alle moglege
@@ -1514,10 +1518,12 @@ samanstillingar, difor lagrar me alle delvise samanstillingar i
 tabellen $aligntable$. Dette føreset sjølvsagt at
 \texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt, t.d. at
 mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
-mot subjektet til $F_t$ er uavhengig av om objektet til
-$F_s$ er lenkja mot eit objekt eller eit adjunkt osb. av
-$F_t$. \fxnote{nemne dette «kravet» / føresetnaden i kapittelet
-over}  
+mot subjektet til $F_t$ er uavhengig av om objektet til $F_s$ er
+lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. \fxnote{nemne
+føresetnaden om uavhengnad i kapittel 3}
+
+      \SetKwComment{Comment}{ // }{}
+     \SetKwInOut{Input}{usage}
 
      \begin{algorithm}[]
       \caption{f-align($F_s$, $F_t$)}
@@ -1527,29 +1533,26 @@ over}
       \ForAll{argperm in argalign($F_s$, $F_t$)} {
         $p \gets \emptyset$ \;
          \ForAll{$A_s$, $A_t$ in argperm} {
-           \uIf{unset(aligntable[$F_s$,$F_t$])} {
+           \uIf{not(aligntable[$F_s$,$F_t$])} {
            aligntable[$F_s$,$F_t$] $\gets$ f-align($A_s$, $A_t$)\;
            }
           add aligntable[$F_s$,$F_t$] to $p$\;
         }
         add $p$ to $alignments$ \;
        }
-       \Return $((F_s, F_t), alignments)$ \;
-       \end{algorithm}
-    
+       \lIf {$alignments=\emptyset$} \Return $\emptyset$ \Comment*[l]{Fail}
+       \lElse \Return $((F_s, F_t), alignments)$ \;
+       \end{algorithm}    
     
     
       \begin{algorithm}[]
       \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
       \label{algo:argalign-p}
     
-      \SetKwComment{Comment}{ // }{}
-      \SetKwInOut{Input}{usage}
       \Input{Kalt av argalign slik: \\ argalign-p(arguments($F_s$),
       adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))}
       \BlankLine
-    
-    
+      
      $a \gets \emptyset$\;
      \uIf{$args_s$} {
            $s \in args_s$\;
@@ -1588,25 +1591,34 @@ eit argument/adjunkt, er det ikkje eit krav om at alle desse para
 tilfredsstiller alle lenkjingskrava for at $F_s$ og $F_t$ skal
 lenkjast. Viss \texttt{f-align}$(\OBJ,\ADJ)$ frå dømet over gir null,
 og ikkje kan lenkjast, medan \texttt{f-align}$(\SUBJ,\SUBJ)$ kan
-lenkjast, får me ei delvis lenkjing av argumenta i den 
+lenkjast, vil \texttt{f-align} returnere ei delvis lenkjing av argumenta i
+den argumentpermutasjonen. Viss ingen substrukturar kan lenkjast, får
+me berre ut $\{(F_s,F_t)\}$.
 
-  Krav (iii) og (iv) i
-\citet[s.~75]{dyvik2009lmp} seier at det må vere LPT-korrespondanse
-mellom
+\fxnote{forskjellen mellom LPT-krav og rekursjonskrav på argument skal
+i kapittel 3}
 
-Om me i tillegg krev at f-strukturane deira kan samanstillast kan me
-utelukke lenkjing av $F_s$ og $F_t$ nedanfor:
+Om me i tillegg krev at substrukturar kan samanstillast kan me
+utelukke lenkjing av $F_s$ og $F_t$ vist i \Next nedanfor:
 
-\begin{verbatim}
- F_s[ PRED planlegge<eg,1>      F_t[ PRED plan<I,3>
-      XCOMP 1[gi (opp)]      ]       XCOMP 3[ give<I,him,it> ]
-\end{verbatim}
+{\avmoptions{}
 
+\ex. \a.  \begin{avm}  \sort{$F_s$}{\[ {\sc pred} `{\bf planlegge}<{\it eg},[1:{\it gi}]>'\\
+  {\sc xcomp} \sort{$^{1}$}{\[ {\sc pred} `{\it gi (opp)}'\]} \]}  \end{avm}
+  \b.\begin{avm} \sort{$F_t$}{\[ {\sc pred} `{\bf plan}<{\it I},[2:{\it give}]>'\\
+  {\sc xcomp} \sort{$^{2}$}{\[ {\sc pred} {\bf give}<{\it I},{\it him},{\it it}>' \]} \]} \end{avm}
 
-\fixme{Skal eg krevje dette? Foreløpig har eg }
+}
 
-\section{Kan me gjere f-struktursamanstillinga fullstendig bottom-up?}
+Men det kan vere at me ikkje \emph{vil} krevje dette i alle moglege
+tilfelle. Me kan uansett rangere ulike løysingar seinare ved å spørje
+etter dei argumentsamanstillingane som har flest medlem.
+
+\section{\textbf{SKRIV} Når lenkjene ikkje er 1-1}
 \label{sec-4.2}
+
+\section{Kan me gjere f-struktursamanstillinga bottom-up?}
+\label{sec-4.3}
 
 Ein alternativ metode er å byrje med alle moglege permutasjonar av
 LPT-korrespondansar, og så sile ut dei som ikkje svarer til krava. Men
@@ -1627,7 +1639,7 @@ lenkjar flest ord, ville maskinen raskt fått problem. I tillegg har me
 problemet med 1-mange-lenkjer, som skaper endå fleire moglege
 samanstillingar.
 \subsection{notat \textbf{:ROTETE:}}
-\label{sec-4.2.1}
+\label{sec-4.3.1}
 
 Intuition: Starting the alignment from outers and then going
 inwards should have the effect that  
@@ -1684,7 +1696,7 @@ too.
 
 
 \section{merge}
-\label{sec-4.3}
+\label{sec-4.4}
 
 filene 
 \begin{verbatim}
@@ -1711,7 +1723,7 @@ og
 
 
 \section{gjer ikkje dette lenger \textbf{:ROTETE:}}
-\label{sec-4.4}
+\label{sec-4.5}
 
 \texttt{lfgalign} kan i tillegg ta inn ein representasjon av moglege
 LPT-korrespondansar.
@@ -1758,6 +1770,7 @@ eit filter som sjekker om skrankane er oppfylte.
 \end{enumerate}
 \bibliographystyle{apacite}
 \bibliography{master}
+
 
 
 

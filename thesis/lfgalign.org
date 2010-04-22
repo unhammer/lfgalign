@@ -1313,7 +1313,7 @@ me ser på som lingvistisk prediktable (t.d. informert av
 omsetjingstabellen frå eit automatisk ordsamanstillingsprogram, eller
 av handskrivne omsetjingsordbøker).
 
-** f-struktursamanstilling
+** Lenkjer mellom f-strukturar
 \fixme{intro, c-str er derivativ}
 
 Hovudalgoritmen er vist i kodefigur \ref{algo:f-align}. Funksjonen
@@ -1360,12 +1360,14 @@ samanstillingar, difor lagrar me alle delvise samanstillingar i
 tabellen $aligntable$. Dette føreset sjølvsagt at
 \texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt, t.d. at
 mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
-mot subjektet til $F_t$ er uavhengig av om objektet til
-$F_s$ er lenkja mot eit objekt eller eit adjunkt osb. av
-$F_t$. \fxnote{nemne dette «kravet» / føresetnaden i kapittelet
-over}  
+mot subjektet til $F_t$ er uavhengig av om objektet til $F_s$ er
+lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. \fxnote{nemne
+føresetnaden om uavhengnad i kapittel 3}
 
 #+BEGIN_LaTeX
+      \SetKwComment{Comment}{ // }{}
+     \SetKwInOut{Input}{usage}
+
      \begin{algorithm}[]
       \caption{f-align($F_s$, $F_t$)}
       \label{algo:f-align}
@@ -1374,29 +1376,26 @@ over}
       \ForAll{argperm in argalign($F_s$, $F_t$)} {
         $p \gets \emptyset$ \;
          \ForAll{$A_s$, $A_t$ in argperm} {
-           \uIf{unset(aligntable[$F_s$,$F_t$])} {
+           \uIf{not(aligntable[$F_s$,$F_t$])} {
            aligntable[$F_s$,$F_t$] $\gets$ f-align($A_s$, $A_t$)\;
            }
           add aligntable[$F_s$,$F_t$] to $p$\;
         }
         add $p$ to $alignments$ \;
        }
-       \Return $((F_s, F_t), alignments)$ \;
-       \end{algorithm}
-    
+       \lIf {$alignments=\emptyset$} \Return $\emptyset$ \Comment*[l]{Fail}
+       \lElse \Return $((F_s, F_t), alignments)$ \;
+       \end{algorithm}    
     
     
       \begin{algorithm}[]
       \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
       \label{algo:argalign-p}
     
-      \SetKwComment{Comment}{ // }{}
-      \SetKwInOut{Input}{usage}
       \Input{Kalt av argalign slik: \\ argalign-p(arguments($F_s$),
       adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))}
       \BlankLine
-    
-    
+      
      $a \gets \emptyset$\;
      \uIf{$args_s$} {
            $s \in args_s$\;
@@ -1436,20 +1435,33 @@ eit argument/adjunkt, er det ikkje eit krav om at alle desse para
 tilfredsstiller alle lenkjingskrava for at $F_s$ og $F_t$ skal
 lenkjast. Viss \texttt{f-align}$(\OBJ,\ADJ)$ frå dømet over gir null,
 og ikkje kan lenkjast, medan \texttt{f-align}$(\SUBJ,\SUBJ)$ kan
-lenkjast, får me ei delvis lenkjing av argumenta i den
-argumentpermutasjonen.
+lenkjast, vil =f-align= returnere ei delvis lenkjing av argumenta i
+den argumentpermutasjonen. Viss ingen substrukturar kan lenkjast, får
+me berre ut $\{(F_s,F_t)\}$.
 
-Om me i tillegg krev at f-strukturane deira kan samanstillast kan me
-utelukke lenkjing av $F_s$ og $F_t$ nedanfor\fxnote{nemne dette i kapittelet over}:
+\fxnote{forskjellen mellom LPT-krav og rekursjonskrav på argument skal
+i kapittel 3}
 
-: F_s[ PRED planlegge<eg,1>      F_t[ PRED plan<I,3>
-  :    XCOMP 1[gi (opp)]      ]       XCOMP 3[ give<I,him,it> ]
+Om me i tillegg krev at substrukturar kan samanstillast kan me
+utelukke lenkjing av $F_s$ og $F_t$ vist i \Next nedanfor:
 
-Men det kan vere at me ikkje /vil/ krevje dette i alle tilfellet. Den
-enklaste løysinga blir då å spørje etter dei argumentpermutasjonane
-som har flest medlem.
+#+BEGIN_LaTeX
+{\avmoptions{}
 
-** Kan me gjere f-struktursamanstillinga fullstendig bottom-up?
+\ex. \a.  \begin{avm}  \sort{$F_s$}{\[ {\sc pred} `{\bf planlegge}<{\it eg},[1:{\it gi}]>'\\
+  {\sc xcomp} \sort{$^{1}$}{\[ {\sc pred} `{\it gi (opp)}'\]} \]}  \end{avm}
+  \b.\begin{avm} \sort{$F_t$}{\[ {\sc pred} `{\bf plan}<{\it I},[2:{\it give}]>'\\
+  {\sc xcomp} \sort{$^{2}$}{\[ {\sc pred} {\bf give}<{\it I},{\it him},{\it it}>' \]} \]} \end{avm}
+
+}
+#+END_LaTeX
+
+Men det kan vere at me ikkje /vil/ krevje dette i alle moglege
+tilfelle. Me kan uansett rangere ulike løysingar seinare ved å spørje
+etter dei argumentsamanstillingane som har flest medlem.
+
+** SKRIV Når lenkjene ikkje er 1-1
+** Kan me gjere f-struktursamanstillinga bottom-up?
 Ein alternativ metode er å byrje med alle moglege permutasjonar av
 LPT-korrespondansar, og så sile ut dei som ikkje svarer til krava. Men
 dette er problematisk, sidan avskjeringa då skjer så seint at
