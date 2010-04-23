@@ -67,11 +67,11 @@ XPar-prosjektet \citep{xpar2008rcn} har eg sett på metodar for
 automatisk frasesamanstilling, dvs. for å finne omsetjingsforhold
 mellom fleire ord. Dei første metodane for dette kom frå statistisk
 maskinomsetjing, der ein berre nytta sannsyn av N-gram-omsetjingar,
-utan nokon form for syntaktisk informasjon.  \citet{samuelsson2007apa}
-skildrar ein metode kor frasesamanstilling blir oppnådd
-vha. ordsamanstilling på ein parallell trebank der berre N-gram som
-svarer til ein syntaktisk node blir samanstilt som
-frasar. \citet{tinsley2007ept, hearne2008ccd} viser at slike
+utan nokon form for syntaktisk informasjon. Seinare utvikla m.a.
+\citet{samuelsson2007apa} metodar for å finne
+frasesamanstilling vha. ordsamanstilling på ein parallell trebank der
+berre N-gram som svarer til ein syntaktisk node blir samanstilt som
+frasar. \citet{tinsley2007ept, hearne2008ccd} viste at slike
 syntaktisk motiverte metodar kan forbetre frasebasert stokastisk
 maskinomsetjing (/PBSMT/). I XPar vil ein finne ut om
 frasesamanstilling kan forbetrast ved å utnytte det at
@@ -922,12 +922,6 @@ nytta til å sikre lenkjinga /sie/dem/ og /ihnen/de/. Igjen ser det ut
 til at bottom-up-informasjon trengst.
 
 
-**** TODO Flytte til kapittel om metodar for å oppdage lenkjer?:
-Kanskje me kan nytte data frå fleire førekomstar med andre subjekt
-og objekt til å lære slike argumentstrukturalternasjonar?  Om me
-observerer /sie gefällt mir/jeg liker henne/ vil me jo ha
-f-strukturinformasjon som kan nyttast til å informere
-argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.).
 
 **** c- og f-strukturar for dømet over				     :ROTETE:
 #+BEGIN_LaTeX
@@ -1520,12 +1514,12 @@ feil).
 
 ** SKRIV Lenkjing av c-strukturnodar
 Dette er derivativt av f-struktursamanstillinga.
-
-* Resultat av å automatisk samanstille norske og georgiske setningar
+* Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar
    - om kjeldematerialet
    - manglar med implementasjonen
    - samanlikning av lenkjing basert på f-struktur og lenkjing basert
      på N-gram
+   - bruksområde for samanstillingar
 ** TOGROK korleis gjenfinne there is/es gibt?			     :ROTETE:
 1. N-gram kjem like ofte som heile konstruksjonen, då kan dette
    gjenfinnast
@@ -1540,7 +1534,22 @@ Dette er derivativt av f-struktursamanstillinga.
 \bibliographystyle{apacite}
 \bibliography{master}
 
+** Oppdage argumentstrukturalternasjon
+\fixme{ref} I døme TODO i kapittel TODO viste eg at f-strukturar og
+LPT-korrespondanse kanskje ikkje har nok informasjon til å kunne
+handtere ulik følgje i argumentstruktur. Programmet mitt vil her gi
+båe løysingar, ei rangering basert på lik argumentfølgje vil gi feil
+løysing på topp.
 
+Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
+objekt til å lære slike argumentstrukturalternasjonar.  Om me
+observerer /sie gefällt mir/jeg liker henne/ vil me jo ha
+f-strukturinformasjon som kan nyttast til å informere
+argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.), om det var
+substantiv der ville LPT-korrespondanse kunne informere dette.
+
+
+* Avslutning
 * Footnotes
 
 [fn:1] Både omsetjingsmodellen og
