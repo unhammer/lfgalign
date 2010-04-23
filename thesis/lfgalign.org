@@ -19,6 +19,7 @@
 #+LaTeX_HEADER: \newcommand{\PRED}{\F{pred}{}}
 #+LaTeX_HEADER: \newcommand{\falign}{\ensuremath{\operatorname{\emph{falign}}}}
 #+LaTeX_HEADER: \newcommand{\fpairs}{\ensuremath{\operatorname{\emph{fpairs}}}}
+#+LaTeX_HEADER: \newcommand{\Bleu}{\textsc{Bleu}}
 
 
 \listoffixmes
@@ -37,59 +38,53 @@ Konsekvent terminologi:
   kjeldespråket korresponderer med éin på målspråket.
 
 * Introduksjon (+ samandrag/abstract)
+\label{SEC:introduksjon}
+
 Denne masteroppgåva utforskar kva det vil seie at to uttrykk er
 omsetjingar av kvarandre, og korleis me automatisk kan generere og
-evaluere samanstilling (/alignment/, lenkjing) av uttrykk som står i
-eit slikt omsetjingsforhold. Omsetjingsforhold finn me mellom
-setningar i kontekst på ulike språk, men me kan au finne ulike typar
-ekvivalensforhold (samanstillingar) mellom frasar innanfor setningane,
-og mellom andre lingvistiske skildringar av setningane.
+evaluere samanstilling (/alignment/, ei mengd lenkjer) av uttrykk som
+står i eit slikt omsetjingsforhold. 
+
+Omsetjingsforhold finn me mellom setningar i kontekst på ulike språk,
+men me kan au finne ulike typar ekvivalensforhold (samanstillingar)
+mellom frasar innanfor setningane, og mellom andre lingvistiske
+skildringar av setningane. I samanheng med XPar-prosjektet
+\citep{xpar2008rcn} har eg sett på metodar for automatisk
+frasesamanstilling – for å finne omsetjingsforhold mellom fleire ord.
+
+
 # to situerte setningar er omsetjingar av kvarandre, mellom
 # lingvistiske skildringar finn me ekvivalens som me kan tolke i
 # forhold til omsetjing...
 
-Det at me kan omsetje mellom slike skildringar (t.d. trekkstrukturane
-til HPSG eller LFG) gjer det tydeleg at me arbeider med ein /modell/ av
-språket; ulike skildringar kan vere sanne innanfor modellen, utan at
-modellen er lik språket. Sjølve omsetjingsforholdet er au ein
-teoretisk storleik, og ulike kriterium kan leggast til grunn for å
-kalle to uttrykk omsetjingar av kvarandre. \citet{samuelsson2006pap}
-nyttar t.d. reint semantiske kriterium, utan krav om syntaktisk
-likskap, i deira manuelle samanstilling; medan samanstillinga planlagt
-i XPar-prosjektet \citep{xpar2008rcn}, som kjem via
-f-struktur-parallellismen\footnote{Eg~går~her~ut~frå~at~lesaren~er~kjend~med~grunnleggjande~LFG-terminologi.},
-i større grad krev syntaktisk likskap.
+Det at me kan omsetje mellom lingvistiske skildringar
+(t.d. trekkstrukturane til HPSG eller LFG) gjer det tydeleg at me
+arbeider med ein /modell/ av språket; ulike skildringar kan vere sanne
+innanfor modellen, utan at modellen er lik språket. Sjølve
+omsetjingsforholdet er au ein teoretisk storleik, og me kan leggje
+ulike kriterium til grunn for å kalle to uttrykk omsetjingar av
+kvarandre.
 
-Automatiske metodar for tekstsamanstilling kan nyttast til ulike
-metodar for maskinell omsetjing, i tillegg til oppbygging av
-parallelle korpora for meir teoretiske språkstudie. I samanheng med
-XPar-prosjektet \citep{xpar2008rcn} har eg sett på metodar for
-automatisk frasesamanstilling, dvs. for å finne omsetjingsforhold
-mellom fleire ord. Dei første metodane for dette kom frå statistisk
-maskinomsetjing, der ein berre nytta sannsyn av N-gram-omsetjingar,
-utan nokon form for syntaktisk informasjon. Seinare utvikla m.a.
-\citet{samuelsson2007apa} metodar for å finne
-frasesamanstilling vha. ordsamanstilling på ein parallell trebank der
-berre N-gram som svarer til ein syntaktisk node blir samanstilt som
-frasar. \citet{tinsley2007ept, hearne2008ccd} viste at slike
-syntaktisk motiverte metodar kan forbetre frasebasert stokastisk
-maskinomsetjing (/PBSMT/). I XPar vil ein finne ut om
-frasesamanstilling kan forbetrast ved å utnytte det at
-LFG-grammatikkane for dei ulike språka er skrivne med same prinsipp
-lagt til grunn; to parallellstilte setningar bør ha f-strukturar som
-er like nok til at me kan samanstille frasar ved hjelp av likskapen
-mellom f-strukturane. Sidan avbildinga frå c-strukturnodar til
-f-struktur er mange-til-ein, kan me innanfor eitt tre ha fleire N-gram
-per f-strukturhovud; slike relasjonar får me ikkje fram i metoden til
-\citet{samuelsson2007apa}. Eg vil i masteroppgåva prøve å samanlikne
-desse metodane, m.a. i forhold til dei ikkje-kontinuerlege
-konstituentane til språk som georgisk, og utfordringane ved
-samanstilling av språk med stor typologisk avstand.
-** COMMENT 
-\footnote{Det~er~au~mogleg~innanfor~LFG~å~ha~fleire~ulike~f-strukturanalysar~som~svarer~til~eitt~frasetre.}
-** Framgangsmåte og ressursar
-I \citet[s.~5--6]{xpar2008rcn} finn me følgjande hypotese:
-\fxnote{siter heller den nye artikkelen}
+Kriteria avheng av formålet. Automatiske metodar for
+tekstsamanstilling kan t.d. nyttast som grunnlag for statistisk eller
+eksempelbasert maskinomsetjing, i tillegg til oppbygging av parallelle
+korpora for meir teoretiske språkstudie.  For statistisk
+maskinomsetjing vil alle uttrykk vere omsetjingar av kvarandre med eit
+visst sannsyn. I den manuelle samanstillinga til
+\citet{samuelsson2006pap}, nyttar dei reint semantiske kriterium, utan
+krav om syntaktisk likskap.  Samanstillinga planlagt i XPar-prosjektet
+\citep{xpar2008rcn}, som kjem via
+f-struktur-parallellismen\footnote{Eg~går~her~ut~frå~at~lesaren~er~kjend~med~grunnleggjande~LFG-terminologi.},
+krev i større grad syntaktisk likskap for å kalle to uttrykk
+omsetjingar.
+
+
+I XPar-prosjektet vil ein finne ut om frasesamanstilling kan
+forbetrast ved å utnytte det at LFG-grammatikkane for dei ulike språka
+er skrivne med same prinsipp lagt til grunn; to parallellstilte
+setningar bør ha f-strukturar som er like nok til at me kan
+samanstille frasar ved hjelp av likskapen mellom f-strukturane, og i
+\citet[s.~72]{dyvik2009lmp} finn me følgjande hypotese:
 
 \begin{quote}
 On the basis of monolingual treebanks constructed from a parallel
@@ -101,12 +96,37 @@ precision and recall than hitherto achieved through other means.
 # gullstandard som evalueringsgrunnlag
 
 kor «parallel grammars» her krev parallellisme i båe f-struktur og
-c-struktur. Eg vil konsentrere meg om å gjere ei samanlikning mellom,
-på den eine sida, ein metode som nyttar enkel frasestrukturannotasjon
-kombinert med ei ordsamanstilling for å finne frasesamanstillinga
-(/tremetoden/, basert på \citet{samuelsson2007apa}); og på den andre
-sida ein metode som i tillegg nyttar f-struktur-informasjon frå desse
-parallelle grammatikkane (/LFG-metoden/).
+c-struktur.
+
+Men i tillegg til at ein kanskje kan få betre skåre på desse
+kvantitative måla, vil lenkjer mellom f-strukturar gi informasjon som
+er kvalitativt forskjellig frå det ein kan få med å berre sjå på
+lenkjer mellom ord, N-gram eller konstituentar.
+
+Eg vil i masteroppgåva prøve å samanlikne desse metodane, m.a. i
+forhold til dei ikkje-kontinuerlege konstituentane til språk som
+georgisk, og utfordringane ved samanstilling av språk med stor
+typologisk avstand.
+
+** Vegkart
+I denne oppgåva skildrar eg ein automatisk metode for å
+samanstille frasar. 
+
+Frasesamanstillinga er basert på f-strukturinformasjonen gitt av dei
+parallelle grammatikkane, og bottom-up-informasjon om kva for
+ordsamanstillingar som er moglege. F-strukturinformasjonen avgrensar
+igjen kva for ordsamanstillingar som er moglege, og kva for
+c-strukturnodar (syntaktiske frasar) som kan lenkjast.
+
+Eg diskuterer sjølve implementasjonen min i kapittel
+\ref{SEC:implementasjon}.
+
+Eg samanliknar så i kapittel \ref{SEC:diskusjon} dei samanstillingane
+som er moglege med denne metoden, med det som er mogleg der me berre
+har konstituentstruktur (syntaktiske tre) i tillegg til
+ordsamanstilling (som metoden i \citet{samuelsson2007apa}).
+
+
 
 # todo meir om forskjellane norsk vs georgisk?
 Eg kjem til å nytte språka georgisk og norsk i samanlikninga,
@@ -128,15 +148,13 @@ tremetoden. Oppgåva blir altså å finne ut kva for bidrag informasjonen
 på f-strukturnivået kan gi til samanstillinga, og kva for problem ein
 støyter på.
 
-Eg vil prøve å implementere testversjonar av LFG-metoden for
-frasesamanstilling i eit passande programmeringsspråk.
-# todo: jaha? korleis då implementere?
+
 
 ** Frasesamanstilling frå f-struktur
-Men om me har f-strukturane til to omsette setningar, burde det
-kanskje vere mogleg å finne ei f-struktursamanstilling først og så
-finne ordsamanstillinga ut frå denne. Tanken er at me frå to
-f-strukturar som skildrar omsette setningar, kan
+Om me har f-strukturane til to omsette setningar, burde det kanskje
+vere mogleg å finne ei f-struktursamanstilling først og så finne
+ordsamanstillinga ut frå denne. Tanken er at me frå to f-strukturar
+som skildrar omsette setningar, kan
 1. lage ei samanstilling mellom relevante deler av f-strukturane,
 2. nytte denne funksjonelle samanstillinga til å finne ei
    frasesamanstilling, ved å følgje avbildinga frå f-struktur til
@@ -217,6 +235,7 @@ at mornodar ikkje skal samanstillast; ein formalisering dette steget,
 med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
 * Bakgrunn og relaterte metodar
+  \label{SEC:bakgrunn}
    - reine N-gram-samanstillingar, dependensbaserte
    - ulike formål for samanstilling gir ulike metodar
    - kort introduksjon til LFG 
@@ -226,20 +245,19 @@ system for automatisk setningssamanstilling, og automatisk
 samanstilling av ord har komme langt, men nivåa mellom ord og setning
 ser ut til å by på fleire problem. Dei ulike tilnærmingane som finst
 er prega av formåla til utviklarane.
-# «by på fleire problem» -- weasel wording, todo betre
+\fxnote{«by på fleire problem» -- weasel wording, todo betre}
 
 Innanfor korpuslingvistikken har \citet{piao2001mwu} nytta enkel
 kollokasjonsinformasjon for å først finne sannsynlege nominale frasar
-på engelsk og kinesisk, og så samanstille desse (ein metode kalla
-«chunking»); her er evalueringsgrunnlaget rett og slett ein manuell
-gjennomgang av dei mest sannsynlege omsetjingane dei får.
-# todo meir, algoritmen
+på engelsk og kinesisk (dvs. «chunking»), og så samanstille desse; her
+er evalueringsgrunnlaget rett og slett ein manuell gjennomgang av dei
+mest sannsynlege omsetjingane dei får. \fxnote{meir, algoritmen}
 
 Men det er hovudsakleg innanfor stokastisk maskinomsetjing at ein har
 forska på samanstilling av frasar. \citet{koehn2003spb} gir ein
 grundig evaluering av ulike statistiske metodar for frasesamanstilling
-til bruk i stokastisk maskinomsetjing. Dei nyttar
-\textsc{Bleu}-systemet til å rangere resultata
+til bruk i stokastisk maskinomsetjing. Dei nyttar \Bleu-skåren til å
+rangere resultata
 \citep[Papineni~et~al.,~2001,~i][s.~51]{koehn2003spb}, som gir ei
 rangering ved (N-grambasert) samanlikning med ferdig omsett tekst.
 
@@ -256,23 +274,21 @@ vha. nokre enkle heuristikkar.
 Den andre metoden, /Syn/, tek berre med dei frasane som står under
 syntaktiske nodar i eit parsa korpus; frasesamanstillinga til /Syn/ er
 ein delmengd av den i /AP/. Denne syntaktisk informerte modellen gav ein
-mykje dårlegare \textsc{Bleu}-skåre enn den reint N-grambaserte
+mykje dårlegare \Bleu-skåre enn den reint N-grambaserte
 modellen (faktisk dårlegare enn omsetjingane frå den originale modell
 4, utan frasesamanstilling). Dei forklarer dette med den store mengda
 uttrykk som ikkje utgjer syntaktiske konstituentar i følgje parseren
 deira, men likevel konsekvent blir omsett til visse uttrykk på det
 andre språket (t.d. «es gibt» på tysk til «there is» på engelsk).
 
-Seinare resultat har vist at ein /kombinasjon/ av syntaktisk informerte
-metodar med reint N-grambaserte modellar (dvs. i motsetning til å
-berre fjerne samanstillingar mellom ikkje-konstituentar) kan auke
-skåren i ein maskinomsetjingsevaluering, båe om ein som i /Syn/-modellen
-nyttar
-frasestrukturinformasjon\footnote{\citet{samuelsson2007apa}~evaluerer~sitt~\emph{Syn}-liknande~system~ved~samanlikning~med~ein~manuelt~frasesamanstilt~gullstandard.},
-men i endå større grad om ein nyttar dependendsinformasjon
-\citep{hearne2008ccd}. F-strukturane til LFG gir ein slags
-dependensinformasjon.
-# todo omformuler den parentesen
+Seinare resultat har vist at ein /kombinasjon/ av syntaktisk
+informerte metodar med reint N-grambaserte modellar (dvs. i motsetning
+til å berre fjerne samanstillingar mellom ikkje-konstituentar) kan
+auke skåren i ein maskinomsetjingsevaluering, båe om ein som i
+/Syn/-modellen nyttar frasestrukturinformasjon, men i endå større grad
+om ein nyttar dependendsinformasjon
+\citep{tinsley2007ept,hearne2008ccd}. F-strukturane til LFG gir ein
+slags dependensinformasjon.
 
 \citet{riezler2006gmt} utvikla ein metode for PBSMT med LFG-basert
 generering på output-sida. Dei finn ei n-til-m-ordsamanstilling med
@@ -280,6 +296,12 @@ Giza++ som i metodane over, men parser i tillegg setningane i LFG. Dei
 to moglege f-strukturane som liknar mest blir valt ut, og frå
 ordsamanstillinga finn dei mange-til-mange-korrespondansar mellom
 substrukturane i f-strukturane.
+
+\citet{samuelsson2007apa} evaluerer sitt \emph{Syn}-liknande system
+ved samanlikning med ein manuelt frasesamanstilt gullstandard.  Igjen
+kjem frasesamanstillinga ordsamanstilling på ein parallell trebank der
+berre N-gram som svarer til ein syntaktisk node blir samanstilt som
+frasar, men formålet er denne gongen å lage ein parallell trebank.
 
 * Den ideelle frasesamanstillinga
 ** SKRIV	LPT						     :ROTETE:
@@ -318,13 +340,13 @@ frasesamanstilling i trebankar.
 ** Kva er formålet med ei frasesamanstilling?
 I frasebasert statistisk maskinomsetjing (PBSMT) skal ei
 fraselenkje[fn:11] forbetre maskinomsetjing på eitt eller anna mål,
-t.d. \textsc{Bleu}-skåren. \textsc{Bleu}-skåren samanliknar ferdig
+t.d. \Bleu-skåren. \Bleu-skåren samanliknar ferdig
 omsett tekst (ein gullstandard) med det automatisk omsette, ved å
 sjekke kor mykje N-gram-overlapp det er mellom tekstene. Ei
 fraselenkje mellom N-grammet /es gibt/ og /there is/ (dvs. eit auka
 sannsyn for å nytte slike par i omsetjinga) kan gi ein høgare endeleg
-skåre i \textsc{Bleu}. Som vist i \citet{koehn2003spb} fekk dei ein
-lågare \textsc{Bleu}-skåre når dei fjerna lenkjer mellom nodar som, i
+skåre i \Bleu. Som vist i \citet{koehn2003spb} fekk dei ein
+lågare \Bleu-skåre når dei fjerna lenkjer mellom nodar som, i
 # todo: referere til den faktiske parseren? det var Bikel kanskje?
 følgje ein robust statistisk PCFG-parser, ikkje var syntaktiske frasar
 (konstituentar). Dvs. at i figur \ref{fig:ikkjenode} vil lenkja vist
@@ -1288,6 +1310,8 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 
 
 * Korleis fungerer implementasjonen min
+\label{SEC:implementasjon}
+
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
 beste evne i eit Lisp[fn:16]-program.
@@ -1515,24 +1539,13 @@ feil).
 ** SKRIV Lenkjing av c-strukturnodar
 Dette er derivativt av f-struktursamanstillinga.
 * Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar
+\label{SEC:diskusjon}
+
    - om kjeldematerialet
    - manglar med implementasjonen
    - samanlikning av lenkjing basert på f-struktur og lenkjing basert
      på N-gram
    - bruksområde for samanstillingar
-** TOGROK korleis gjenfinne there is/es gibt?			     :ROTETE:
-1. N-gram kjem like ofte som heile konstruksjonen, då kan dette
-   gjenfinnast
-   - dvs., /there is NP/es gibt NP/-samanstilling kjem like ofte som
-     /there is/ eller /es gibt/ førekjem. Eit TigerXML-type søk etter
-     /there is NP/es gibt NP/ burde jo vere mogleg, sjekk om dette er
-     delmengd av /there is/es gibt/. * Avslutning
-
-
-# tom inndeling for å halde bibliografien sist
-
-\bibliographystyle{apacite}
-\bibliography{master}
 
 ** Oppdage argumentstrukturalternasjon
 \fixme{ref} I døme TODO i kapittel TODO viste eg at f-strukturar og
@@ -1547,6 +1560,33 @@ observerer /sie gefällt mir/jeg liker henne/ vil me jo ha
 f-strukturinformasjon som kan nyttast til å informere
 argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.), om det var
 substantiv der ville LPT-korrespondanse kunne informere dette.
+** Samanlikning med tremetodar og n-grammetodar
+I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
+som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
+informasjon som er kvalitativt forskjellig frå det ein kan få med å
+berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
+
+*** c->f er mange-til-ein
+Avbildinga frå c-strukturnodar til f-struktur er mange-til-ein, kan me
+t.d. innanfor eitt tre ha fleire N-gram per f-strukturhovud; ein
+metode som berre ser på enkle N-gramlenkjer vil ikkje registrere desse
+relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
+ 
+
+
+*** TOGROK men korleis gjenfinne there is/es gibt? 		     :ROTETE:
+1. N-gram kjem like ofte som heile konstruksjonen, då kan dette
+   gjenfinnast
+   - dvs., /there is NP/es gibt NP/-samanstilling kjem like ofte som
+     /there is/ eller /es gibt/ førekjem. Eit TigerXML-type søk etter
+     /there is NP/es gibt NP/ burde jo vere mogleg, sjekk om dette er
+     delmengd av /there is/es gibt/. * Avslutning
+
+
+# tom inndeling for å halde bibliografien sist
+
+\bibliographystyle{apacite}
+\bibliography{master}
 
 
 * Avslutning
