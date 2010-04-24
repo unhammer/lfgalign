@@ -381,6 +381,35 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 		       :test #'equal))
 	(when alignments (cons link alignments))))))
 
+(defun flatten (f-alignments)
+  (if (and (cdr (second f-alignments))
+	   (listp (cdr (second f-alignments))))
+    (let ((elt (car f-alignments))
+	  (perms (cdr f-alignments)))
+      (mapcar (lambda (p)
+		(cons elt p))
+	      (mapcar #'flatten perms)))
+    f-alignments))
+
+(lisp-unit:define-test test-flatten
+ (lisp-unit:assert-equal
+  '((0 . 0) (5 . 3))
+  (flatten '((0 . 0) ((5 . 3)))))
+ (lisp-unit:assert-equal
+  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6)))
+  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6)))))
+ (lisp-unit:assert-equal
+  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6) (7 . 8)))
+  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6) (7 . 8)))))
+ (lisp-unit:assert-equal
+  '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+    ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+    ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
+  (flatten '((0 . 0)
+	     ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
+	     ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
+	     ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6))))))
+
 (lisp-unit:define-test test-f-align
  (let ((tab_s (open-and-import "nb/1.pl"))
        (tab_t (open-and-import "ka/1.pl")))
