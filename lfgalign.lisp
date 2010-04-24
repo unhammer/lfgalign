@@ -9,6 +9,7 @@
 	     (format stream "Found superfluous topmost nodes: ~A" (text condition)))))
 
 (defvar *no-warnings* t)
+(defvar *debug* nil)
 
 ;;;;;;;; C-STRUCTURE TREE:
 ;;;;;;;; -----------------
@@ -301,6 +302,9 @@ s.t. all args are in the set.  An arg_s may be linked to a member of
 `adjs_t' (and vice versa), but no pairs of adj_s and adj_t are
 included.
 
+Return nil if no alignments are possible, and (list nil) if no
+alignments are necessary (there are no arguments to align).
+
 If `LPTs', `tab_s' and `tab_t' are supplied, only return those
 combinations where all pairs are LPT. This should cover (iii)
 and (iv). See `argalign-p'."
@@ -310,7 +314,7 @@ and (iv). See `argalign-p'."
 	 (adjs_t (get-adjs var_t tab_t 'no-error))
 	 (args_s (get-args (get-pred var_s tab_s t) 'no-nulls))
 	 (args_t (get-args (get-pred var_t tab_t t) 'no-nulls)))
-;;     (format t "~A ~A~%~A ~A~%" args_s adjs_s args_t adjs_t)
+    (when *debug* (format t "~A ~A~%~A ~A~%" args_s adjs_s args_t adjs_t))
     (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
 
 (defun argalign-p (args_s adjs_s args_t adjs_t &optional tab_s tab_t LPTs)
@@ -361,23 +365,44 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	 (args_s (get-args Pr_s 'no-nulls))
 	 (args_t (get-args Pr_t 'no-nulls))
 	 (aligntab (make-hash-table :test #'equal))
+	 (argperms (argalign link tab_s tab_t LPTs)) ; argalign covers (iii) and (iv)
 	 alignments)
-					; argalign covers (iii) and (iv)
-    (loop for argperm in (argalign link tab_s tab_t LPTs)
-	  do
-	  (pushnew
-	   (loop for link_a in argperm
-		 do
-		 (unless (gethash link_a aligntab)
-		   (setf (gethash link_a aligntab) (f-align link_a tab_s tab_t LPTs)))
-		 collect (gethash link_a aligntab))
-	   alignments))
-    (when alignments (cons link alignments))))
+    (if (equal argperms '(nil))	  ; OK arg-alignment, no recursion
+	link
+      (progn				; possible with recursion
+	(loop for argperm in argperms
+	      do
+	      (pushnew (loop for link_a in argperm
+			     do
+			     (unless (gethash link_a aligntab)
+			       (setf (gethash link_a aligntab) (f-align link_a tab_s tab_t LPTs)))
+			     collect (gethash link_a aligntab))
+		       alignments
+		       :test #'equal))
+	(when alignments (cons link alignments))))))
 
 (lisp-unit:define-test test-f-align
- (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
-       (tab_t (open-and-import "dev/TEST_permute_t.pl")))
-   'TODO))
+ (let ((tab_s (open-and-import "nb/1.pl"))
+       (tab_t (open-and-import "ka/1.pl")))
+   (lisp-unit:assert-equal		; TODO: make flattening fn so we can use set-of-set-equal
+    '((0 . 0) ((5 . 3)))
+    (f-align '(0 . 0) tab_s tab_t (make-LPT))))
+ (let ((tab_s (open-and-import "nb/4.pl"))
+       (tab_t (open-and-import "ka/4.pl")))
+   (lisp-unit:assert-equal		; TODO: make flattening fn so we can use set-of-set-equal
+    '((0 . 0) ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
+      ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
+      ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6)))
+    (f-align '(0 . 0) tab_s tab_t (make-LPT)))))
+
+(defun c-align (f-alignments tab_s tab_t)
+  (if (listp (cdr f-alignments))
+      (let ((link (car f-alignments))
+	    (rest (cdr f-alignments)))
+	(format t "c-aligning ~A~%" link)
+	(mapcar (lambda (alignment) (c-align alignment tab_s tab_t))
+		rest))
+    (format t "c-aligning ~A~%" f-alignments)))
 
 
 (defun f-align-naive (var1 tab1 var2 tab2)
@@ -392,12 +417,12 @@ TODO: cache/memoise maketree"
       (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
       (when (and pred1 pred2)
 	(loop
-	   for arg1 in (get-args pred1)
-	   for arg2 in (get-args pred2)
-	   do (format t "...aligning ~A_~A and ~A_~A...~%"
-		      var1 (references var1 arg1 tab1)
-		      var2 (references var2 arg2 tab2))
-	   collect (f-align-naive arg1 tab1 arg2 tab2))))))
+	 for arg1 in (get-args pred1)
+	 for arg2 in (get-args pred2)
+	 do (format t "...aligning ~A_~A and ~A_~A...~%"
+		    var1 (references var1 arg1 tab1)
+		    var2 (references var2 arg2 tab2))
+	 collect (f-align-naive arg1 tab1 arg2 tab2))))))
 
 (defun test-f-align-naive ()
   "Assumes outermost f-str has a var(0) containing a PRED"
