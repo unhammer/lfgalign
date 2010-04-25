@@ -56,13 +56,21 @@ laptop, should be OK."
      (cons 'snip (car tree)))))		; out-of-domain
 
 (defun treefind (c-ids tree)
-  "Find the first (topmost) node which is a member of c-ids.
+  "Find the first (topmost) node which is a member of c-ids. 
 Unfortunately, id's aren't sorted in any smart way :-/"
-  (and (listp tree)
-       (if (member (car tree) c-ids)
-	   tree
-	   (or (and (third tree) (treefind c-ids (third tree)))
-	       (and (fourth tree) (treefind c-ids (fourth tree)))))))
+  (if (and tree (listp tree))
+      (if (member (car tree) c-ids)
+	  (values tree 0)		; gotcha!
+	(multiple-value-bind (Ltree Ldepth) (treefind c-ids (third tree))
+	  (multiple-value-bind (Rtree Rdepth) (treefind c-ids (fourth tree))
+	    (cond ((and Ltree Rtree) ; exists in both, choose shallowest
+		   (if (= Ldepth Rdepth) (warn "Equal depth, arbitrarily going right"))
+		   (if (< Ldepth Rdepth)
+		       (values Ltree (1+ Ldepth))
+		     (values Rtree (1+ Rdepth))))
+		  ;; not in both, but try either left or right
+		  (Ltree (values Ltree (1+ Ldepth)))
+		  (Rtree (values Rtree (1+ Rdepth)))))))))
 
 (defun phi^-1 (f-var tab)
   "The inverse phi (c-structure id's that map to `f-var' in
