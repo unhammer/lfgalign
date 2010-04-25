@@ -42,24 +42,43 @@ laptop, should be OK."
 	     (error 'several-topnodes :text it)
 	     (return (values (car newtree) refs))))))
 
+(defun trimtree (c-ids tree)
+  "Trim off the branches of the tree that aren't in `c-ids'."
+  (when tree
+    (or
+     (and (not (cdr tree)) tree)	; terminals, like '(17)
+     (and (listp tree)
+	  (member (car tree) c-ids)
+	  (list (first tree) (second tree)
+		(trimtree c-ids (third tree))
+		(trimtree c-ids (fourth tree))
+		(cddddr tree)))		; todo: do we ever get >2 branches?
+     (cons 'snip (car tree)))))		; out-of-domain
+
 (defun treefind (c-ids tree)
-  "Unfortunately, id's aren't sorted in any smart way :-/"
+  "Find the first (topmost) node which is a member of c-ids.
+Unfortunately, id's aren't sorted in any smart way :-/"
   (and (listp tree)
        (if (member (car tree) c-ids)
 	   tree
 	   (or (and (third tree) (treefind c-ids (third tree)))
 	       (and (fourth tree) (treefind c-ids (fourth tree)))))))
 
+(defun phi^-1 (f-var tab)
+  "The inverse phi (c-structure id's that map to `f-var' in
+`tab'). Includes c-ids that map to variables that are equivalent to
+`f-var'."
+  (let ((f-vars (adjoin f-var
+			(get-equivs f-var tab))))
+    (mapcar #'car			; TODO: mapcar-true
+	    (remove-if (lambda (phi)
+			 (not (member (cdr phi) f-vars)))
+		       (gethash '|phi| tab)))))
 
 (defun topnode (f-var tab tree)
   "`f-var' describes a functional domain, find the topmost of the
 nodes in the c-structure which project this domain"
-  (let* ((f-vars (adjoin f-var
-			 (get-equivs f-var tab)))
-	 (c-ids				; TODO: mapcar-true
-	  (mapcar #'car
-		  (remove-if (lambda (phi) (not (member (cdr phi) f-vars)))
-			     (gethash '|phi| tab)))))
+  (let ((c-ids (phi^-1 f-var tab)))
     (treefind c-ids tree)))
 
 (defun skip-suff_base (tree)
@@ -381,8 +400,22 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 		       :test #'equal))
 	(when alignments (cons link alignments))))))
 
+(lisp-unit:define-test test-f-align
+ (let ((tab_s (open-and-import "nb/1.pl"))
+       (tab_t (open-and-import "ka/1.pl")))
+   (lisp-unit:assert-equal		; TODO: make flattening fn so we can use set-of-set-equal
+    '((0 . 0) ((5 . 3)))
+    (f-align '(0 . 0) tab_s tab_t (make-LPT))))
+ (let ((tab_s (open-and-import "nb/4.pl"))
+       (tab_t (open-and-import "ka/4.pl")))
+   (lisp-unit:assert-equal		; TODO: make flattening fn so we can use set-of-set-equal
+    '((0 . 0) ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
+      ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
+      ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6)))
+    (f-align '(0 . 0) tab_s tab_t (make-LPT)))))
+
 (defun flatten (f-alignments)
-  (if (and (cdr (second f-alignments))
+  (if (and (second f-alignments)
 	   (listp (cdr (second f-alignments))))
     (let ((elt (car f-alignments))
 	  (perms (cdr f-alignments)))
@@ -392,9 +425,8 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
     f-alignments))
 
 (lisp-unit:define-test test-flatten
- (lisp-unit:assert-equal
-  '((0 . 0) (5 . 3))
-  (flatten '((0 . 0) ((5 . 3)))))
+ (lisp-unit-assert-equal '((e . f)) (flatten '((e . f))))
+ (lisp-unit:assert-equal '(((0 . 0) (5 . 3))) (flatten '((0 . 0) ((5 . 3)))))
  (lisp-unit:assert-equal
   '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6)))
   (flatten '((a . b) ((c . d) (e . f)) ((5 . 6)))))
@@ -410,28 +442,18 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	     ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
 	     ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6))))))
 
-(lisp-unit:define-test test-f-align
- (let ((tab_s (open-and-import "nb/1.pl"))
-       (tab_t (open-and-import "ka/1.pl")))
-   (lisp-unit:assert-equal		; TODO: make flattening fn so we can use set-of-set-equal
-    '((0 . 0) ((5 . 3)))
-    (f-align '(0 . 0) tab_s tab_t (make-LPT))))
- (let ((tab_s (open-and-import "nb/4.pl"))
-       (tab_t (open-and-import "ka/4.pl")))
-   (lisp-unit:assert-equal		; TODO: make flattening fn so we can use set-of-set-equal
-    '((0 . 0) ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
-      ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
-      ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6)))
-    (f-align '(0 . 0) tab_s tab_t (make-LPT)))))
+(defun c-align (flat-alignments tab_s tab_t)
+  (let ((tree_s (maketree tab_s))
+	(tree_t (maketree tab_t)))
+    (mapcar
+     (lambda (alignment)
+       (mapcar (lambda (link) (c-align-one link tree_s tab_s tree_t tab_t))
+	       alignment))
+     flat-alignments)))
+(defun c-align-one (link tree_s tab_s tree_t tab_t)
+  (format t "Align tree ~A~%" (pretty-topnode (car link) tab_s tree_s))
+  (format t " with tree ~A~%" (pretty-topnode (cdr link) tab_t tree_t)))
 
-(defun c-align (f-alignments tab_s tab_t)
-  (if (listp (cdr f-alignments))
-      (let ((link (car f-alignments))
-	    (rest (cdr f-alignments)))
-	(format t "c-aligning ~A~%" link)
-	(mapcar (lambda (alignment) (c-align alignment tab_s tab_t))
-		rest))
-    (format t "c-aligning ~A~%" f-alignments)))
 
 
 (defun f-align-naive (var1 tab1 var2 tab2)
