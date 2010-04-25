@@ -1484,6 +1484,7 @@ Men det kan vere at me ikkje /vil/ krevje dette i alle moglege
 tilfelle. Me kan uansett rangere ulike løysingar seinare ved å spørje
 etter dei argumentsamanstillingane som har flest medlem.
 
+** SKRIV Bør LPT vere eit eige avsnitt her?
 ** SKRIV Når lenkjene ikkje er 1-1
 
 *** notat 							     :ROTETE:
@@ -1540,6 +1541,21 @@ vil dei to ytre f-strukturane ha størst sjanse for å korrespondere med
 kvarandre, for kvart steg du går innover har du sjansen for å trå
 feil).
 
+** SKRIV Rangering
+   Ulike kriterium:
+*** lenkja f-argument > ulenkja
+    Dette sjekker med me longest-sublists. Me prøver jo å lenkje alt i
+    =f-align=, og om me finn argperms der alt kan lenkjast, er jo det
+    det beste.
+*** argument-argument > argument-adjunkt
+    Eg ser ingen problem med dette.
+*** arg1-arg1 arg2-arg2 > arg1-arg2 arg2-arg1 (følgje)
+    Dette kjem til å gi problem når me lenkje «behage» og «like», viss
+    me ikkje har motstridande LPT-informasjon og argumentfølgje i
+    leksikon ikkje er basert på semantikk, men syntaks.
+*** Prioritet på av rangeringskriterium
+    Dette bør sjølvsagt testast empirisk, og er nok utanfor denne
+    oppgåva, men eg kjem til å diskutere det.
 ** SKRIV Lenkjing av c-strukturnodar
 Samanstilling mellom f-strukturar er uavhengig av lenkjer mellom
 c-strukturnodar, medan lenkjing av c-strukturnodar skjer på grunnlag
