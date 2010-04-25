@@ -43,17 +43,21 @@ laptop, should be OK."
 	     (return (values (car newtree) refs))))))
 
 (defun trimtree (c-ids tree)
-  "Trim off the branches of the tree that aren't in `c-ids'."
+  "Trim off the branches of the tree that aren't in `c-ids'.
+Where we've chopped off branches, we get a pair where the cdr is a
+c-id number referring to what used to be there."
   (when tree
-    (or
-     (and (not (cdr tree)) tree)	; terminals, like '(17)
-     (and (listp tree)
-	  (member (car tree) c-ids)
-	  (list (first tree) (second tree)
-		(trimtree c-ids (third tree))
-		(trimtree c-ids (fourth tree))
-		(cddddr tree)))		; todo: do we ever get >2 branches?
-     (cons 'snip (car tree)))))		; out-of-domain
+    (if (cddddr tree) (error "Non-binary tree!") t) ; none of these in my test-set
+    (or (and (listp tree)
+	     (member (car tree) c-ids)	; in-domain
+	     (if (fourth tree) ; subtrees have a right-branch, terminals don't
+		 (list (first tree)
+		       (second tree)
+		       (trimtree c-ids (third tree))
+		       (trimtree c-ids (fourth tree)))
+	       tree))
+	;; out-of-domain:
+	(cons 'snip (car tree)))))
 
 (defun treefind (c-ids tree)
   "Find the first (topmost) node which is a member of c-ids. 
@@ -78,10 +82,10 @@ Unfortunately, id's aren't sorted in any smart way :-/"
 `f-var'."
   (let ((f-vars (adjoin f-var
 			(get-equivs f-var tab))))
-    (mapcar #'car			; TODO: mapcar-true
-	    (remove-if (lambda (phi)
-			 (not (member (cdr phi) f-vars)))
-		       (gethash '|phi| tab)))))
+    (mapcar-true #'car
+		 (remove-if (lambda (phi)
+			      (not (member (cdr phi) f-vars)))
+			    (gethash '|phi| tab)))))
 
 (defun topnode (f-var tab tree)
   "`f-var' describes a functional domain, find the topmost of the
@@ -432,24 +436,6 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	      (mapcar #'flatten perms)))
     f-alignments))
 
-(lisp-unit:define-test test-flatten
- (lisp-unit-assert-equal '((e . f)) (flatten '((e . f))))
- (lisp-unit:assert-equal '(((0 . 0) (5 . 3))) (flatten '((0 . 0) ((5 . 3)))))
- (lisp-unit:assert-equal
-  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6)))
-  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6)))))
- (lisp-unit:assert-equal
-  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6) (7 . 8)))
-  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6) (7 . 8)))))
- (lisp-unit:assert-equal
-  '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
-    ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-    ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
-  (flatten '((0 . 0)
-	     ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
-	     ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
-	     ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6))))))
-
 (defun c-align (flat-alignments tab_s tab_t)
   (let ((tree_s (maketree tab_s))
 	(tree_t (maketree tab_t)))
@@ -458,10 +444,19 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
        (mapcar (lambda (link) (c-align-one link tree_s tab_s tree_t tab_t))
 	       alignment))
      flat-alignments)))
+
 (defun c-align-one (link tree_s tab_s tree_t tab_t)
   (format t "Align tree ~A~%" (pretty-topnode (car link) tab_s tree_s))
   (format t " with tree ~A~%" (pretty-topnode (cdr link) tab_t tree_t)))
 
+(lisp-unit:define-test test-c-align
+ (let* ((tab_s (open-and-import "nb/1.pl"))
+	(tab_t (open-and-import "ka/1.pl"))
+	(tree_s (maketree tab_s))
+	(tree_t (maketree tab_t)))
+   (lisp-unit:assert-equal
+    '((235 . 118) (13 . 2) (1 . 1))
+    (c-align-one (cons 5 3) tree_s tab_s tree_t tab_t))))
 
 
 (defun f-align-naive (var1 tab1 var2 tab2)
@@ -501,6 +496,24 @@ TODO: cache/memoise maketree"
   (ignore-errors (not (set-exclusive-or a1 a2 :test #'equal))))
 (defun set-of-set-equal (as1 as2)
   (ignore-errors (not (set-exclusive-or as1 as2 :test #'set-equal))))
+
+(lisp-unit:define-test test-flatten
+ (lisp-unit-assert-equal '((e . f)) (flatten '((e . f))))
+ (lisp-unit:assert-equal '(((0 . 0) (5 . 3))) (flatten '((0 . 0) ((5 . 3)))))
+ (lisp-unit:assert-equal
+  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6)))
+  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6)))))
+ (lisp-unit:assert-equal
+  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6) (7 . 8)))
+  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6) (7 . 8)))))
+ (lisp-unit:assert-equal
+  '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+    ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+    ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
+  (flatten '((0 . 0)
+	     ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
+	     ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
+	     ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6))))))
 
 (lisp-unit:define-test test-unravel
   (let ((tab (dup-alist-to-table
@@ -631,6 +644,25 @@ TODO: cache/memoise maketree"
    #'set-of-set-equal
    '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
    (argalign-p '(a b) '() '(1) '(3))))
+
+(lisp-unit:define-test test-trimtree
+ (let* ((tab_s (open-and-import "nb/1.pl"))
+        (tree_s (maketree tab_s)))
+   (lisp-unit:assert-equal
+   '(553 "ROOT"
+     (591 "ROOT" NIL
+      (1094 "IP" (715 "IP" NIL (SNIP . 235))
+       (1073 "I\\'" NIL
+        (869 "Vfin"
+         (868 "Vfin"
+          (867 "Vfin" NIL (22 "V_BASE" NIL (23 "bjeffe" (17))))
+          (20 "V_SUFF_BASE" NIL (21 "+Verb" (17))))
+         (18 "V_SUFF_BASE" NIL (19 "+Past" (17)))))))
+     (62 "PERIOD" NIL (55 "." (55))))
+   (trimtree (phi^-1 0 tab_s) (topnode 0 tab_s tree_s)))
+   (lisp-unit:assert-equal
+    '(235 "PROPP" NIL (13 "PROP" NIL (SNIP . 1)))
+    (trimtree (phi^-1 5 tab_s) (topnode 5 tab_s tree_s)))))
 
 (lisp-unit:define-test test-topnode
 		       (let* ((tab (open-and-import "dev/TEST_parse.pl"))
