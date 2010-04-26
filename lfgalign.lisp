@@ -151,9 +151,17 @@ add all equivalent variables and their possible expansions."
 		 (unravel-helper att stack seen tab))
 	  (cons x (unravel-helper att stack seen tab))))))
 
+(defun pred-equal (Pr1 Pr2 tab)
+  (and (equal (first Pr1) (first Pr2))
+       (eq (second Pr1) (second Pr2))
+       (loop for arg1 in (third Pr1) for arg2 in (third Pr2) always
+	     (member arg1 (get-equivs arg2 tab)))
+       (loop for narg1 in (fourth Pr1) for narg2 in (fourth Pr2) always
+	     (member narg1 (get-equivs narg2 tab)))))
+
 (defun unravel (att val tab)
   (awhen (remove-duplicates (unravel-helper att (list val) nil tab)
-			    :test #'equal)
+			    :test (lambda (a b) (pred-equal a b tab)))
     (when (cdr it)
       (error "Found superfluous, non-equal unravellings of ~A ~A:~%~A~%" val att it))
     (cons att (car it))))
@@ -584,6 +592,21 @@ TODO: cache/memoise maketree"
      '("PRED" "PanJara" 0 NIL NIL) (unravel "PRED" 11 tab))
     (lisp-unit:assert-equal
      '("PRED" "PanJara" 0 NIL NIL) (unravel "PRED" 50 tab))))
+
+(lisp-unit:define-test test-pred-equal
+ (let ((tab (open-and-import "dev/TEST_pred-equal.pl")))
+   (lisp-unit:assert-true
+    (pred-equal '("perf" 6 (28) (37))
+		'("perf" 6 (28) (29))
+		tab))
+   (lisp-unit:assert-true
+    (pred-equal '("perf" 6 (28) (37))
+		'("perf" 6 (1) (29))
+		tab))
+   (lisp-unit:assert-false
+    (pred-equal '("perf" 6 (28) (37))
+		'("perf" 6 (28) (9))
+		tab))))
 
 (lisp-unit:define-test test-L
   (let* ((tab (open-and-import "dev/TEST_parse.pl")))
