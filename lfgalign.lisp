@@ -423,28 +423,21 @@ the recursion loops through all possible `srcs'."
 	    (list nil)))))
 
 
-(defun f-align (link tab_s tab_t LPTs)
-  "TODO: make aligntab available for caller and callee, 
-at the moment it's our only check for whether an alignment 
-was just LPT or a real f-alignment.
+(defun f-align (link tab_s tab_t LPTs &optional aligntab)
+  "Optional hash table `aligntab' (with :test #'equal) stores the
+alignments of all linkings, and lets you check whether each linking
+was possible to sub-align (in addition to being LPT).
 
  (i) the number of arguments n and m may or may not differ
 is trivially true
  (ii), LPT, should be covered for `link' on all calls.
 TODO: (v) the LPT-correspondences can be aligned one-to-one
 TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
-  (let* ((var_s (car link))
-	 (var_t (cdr link))
-	 (Pr_s (get-pred var_s tab_s t))
-	 (Pr_t (get-pred var_t tab_t t))
-	 (adjs_s (get-adjs var_s tab_s 'no-error))
-	 (adjs_t (get-adjs var_t tab_t 'no-error))
-	 (args_s (get-args Pr_s 'no-nulls))
-	 (args_t (get-args Pr_t 'no-nulls))
-	 (aligntab (make-hash-table :test #'equal))
+  (let* ((aligntab (or aligntab
+		       (make-hash-table :test #'equal)))
 	 (argperms (argalign link tab_s tab_t LPTs)) ; argalign covers (iii) and (iv)
 	 alignments)
-    (if (equal argperms '(nil))	  ; OK arg-alignment, no recursion
+    (if (equal argperms '(nil))	      ; OK arg-alignment, no recursion
 	link
       (progn				; possible with recursion
 	(loop for argperm in argperms
@@ -452,9 +445,9 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 			      do
 			      (unless (gethash link_a aligntab)
 				(setf (gethash link_a aligntab)
-				      (f-align link_a tab_s tab_t LPTs)))
+				      (f-align link_a tab_s tab_t LPTs aligntab)))
 			      collect (or (gethash link_a aligntab)
-					  (or (warn "sub-f failed:~A" link_a)
+					  (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
 					      link_a)))
 	      do
 	      (pushnew new alignments :test #'equal))
@@ -510,14 +503,14 @@ don't know why, but their phi's don't match anything in the files)."
     (get-trg c-id)
     
     ))
-(lisp-unit:define-test test-LL
- (let* ((tab_s (open-and-import "nb/1.pl"))
-	(tab_t (open-and-import "ka/1.pl"))
-	(f-alignment '((0 . 0) (5 . 3))) ; flattened
-	(tree_s (maketree tab_s))
-	(tree_t (maketree tab_t)))
-   (lisp-unit:assert-equal 1 1)
-   (LL_s 5 f-alignment tab_s)))
+;; (lisp-unit:define-test test-LL
+;;  (let* ((tab_s (open-and-import "nb/1.pl"))
+;; 	(tab_t (open-and-import "ka/1.pl"))
+;; 	(f-alignment '((0 . 0) (5 . 3))) ; flattened
+;; 	(tree_s (maketree tab_s))
+;; 	(tree_t (maketree tab_t)))
+;;    (lisp-unit:assert-equal 1 1)
+;;    (LL_s 5 f-alignment tab_s)))
 
 (defun c-align (flat-alignments tab_s tab_t)
   (let ((tree_s (maketree tab_s))
@@ -539,14 +532,14 @@ src without also leaving it behind in trg, and vice versa."
     
     ))
 
-(lisp-unit:define-test test-c-align
- (let* ((tab_s (open-and-import "nb/1.pl"))
-	(tab_t (open-and-import "ka/1.pl"))
-	(tree_s (maketree tab_s))
-	(tree_t (maketree tab_t)))
-   (lisp-unit:assert-equal
-    '((235 . 118) (13 . 2))
-    (c-align-one (cons 5 3) tree_s tab_s tree_t tab_t))))
+;; (lisp-unit:define-test test-c-align
+;;  (let* ((tab_s (open-and-import "nb/1.pl"))
+;; 	(tab_t (open-and-import "ka/1.pl"))
+;; 	(tree_s (maketree tab_s))
+;; 	(tree_t (maketree tab_t)))
+;;    (lisp-unit:assert-equal
+;;     '((235 . 118) (13 . 2))
+;;     (c-align-one (cons 5 3) tree_s tab_s tree_t tab_t))))
 
 
 (defun f-align-naive (var1 tab1 var2 tab2)
