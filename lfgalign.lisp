@@ -100,6 +100,11 @@ subtrees)."
 		  (Ltree (values Ltree (1+ Ldepth)))
 		  (Rtree (values Rtree (1+ Rdepth)))))))))
 
+(defun phi (c-id tab)
+  "Returns the f-var given by phi of `c-id', use (gethash f-var `tab')
+to find the content, but the f-var might have equivs..."
+  (cdr (assoc c-id (gethash '|phi| tab))))
+
 (defun phi^-1 (f-var tab)
   "The inverse phi (c-structure id's that map to `f-var' in
 `tab'). Includes c-ids that map to variables that are equivalent to
@@ -485,6 +490,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
        (mapcar (lambda (link) (c-align-one link tree_s tab_s tree_t tab_t))
 	       alignment))
      flat-alignments)))
+
 
 (defun c-align-one (link tree_s tab_s tree_t tab_t)
   "Make sure we don't leave behind nodes contributing f-information in
