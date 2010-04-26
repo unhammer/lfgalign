@@ -458,6 +458,8 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	      (mapcar #'flatten perms)))
     f-alignments))
 
+(defun LL (c-id))
+
 (defun c-align (flat-alignments tab_s tab_t)
   (let ((tree_s (maketree tab_s))
 	(tree_t (maketree tab_t)))
@@ -468,8 +470,14 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
      flat-alignments)))
 
 (defun c-align-one (link tree_s tab_s tree_t tab_t)
-  (format t "Align tree ~A~%" (pretty-topnode (car link) tab_s tree_s))
-  (format t " with tree ~A~%" (pretty-topnode (cdr link) tab_t tree_t)))
+  "Make sure we don't leave behind nodes contributing f-information in
+src without also leaving it behind in trg, and vice versa."
+  (let ((c-ids_s (phi^-1 (car link) tab_s))
+	(c-ids_t (phi^-1 (cdr link) tab_t)))
+    (format t "Align tree ~A~%" (skip-suff_base (trimtree c-ids_s (treefind c-ids_s tree_s))))
+    (format t " with tree ~A~%" (skip-suff_base (trimtree c-ids_t (treefind c-ids_t tree_t))))
+    
+    ))
 
 (lisp-unit:define-test test-c-align
  (let* ((tab_s (open-and-import "nb/1.pl"))
@@ -477,7 +485,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	(tree_s (maketree tab_s))
 	(tree_t (maketree tab_t)))
    (lisp-unit:assert-equal
-    '((235 . 118) (13 . 2) (1 . 1))
+    '((235 . 118) (13 . 2))
     (c-align-one (cons 5 3) tree_s tab_s tree_t tab_t))))
 
 
@@ -520,7 +528,7 @@ TODO: cache/memoise maketree"
   (ignore-errors (not (set-exclusive-or as1 as2 :test #'set-equal))))
 
 (lisp-unit:define-test test-flatten
- (lisp-unit-assert-equal '((e . f)) (flatten '((e . f))))
+ (lisp-unit:assert-equal '((e . f)) (flatten '((e . f))))
  (lisp-unit:assert-equal '(((0 . 0) (5 . 3))) (flatten '((0 . 0) ((5 . 3)))))
  (lisp-unit:assert-equal
   '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6)))
