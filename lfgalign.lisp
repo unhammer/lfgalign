@@ -131,6 +131,9 @@ a number (pointing to where the trimmed tree was cut off)."
 ;;;;;;;; VARIOUS HELPERS:
 ;;;;;;;; ----------------
 
+(defun null-pred? (Pr)
+  (equal Pr "NULL"))
+
 (defun get-equivs (val tab)
   (dset3-findall val (gethash '|eq-sets| tab)))
 
@@ -152,12 +155,15 @@ add all equivalent variables and their possible expansions."
 	  (cons x (unravel-helper att stack seen tab))))))
 
 (defun pred-equal (Pr1 Pr2 tab)
-  (and (equal (first Pr1) (first Pr2))
-       (eq (second Pr1) (second Pr2))
-       (loop for arg1 in (third Pr1) for arg2 in (third Pr2) always
-	     (member arg1 (get-equivs arg2 tab)))
-       (loop for narg1 in (fourth Pr1) for narg2 in (fourth Pr2) always
-	     (member narg1 (get-equivs narg2 tab)))))
+  (labels ((args-equal (args1 args2)
+	    (loop for arg1 in args1
+		  for arg2 in args2
+		  always (or (and (null-pred? arg1) (null-pred? arg2))
+			     (member arg1 (get-equivs arg2 tab))))))
+    (and (equal (first Pr1) (first Pr2))
+	 (eq (second Pr1) (second Pr2))
+	 (args-equal (third Pr1) (third Pr2))
+	 (args-equal (fourth Pr1) (fourth Pr2)))))
 
 (defun unravel (att val tab)
   (awhen (remove-duplicates (unravel-helper att (list val) nil tab)
@@ -168,7 +174,7 @@ add all equivalent variables and their possible expansions."
 
 (defun get-pred (var tab &optional no-error)
   "Use `no-error' to return nil if no PRED was found."
-  (if (equal "NULL" var)
+  (if (null-pred? var)
       var
       (aif (unravel "PRED" var tab)
 	   (cons var (cdr it))
