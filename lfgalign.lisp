@@ -92,7 +92,7 @@ subtrees)."
 	  (multiple-value-bind (Rtree Rdepth) (topnodes c-ids (fourth tree))
 	    (cond ((and Ltree Rtree) ; exists in both, choose shallowest
 		   (error "Yay, found a discontinuous constituent! Boo, have work to do...")
-		   (if (= Ldepth Rdepth) (warn "Equal depth, arbitrarily going right"))
+		   (when (= Ldepth Rdepth) (warn "Equal depth, arbitrarily going right"))
 		   (if (< Ldepth Rdepth)
 		       (values Ltree (1+ Ldepth))
 		     (values Rtree (1+ Rdepth))))
@@ -131,7 +131,7 @@ a number (pointing to where the trimmed tree was cut off)."
 
 (defun pretty-topnode (f-var tab tree)
   "Skip the more boring nodes."
-  (skip-suff_base (topnodes (phi^-1 f-var tab) tab tree)))
+  (skip-suff_base (topnodes (phi^-1 f-var tab) tree)))
 
 
 ;;;;;;;; VARIOUS HELPERS:
@@ -422,11 +422,11 @@ the recursion loops through all possible `srcs'."
 	    ;; all args_s and args_t used up, make end-of-list:
 	    (list nil)))))
 
-
 (defun f-align (link tab_s tab_t LPTs &optional aligntab)
-  "Optional hash table `aligntab' (with :test #'equal) stores the
-alignments of all linkings, and lets you check whether each linking
-was possible to sub-align (in addition to being LPT).
+  "Optional hash table `aligntab' (with :test #'equal) is
+destructively modified to store the alignments of all linkings, and lets
+you check whether each linking was possible to sub-align (in addition
+to being LPT).
 
  (i) the number of arguments n and m may or may not differ
 is trivially true
@@ -469,15 +469,107 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
       ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
     (flatten (f-align '(0 . 0) tab_s tab_t (make-LPT))))))
 
+(defun f-link? (x)
+  (and (atom (car x))
+       (atom (cdr x)))))
+
+(defun rank (f-alignments aligntab)
+  (list 'todo f-alignments aligntab)
+  )
+
+(defun spread (flatperm)
+  (when flatperm
+    (if (cdr flatperm)
+	(if (f-link? (car flatperm))
+	    (mapcar (lambda (rest)
+		      (cons (car flatperm) rest))
+		    (spread (cdr flatperm)))
+	  (mapcan (lambda (first)
+		    (mapcar (lambda (rest)
+			      (append first rest))
+			    (spread (cdr flatperm))))
+		  (car flatperm)))
+      (if (f-link? (car flatperm))
+	  (list flatperm)
+	flatperm))))
+
 (defun flatten (f-alignments)
-  (if (and (second f-alignments)
-	   (listp (cdr (second f-alignments))))
+  "`f-alignments' is a _member_ of an assoc-list, where the car is an `f-link?'."
+  (when f-alignments
     (let ((elt (car f-alignments))
 	  (perms (cdr f-alignments)))
-      (mapcar (lambda (p)
-		(cons elt p))
-	      (mapcar #'flatten perms)))
-    f-alignments))
+      (if perms
+	  (let* ((flatperms (mapcan
+			     (lambda (links)
+			       (out "links: ~A~%" links)
+			       (let ((ret (mapcar (lambda (a)
+						    (out "a: ~A~%" a)
+						    (if (f-link? a) a (flatten a)))
+						  links)))
+				 (out "sret ~A~%ret:~A~%" (spread ret) ret)
+				 (spread ret))
+			       )
+			     perms)))
+	    (let ((ret (mapcar (lambda (p)
+				 (cons elt p))
+			       flatperms)))
+	      (out "e:~A p:~A flat:~A~%fret:~A~%" elt perms flatperms ret) ret
+))
+	(list elt)))))
+
+;;   (if (and (second f-alignments)
+;; 	   (listp (cdr (second f-alignments))))
+;;       (let ((elt (car f-alignments))
+;; 	    (perms (cdr f-alignments)))
+;; 	(mapcar (lambda (p)
+;; 		  (cons elt p))
+;; 		(mapcar #'flatten perms)))
+;;     f-alignments)
+
+(lisp-unit:define-test test-flatten
+ (lisp-unit:assert-equal '(((21 . 37) (19 . 46) (A . B) (20 . 46))
+			   ((21 . 37) (19 . 46) (A . C) (20 . 46)))
+			 (spread '((21 . 37)
+				   (((19 . 46) (A . B)) ((19 . 46) (A . C)))
+				   (20 . 46))))
+ (lisp-unit:assert-equal '(((19 . 46) (A . B))
+			   ((19 . 46) (A . C)))
+			 (spread '((((19 . 46) (A . B)) ((19 . 46) (A . C))))))
+ (lisp-unit:assert-equal '(((21 . 37) (19 . 46) (A . B))
+			   ((21 . 37) (19 . 46) (A . C)))
+			 (spread '((21 . 37)
+				   (((19 . 46) (A . B)) ((19 . 46) (A . C))))))
+ (lisp-unit:assert-equal '(((21 . 37) (19 . 46) (A . B) (20 . 46)))
+			 (spread '((21 . 37) (((19 . 46) (A . B))) (20 . 46))))
+ (lisp-unit:assert-equal '(((G . H) (D . Y) (19 . 46) (A . B) (20 . 46))
+			   ((G . H) (D . Y) (19 . 46) (A . C) (20 . 46)))
+			 (spread '((((G . H) (D . Y)))
+				   (((19 . 46) (A . B)) ((19 . 46) (A . C)))
+				   (20 . 46))))
+ (lisp-unit:assert-equal '((e . f)) (flatten '((e . f))))
+ (lisp-unit:assert-equal '(((0 . 0) (5 . 3))) (flatten '((0 . 0) ((5 . 3)))))
+ (lisp-unit:assert-equal
+  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6)))
+  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6)))))
+ (lisp-unit:assert-equal
+  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6) (7 . 8)))
+  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6) (7 . 8)))))
+ (lisp-unit:assert-equal
+  '(((0 . 0) (11 . 6) ((10 . 9) (a . b)) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+    ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+    ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
+  (flatten '((0 . 0)
+	     ((11 . 6) ((10 . 9) (a . b)) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
+	     ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
+	     ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6)))))
+ (lisp-unit:assert-equal
+  '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+    ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+    ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
+  (flatten '((0 . 0)
+	     ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
+	     ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
+	     ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6))))))
 
 (defun subnodes (tree)
   "Return id's of this node and all subnodes of `tree' as a list."
@@ -579,24 +671,6 @@ TODO: cache/memoise maketree"
   (ignore-errors (not (set-exclusive-or a1 a2 :test #'equal))))
 (defun set-of-set-equal (as1 as2)
   (ignore-errors (not (set-exclusive-or as1 as2 :test #'set-equal))))
-
-(lisp-unit:define-test test-flatten
- (lisp-unit:assert-equal '((e . f)) (flatten '((e . f))))
- (lisp-unit:assert-equal '(((0 . 0) (5 . 3))) (flatten '((0 . 0) ((5 . 3)))))
- (lisp-unit:assert-equal
-  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6)))
-  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6)))))
- (lisp-unit:assert-equal
-  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6) (7 . 8)))
-  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6) (7 . 8)))))
- (lisp-unit:assert-equal
-  '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
-    ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-    ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
-  (flatten '((0 . 0)
-	     ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
-	     ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
-	     ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6))))))
 
 (lisp-unit:define-test test-unravel
   (let ((tab (dup-alist-to-table

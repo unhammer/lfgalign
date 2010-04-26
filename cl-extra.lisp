@@ -35,6 +35,8 @@ http://www.cliki.net/common-idioms"
      (declare (ignorable it))
      (when it ,@body)))
 
+(defmacro out (string &rest args) `(format t ,string ,@args))
+
 
 ;;;;;;;; DSET implementations. Remember to (setf *print-circle* t) 
 ;;;;;;;; ----------------------------------------------------------
