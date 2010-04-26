@@ -491,7 +491,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 		  (car flatperm)))
       (if (f-link? (car flatperm))
 	  (list flatperm)
-	flatperm))))
+	(car flatperm)))))
 
 (defun flatten (f-alignments)
   "`f-alignments' is a _member_ of an assoc-list, where the car is an `f-link?'."
@@ -526,7 +526,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 ;; 		(mapcar #'flatten perms)))
 ;;     f-alignments)
 
-(lisp-unit:define-test test-flatten
+(lisp-unit:define-test test-spread
  (lisp-unit:assert-equal '(((21 . 37) (19 . 46) (A . B) (20 . 46))
 			   ((21 . 37) (19 . 46) (A . C) (20 . 46)))
 			 (spread '((21 . 37)
@@ -545,31 +545,32 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 			   ((G . H) (D . Y) (19 . 46) (A . C) (20 . 46)))
 			 (spread '((((G . H) (D . Y)))
 				   (((19 . 46) (A . B)) ((19 . 46) (A . C)))
-				   (20 . 46))))
- (lisp-unit:assert-equal '((e . f)) (flatten '((e . f))))
- (lisp-unit:assert-equal '(((0 . 0) (5 . 3))) (flatten '((0 . 0) ((5 . 3)))))
- (lisp-unit:assert-equal
-  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6)))
-  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6)))))
- (lisp-unit:assert-equal
-  '(((A . B) (C . D) (E . F)) ((A . B) (5 . 6) (7 . 8)))
-  (flatten '((a . b) ((c . d) (e . f)) ((5 . 6) (7 . 8)))))
- (lisp-unit:assert-equal
-  '(((0 . 0) (11 . 6) ((10 . 9) (a . b)) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
-    ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-    ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
-  (flatten '((0 . 0)
-	     ((11 . 6) ((10 . 9) (a . b)) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
-	     ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
-	     ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6)))))
- (lisp-unit:assert-equal
-  '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
-    ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-    ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
-  (flatten '((0 . 0)
-	     ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
-	     ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
-	     ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6))))))
+				   (20 . 46)))))
+(lisp-unit:define-test test-flatten
+		       (lisp-unit:assert-equal '((e . f)) (flatten '((e . f))))
+		       (lisp-unit:assert-equal '(((0 . 0) (5 . 3))) (flatten '((0 . 0) ((5 . 3)))))
+		       (lisp-unit:assert-equal
+			'(((A . B) (C . D) (E . F)) ((A . B) (5 . 6)))
+			(flatten '((a . b) ((c . d) (e . f)) ((5 . 6)))))
+		       (lisp-unit:assert-equal
+			'(((A . B) (C . D) (E . F)) ((A . B) (5 . 6) (7 . 8)))
+			(flatten '((a . b) ((c . d) (e . f)) ((5 . 6) (7 . 8)))))
+		       (lisp-unit:assert-equal
+			'(((0 . 0) (11 . 6) ((10 . 9) (a . b)) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+			  ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+			  ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
+			(flatten '((0 . 0)
+				   ((11 . 6) ((10 . 9) (a . b)) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
+				   ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
+				   ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6)))))
+		       (lisp-unit:assert-equal
+			'(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+			  ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+			  ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
+			(flatten '((0 . 0)
+				   ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
+				   ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
+				   ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6))))))
 
 (defun subnodes (tree)
   "Return id's of this node and all subnodes of `tree' as a list."
