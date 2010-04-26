@@ -14,12 +14,21 @@
 ;;;;;;;; C-STRUCTURE TREE:
 ;;;;;;;; -----------------
 
+(defun terminal? (tree)
+  "Return true if `tree' is a terminal node."
+  (and (numberp (first tree))
+       (stringp (second tree))
+       (listp (third tree))
+       (not (fourth tree))))
+
 (defun maketree (tab)
   "Returns a binary tree created from the |subtree| and |terminal|
 alists of the table `tab'. The second value returned contains the
 back-references from each branch ID. Does not modify the input
 table. Efficiency: 100 real-life trees takes about 0.5 seconds on a
 laptop, should be OK."
+  (when *debug* (loop for tr in (gethash '|terminal| tab)
+		      when (not (terminal? tr)) do (error "terminal? failed on ~A" tr)))
   (let* ((subtree (copy-tree (gethash '|subtree| tab)))
 	 (tree (append subtree
 		       (copy-tree (gethash '|terminal| tab))))
@@ -42,6 +51,11 @@ laptop, should be OK."
 	     (error 'several-topnodes :text it)
 	     (return (values (car newtree) refs))))))
 
+(defun maketrim (tree)
+  (cons 'snip (car tree)))
+(defun trim? (tree)
+  (not (listp (cdr tree))))
+
 (defun trimtree (c-ids tree)
   "Trim off the branches of the tree that aren't in `c-ids'.
 Where we've chopped off branches, we get a pair where the cdr is a
@@ -50,18 +64,21 @@ c-id number referring to what used to be there."
     (if (cddddr tree) (error "Non-binary tree!") t) ; none of these in my test-set
     (or (and (listp tree)
 	     (member (car tree) c-ids)	; in-domain
-	     (if (fourth tree) ; subtrees have a right-branch, terminals don't
+	     (if (terminal? tree)
+		 tree
 		 (list (first tree)
 		       (second tree)
 		       (trimtree c-ids (third tree))
-		       (trimtree c-ids (fourth tree)))
-	       tree))
+		       (trimtree c-ids (fourth tree)))))
 	;; out-of-domain:
-	(cons 'snip (car tree)))))
+	(maketrim tree))))
 
 (defun treefind (c-ids tree)
   "Find the first (topmost) node which is a member of c-ids. 
-Unfortunately, id's aren't sorted in any smart way :-/"
+Unfortunately, id's aren't sorted in any smart way :-/
+
+TODO: instead of finding just the topmost, should return the list of
+\"all topmost\" such nodes."
   (if (and tree (listp tree))
       (if (member (car tree) c-ids)
 	  (values tree 0)		; gotcha!
@@ -94,12 +111,17 @@ nodes in the c-structure which project this domain"
     (treefind c-ids tree)))
 
 (defun skip-suff_base (tree)
+  "Trees are either nil, a fourtuple, or a cons cell where the cdr is
+a number (pointing to where the trimmed tree was cut off)."
   (when tree
-    (if (search "SUFF_BASE" (second (fourth tree)))
-	(skip-SUFF_BASE (third tree))
-      (list (first tree) (second tree)
-	    (skip-suff_base (third tree))
-	    (skip-suff_base (fourth tree))))))
+    (if (or (trim? tree) (terminal? tree))
+	tree
+      (if (and (not (trim? (fourth tree)))
+	       (search "SUFF_BASE" (second (fourth tree))))
+	  (skip-SUFF_BASE (third tree))
+	(list (first tree) (second tree)
+	      (skip-suff_base (third tree))
+	      (skip-suff_base (fourth tree)))))))
 
 (defun pretty-topnode (f-var tab tree)
   "Skip the more boring nodes."
