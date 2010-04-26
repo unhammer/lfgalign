@@ -424,7 +424,11 @@ the recursion loops through all possible `srcs'."
 
 
 (defun f-align (link tab_s tab_t LPTs)
-  " (i) the number of arguments n and m may or may not differ
+  "TODO: make aligntab available for caller and callee, 
+at the moment it's our only check for whether an alignment 
+was just LPT or a real f-alignment.
+
+ (i) the number of arguments n and m may or may not differ
 is trivially true
  (ii), LPT, should be covered for `link' on all calls.
 TODO: (v) the LPT-correspondences can be aligned one-to-one
@@ -444,29 +448,33 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	link
       (progn				; possible with recursion
 	(loop for argperm in argperms
+	      for new = (loop for link_a in argperm
+			      do
+			      (unless (gethash link_a aligntab)
+				(setf (gethash link_a aligntab)
+				      (f-align link_a tab_s tab_t LPTs)))
+			      collect (or (gethash link_a aligntab)
+					  (or (warn "sub-f failed:~A" link_a)
+					      link_a)))
 	      do
-	      (pushnew (loop for link_a in argperm
-			     do
-			     (unless (gethash link_a aligntab)
-			       (setf (gethash link_a aligntab) (f-align link_a tab_s tab_t LPTs)))
-			     collect (gethash link_a aligntab))
-		       alignments
-		       :test #'equal))
+	      (pushnew new alignments :test #'equal))
 	(when alignments (cons link alignments))))))
 
 (lisp-unit:define-test test-f-align
  (let ((tab_s (open-and-import "nb/1.pl"))
        (tab_t (open-and-import "ka/1.pl")))
-   (lisp-unit:assert-equal		; TODO: make flattening fn so we can use set-of-set-equal
-    '((0 . 0) ((5 . 3)))
-    (f-align '(0 . 0) tab_s tab_t (make-LPT))))
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '(((0 . 0) (5 . 3)))
+    (flatten (f-align '(0 . 0) tab_s tab_t (make-LPT)))))
  (let ((tab_s (open-and-import "nb/4.pl"))
        (tab_t (open-and-import "ka/4.pl")))
-   (lisp-unit:assert-equal		; TODO: make flattening fn so we can use set-of-set-equal
-    '((0 . 0) ((11 . 6) (10 . 9) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
-      ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
-      ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6)))
-    (f-align '(0 . 0) tab_s tab_t (make-LPT)))))
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+      ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+      ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
+    (flatten (f-align '(0 . 0) tab_s tab_t (make-LPT))))))
 
 (defun flatten (f-alignments)
   (if (and (second f-alignments)
