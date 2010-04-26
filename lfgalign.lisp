@@ -486,9 +486,38 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	      (mapcar #'flatten perms)))
     f-alignments))
 
-(defun LL (c-id f-alignment)
-  
-  )
+(defun subnodes (tree)
+  "Return id's of this node and all subnodes of `tree' as a list."
+  (when (trim? tree) (error "Trimmed tree sent to subnodes, don't do that."))
+  (if tree
+      (adjoin (car tree)
+	      (union (subnodes (third tree))
+		     (subnodes (fourth tree))))))
+
+(defun linked-subnodes (c-id f-alignment tree tab)
+  "Find the set of linked nodes dominated by `c-id'.  The
+linking is defined by `f-alignment', which must have been through
+`flatten'; `tree' is given by `maketree'.
+
+dyvik2009lmt uses LL, linked _lexical_ nodes, instead, but some times
+we don't get all the way down to these (eg in nb/1.pl, Abrams is a
+different f-domain, while in ka/1.pl, qePa is a different f-domain,
+don't know why, but their phi's don't match anything in the files)."
+;;   (adjoin (phi c-id tab)
+;; 	  (get-equivs (phi c-id tab) tab))
+  (labels ((get-trg (c_s) (cdr (assoc (phi c_s tab)
+				      f-alignment))))
+    (get-trg c-id)
+    
+    ))
+(lisp-unit:define-test test-LL
+ (let* ((tab_s (open-and-import "nb/1.pl"))
+	(tab_t (open-and-import "ka/1.pl"))
+	(f-alignment '((0 . 0) (5 . 3))) ; flattened
+	(tree_s (maketree tab_s))
+	(tree_t (maketree tab_t)))
+   (lisp-unit:assert-equal 1 1)
+   (LL_s 5 f-alignment tab_s)))
 
 (defun c-align (flat-alignments tab_s tab_t)
   (let ((tree_s (maketree tab_s))
