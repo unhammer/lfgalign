@@ -326,9 +326,12 @@ the pro no matter what, but will this give us trouble?"
 	     (noun? (car Pr_s) tab_s))
 	(multiple-value-bind (L-tr L-in) (get-LPT LPr_s LPr_t LPTs)
 	  (multiple-value-bind (lem-tr lem-in) (get-LPT lem_s lem_t LPTs)
-	    (unless (or L-in lem-in *no-warnings*)
-	      (warn "Neither ~A/~A nor ~A/~A are in LPTs" LPr_s lem_s LPr_t lem_t))
-	    (and L-tr lem-tr))))))
+	    (cond ((and L-in lem-in) (or L-tr lem-tr))
+		  (L-in L-tr)
+		  (lem-in lem-tr)
+		  (t (unless *no-warnings*
+		       (warn "Neither ~A/~A nor ~A/~A are in LPTs" LPr_s lem_s LPr_t lem_t))
+		     'trivial)))))))
 
 (defun all-LPT (tab_s tab_t LPTs)
   "Return all possible LPTs of each PRED, as pairs of PREDs."
@@ -397,7 +400,7 @@ and (iv). See `argalign-p'."
 	 "Within one call, we have the same src, but loop through possible `trgs',
 the recursion loops through all possible `srcs'."
 	 `(mapcan			; for each target arg/adj
-	   (lambda (trg)		   
+	   (lambda (trg)
 	     (when (or (not LPTs)
 		       (LPT? (get-pred (car ,srcs) tab_s) tab_s
 			     (get-pred     trg     tab_t) tab_t LPTs))
@@ -409,7 +412,8 @@ the recursion loops through all possible `srcs'."
 		(argalign-p (if (eq ,srcs args_s) (cdr args_s) args_s)
 			    (if (eq ,srcs adjs_s) (cdr adjs_s) adjs_s)
 			    (if (eq ,trgs args_t) (remove trg args_t :count 1) args_t)
-			    (if (eq ,trgs adjs_t) (remove trg adjs_t :count 1) adjs_t)))))
+			    (if (eq ,trgs adjs_t) (remove trg adjs_t :count 1) adjs_t)
+			    tab_s tab_t LPTs))))
 	   ,trgs)))
     (if args_s
 	(append (mapalign args_s args_t)
@@ -461,13 +465,20 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
     '(((0 . 0) (5 . 3)))
     (flatten (f-align '(0 . 0) tab_s tab_t (make-LPT)))))
  (let ((tab_s (open-and-import "nb/4.pl"))
-       (tab_t (open-and-import "ka/4.pl")))
+       (tab_t (open-and-import "ka/4.pl"))
+       (LPT (make-LPT)))
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
       ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
       ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
-    (flatten (f-align '(0 . 0) tab_s tab_t (make-LPT))))))
+    (flatten (f-align '(0 . 0) tab_s tab_t LPT)))
+   (add-to-lpt "Browne" "brouns" LPT)
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '(((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+      ((0 . 0) (11 . 9) (10 . 3) (9 . 6)))
+    (flatten (f-align '(0 . 0) tab_s tab_t LPT)))))
 
 (defun f-link? (x)
   (and (atom (car x))
@@ -673,6 +684,36 @@ TODO: cache/memoise maketree"
     (lisp-unit:assert-equal "iqePa"
 			    (L (get-pred 0 tab) tab))))
 
+(lisp-unit:define-test
+    test-LPT
+  (let* ((tab_s (open-and-import "nb/4.pl"))
+	 (tab_t (open-and-import "ka/4.pl"))
+	 (Pr_s (get-pred 0 tab_s))
+	 (Pr_t (get-pred 0 tab_t))
+	 (Pr_s_wrong (get-pred 10 tab_s)))
+    (let ((LPT (make-LPT)))
+      (lisp-unit:assert-true (LPT? Pr_s tab_s Pr_t tab_t LPT))
+      (lisp-unit:assert-true (LPT? Pr_s_wrong tab_s Pr_t tab_t LPT))
+      (add-to-lpt "rekke-hand" "mi-codeba" LPT)
+      (lisp-unit:assert-true (LPT? Pr_s tab_s Pr_t tab_t LPT))
+      (lisp-unit:assert-false (LPT? Pr_s_wrong tab_s Pr_t tab_t LPT)))
+    (let ((LPT (make-LPT)))
+      (add-to-lpt "rakte" "miacoda" LPT)
+      (lisp-unit:assert-true (LPT? Pr_s tab_s Pr_t tab_t LPT)) 
+      (lisp-unit:assert-false (LPT? Pr_s_wrong tab_s Pr_t tab_t LPT))
+      (add-to-lpt "rekke-hand" "mi-codeba" LPT)
+      (lisp-unit:assert-true (LPT? Pr_s tab_s Pr_t tab_t LPT))
+      (lisp-unit:assert-false (LPT? Pr_s_wrong tab_s Pr_t tab_t LPT)))
+    (let ((LPT (make-LPT)))
+      (add-to-lpt "rakte" "miacoda" LPT)
+      (add-to-lpt "rekke-hand" "foobar" LPT)
+      (lisp-unit:assert-true (LPT? Pr_s tab_s Pr_t tab_t LPT))
+      (lisp-unit:assert-false (LPT? Pr_s_wrong tab_s Pr_t tab_t LPT)))
+    (let ((LPT (make-LPT)))
+      (add-to-lpt "rakte" "foobar" LPT)
+      (add-to-lpt "rekke-hand" "mi-codeba" LPT)
+      (lisp-unit:assert-true (LPT? Pr_s tab_s Pr_t tab_t LPT))
+      (lisp-unit:assert-false (LPT? Pr_s_wrong tab_s Pr_t tab_t LPT)))))
 
 (lisp-unit:define-test test-argalign
  (let ((tab_s (open-and-import "dev/TEST_permute_s.pl"))
