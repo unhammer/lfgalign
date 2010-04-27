@@ -471,7 +471,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 
 (defun f-link? (x)
   (and (atom (car x))
-       (atom (cdr x)))))
+       (atom (cdr x))))
 
 (defun rank (f-alignments aligntab)
   (list 'todo f-alignments aligntab)
@@ -556,11 +556,13 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 			'(((A . B) (C . D) (E . F)) ((A . B) (5 . 6) (7 . 8)))
 			(flatten '((a . b) ((c . d) (e . f)) ((5 . 6) (7 . 8)))))
 		       (lisp-unit:assert-equal
-			'(((0 . 0) (11 . 6) ((10 . 9) (a . b)) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+			'(((0 . 0) (11 . 6) (10 . 9) (a . b) (9 . 3))
+			  ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
 			  ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
 			  ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
 			(flatten '((0 . 0)
-				   ((11 . 6) ((10 . 9) (a . b)) (9 . 3)) ((11 . 6) (10 . 3) (9 . 9))
+				   ((11 . 6) ((10 . 9) ((a . b))) (9 . 3))
+				   ((11 . 6) (10 . 3) (9 . 9))
 				   ((11 . 9) (10 . 6) (9 . 3)) ((11 . 9) (10 . 3) (9 . 6))
 				   ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6)))))
 		       (lisp-unit:assert-equal
