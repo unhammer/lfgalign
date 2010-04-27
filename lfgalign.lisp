@@ -501,21 +501,14 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
       (if perms
 	  (let* ((flatperms (mapcan
 			     (lambda (links)
-			       (out "links: ~A~%" links)
-			       (let ((ret (mapcar (lambda (a)
-						    (out "a: ~A~%" a)
-						    (if (f-link? a) a (flatten a)))
-						  links)))
-				 (out "sret ~A~%ret:~A~%" (spread ret) ret)
-				 (spread ret))
-			       )
+			       (spread (mapcar (lambda (a)
+						 (if (f-link? a) a (flatten a)))
+					       links)))
 			     perms)))
-	    (let ((ret (mapcar (lambda (p)
-				 (cons elt p))
-			       flatperms)))
-	      (out "e:~A p:~A flat:~A~%fret:~A~%" elt perms flatperms ret) ret
-))
-	(list elt)))))
+	    (mapcar (lambda (p)
+		      (cons elt p))
+		    flatperms))
+	  (list elt)))))
 
 (defun subnodes (tree)
   "Return id's of this node and all subnodes of `tree' as a list."
