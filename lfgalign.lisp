@@ -601,16 +601,25 @@ phi's don't match anything in the files)."
   (let ((tree_s (maketree tab_s))
 	(tree_t (maketree tab_t)))
     (mapcar (lambda (f-alignment)
-	      (c-align-one f-alignment tree_s tab_s tree_t tab_t))
+	      (c-align-ranked f-alignment tree_s tab_s tree_t tab_t))
 	    flat-alignments)))
 
-(defun c-align-one (f-alignment tree_s tab_s tree_t tab_t)
+(defun c-align-ranked (f-alignment tree_s tab_s tree_t tab_t)
   "Align trees for a single, flat `f-alignment'."
   (let ((splits_s (make-instance 'LL-splits))
 	(splits_t (make-instance 'LL-splits)))
     (LL-add-links f-alignment tree_s tab_s splits_s 'src)
     (LL-add-links f-alignment tree_t tab_t splits_t 'trg)
-    ))
+    (let ((linkable (intersection (LL-splits-keys splits_s) (LL-splits-keys splits_t))))
+      (mapcar
+       (lambda (links)
+	 (cons (LL-splits-get links splits_s)
+	       (LL-splits-get links splits_t))
+	 )
+       linkable))
+      
+      )
+    )
 
 (defmethod LL-add-links (f-alignment tree tab (splits LL-splits) from)
   "Return links of all pre-terminals under the subtree `tree' as a
