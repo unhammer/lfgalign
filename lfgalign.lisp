@@ -573,13 +573,44 @@ phi's don't match anything in the files)."
 					    prets))))
       (mapcar #'get-link phis))))
 
+(defclass LL-nodes ()
+  "A table with lists of links as keys, and lists of nodes as values,
+used by `c-align'"
+  ((table
+    :accessor LL-tab
+    :initform (make-hash-table :test #'equal))))
+(defmethod LL-nodes-add (key val (nodes LL-nodes))
+  (let* ((skey (sort (copy-seq key)
+		     (lambda (a b) (or (< (car a) (car b))
+				       (and (= (car a) (car b))
+					    (< (cdr a) (cdr b)))))))
+	 (old (gethash skey (LL-tab nodes))))
+    (if old	
+	(setf (gethash skey (LL-tab nodes)) (pushnew val old))
+	(setf (gethash skey (LL-tab nodes)) (list val)))))
+(defmethod LL-nodes-get (key (nodes LL-nodes))
+  (let ((skey (sort (copy-seq key)
+		    (lambda (a b) (or (< (car a) (car b))
+				      (and (= (car a) (car b))
+					   (< (cdr a) (cdr b))))))))
+    (gethash skey (LL-tab nodes))))
+(lisp-unit:define-test test-LL-nodes
+  (let ((s (make-instance 'LL-nodes)))
+    (LL-nodes-add '( (10 . 6)(9 . 3) (11 . 9) (0 . 0)) 1077 s)
+    (LL-nodes-add '( (10 . 6)(9 . 3) (0 . 0) (11 . 9)) 1078 s)
+    (lisp-unit:assert-equality
+     #'set-equal
+     '(1078 1077)
+     (LL-nodes-get '((9 . 3) (10 . 6) (11 . 9) (0 . 0)) s))))
 
 (defun c-align (flat-alignments tab_s tab_t)
   (let ((tree_s (maketree tab_s))
-	(tree_t (maketree tab_t)))
+	(tree_t (maketree tab_t))
+	(split_s (make-instance 'LL-nodes)))
     (mapcar
      (lambda (alignment)
-       (mapcar (lambda (link) (c-align-one link tree_s tab_s tree_t tab_t))
+       (mapcar (lambda (link)
+		 (c-align-one link tree_s tab_s tree_t tab_t))
 	       alignment))
      flat-alignments)))
 
@@ -591,7 +622,9 @@ src without also leaving it behind in trg, and vice versa."
 	(c-ids_t (phi^-1 (cdr link) tab_t)))
     (format t "Align tree ~A~%"  (trimtree c-ids_s (topnodes c-ids_s tree_s)))
     (format t " with tree ~A~%"  (trimtree c-ids_t (topnodes c-ids_t tree_t)))
-    
+    (mapcar
+     (lambda (c-id) (cons c-id))
+     c-ids_s)
     ))
 
 ;; (lisp-unit:define-test test-c-align
