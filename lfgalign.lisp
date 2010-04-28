@@ -573,59 +573,77 @@ phi's don't match anything in the files)."
 					    prets))))
       (mapcar #'get-link phis))))
 
-(defclass LL-nodes ()
-  "A table with lists of links as keys, and lists of nodes as values,
-used by `c-align'"
+(defclass LL-splits ()
+  ;"A table with lists of links as keys, and lists of nodes as values,
+;used by `c-align'" 
   ((table
     :accessor LL-tab
     :initform (make-hash-table :test #'equal))))
-(defmethod LL-nodes-add (key val (nodes LL-nodes))
+(defmethod LL-splits-add (key val (splits LL-splits))
   (let* ((skey (sort (copy-seq key)
 		     (lambda (a b) (or (< (car a) (car b))
 				       (and (= (car a) (car b))
 					    (< (cdr a) (cdr b)))))))
-	 (old (gethash skey (LL-tab nodes))))
+	 (old (gethash skey (LL-tab splits))))
     (if old	
-	(setf (gethash skey (LL-tab nodes)) (pushnew val old))
-	(setf (gethash skey (LL-tab nodes)) (list val)))))
-(defmethod LL-nodes-get (key (nodes LL-nodes))
+	(setf (gethash skey (LL-tab splits)) (pushnew val old))
+	(setf (gethash skey (LL-tab splits)) (list val)))))
+(defmethod LL-splits-get (key (splits LL-splits))
   (let ((skey (sort (copy-seq key)
 		    (lambda (a b) (or (< (car a) (car b))
 				      (and (= (car a) (car b))
 					   (< (cdr a) (cdr b))))))))
-    (gethash skey (LL-tab nodes))))
-(lisp-unit:define-test test-LL-nodes
-  (let ((s (make-instance 'LL-nodes)))
-    (LL-nodes-add '( (10 . 6)(9 . 3) (11 . 9) (0 . 0)) 1077 s)
-    (LL-nodes-add '( (10 . 6)(9 . 3) (0 . 0) (11 . 9)) 1078 s)
-    (lisp-unit:assert-equality
-     #'set-equal
-     '(1078 1077)
-     (LL-nodes-get '((9 . 3) (10 . 6) (11 . 9) (0 . 0)) s))))
+    (gethash skey (LL-tab splits))))
+
 
 (defun c-align (flat-alignments tab_s tab_t)
+  "`f-alignments' must have been through `flatten'."
   (let ((tree_s (maketree tab_s))
-	(tree_t (maketree tab_t))
-	(split_s (make-instance 'LL-nodes)))
-    (mapcar
-     (lambda (alignment)
-       (mapcar (lambda (link)
-		 (c-align-one link tree_s tab_s tree_t tab_t))
-	       alignment))
-     flat-alignments)))
+	(tree_t (maketree tab_t)))
+    (mapcar (lambda (f-alignment)
+	      (c-align-one f-alignment tree_s tab_s tree_t tab_t))
+	    flat-alignments)))
 
+(defun c-align-one (f-alignment tree_s tab_s tree_t tab_t)
+  "Align trees for a single, flat `f-alignment'."
+  (let ((splits_s (make-instance 'LL-splits))
+	(splits_t (make-instance 'LL-splits)))
+    (LL-add-links f-alignment tree_s tab_s splits_s 'src)
+    (LL-add-links f-alignment tree_t tab_t splits_t 'trg)
+    ))
 
-(defun c-align-one (link tree_s tab_s tree_t tab_t)
+(defmethod LL-add-links (f-alignment tree tab (splits LL-splits) from)
+  "Return links of all pre-terminals under the subtree `tree' as a
+list. As a side-effect, if any of the preterminals under this node
+have `f-alignments', add the current node to `splits'. The argument
+`from' is an atom, either 'src or 'trg, giving the side of `tree' and
+`tab' in `f-alignment'."
+  (when (trim? tree) (error "Trimmed tree sent to preterms, don't do that."))
+  (labels ((get-link (src)
+	     (let* ((getter (if (eq from 'trg)
+				#'rassoc
+				#'assoc))
+		    (links (mapcar-true (lambda (var) (funcall getter var f-alignment))
+					(adjoin src (get-equivs src tab)))))
+	       (when (cdr links) (error "More than one link: ~A for f-var: ~A" links src))
+	       (car links))))
+    (if tree
+	(awhen (if (or (terminal? (third tree)) (terminal? (fourth tree)))
+		   (if (and (third tree) (fourth tree))
+		       (error "Unexpected branching in preterminal, TODO")
+		       (list (get-link (phi (car tree) tab))))
+		   (union (LL-add-links f-alignment (third tree) tab splits from)
+			  (LL-add-links f-alignment (fourth tree) tab splits from)))
+	  (out "~A~A~%" it tree)
+	  (LL-splits-add it (car tree) splits)))))
+
+(defun c-align-one-naive (link tree_s tab_s tree_t tab_t)
   "Make sure we don't leave behind nodes contributing f-information in
 src without also leaving it behind in trg, and vice versa."
   (let ((c-ids_s (phi^-1 (car link) tab_s))
 	(c-ids_t (phi^-1 (cdr link) tab_t)))
     (format t "Align tree ~A~%"  (trimtree c-ids_s (topnodes c-ids_s tree_s)))
-    (format t " with tree ~A~%"  (trimtree c-ids_t (topnodes c-ids_t tree_t)))
-    (mapcar
-     (lambda (c-id) (cons c-id))
-     c-ids_s)
-    ))
+    (format t " with tree ~A~%"  (trimtree c-ids_t (topnodes c-ids_t tree_t)))))
 
 ;; (lisp-unit:define-test test-c-align
 ;;  (let* ((tab_s (open-and-import "nb/1.pl"))
@@ -648,7 +666,7 @@ TODO: cache/memoise maketree"
       (format t "Align tree ~A~%" (pretty-topnode var1 tab1 (maketree tab1)))
       (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
       (when (and pred1 pred2)
-	(loop
+      (loop
 	 for arg1 in (get-args pred1)
 	 for arg2 in (get-args pred2)
 	 do (format t "...aligning ~A_~A and ~A_~A...~%"
@@ -716,19 +734,19 @@ TODO: cache/memoise maketree"
      '("PRED" "PanJara" 0 NIL NIL) (unravel "PRED" 50 tab))))
 
 (lisp-unit:define-test test-pred-equal
- (let ((tab (open-and-import "dev/TEST_pred-equal.pl")))
-   (lisp-unit:assert-true
-    (pred-equal '("perf" 6 (28) (37))
-		'("perf" 6 (28) (29))
-		tab))
-   (lisp-unit:assert-true
-    (pred-equal '("perf" 6 (28) (37))
-		'("perf" 6 (1) (29))
-		tab))
-   (lisp-unit:assert-false
-    (pred-equal '("perf" 6 (28) (37))
-		'("perf" 6 (28) (9))
-		tab))))
+  (let ((tab (open-and-import "dev/TEST_pred-equal.pl")))
+    (lisp-unit:assert-true
+     (pred-equal '("perf" 6 (28) (37))
+     '("perf" 6 (28) (29))
+     tab))
+    (lisp-unit:assert-true
+     (pred-equal '("perf" 6 (28) (37))
+     '("perf" 6 (1) (29))
+     tab))
+    (lisp-unit:assert-false
+     (pred-equal '("perf" 6 (28) (37))
+     '("perf" 6 (28) (9))
+     tab))))
 
 (lisp-unit:define-test test-L
   (let* ((tab (open-and-import "dev/TEST_parse.pl")))
@@ -937,24 +955,33 @@ TODO: cache/memoise maketree"
      '(52 50 48)
      (preterms (treefind 1077 tree_s)))))
 
+(lisp-unit:define-test test-LL-nodes
+  (let ((s (make-instance 'LL-nodes)))
+    (LL-nodes-add '( (10 . 6)(9 . 3) (11 . 9) (0 . 0)) 1077 s)
+    (LL-nodes-add '( (10 . 6)(9 . 3) (0 . 0) (11 . 9)) 1078 s)
+    (lisp-unit:assert-equality
+     #'set-equal
+     '(1078 1077)
+     (LL-nodes-get '((9 . 3) (10 . 6) (11 . 9) (0 . 0)) s))))
+
 (lisp-unit:define-test test-LL
- (let* ((tab_s (open-and-import "nb/4.pl"))
-	(tab_t (open-and-import "ka/4.pl"))
-	(f-alignment '((0 . 0) (11 . 9) (10 . 3) (9 . 6))) ; flattened
-	(tree_s (maketree tab_s))
-	(tree_t (maketree tab_t)))
-   (lisp-unit:assert-equality
-    #'set-equal
-    '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-    (LL (car (topnodes (phi^-1 0 tab_s) tree_s)) f-alignment tree_s tab_s 'src))
-   (lisp-unit:assert-equality
-    #'set-equal
-    '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-    (LL 1817 f-alignment tree_s tab_s 'src))
-   (lisp-unit:assert-equality
-    #'set-equal
-    '((0 . 0) (11 . 9) (10 . 3))	; 1815 is the I', sister to PROPP which gives (9 . 6)
-    (LL 1815 f-alignment tree_s tab_s 'src))))
+  (let* ((tab_s (open-and-import "nb/4.pl"))
+	 (tab_t (open-and-import "ka/4.pl"))
+	 (f-alignment '((0 . 0) (11 . 9) (10 . 3) (9 . 6))) ; flattened
+	 (tree_s (maketree tab_s))
+	 (tree_t (maketree tab_t)))
+    (lisp-unit:assert-equality
+     #'set-equal
+     '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+     (LL (car (topnodes (phi^-1 0 tab_s) tree_s)) f-alignment tree_s tab_s 'src))
+    (lisp-unit:assert-equality
+     #'set-equal
+     '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+     (LL 1817 f-alignment tree_s tab_s 'src))
+    (lisp-unit:assert-equality
+     #'set-equal
+     '((0 . 0) (11 . 9) (10 . 3)) ; 1815 is the I', sister to PROPP which gives (9 . 6)
+     (LL 1815 f-alignment tree_s tab_s 'src))))
 
 (lisp-unit:define-test test-maketree
   (multiple-value-bind (tree refs)
@@ -992,47 +1019,12 @@ TODO: cache/memoise maketree"
 
 ;;;;;;;; DEPRECATED:
 ;;;;;;;; -----------
-(defun permute (list)
-  (cond
-    ((endp list) list)                  ; no permutations of ()
-    ((endp (cdr list)) (list list))     ; one permutation of (x)
-    (t (loop :for subpermutation :in (permute (cdr list)) :nconc
-          (loop :for i :from 0 :to (length subpermutation)
-             :collecting (append (subseq subpermutation 0 i)
-                                 (cons (car list) (subseq subpermutation i)))))))) 
-(defun zip (l1 l2) (if (null l1) '()
-				 (cons (cons (car l1)(car l2))
-				       (zip (cdr l1)(cdr l2)))))
-
-
 (defun find-multiple-unreferenced () "Fluff"
   (loop for i from 1 to 106
      for f = (concatenate 'string "nb/" (prin1-to-string i) ".pl")
      for unref = (unreferenced-preds (open-and-import f))
      when (not (equal '(0) unref)) do
      (format t "f:~A unref:~A~%" f unref)))
-
-
-(defun p (l)
-  (if (null l) '(())
-      (mapcan
-       (lambda (elt)
-	 (mapcar (lambda (perm) (cons elt perm))
-		 (p (remove elt l :count 1))))
-       l)))
-
-
-(defun argalign-no-adj (args_s tab_s args_t tab_t LPTs)
-  (mapcan-true
-   (lambda (arg_s)
-     (let ((Pr_s (get-pred arg_s tab_s t)))
-       (mapcar-true (lambda (arg_t)
-		      (when (LPT? Pr_s tab_s (get-pred arg_t tab_t t) tab_t LPTs)
-			(cons arg_s arg_t)))
-	args_t)))
-   args_s))
-
-
 
 (defun outer>-LPT (Pr_s tab_s var_t tab_t LPTs)
   "Return a list of the outermost possible `LPTs' of `Pr_s' in `tab_t'
