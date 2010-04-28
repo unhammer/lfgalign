@@ -537,30 +537,42 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	      (union (subnodes (third tree))
 		     (subnodes (fourth tree))))))
 
-(defun linked-subnodes (c-id f-alignment tree tab)
-  "Find the set of linked nodes dominated by `c-id'.  The
-linking is defined by `f-alignment', which must have been through
-`flatten'; `tree' is given by `maketree'.
+(defun preterms (tree)
+  "Return id's of all pre-terminals under the subtree `tree' as a list."
+  (when (trim? tree) (error "Trimmed tree sent to preterms, don't do that."))
+  (if tree
+      (if (or (terminal? (third tree)) (terminal? (fourth tree)))
+	  (if (and (third tree) (fourth tree))
+	      (error "Unexpected branching in preterminal, TODO")
+	      (list (car tree)))
+	  (append (preterms (third tree))
+		  (preterms (fourth tree))))))
 
-dyvik2009lmt uses LL, linked _lexical_ nodes, instead, but some times
-we don't get all the way down to these (eg in nb/1.pl, Abrams is a
-different f-domain, while in ka/1.pl, qePa is a different f-domain,
-don't know why, but their phi's don't match anything in the files)."
-;;   (adjoin (phi c-id tab)
-;; 	  (get-equivs (phi c-id tab) tab))
-  (labels ((get-trg (c_s) (cdr (assoc (phi c_s tab)
-				      f-alignment))))
-    (get-trg c-id)
-    
-    ))
-;; (lisp-unit:define-test test-LL
-;;  (let* ((tab_s (open-and-import "nb/1.pl"))
-;; 	(tab_t (open-and-import "ka/1.pl"))
-;; 	(f-alignment '((0 . 0) (5 . 3))) ; flattened
-;; 	(tree_s (maketree tab_s))
-;; 	(tree_t (maketree tab_t)))
-;;    (lisp-unit:assert-equal 1 1)
-;;    (LL_s 5 f-alignment tab_s)))
+(defun LL (c-id f-alignment tree tab from)
+  "Find the set of linked preterminals dominated by `c-id', return
+their links as a list.  The linking is defined by `f-alignment', which
+must have been through `flatten'; `tree' is given by `maketree'. The
+argument `from' is an atom, either 'src or 'trg, giving the side of
+`c-id', `tree' and `tab' in `f-alignment'.
+
+dyvik2009lmt says linked _lexical_ nodes, I use preterminals since
+some times we don't get all the way down terminals (eg in nb/1.pl in
+the MRS suite, Abrams is a different f-domain from its mother, while
+in ka/1.pl, qePa is a different f-domain; I don't know why, but their
+phi's don't match anything in the files)."
+  (labels ((get-link (src)
+	     (let* ((getter (if (eq from 'trg)
+				#'rassoc
+				#'assoc))
+		    (links (mapcar-true (lambda (var) (funcall getter var f-alignment))
+				       (adjoin src (get-equivs src tab)))))
+	       (when (cdr links) (error "More than one link: ~A for f-var: ~A" links src))
+	       (car links))))
+    (let* ((prets (preterms (treefind c-id tree)))
+	   (phis (remove-duplicates (mapcar (lambda (p) (phi p tab))
+					    prets))))
+      (mapcar #'get-link phis))))
+
 
 (defun c-align (flat-alignments tab_s tab_t)
   (let ((tree_s (maketree tab_s))
@@ -884,6 +896,32 @@ TODO: cache/memoise maketree"
    (lisp-unit:assert-equal
     '(144 "PROPP" NIL (2 "PROP" NIL (1 "abramsma" (1))))
     (topnodes (phi^-1 3 tab) tree))))
+
+(lisp-unit:define-test test-preterms
+  (let ((tree_s (maketree (open-and-import "nb/4.pl"))))
+    (lisp-unit:assert-equality
+     #'set-equal
+     '(52 50 48)
+     (preterms (treefind 1077 tree_s)))))
+
+(lisp-unit:define-test test-LL
+ (let* ((tab_s (open-and-import "nb/4.pl"))
+	(tab_t (open-and-import "ka/4.pl"))
+	(f-alignment '((0 . 0) (11 . 9) (10 . 3) (9 . 6))) ; flattened
+	(tree_s (maketree tab_s))
+	(tree_t (maketree tab_t)))
+   (lisp-unit:assert-equality
+    #'set-equal
+    '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+    (LL (car (topnodes (phi^-1 0 tab_s) tree_s)) f-alignment tree_s tab_s 'src))
+   (lisp-unit:assert-equality
+    #'set-equal
+    '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+    (LL 1817 f-alignment tree_s tab_s 'src))
+   (lisp-unit:assert-equality
+    #'set-equal
+    '((0 . 0) (11 . 9) (10 . 3))	; 1815 is the I', sister to PROPP which gives (9 . 6)
+    (LL 1815 f-alignment tree_s tab_s 'src))))
 
 (lisp-unit:define-test test-maketree
   (multiple-value-bind (tree refs)
