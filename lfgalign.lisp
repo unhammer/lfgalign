@@ -96,17 +96,17 @@ subtrees)."
   (if (and tree (listp tree))
       (if (member (car tree) c-ids)
 	  (values tree 0)		; gotcha!
-	(multiple-value-bind (Ltree Ldepth) (topnodes c-ids (third tree))
-	  (multiple-value-bind (Rtree Rdepth) (topnodes c-ids (fourth tree))
-	    (cond ((and Ltree Rtree) ; exists in both, choose shallowest
-		   (error "Yay, found a discontinuous constituent! Boo, have work to do...")
-		   (when (= Ldepth Rdepth) (warn "Equal depth, arbitrarily going right"))
-		   (if (< Ldepth Rdepth)
-		       (values Ltree (1+ Ldepth))
-		     (values Rtree (1+ Rdepth))))
-		  ;; not in both, but try either left or right
-		  (Ltree (values Ltree (1+ Ldepth)))
-		  (Rtree (values Rtree (1+ Rdepth)))))))))
+	  (multiple-value-bind (Ltree Ldepth) (topnodes c-ids (third tree))
+	    (multiple-value-bind (Rtree Rdepth) (topnodes c-ids (fourth tree))
+	      (cond ((and Ltree Rtree) ; exists in both, choose shallowest
+		     (error "Yay, found a discontinuous constituent! Boo, have work to do...")
+		     (when (= Ldepth Rdepth) (warn "Equal depth, arbitrarily going right"))
+		     (if (< Ldepth Rdepth)
+			 (values Ltree (1+ Ldepth))
+			 (values Rtree (1+ Rdepth))))
+		    ;; not in both, but try either left or right
+		    (Ltree (values Ltree (1+ Ldepth)))
+		    (Rtree (values Rtree (1+ Rdepth)))))))))
 
 (defun phi (c-id tab)
   "Returns the f-var given by phi of `c-id', use (gethash f-var `tab')
@@ -481,7 +481,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
       ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
       ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
     (flatten (f-align '(0 . 0) tab_s tab_t LPT)))
-   (add-to-lpt "Browne" "brouns" LPT)
+   (add-to-lpt "Browne" "Browne" LPT)
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((0 . 0) (11 . 6) (10 . 3) (9 . 9))
@@ -577,8 +577,8 @@ don't know why, but their phi's don't match anything in the files)."
 src without also leaving it behind in trg, and vice versa."
   (let ((c-ids_s (phi^-1 (car link) tab_s))
 	(c-ids_t (phi^-1 (cdr link) tab_t)))
-    (format t "Align tree ~A~%" (skip-suff_base (trimtree c-ids_s (topnodes c-ids_s tree_s))))
-    (format t " with tree ~A~%" (skip-suff_base (trimtree c-ids_t (topnodes c-ids_t tree_t))))
+    (format t "Align tree ~A~%"  (trimtree c-ids_s (topnodes c-ids_s tree_s)))
+    (format t " with tree ~A~%"  (trimtree c-ids_t (topnodes c-ids_t tree_t)))
     
     ))
 
@@ -692,8 +692,7 @@ TODO: cache/memoise maketree"
     (lisp-unit:assert-equal "iqePa"
 			    (L (get-pred 0 tab) tab))))
 
-(lisp-unit:define-test
-    test-LPT
+(lisp-unit:define-test test-LPT
   (let* ((tab_s (open-and-import "nb/4.pl"))
 	 (tab_t (open-and-import "ka/4.pl"))
 	 (Pr_s (get-pred 0 tab_s))
@@ -826,6 +825,7 @@ TODO: cache/memoise maketree"
 			 (spread '((((G . H) (D . Y)))
 				   (((19 . 46) (A . B)) ((19 . 46) (A . C)))
 				   (20 . 46)))))
+
 (lisp-unit:define-test test-flatten
   (lisp-unit:assert-equal '((e . f)) (flatten '((e . f))))
   (lisp-unit:assert-equal '(((0 . 0) (5 . 3))) (flatten '((0 . 0) ((5 . 3)))))
@@ -875,8 +875,7 @@ TODO: cache/memoise maketree"
     '(235 "PROPP" NIL (13 "PROP" NIL (SNIP . 1)))
     (trimtree c5 (topnodes c5 tree_s)))))
 
-(lisp-unit:define-test
- test-topnode
+(lisp-unit:define-test test-topnode
  (let* ((tab (open-and-import "dev/TEST_parse.pl"))
 	(tree (maketree tab)))
    (lisp-unit:assert-equal
