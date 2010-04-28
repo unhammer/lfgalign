@@ -73,6 +73,14 @@ c-id number referring to what used to be there."
 	;; out-of-domain:
 	(maketrim tree))))
 
+(defun treefind (c-id tree)
+  "Just return the subtree of `tree' starting with `c-id'."
+  (if (and tree (listp tree))
+      (if (eq (car tree) c-id)
+	  tree
+	  (or (treefind c-id (third tree))
+	      (treefind c-id (fourth tree))))))
+
 (defun topnodes (c-ids tree)
   "`c-ids' (given by `phi^-1') describes a functional domain, find the
 first/topmost of the nodes in the c-structure which project this
