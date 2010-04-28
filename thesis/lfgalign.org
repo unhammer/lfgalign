@@ -173,12 +173,13 @@ som skildrar omsette setningar, kan
    frasesamanstilling, ved å følgje avbildinga frå f-struktur til
    c-struktur ($\phi{}^{-1}$).
 
-Eitt problem som byr seg er: kva for «deler av f-strukturane»? I det
-minste må me kunne kople det opp mot c-strukturnodar; så \PRED-element
-bør i det minste ha lenkjer, medan t.d. tempus og aspektuell
-informasjon kanskje er mindre viktig. Men kva kan ignorerast? Vil det
-oppstå tilfelle då me bør vekte visse element? (Dvs., må me nokon gong
-disambiguere med slike andre element?)
+Eitt problem som byr seg er hypotesemangfaldet: kva for «deler av
+f-strukturane»? Korleis kan me avgrense søkjerommet? I det minste må
+me kunne kople det opp mot c-strukturnodar; så \PRED-element bør i det
+minste ha lenkjer, medan t.d. tempus og aspektuell informasjon kanskje
+er mindre viktig. Men kva kan ignorerast? Vil det oppstå tilfelle då
+me bør vekte visse element? (Dvs., må me nokon gong disambiguere med
+slike andre element?)
 # todo 
 
 Vidare må me vite /korleis/ me samanstiller desse delene. Me kan
