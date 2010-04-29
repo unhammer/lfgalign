@@ -24,7 +24,17 @@ lfgalign.lisp currently does the following:
   (excluding adj-adj links): `argalign` (if given LPT tables, this
   removes combinations where at least one link is non-LPT)
  
- 
+- `f-align` combines the above and recursively tries to align all
+  arguments in all permutations of argument-argument/adjunct pairs,
+  creating a decision tree of sorts; `flatten` spreads this out into
+  simple lists. 
+  
+- `add-links` takes a flat f-alignment and a tree, and creates a table
+  of type `LL-splits`. Each node `n` is added to a list in the table,
+  where the index of the list is the set of alignments of pre-terminal
+  nodes dominated by node `n` (so several nodes may have the same
+  index).
+  
 prolog-import
 ----------
 prolog-import.lisp parses an XLE Prolog file and puts everything into
@@ -97,9 +107,25 @@ TODO
   link to **sigareti**, and allow arguments to be linked to daughters
   of adjuncts (possibly also to daughters of arguments).
 
-- Show c-structure consequences of PRED-alignments by following the
- `rassoc` of `phi`, should be simple once f-alignments are done?
+- There should be a `rank` function between `c-align` and `f-align`
+  (either before or after `flatten`), which checks:
+  - is there f-alignment as well as LPT-correspondence in the argument
+    list?
+  - is there reordering in the linked argument lists, or is it subject
+    to subject, object to object, etc.? (This is a bit more complex
+    than it looks, but I guess we could pretend it's "edit distance".)
+  - is there any merging or other funny business going on? (Well,
+    merging is still todo...)
 
 - Run Giza++ to get LPT-correspondence (criterion i in
    http://tlt8.unicatt.it/allegati/Proceedings_TLT8.pdf p.71--82, our
    Prolog files should have the information to use criterion ii).
+
+- Just using dset3 of the dsets, rename it (make a class?) and
+  deprecate the others.
+
+- Could perhaps make argument calls a bit more concise by making a
+  class `alignment`, containing constants `tab_s`, `tab_t`, creating
+  constants `tree_s` and `tree_t` on init, and storing `LPT` and
+  `f-alignments`.
+
