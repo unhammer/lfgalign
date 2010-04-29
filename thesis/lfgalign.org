@@ -1321,8 +1321,9 @@ For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
 beste evne i eit Lisp[fn:16]-program.
 
-\fxnote{intro todo} Ei implementering gjer det svært synleg om det
-finst manglar i eit formelt krav, eller om noko ikkje er godt nok
+\fxnote{intro todo, kanskje noko om kva eg faktisk har fått ut av
+implementasjonen} Ei implementering gjer det svært synleg om det finst
+manglar i eit formelt krav, eller om noko ikkje er godt nok
 spesifisert.
 
 Programmet \texttt{lfgalign}[fn:2] tek inn LFG-analysane av to
@@ -1332,9 +1333,26 @@ frå XLE[fn:5]. Programmet les inn dei to filene og opprettar ein
 intern representasjon av LFG-analysen.
 
 Me kan i tillegg gi programmet informasjon om kva for ord-omsetjingar
-me ser på som lingvistisk prediktable (t.d. informert av
-omsetjingstabellen frå eit automatisk ordsamanstillingsprogram, eller
-av handskrivne omsetjingsordbøker). 
+me ser på som lingvistisk prediktable. Intensjonen er at dette kan
+vere informert av omsetjingstabellen frå eit automatisk
+ordsamanstillingsprogram, eller av handskrivne omsetjingsordbøker.
+
+Programmet byrjar lenkjinga med f-strukturane. Ei
+f-struktur\emph{samanstilling} er ei mengd med /lenkjer/ mellom
+individuelle f-strukturar. Resultatet av lenkjinga på dette nivået kan
+vere tvitydig: sidan det ofte finst fleire måtar å lenkje argument og
+adjunkt på, får me i første omgang mange samanstillingar mellom
+kjelde- og mål-f-strukturar.
+
+Difor rangerer me f-struktursamanstillingane, og den beste sender me
+vidare til c-struktursamanstillinga. Denne delen av programmet gir ut
+éi, utvitydig mengd med mange-til-mange-lenkjer mellom c-strukturane
+(her treng me ingen rangering). Nodane i kvar av desse
+mange-til-mange-lenkjene definerer no den endelege
+frasesamanstillinga.
+
+Nedanfor går eg meir nøye gjennom detaljane rundt dei relevante delene
+av programmet.
 
 ** Lenkjer mellom f-strukturar
 \fixme{intro, c-str er derivativ}
@@ -1486,7 +1504,7 @@ tilfelle. Me kan uansett rangere ulike løysingar seinare ved å spørje
 etter dei argumentsamanstillingane som har flest medlem.
 
 ** SKRIV Bør LPT vere eit eige avsnitt her?
-** SKRIV Når lenkjene ikkje er 1-1
+** SKRIV Når f-lenkjene ikkje er 1-1
 
 *** notat 							     :ROTETE:
 filene 
@@ -1504,6 +1522,9 @@ og
 :    2[ ze<5>
 :       OBJ 5[ sigareti ] ] ]
 ** Kan me gjere f-struktursamanstillinga bottom-up?
+   «Any sufficiently complex problem needs to be coded three times.»
+   --via Steve Gibson
+
 Ein alternativ metode er å byrje med alle logisk moglege permutasjonar
 av LPT-korrespondansar, og så sile ut dei som ikkje svarer til
 krava. Men dette er problematisk, sidan avskjeringa då skjer så seint
@@ -1558,13 +1579,56 @@ feil).
     Dette bør sjølvsagt testast empirisk, og er nok utanfor denne
     oppgåva, men eg kjem til å diskutere det.
 ** SKRIV Lenkjing av c-strukturnodar
-Samanstilling mellom f-strukturar er uavhengig av lenkjer mellom
-c-strukturnodar, medan lenkjing av c-strukturnodar skjer på grunnlag
-av f-struktursamanstillinga. Programmet utfører difor
-samanstilling av c-strukturar sist.
+Samanstilling mellom f-strukturar treng i =lfgalign= ikkje informasjon
+om c-strukturen, medan lenkjing av c-strukturnodar skjer på grunnlag
+av f-struktursamanstillinga. Programmet utfører difor samanstilling av
+c-strukturar sist.
 
+=c-align= har som inndata c-strukturanalysane av kjelde- og
+målsetninga, og ei f-struktursamanstilling. 
+#+BEGIN_LaTeX
+   \SetKwComment{Comment}{ // }{}
+  \SetKwInOut{Input}{usage}
+    
+  \begin{algorithm}[]
+   \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
+   \label{algo:c-align}
+    
+   c-alignments $\gets \emptyset$ \;
+   $splits_s \gets$ new table \;
+   add-links(f-alignment, $tree_s, splits_s)$  \;
+   $splits_t \gets$ new table \;
+   add-links(f-alignment, $tree_t, splits_t)$  \;
+   \ForAll{$links$ being the keys in $splits_s$} {
+       \uIf{($links$ in $splits_t$)} {
+             add $(splits_s[links],splits_t[links])$ to c-alignments \;
+        }
+    }
+    \Return c-alignments \;
+    \end{algorithm}    
+      
+      
+   \begin{algorithm}[]
+   \caption{add-links(f-alignment, $node, splits$)}
+   \label{algo:add-links}
+      
+        $links \gets \emptyset$\;
+   \uIf{$node$} {
+       \uIf{preterminal?($node$)} {
+          let $link \in$ f-alignment s.t. $\phi(node) \in link$ \;
+          \lIf{$link$} {$links \gets \{link\}$}
+        }
+        \uElse {
+          $links \gets $add-links(f-alignment, left-branch($node$)) $\bigcup$ add-links(f-alignment, right-branch($node$)) \;
+        }
+        add $node$ to $splits[links]$ \;
+       }
+        \Return $links$ \;
+  \end{algorithm}
+#+END_LaTeX
 *** TOGROK Men kan me _fjerne_ visse f-samanstillingar mha. c-strukturinfo? :ROTETE:
-    dvs. disambiguere
+    dvs. disambiguere...
+    (dette er vel heller stoff for diskusjonsdelen?)
 
 
 * Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar
@@ -1696,16 +1760,18 @@ MRS-suiten, med mindre anna er opplyst.
 [fn:2] Tilgjengeleg frå http://github.com/unhammer/lfgalign som fri og
        open programvare under GNU General Public License.
 
-[fn:5] Dokumentert på
+[fn:5] Formatet er dokumentert på
        http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html. Importeringa
        til Lisp-strukturar handterer «pakka representasjonar» og
-       kjenner igjen ekvivalensforhold (t.d. der fleire variablar
-       refererer til same f-struktur, eller til same analyseval); men
-       filene eg har testa utnyttar ikkje det fulle spennet til
-       formatet, så det finst ganske sikkert feil.
+       kjenner igjen ekvivalensforhold (t.d. der fleire
+       $\phi$-variablar refererer til same f-struktur, eller fleire
+       Prolog-variabler refererer til same analyseval); men filene eg
+       har testa utnyttar ikkje det fulle spennet til formatet, så det
+       finst ganske sikkert feil.
 
-[fn:16] Common Lisp er m.a. nytta i LFG Parsebanker
-        \citep{rosen2009lpt}.
+[fn:16] Dette språkvalet burde gjere eventuell integrering med andre
+        LFG-system lettare (Common Lisp er m.a. nytta i LFG
+        Parsebanker \citep{rosen2009lpt}).
 
 [fn:17] Når eg her skriv at to f-strukturar har LPT-korrespondanse,
         meiner eg sjølvsagt at ordformen til PRED-verdien til kvar
@@ -1715,7 +1781,11 @@ MRS-suiten, med mindre anna er opplyst.
         første element er lenkja mellom dei yttarste f-strukturane, og
         andre element er dei moglege samanstillingane for dei indre
         strukturane. Denne strukturen kan vere nyttig for å rangere
-        samanstillingar.
+        samanstillingar, og =f-align= blir mykje meir oversiktleg av å
+        jobbe med eit slikt tre. Ein funksjon =flatten= omformar det
+        ferdige treet om til ei enkel liste med samanstillingar, kor
+        kvar samanstilling er ei liste med lenkjer mellom
+        f-strukturar.
 
 [fn:19] Ved c-struktur-f-strukturavbildinga $\phi$.
 
