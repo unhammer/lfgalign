@@ -636,22 +636,22 @@ phi's don't match anything in the files)."
 	      (c-align-ranked f-alignment tree_s tab_s tree_t tab_t))
 	    flat-alignments)))
 
+(defun hash-key-intersect (tab1 tab2)
+  (loop for k being the hash-keys of tab1 collect (gethash k tab2)))
+
 (defun c-align-ranked (f-alignment tree_s tab_s tree_t tab_t)
   "Align trees for a single, flat `f-alignment'."
   (let ((splits_s (make-instance 'LL-splits))
 	(splits_t (make-instance 'LL-splits)))
     (add-links f-alignment tree_s tab_s splits_s 'src)
     (add-links f-alignment tree_t tab_t splits_t 'trg)
-    (let ((linkable (intersection (LL-splits-keys splits_s) (LL-splits-keys splits_t))))
+    (let ((linkable (hash-key-intersect (LL-tab splits_s)
+					(LL-tab splits_t))))
       (mapcar
        (lambda (links)
 	 (cons (get-val links splits_s)
-	       (get-val links splits_t))
-	 )
-       linkable))
-      
-      )
-    )
+	       (get-val links splits_t)))
+       linkable))))
 
 
 (defun c-align-one-naive (link tree_s tab_s tree_t tab_t)
