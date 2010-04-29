@@ -595,6 +595,38 @@ defined by `f-alignment', which must have been through `flatten';
 					   (< (cdr a) (cdr b))))))))
     (gethash skey (LL-tab splits))))
 
+(defmethod add-links (f-alignment tree tab (splits LL-splits) from)
+  "Return links of all pre-terminals under the subtree `tree' as a
+list. As a side-effect, if any of the preterminals under this node
+have an `f-alignment' (this must have been through `flatten'), add the
+current node to `splits'. The argument `from' is an atom, either 'src
+or 'trg, giving the side of `tree' (see `maketree') and `tab' in
+`f-alignment'.
+
+dyvik2009lmt says linked _lexical_ nodes, I use preterminals since
+some times we don't get all the way down terminals (eg in nb/1.pl in
+the MRS suite, Abrams is a different f-domain from its mother, while
+in ka/1.pl, qePa is a different f-domain; I don't know why, but their
+phi's don't match anything in the files)."
+  (when (trim? tree) (error "Trimmed tree sent to add-links, don't do that."))
+  (labels ((get-link (src)
+	     (let* ((getter (if (eq from 'trg)
+				#'rassoc
+				#'assoc))
+		    (links (mapcar-true (lambda (var) (funcall getter var f-alignment))
+					(adjoin src (get-equivs src tab)))))
+	       (when (cdr links) (error "More than one link: ~A for f-var: ~A" links src))
+	       (car links))))
+    (when tree
+      (awhen (if (or (terminal? (third tree)) (terminal? (fourth tree)))
+		 (if (and (third tree) (fourth tree))
+		     (error "Unexpected branching in preterminal, TODO")
+		     (list (get-link (phi (car tree) tab))))
+		 (union (add-links f-alignment (third tree) tab splits from)
+			(add-links f-alignment (fourth tree) tab splits from)))
+	(add it (car tree) splits)
+	it))))
+
 
 (defun c-align (flat-alignments tab_s tab_t)
   "`f-alignments' must have been through `flatten'."
@@ -608,43 +640,19 @@ defined by `f-alignment', which must have been through `flatten';
   "Align trees for a single, flat `f-alignment'."
   (let ((splits_s (make-instance 'LL-splits))
 	(splits_t (make-instance 'LL-splits)))
-    (LL-add-links f-alignment tree_s tab_s splits_s 'src)
-    (LL-add-links f-alignment tree_t tab_t splits_t 'trg)
+    (add-links f-alignment tree_s tab_s splits_s 'src)
+    (add-links f-alignment tree_t tab_t splits_t 'trg)
     (let ((linkable (intersection (LL-splits-keys splits_s) (LL-splits-keys splits_t))))
       (mapcar
        (lambda (links)
-	 (cons (LL-splits-get links splits_s)
-	       (LL-splits-get links splits_t))
+	 (cons (get-val links splits_s)
+	       (get-val links splits_t))
 	 )
        linkable))
       
       )
     )
 
-(defmethod LL-add-links (f-alignment tree tab (splits LL-splits) from)
-  "Return links of all pre-terminals under the subtree `tree' as a
-list. As a side-effect, if any of the preterminals under this node
-have `f-alignments', add the current node to `splits'. The argument
-`from' is an atom, either 'src or 'trg, giving the side of `tree' and
-`tab' in `f-alignment'."
-  (when (trim? tree) (error "Trimmed tree sent to preterms, don't do that."))
-  (labels ((get-link (src)
-	     (let* ((getter (if (eq from 'trg)
-				#'rassoc
-				#'assoc))
-		    (links (mapcar-true (lambda (var) (funcall getter var f-alignment))
-					(adjoin src (get-equivs src tab)))))
-	       (when (cdr links) (error "More than one link: ~A for f-var: ~A" links src))
-	       (car links))))
-    (if tree
-	(awhen (if (or (terminal? (third tree)) (terminal? (fourth tree)))
-		   (if (and (third tree) (fourth tree))
-		       (error "Unexpected branching in preterminal, TODO")
-		       (list (get-link (phi (car tree) tab))))
-		   (union (LL-add-links f-alignment (third tree) tab splits from)
-			  (LL-add-links f-alignment (fourth tree) tab splits from)))
-	  (out "~A~A~%" it tree)
-	  (LL-splits-add it (car tree) splits)))))
 
 (defun c-align-one-naive (link tree_s tab_s tree_t tab_t)
   "Make sure we don't leave behind nodes contributing f-information in
@@ -972,6 +980,36 @@ TODO: cache/memoise maketree"
      #'set-equal
      '(1078 1077)
      (LL-nodes-get '((9 . 3) (10 . 6) (11 . 9) (0 . 0)) s))))
+
+(lisp-unit:define-test test-add-links
+  (let* ((tab (open-and-import "nb/4.pl"))
+	 (tree (maketree tab))
+	 (splits (make-instance 'LL-splits))
+	 (f-alignment '((9 . 6) (10 . 3) (11 . 9) (0 . 0))))
+    (add-links f-alignment tree tab splits 'src)
+    (lisp-unit:assert-equality #'set-equal
+     '(254 13 1225)
+     (LL-splits-get '((9 . 6)) splits))
+    (lisp-unit:assert-equality
+     #'set-equal     
+     '(52 479 482 483 1077 1805 50 48)
+     (LL-splits-get '((10 . 3)) splits))
+    (lisp-unit:assert-equality
+     #'set-equal     
+     '(995 56 475 474 473 64 62 60 58 445 66)
+     (LL-splits-get '((11 . 9)) splits))
+    (lisp-unit:assert-equality
+     #'set-equal     
+     '(1789 1792)
+     (LL-splits-get '((10 . 3)(11 . 9)) splits))
+    (lisp-unit:assert-equality
+     #'set-equal     
+     '(1815)
+     (LL-splits-get '((10 . 3)(0 . 0)(11 . 9)) splits))
+    (lisp-unit:assert-equality
+     #'set-equal	   ; note: PERIOD, 81, is part of the above
+     '(1141 1165 1817)	   ; c-nodes here, but unaligned, so no split!
+     (LL-splits-get '((10 . 3)(0 . 0)(11 . 9)(9 . 6)) splits))))
 
 (lisp-unit:define-test test-LL
   (let* ((tab_s (open-and-import "nb/4.pl"))
