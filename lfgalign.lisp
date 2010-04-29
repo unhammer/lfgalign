@@ -529,16 +529,18 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 		    flatperms))
 	  (list elt)))))
 
-(defun subnodes (tree)
-  "Return id's of this node and all subnodes of `tree' as a list."
-  (when (trim? tree) (error "Trimmed tree sent to subnodes, don't do that."))
+(defun subnodes-list (tree)
+  "Debug function, deprecated. Return id's of this node and all
+subnodes of `tree' as a list."
+  (when (trim? tree) (error "Trimmed tree sent to subnodes-list, don't do that."))
   (if tree
       (adjoin (car tree)
-	      (union (subnodes (third tree))
-		     (subnodes (fourth tree))))))
+	      (union (subnodes-list (third tree))
+		     (subnodes-list (fourth tree))))))
 
 (defun preterms (tree)
-  "Return id's of all pre-terminals under the subtree `tree' as a list."
+  "Debug function, deprecated. Return id's of all pre-terminals under
+the subtree `tree' as a list."
   (when (trim? tree) (error "Trimmed tree sent to preterms, don't do that."))
   (if tree
       (if (or (terminal? (third tree)) (terminal? (fourth tree)))
@@ -548,18 +550,13 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	  (append (preterms (third tree))
 		  (preterms (fourth tree))))))
 
-(defun LL (c-id f-alignment tree tab from)
-  "Find the set of linked preterminals dominated by `c-id', return
-their links as a list.  The linking is defined by `f-alignment', which
-must have been through `flatten'; `tree' is given by `maketree'. The
-argument `from' is an atom, either 'src or 'trg, giving the side of
-`c-id', `tree' and `tab' in `f-alignment'.
-
-dyvik2009lmt says linked _lexical_ nodes, I use preterminals since
-some times we don't get all the way down terminals (eg in nb/1.pl in
-the MRS suite, Abrams is a different f-domain from its mother, while
-in ka/1.pl, qePa is a different f-domain; I don't know why, but their
-phi's don't match anything in the files)."
+(defun LL-single (c-id f-alignment tree tab from)
+  "Debug function, deprecated. Find the set of linked preterminals
+dominated by `c-id', return their links as a list.  The linking is
+defined by `f-alignment', which must have been through `flatten';
+`tree' is given by `maketree'. The argument `from' is an atom, either
+'src or 'trg, giving the side of `c-id', `tree' and `tab' in
+`f-alignment'."
   (labels ((get-link (src)
 	     (let* ((getter (if (eq from 'trg)
 				#'rassoc
@@ -573,13 +570,15 @@ phi's don't match anything in the files)."
 					    prets))))
       (mapcar #'get-link phis))))
 
+
 (defclass LL-splits ()
   ;"A table with lists of links as keys, and lists of nodes as values,
 ;used by `c-align'" 
   ((table
     :accessor LL-tab
     :initform (make-hash-table :test #'equal))))
-(defmethod LL-splits-add (key val (splits LL-splits))
+
+(defmethod add (key val (splits LL-splits))
   (let* ((skey (sort (copy-seq key)
 		     (lambda (a b) (or (< (car a) (car b))
 				       (and (= (car a) (car b))
@@ -588,7 +587,8 @@ phi's don't match anything in the files)."
     (if old	
 	(setf (gethash skey (LL-tab splits)) (pushnew val old))
 	(setf (gethash skey (LL-tab splits)) (list val)))))
-(defmethod LL-splits-get (key (splits LL-splits))
+
+(defmethod get-val (key (splits LL-splits))
   (let ((skey (sort (copy-seq key)
 		    (lambda (a b) (or (< (car a) (car b))
 				      (and (= (car a) (car b))
@@ -982,15 +982,15 @@ TODO: cache/memoise maketree"
     (lisp-unit:assert-equality
      #'set-equal
      '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-     (LL (car (topnodes (phi^-1 0 tab_s) tree_s)) f-alignment tree_s tab_s 'src))
+     (LL-single (car (topnodes (phi^-1 0 tab_s) tree_s)) f-alignment tree_s tab_s 'src))
     (lisp-unit:assert-equality
      #'set-equal
      '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-     (LL 1817 f-alignment tree_s tab_s 'src))
+     (LL-single 1817 f-alignment tree_s tab_s 'src))
     (lisp-unit:assert-equality
      #'set-equal
      '((0 . 0) (11 . 9) (10 . 3)) ; 1815 is the I', sister to PROPP which gives (9 . 6)
-     (LL 1815 f-alignment tree_s tab_s 'src))))
+     (LL-single 1815 f-alignment tree_s tab_s 'src))))
 
 (lisp-unit:define-test test-maketree
   (multiple-value-bind (tree refs)
