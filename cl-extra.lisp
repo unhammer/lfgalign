@@ -37,6 +37,11 @@ http://www.cliki.net/common-idioms"
 
 (defmacro out (string &rest args) `(format t ,string ,@args))
 
+(defgeneric add (key val store)
+  (:documentation "Add `val' to `store' indexed on `key'."))
+
+(defgeneric get-val (key store)
+  (:documentation "Return the value indexed on `key' in `store'."))
 
 ;;;;;;;; DSET implementations. Remember to (setf *print-circle* t) 
 ;;;;;;;; ----------------------------------------------------------
