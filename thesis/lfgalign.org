@@ -1065,6 +1065,8 @@ argstr til $PRED_{L2}$.
      a,b,c i same rekkjefølgje uansett...)
 
 ** SKRIV Kan adjunkt lenkjast til nodar _under_ mor-lenkja?
+\label{SEC:merge-daughters}
+
 Krav (vi) i \citet[s.~75]{dyvik2009lmp} krev at viss F_s og F_t er
 lenkja, så kan ingen adjunkt D_s til F_s vere lenkja til nodar utanfor
 F_t. Men kan ein D_s lenkjast til ei dotternode av argument eller
@@ -1516,7 +1518,7 @@ flest medlem i $aligntable$, dette kjem eg tilbake til i
 \ref{SEC:f-rangering} nedanfor.
 
 ** SKRIV Når f-lenkjene ikkje er 1-1
-\fxnote{må 1. spesifiserast, 2. implementerast...}
+\fxnote{Dette må 1. spesifiserast, 2. implementerast...}
 *** notat 							     :ROTETE:
 filene 
 : ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
@@ -1533,6 +1535,7 @@ og
 :    2[ ze<5>
 :       OBJ 5[ sigareti ] ] ]
 
+Sjå au del \ref{SEC:merge-daughters}.
 ** SKRIV Rangering
 \label{SEC:f-rangering}
    Ulike kriterium:
