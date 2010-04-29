@@ -122,6 +122,8 @@ TODO
   LPT-correspondence. But what should we do about these? Not add them
   at all? (Make it an option for now!)
 
+- Try calling f-align on all unreferenced preds, not just `'(0 . 0)`.
+
 - Run Giza++ to get LPT-correspondence (criterion i in
    http://tlt8.unicatt.it/allegati/Proceedings_TLT8.pdf p.71--82, our
    Prolog files should have the information to use criterion ii).
