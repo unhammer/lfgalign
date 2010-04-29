@@ -116,6 +116,11 @@ TODO
     than it looks, but I guess we could pretend it's "edit distance".)
   - is there any merging or other funny business going on? (Well,
     merging is still todo...)
+   
+- Currently`get-links` in `add-links` also adds those links for which
+  there is no actual f-structure alignment, only
+  LPT-correspondence. But what should we do about these? Not add them
+  at all? (Make it an option for now!)
 
 - Run Giza++ to get LPT-correspondence (criterion i in
    http://tlt8.unicatt.it/allegati/Proceedings_TLT8.pdf p.71--82, our
