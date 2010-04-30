@@ -654,28 +654,11 @@ phi's don't match anything in the files)."
        linkable))))
 
 
-(defun c-align-one-naive (link tree_s tab_s tree_t tab_t)
-  "Make sure we don't leave behind nodes contributing f-information in
-src without also leaving it behind in trg, and vice versa."
-  (let ((c-ids_s (phi^-1 (car link) tab_s))
-	(c-ids_t (phi^-1 (cdr link) tab_t)))
-    (format t "Align tree ~A~%"  (trimtree c-ids_s (topnodes c-ids_s tree_s)))
-    (format t " with tree ~A~%"  (trimtree c-ids_t (topnodes c-ids_t tree_t)))))
-
-;; (lisp-unit:define-test test-c-align
-;;  (let* ((tab_s (open-and-import "nb/1.pl"))
-;; 	(tab_t (open-and-import "ka/1.pl"))
-;; 	(tree_s (maketree tab_s))
-;; 	(tree_t (maketree tab_t)))
-;;    (lisp-unit:assert-equal
-;;     '((235 . 118) (13 . 2))
-;;     (c-align-one (cons 5 3) tree_s tab_s tree_t tab_t))))
-
 
 (defun f-align-naive (var1 tab1 var2 tab2)
-  "`var1' and `var2' are f-structure id's in `tab1' and `tab2'
-respectively.
-TODO: cache/memoise maketree"
+  "Just to show the difference between naive alignment, and the complete alignment.
+`var1' and `var2' are f-structure id's in `tab1' and `tab2'
+respectively.  TODO: cache/memoise maketree"
   (let* ((pred1 (get-pred var1 tab1))
 	 (pred2 (get-pred var2 tab2)))
     (format t "Align ~A with ~A~%" pred1 pred2)
