@@ -1518,7 +1518,7 @@ flest medlem i $aligntable$, dette kjem eg tilbake til i
 \ref{SEC:f-rangering} nedanfor.
 
 ** SKRIV Når f-lenkjene ikkje er 1-1
-\fxnote{Dette må 1. spesifiserast, 2. implementerast...}
+\fxnote{Dette må 1. spesifiserast (kap.3), og 2. implementerast...}
 *** notat 							     :ROTETE:
 filene 
 : ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
@@ -1536,6 +1536,7 @@ og
 :       OBJ 5[ sigareti ] ] ]
 
 Sjå au del \ref{SEC:merge-daughters}.
+** TOGROK Overflødige adverbial
 ** SKRIV Rangering
 \label{SEC:f-rangering}
    Ulike kriterium:
@@ -1552,19 +1553,40 @@ Sjå au del \ref{SEC:merge-daughters}.
 *** Prioritet på av rangeringskriterium
     Dette bør sjølvsagt testast empirisk, og er nok utanfor denne
     oppgåva, men eg kjem til å diskutere det.
-** SKRIV Lenkjing av c-strukturnodar
+** Lenkjing av c-strukturnodar
 Samanstilling mellom f-strukturar treng i =lfgalign= ikkje informasjon
 om c-strukturen, medan lenkjing av c-strukturnodar skjer på grunnlag
 av f-struktursamanstillinga. Programmet utfører difor samanstilling av
 c-strukturar sist.
 
-=c-align= har som inndata c-strukturanalysane av kjelde- og
-målsetninga, og ei f-struktursamanstilling. 
+Funksjonen =c-align= har som inndata c-strukturanalysane av kjelde- og
+målsetninga, og éi f-struktursamanstilling; utdata er ei mengd med
+lenkjer. Ei lenkje er eit par der første element er ei mengd
+c-strukturnodar på kjeldespråket, og andre element ei mengd nodar på
+målspråket. Det er ingen overlapp mellom medlem av lenkjer (ein node
+er aldri med i meir enn eitt par).
+
+I \citet[s.~77]{dyvik2009lmp} er kravet for å lenkje to
+c-strukturnodar er at dei dominerer same mengd med
+ordlenkjer[fn:20]. Ein node /n/ dominerer ei mengd lenkjer /l/ viss
+unionen av lenkjene dominert av døtrene til /n/ er lik /l/. I
+=lfgalign= opererer eg ikkje med /ordlenkjer/ i seg sjølv;
+f-struktursamanstillinga er basert på LPT-korrespondansar, som
+definerer moglege ordlenkjer utan å sjå på kontekst, og
+f-struktursamanstillinga avgrenser vidare moglege ordlenkjer gitt
+f-strukturinformasjon. Preterminale nodar er dei mest ordnære nodane
+som kan ha ei f-strukturlenkje (ved $\phi$); når formålet er å lenkje
+c-strukturnodar kan me nytte f-strukturlenkja til den preterminale
+noden i staden for ordlenkjer.  \fxnote{To problem (kva vil me ha
+med?)\\
+1. me får \emph{ikkje} med LPT-korrespondansar som er OK, men
+ikkje med i $f-alignment$;\\
+2. me \emph{får} med LPT-korrespondansar
+som er med i $f-alignment$ men ikkje $aligntable$ (ikkje er rekursivt
+lenkja).}
+
 #+BEGIN_LaTeX
-   \SetKwComment{Comment}{ // }{}
-  \SetKwInOut{Input}{usage}
-    
-  \begin{algorithm}[]
+ \begin{algorithm}[]
    \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
    \label{algo:c-align}
     
@@ -1580,8 +1602,20 @@ målsetninga, og ei f-struktursamanstilling.
     }
     \Return c-alignments \;
     \end{algorithm}    
-      
-      
+#+END_LaTeX      
+
+Hjelpeprosedyren =add-links= utfører hovudjobben. Inndata er rotnoden
+til c-strukturtreet for eitt av språka, og
+f-samanstillinga. Prosedyren kappar opp treet i nodemengder, kor kvar
+nodemengd dominerer same lenkjemengd (som definert over).
+Nodemengdene blir lagra i ein tabell, indeksert på
+lenkjemengdene. Prosedyren går rekursivt gjennom treet frå rot til
+lauv; lenkjemengden for kvar node er unionen av lenkjemengdene
+returnert av =add-links= kalt på kvar av døtrene. Viss ein node
+dominerer ei lenkjemengd $links$, legg me til denne noden i tabellen
+$splits[links]$. 
+
+#+BEGIN_LaTeX
    \begin{algorithm}[]
    \caption{add-links(f-alignment, $node, splits$)}
    \label{algo:add-links}
@@ -1601,7 +1635,29 @@ målsetninga, og ei f-struktursamanstilling.
   \end{algorithm}
 #+END_LaTeX
 
+Sidan =c-align= kallar =add-links= for kvar av sidene, får me to
+tabellar $splits_s$ og $splits_t$. Me hentar så ut alle dei
+lenkjemengdene som er i båe tabellane (dvs. snittet av oppslagsnøklene
+til tabellen); nodane som er lagra med mengd med f-strukturlenkjer
+skal lenkjast på c-strukturnivå. Alle desse mange-til-mange-lenkjene
+blir til slutt returnert av =c-align=.
 
+Prosessen er no ferdig, mange-til-mange-lenkjene mellom
+c-strukturnodar definerer frasesamanstillinga\fxnote{til
+diskusjonsdel:\emph{Det er ikkje berre ei N-gramsamanstilling; sidan
+lenkjene er mellom c-strukturnodar kor kvar node dominerer ein
+konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
+
+
+*** TOGROK viss me har LPT (og altså lenkje i f-alignment), men ikkje ekte f-lenkje
+    Dette bør kanskje vere valfritt i programmet, for å sjå
+    kva det fører til: vil du c-lenkje LPT-korrespondansar som ikkje
+    har f-lenkjer?
+
+    Og omvendt, finst det LPT-korrespondansar som ikkje kjem med i
+    f-alignment i det heile teke, men som likevel burde ha noko å seie
+    for c-strukturlenkjinga? (Men burde dei ikkje då vere med i
+    f-alignment au?)
 *** TOGROK Men kan me _fjerne_ visse f-samanstillingar mha. c-strukturinfo? :ROTETE:
     dvs. disambiguere...
     (dette er vel heller stoff for diskusjonsdelen?)
@@ -1802,4 +1858,9 @@ MRS-suiten, med mindre anna er opplyst.
         f-strukturar.
 
 [fn:19] Ved c-struktur-f-strukturavbildinga $\phi$.
+
+[fn:20] Dette er ein litt enklare måte å definere kravet på; ei
+        /lenkje/ refererer til både kjelde og mål, dimed blir det
+        mogleg å seie at ein node på kjeldespråket kan dominere same
+        mengd som ein node på målspråket.
 

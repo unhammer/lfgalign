@@ -1,4 +1,4 @@
-% Created 2010-04-23 Fri 17:30
+% Created 2010-04-30 Fri 17:01
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -31,9 +31,12 @@
 \newcommand{\OBLben}{\F{obl}{ben}}
 \newcommand{\OBJben}{\F{obj}{ben}}
 \newcommand{\OBJ}{\F{obj}{}}
+\newcommand{\OBJs}{\F{obj~}{}}
 \newcommand{\ADJ}{\F{adj}{}}
+\newcommand{\ADJs}{\F{adj~}{}}
 \newcommand{\XCOMP}{\F{xcomp}{}}
 \newcommand{\SUBJ}{\F{subj}{}}
+\newcommand{\SUBJs}{\F{subj~}{}}
 \newcommand{\PRED}{\F{pred}{}}
 \newcommand{\falign}{\ensuremath{\operatorname{\emph{falign}}}}
 \newcommand{\fpairs}{\ensuremath{\operatorname{\emph{fpairs}}}}
@@ -41,7 +44,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{23/04, 2010}
+\date{30/04, 2010}
 
 \begin{document}
 
@@ -191,12 +194,13 @@ som skildrar omsette setningar, kan
    frasesamanstilling, ved å følgje avbildinga frå f-struktur til
    c-struktur ($\phi{}^{-1}$).
 \end{enumerate}
-Eitt problem som byr seg er: kva for «deler av f-strukturane»? I det
-minste må me kunne kople det opp mot c-strukturnodar; så \PRED-element
-bør i det minste ha lenkjer, medan t.d. tempus og aspektuell
-informasjon kanskje er mindre viktig. Men kva kan ignorerast? Vil det
-oppstå tilfelle då me bør vekte visse element? (Dvs., må me nokon gong
-disambiguere med slike andre element?)
+Eitt problem som byr seg er hypotesemangfaldet: kva for «deler av
+f-strukturane»? Korleis kan me avgrense søkjerommet? I det minste må
+me kunne kople det opp mot c-strukturnodar; så \PRED-element bør i det
+minste ha lenkjer, medan t.d. tempus og aspektuell informasjon kanskje
+er mindre viktig. Men kva kan ignorerast? Vil det oppstå tilfelle då
+me bør vekte visse element? (Dvs., må me nokon gong disambiguere med
+slike andre element?)
 
 Vidare må me vite \emph{korleis} me samanstiller desse delene. Me kan
 t.d. byrje med å kople ytterste \PRED{} frå kvart språk, og så
@@ -1152,6 +1156,8 @@ argstr til $PRED_{L2}$.
 \section{\textbf{SKRIV} Kan adjunkt lenkjast til nodar \underline{under} mor-lenkja?}
 \label{sec-3.16}
 
+\label{SEC:merge-daughters}
+
 Krav (vi) i \citet[s.~75]{dyvik2009lmp} krev at viss F$_s$ og F$_t$ er
 lenkja, så kan ingen adjunkt D$_s$ til F$_s$ vere lenkja til nodar utanfor
 F$_t$. Men kan ein D$_s$ lenkjast til ei dotternode av argument eller
@@ -1465,51 +1471,77 @@ seie noko \emph{a priori} om kva for vanskar ein kan finne).
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
-beste evne i eit Lisp\footnote{Common Lisp er m.a. nytta i LFG Parsebanker
-        \citep{rosen2009lpt}. }-program.
+beste evne i eit Lisp\footnote{Dette språkvalet burde gjere eventuell integrering med andre
+        LFG-system lettare (Common Lisp er m.a. nytta i LFG
+        Parsebanker \citep{rosen2009lpt}). }-program.
 
-\fxnote{intro todo} Ei implementering gjer det svært synleg om det
-finst manglar i eit formelt krav, eller om noko ikkje er godt nok
+\fxnote{intro todo, kanskje noko om kva eg faktisk har fått ut av
+implementasjonen} Ei implementering gjer det svært synleg om det finst
+manglar i eit formelt krav, eller om noko ikkje er godt nok
 spesifisert.
 
 Programmet \texttt{lfgalign}\footnote{Tilgjengeleg frå \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign} som fri og
        open programvare under GNU General Public License. } tek inn LFG-analysane av to
 setningar som me av uavhengige grunnar trur er omsetjingar av
 kvarandre. LFG-analysane må vere disambiguerte og i Prolog-formatet
-frå XLE\footnote{Dokumentert på
+frå XLE\footnote{Formatet er dokumentert på
        \href{http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html}{http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html}. Importeringa
        til Lisp-strukturar handterer «pakka representasjonar» og
-       kjenner igjen ekvivalensforhold (t.d. der fleire variablar
-       refererer til same f-struktur, eller til same analyseval); men
-       filene eg har testa utnyttar ikkje det fulle spennet til
-       formatet, så det finst ganske sikkert feil. }. Programmet les inn dei to filene og opprettar ein
-intern representasjon av LFG-analysen.
+       kjenner igjen ekvivalensforhold (t.d. der fleire
+       $\phi$-variablar refererer til same f-struktur, eller fleire
+       Prolog-variabler refererer til same analyseval); men filene eg
+       har testa utnyttar ikkje det fulle spennet til formatet, så det
+       finst ganske sikkert feil. }. Programmet les inn dei to filene og opprettar ein
+intern representasjon av LFG-analysen.  \fxnote{treng eg ein eigen del
+om LPT i dette kapittelet? Implementasjonen er jo veldig enkel
+iallfall.}
 
 Me kan i tillegg gi programmet informasjon om kva for ord-omsetjingar
-me ser på som lingvistisk prediktable (t.d. informert av
-omsetjingstabellen frå eit automatisk ordsamanstillingsprogram, eller
-av handskrivne omsetjingsordbøker). 
+me ser på som lingvistisk prediktable. Intensjonen er at dette kan
+vere informert av omsetjingstabellen frå eit automatisk
+ordsamanstillingsprogram, eller av handskrivne omsetjingsordbøker.
+
+Programmet byrjar lenkjinga med f-strukturane. Ei
+f-struktur\emph{samanstilling} er ei mengd med \emph{lenkjer} mellom
+individuelle f-strukturar. Resultatet av lenkjinga på dette nivået kan
+vere tvitydig: sidan det ofte finst fleire måtar å lenkje argument og
+adjunkt på, får me i første omgang mange samanstillingar mellom
+kjelde- og mål-f-strukturar.
+
+Difor rangerer me f-struktursamanstillingane, og den beste sender me
+vidare til c-struktursamanstillinga. Denne delen av programmet gir ut
+éi, utvitydig mengd med mange-til-mange-lenkjer mellom c-strukturane
+(her treng me ingen rangering). Nodane i kvar av desse
+mange-til-mange-lenkjene definerer no den endelege
+frasesamanstillinga.
+
+Nedanfor går eg gjennom detaljane rundt dei relevante delene av
+programmet.
 
 \section{Lenkjer mellom f-strukturar}
 \label{sec-4.1}
 
-\fixme{intro, c-str er derivativ}
+\label{SEC:impl-f-lenkjing}
 
-Hovudalgoritmen er vist i kodefigur \ref{algo:f-align}. Funksjonen
-\texttt{f-align} returnerer ei mengd med moglege samanstillingar. Kvar
-samanstilling er ei mengd med par av f-strukturar\footnote{Eigentleg eit slags avgjerdstre; kvart element er eit par, kor
+Hovudalgoritmen for lenkjing mellom f-strukturar er vist i kodefigur
+\ref{algo:f-align}. Funksjonen \texttt{f-align} returnerer ei mengd med
+moglege samanstillingar. Kvar samanstilling er ei mengd med par av
+f-strukturar\footnote{Eigentleg eit slags avgjerdstre; kvart element er eit par, kor
         første element er lenkja mellom dei yttarste f-strukturane, og
         andre element er dei moglege samanstillingane for dei indre
         strukturane. Denne strukturen kan vere nyttig for å rangere
-        samanstillingar. }. Eit par
-$(F_s,F_t)$ representerer ei lenkje frå ein f-struktur på
-kjeldespråket, til ein f-struktur på målspråket. Me føreset at dette
-paret har LPT-korrespondanse\footnote{Når eg her skriv at to f-strukturar har LPT-korrespondanse,
+        samanstillingar, og \texttt{f-align} blir mykje meir oversiktleg av å
+        jobbe med eit slikt tre. Ein funksjon \texttt{flatten} omformar det
+        ferdige treet til ei enkel liste med samanstillingar, kor kvar
+        samanstilling er ei flat liste med lenkjer mellom
+        f-strukturar. }. Eit par $(F_s,F_t)$ representerer ei lenkje frå
+ein f-struktur på kjeldespråket, til ein f-struktur på målspråket. Me
+føreset at dette paret har LPT-korrespondanse\footnote{Når eg her skriv at to f-strukturar har LPT-korrespondanse,
         meiner eg sjølvsagt at ordformen til PRED-verdien til kvar
-        f-struktur har LPT-korrespondanse. }, dette blir sjekka før alle kall
-på \texttt{f-align}. Der me ikkje har informasjon om LPT-korrespondanse
-mellom to ord (orda er ukjende), er lenkjing lov. Pro-element og
-substantiv kan alltid lenkjast med kvarandre.
+        f-struktur har LPT-korrespondanse. }, dette blir
+sjekka før alle kall på \texttt{f-align}. Der me ikkje har informasjon om
+LPT-korrespondanse mellom to ord (orda er ukjende), er lenkjing
+lov. Pro-element og substantiv kan alltid lenkjast med kvarandre.
 
 Hjelpefunksjonen \texttt{argalign} (som igjen kallar \texttt{argalign-p}, vist i
 kodefigur \ref{algo:argalign-p}) gir alle moglege
@@ -1521,17 +1553,19 @@ argument eller eit adjunkt, men gir ingen lenkjer mellom to
 adjunkt. Funksjonen gir heller ikkje kombinasjonar der minst eitt
 argument ikkje er lenkja -- alle kombinasjonane må inkludere alle
 argument frå $F_s$ og $F_t$, jf. krav (iii) og (iv) i
-\citet[s.~75]{dyvik2009lmp}; krav (i) er tautologisk oppfylt, medan me
-som nemnt føreset at krav (ii) er oppfylt før alle kall på \texttt{f-align}.
+\citet[s.~75]{dyvik2009lmp}. Elles er krav (i) er tautologisk oppfylt,
+medan me som nemnt føreset at krav (ii) er oppfylt før alle kall på
+\texttt{f-align}.
 
-Eit døme: viss $F_s$ har argumenta \SUBJ og \OBJ og ingen adjunkt, og
-$F_t$ har argumentet \SUBJ og eitt adjunkt \ADJ, der alle
+Eit døme: viss $F_s$ har argumenta \SUBJs og \OBJs og ingen adjunkt,
+og $F_t$ har argumentet \SUBJs og eitt adjunkt \ADJ, der alle
 ord-omsetjingar er moglege, vil \texttt{argalign} gi dei to samanstillingane
 $\{(\SUBJ,\SUBJ), (\OBJ,\ADJ)\}$ og $\{(\SUBJ,\ADJ),
 (\OBJ,\SUBJ)\}$. Viss adjunktet til $F_t$ ikkje fantest, eller ikkje
-hadde LPT-korrespondanse med nokon av argumenta til $F_s$, får me
-ingen samanstillingar; medan viss berre $(\SUBJ,\SUBJ)$ ikkje hadde
-LPT-korrespondanse, får me berre ut den siste samanstillinga.
+hadde LPT-korrespondanse med nokon av argumenta til $F_s$, ville me
+ikkje fått nokon samanstillingar; medan viss paret $(\SUBJ,\SUBJ)$
+ikkje hadde LPT-korrespondanse og alt anna var likt, ville me berre
+fått den siste samanstillinga.
 
 Funksjonen \texttt{f-align} går så gjennom kvar lenkje i kvar
 argumentpermutasjon, og prøver å kalle \texttt{f-align} på alle
@@ -1544,12 +1578,12 @@ $(F_s,F_t)$.
 
 Det er mogleg at ei lenkje frå éi samanstilling kan finnast i andre
 samanstillingar, difor lagrar me alle delvise samanstillingar i
-tabellen $aligntable$. Dette føreset sjølvsagt at
-\texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt, t.d. at
-mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
-mot subjektet til $F_t$ er uavhengig av om objektet til $F_s$ er
-lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. \fxnote{nemne
-føresetnaden om uavhengnad i kapittel 3}
+tabellen $aligntable$. Dette føreset at \texttt{f-align}$(s,t)$ er
+uavhengig av konteksten rundt; t.d. må mengda av samanstillingar som
+kjem ved å lenkje subjektet til $F_s$ mot subjektet til $F_t$ vere
+uavhengig av om objektet til $F_s$ er lenkja mot eit objekt eller eit
+adjunkt osb. av $F_t$. \fxnote{nemne føresetnaden om uavhengnad i
+kapittel 3}
 
       \SetKwComment{Comment}{ // }{}
      \SetKwInOut{Input}{usage}
@@ -1565,7 +1599,8 @@ føresetnaden om uavhengnad i kapittel 3}
            \uIf{not(aligntable[$F_s$,$F_t$])} {
            aligntable[$F_s$,$F_t$] $\gets$ f-align($A_s$, $A_t$)\;
            }
-          add aligntable[$F_s$,$F_t$] to $p$\;
+          \uIf{aligntable[$F_s$,$F_t$]}{add aligntable[$F_s$,$F_t$] to $p$\;}
+          \uElse{add $(A_s, A_t)$ to $p$}
         }
         add $p$ to $alignments$ \;
        }
@@ -1616,16 +1651,18 @@ føresetnaden om uavhengnad i kapittel 3}
       \end{algorithm}
 
 Sjølv om det er krav om LPT-korrespondanse mellom kvart argument og
-eit argument/adjunkt, er det ikkje eit krav om at alle desse para
-tilfredsstiller alle lenkjingskrava for at $F_s$ og $F_t$ skal
-lenkjast. Viss \texttt{f-align}$(\OBJ,\ADJ)$ frå dømet over gir null,
-og ikkje kan lenkjast, medan \texttt{f-align}$(\SUBJ,\SUBJ)$ kan
-lenkjast, vil \texttt{f-align} returnere ei delvis lenkjing av argumenta i
-den argumentpermutasjonen. Viss ingen substrukturar kan lenkjast, får
-me berre ut $\{(F_s,F_t)\}$.
+eit argument/adjunkt for å lenkje $F_s$ og $F_t$, er det ikkje noko
+krav om at alle para i ein argumentpermutasjon tilfredsstiller alle
+lenkjingskrava. Viss \texttt{f-align}$(\OBJ,\ADJ)$ frå dømet over gir
+null, og ikkje kan lenkjast (t.d. fordi \ADJs hadde eitt argument, og
+\OBJs ingen argument/adjunkt), medan \texttt{f-align}$(\SUBJ,\SUBJ)$
+kan lenkjast, vil \texttt{f-align} likevel returnere samanstillinga som
+inneheld $(\OBJ,\ADJ)$ og $(\SUBJ,\SUBJ)$. Me kan sjå i $aligntable$
+for å finne ut av om kvar av f-strukturane kunne lenkjast; i dette
+tilfellet vil $aligntable[\OBJ,\ADJ]$ vere tom.
 
-\fxnote{forskjellen mellom LPT-krav og rekursjonskrav på argument skal
-i kapittel 3}
+\fxnote{forskjellen mellom LPT-krav og rekursjonskrav på argument må
+inn i kapittel 3}
 
 Om me i tillegg krev at substrukturar kan samanstillast kan me
 utelukke lenkjing av $F_s$ og $F_t$ vist i \Next nedanfor:
@@ -1640,13 +1677,15 @@ utelukke lenkjing av $F_s$ og $F_t$ vist i \Next nedanfor:
 }
 
 Men det kan vere at me ikkje \emph{vil} krevje dette i alle moglege
-tilfelle. Me kan uansett rangere ulike løysingar seinare ved å spørje
-etter dei argumentsamanstillingane som har flest medlem.
+tilfelle. Ei tryggare løysing er å rangere ulike løysingar i
+etterkant, ved å spørje etter dei argumentsamanstillingane som har
+flest medlem i $aligntable$, dette kjem eg tilbake til i
+\ref{SEC:f-rangering} nedanfor.
 
-\section{\textbf{SKRIV} Når lenkjene ikkje er 1-1}
+\section{\textbf{SKRIV} Når f-lenkjene ikkje er 1-1}
 \label{sec-4.2}
 
-
+\fxnote{Dette må 1. spesifiserast (kap.3), og 2. implementerast...}
 \subsection{notat \textbf{:ROTETE:}}
 \label{sec-4.2.1}
 
@@ -1673,23 +1712,165 @@ og
        OBJ 5[ sigareti ] ] ]
 \end{verbatim}
 
-\section{Kan me gjere f-struktursamanstillinga bottom-up?}
+
+Sjå au del \ref{SEC:merge-daughters}.
+\section{\textbf{TOGROK} Overflødige adverbial}
 \label{sec-4.3}
 
-Ein alternativ metode er å byrje med alle logisk moglege permutasjonar
-av LPT-korrespondansar, og så sile ut dei som ikkje svarer til
-krava. Men dette er problematisk, sidan avskjeringa då skjer så seint
-at utrekningane for lengre setningar blir ganske umogleg.
+\section{\textbf{SKRIV} Rangering}
+\label{sec-4.4}
+
+\label{SEC:f-rangering}
+   Ulike kriterium:
+\subsection{lenkja f-argument > ulenkja}
+\label{sec-4.4.1}
+
+    Dette sjekker med me longest-sublists. Me prøver jo å lenkje alt i
+    \texttt{f-align}, og om me finn argperms der alt kan lenkjast, er jo det
+    det beste.
+\subsection{argument-argument > argument-adjunkt}
+\label{sec-4.4.2}
+
+    Eg ser ingen problem med dette.
+\subsection{arg1-arg1 arg2-arg2 > arg1-arg2 arg2-arg1 (følgje)}
+\label{sec-4.4.3}
+
+    Dette kjem til å gi problem når me lenkje «behage» og «like», viss
+    me ikkje har motstridande LPT-informasjon og argumentfølgje i
+    leksikon ikkje er basert på semantikk, men syntaks.
+\subsection{Prioritet på av rangeringskriterium}
+\label{sec-4.4.4}
+
+    Dette bør sjølvsagt testast empirisk, og er nok utanfor denne
+    oppgåva, men eg kjem til å diskutere det.
+\section{Lenkjing av c-strukturnodar}
+\label{sec-4.5}
+
+Samanstilling mellom f-strukturar treng i \texttt{lfgalign} ikkje informasjon
+om c-strukturen, medan lenkjing av c-strukturnodar skjer på grunnlag
+av f-struktursamanstillinga. Programmet utfører difor samanstilling av
+c-strukturar sist.
+
+Funksjonen \texttt{c-align} har som inndata c-strukturanalysane av kjelde- og
+målsetninga, og éi f-struktursamanstilling; utdata er ei mengd med
+lenkjer. Ei lenkje er eit par der første element er ei mengd
+c-strukturnodar på kjeldespråket, og andre element ei mengd nodar på
+målspråket. Det er ingen overlapp mellom medlem av lenkjer (ein node
+er aldri med i meir enn eitt par).
+
+I \citet[s.~77]{dyvik2009lmp} er kravet for å lenkje to
+c-strukturnodar er at dei dominerer same mengd med
+ordlenkjer\footnote{Dette er ein litt enklare måte å definere kravet på; ei
+        \emph{lenkje} refererer til både kjelde og mål, dimed blir det
+        mogleg å seie at ein node på kjeldespråket kan dominere same
+        mengd som ein node på målspråket. }. Ein node \emph{n} dominerer ei mengd lenkjer \emph{l} viss
+unionen av lenkjene dominert av døtrene til \emph{n} er lik \emph{l}. I
+\texttt{lfgalign} opererer eg ikkje med \emph{ordlenkjer} i seg sjølv;
+f-struktursamanstillinga er basert på LPT-korrespondansar, som
+definerer moglege ordlenkjer utan å sjå på kontekst, og
+f-struktursamanstillinga avgrenser vidare moglege ordlenkjer gitt
+f-strukturinformasjon. Preterminale nodar er dei mest ordnære nodane
+som kan ha ei f-strukturlenkje (ved $\phi$); når formålet er å lenkje
+c-strukturnodar kan me nytte f-strukturlenkja til den preterminale
+noden i staden for ordlenkjer.  \fxnote{To problem (kva vil me ha
+med?)\\
+1. me får \emph{ikkje} med LPT-korrespondansar som er OK, men
+ikkje med i $f-alignment$;\\
+2. me \emph{får} med LPT-korrespondansar
+som er med i $f-alignment$ men ikkje $aligntable$ (ikkje er rekursivt
+lenkja).}
+
+ \begin{algorithm}[]
+   \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
+   \label{algo:c-align}
+    
+   c-alignments $\gets \emptyset$ \;
+   $splits_s \gets$ new table \;
+   add-links(f-alignment, $tree_s, splits_s)$  \;
+   $splits_t \gets$ new table \;
+   add-links(f-alignment, $tree_t, splits_t)$  \;
+   \ForAll{$links$ being the keys in $splits_s$} {
+       \uIf{($links$ in $splits_t$)} {
+             add $(splits_s[links],splits_t[links])$ to c-alignments \;
+        }
+    }
+    \Return c-alignments \;
+    \end{algorithm}    
+
+Hjelpeprosedyren \texttt{add-links} utfører hovudjobben. Inndata er rotnoden
+til c-strukturtreet for eitt av språka, og
+f-samanstillinga. Prosedyren kappar opp treet i nodemengder, kor kvar
+nodemengd dominerer same lenkjemengd (som definert over).
+Nodemengdene blir lagra i ein tabell, indeksert på
+lenkjemengdene. Prosedyren går rekursivt gjennom treet frå rot til
+lauv; lenkjemengden for kvar node er unionen av lenkjemengdene
+returnert av \texttt{add-links} kalt på kvar av døtrene. Viss ein node
+dominerer ei lenkjemengd $links$, legg me til denne noden i tabellen
+$splits[links]$. 
+
+   \begin{algorithm}[]
+   \caption{add-links(f-alignment, $node, splits$)}
+   \label{algo:add-links}
+      
+        $links \gets \emptyset$\;
+   \uIf{$node$} {
+       \uIf{preterminal?($node$)} {
+          let $link \in$ f-alignment s.t. $\phi(node) \in link$ \;
+          \lIf{$link$} {$links \gets \{link\}$}
+        }
+        \uElse {
+          $links \gets $add-links(f-alignment, left-branch($node$)) $\bigcup$ add-links(f-alignment, right-branch($node$)) \;
+        }
+        add $node$ to $splits[links]$ \;
+       }
+        \Return $links$ \;
+  \end{algorithm}
+
+Sidan \texttt{c-align} kallar \texttt{add-links} for kvar av sidene, får me to
+tabellar $splits_s$ og $splits_t$. Me hentar så ut alle dei
+lenkjemengdene som er i båe tabellane (dvs. snittet av oppslagsnøklene
+til tabellen); nodane som er lagra med mengd med f-strukturlenkjer
+skal lenkjast på c-strukturnivå. Alle desse mange-til-mange-lenkjene
+blir til slutt returnert av \texttt{c-align}.
+
+Prosessen er no ferdig, mange-til-mange-lenkjene mellom
+c-strukturnodar definerer frasesamanstillinga\fxnote{til
+diskusjonsdel:\emph{Det er ikkje berre ei N-gramsamanstilling; sidan
+lenkjene er mellom c-strukturnodar kor kvar node dominerer ein
+konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
 
 
-\fixme{\texttt{permute} finn alle moglege permutasjonar av 1-1
-LPT-korrespondansar. 
-Dette blir sendt gjennom =merge= som finn moglege
-mange-til-mange-korrespondansar av PRED-element. Moglege samanføyingar
-er: PRED til (X)COMP-dotter, ADJUNCT, ....
-Så blir den utvida mengda med PRED-korrespondansar sendt vidare til
-eit filter som sjekker om skrankane er oppfylte.}
- 
+\subsection{\textbf{TOGROK} viss me har LPT (og altså lenkje i f-alignment), men ikkje ekte f-lenkje}
+\label{sec-4.5.1}
+
+    Dette bør kanskje vere valfritt i programmet, for å sjå
+    kva det fører til: vil du c-lenkje LPT-korrespondansar som ikkje
+    har f-lenkjer?
+
+    Og omvendt, finst det LPT-korrespondansar som ikkje kjem med i
+    f-alignment i det heile teke, men som likevel burde ha noko å seie
+    for c-strukturlenkjinga? (Men burde dei ikkje då vere med i
+    f-alignment au?)
+\subsection{\textbf{TOGROK} Men kan me \underline{fjerne} visse f-samanstillingar mha. c-strukturinfo? \textbf{:ROTETE:}}
+\label{sec-4.5.2}
+
+    dvs. disambiguere\ldots{}
+    (dette er vel heller stoff for diskusjonsdelen?)
+\section{Kan me gjere f-struktursamanstillinga bottom-up?}
+\label{sec-4.6}
+
+   «Any sufficiently complex problem needs to be coded three times.»
+   --via Steve Gibson
+
+Ein alternativ metode for lenkjing av f-strukturane er å byrje med
+alle logisk moglege permutasjonar av LPT-korrespondansar, og så sile
+ut dei som ikkje svarer til krava. Prosessen ville nok blitt mykje
+meir oversiktleg på denne måten, sidan det då berre er snakk om å
+sjekke krav for kvar enkelt lenkje.  Men ein slik metode er vanskeleg
+i praksis; når avskjeringa skjer så seint, blir det alt for mange
+moglege kombinasjonar for lengre setningar med mange ukjende ord til
+at ein vanleg datamaskin kan halde styr på dei.
+
 Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
 (me har ingen informasjon om LPT-korrespondanse), slik at kvart
 kjeldeord kan lenkjast til kvart målord. Viss båe setningane er 4 ord,
@@ -1704,28 +1885,17 @@ lenkjar flest ord, ville maskinen raskt fått problem. I tillegg har me
 problemet med 1-mange-lenkjer, som skaper endå fleire moglege
 samanstillingar.
 
-Ein sideverknad av å byrje med ytre lenkjer og gå innover er at me
-automatisk unngår å prøve «kryssande» lenkjer, t.d. å lenkje $F_s$ med
-\XCOMP av $F_t$, og \XCOMP av $F_s$ med $F_t$ (denne kombinasjonen av
-lenkjer vil jo vere ein del av alle logisk moglege permutasjonar). Me
-får au prioritert å lenkje ytre element, som jo er sikrare lenkjer
-(gitt to f-strukturar for setningar som er omsetjingar av kvarandre
-vil dei to ytre f-strukturane ha størst sjanse for å korrespondere med
-kvarandre, for kvart steg du går innover har du sjansen for å trå
-feil).
-
-\section{\textbf{SKRIV} Lenkjing av c-strukturnodar}
-\label{sec-4.4}
-
-Samanstilling mellom f-strukturar er uavhengig av lenkjer mellom
-c-strukturnodar, medan lenkjing av c-strukturnodar skjer på grunnlag
-av f-struktursamanstillinga. Programmet utfører difor
-samanstilling av c-strukturar sist.
-
-\subsection{\textbf{TOGROK} Men kan me \underline{fjerne} visse f-samanstillingar mha. c-strukturinfo? \textbf{:ROTETE:}}
-\label{sec-4.4.1}
-
-    dvs. disambiguere
+Ein sideverknad av å byrje med ytre lenkjer og gå innover (prosessen
+skildra i del \ref{SEC:impl-f-lenkjing}) er at me automatisk unngår å
+prøve «kryssande» lenkjer, t.d. å lenkje $F_s$ med \XCOMP av $F_t$, og
+\XCOMP av $F_s$ med $F_t$ (denne kombinasjonen av lenkjer vil jo vere
+ein del av alle logisk moglege permutasjonar). Me får au prioritert å
+lenkje ytre element, som jo er sikrare lenkjer: gitt to f-strukturar
+for setningar der alt me veit om lenkjinga er at \emph{setningane} er
+omsetjingar av kvarandre, vil dei to ytre f-strukturane ha størst
+sjanse for å korrespondere med kvarandre. For kvart steg du går
+innover må du multiplisere inn sjansen for å trå feil i
+argumentpermutasjonane.
 
 
 \chapter{Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar}
@@ -1794,6 +1964,7 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
 
 
 
