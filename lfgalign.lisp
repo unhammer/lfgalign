@@ -434,6 +434,8 @@ the recursion loops through all possible `srcs'."
 	    ;; all args_s and args_t used up, make end-of-list:
 	    (list nil)))))
 
+(defun make-aligntab (make-hash-table :test #'equal))
+
 (defun f-align (link tab_s tab_t LPTs &optional aligntab)
   "Optional hash table `aligntab' (with :test #'equal) is
 destructively modified to store the alignments of all linkings, and lets
@@ -645,7 +647,7 @@ phi's don't match anything in the files)."
 	it))))
 
 
-(defun c-align (flat-alignments tab_s tab_t)
+(defun c-align-all (flat-alignments tab_s tab_t)
   "`f-alignments' must have been through `flatten'."
   (let ((tree_s (maketree tab_s))
 	(tree_t (maketree tab_t)))
@@ -670,6 +672,15 @@ phi's don't match anything in the files)."
 	       (get-val links splits_t)))
        linkable))))
 
+(defun align (tab_s tab_t LPT)
+  (let* ((aligntab (make-aligntab))
+	 (f-alignments (f-align '(0 . 0) tab_s tab_t LPT aligntab))
+	 (best-f-alignment (rank f-alignments))
+	 (c-alignments (c-align-ranked best-f-alignment 
+				       (maketree tab_s) tab_s
+				       (maketree tab_t) tab_t))
+	 ;; TODO: pretty-print
+	 c-alignments)))
 
 
 (defun f-align-naive (var1 tab1 var2 tab2)
