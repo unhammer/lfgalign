@@ -513,6 +513,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
        (atom (cdr x))))
 
 (defun rank (f-alignments aligntab)
+  (warn "mock ranking, just selects first option")
   (car (flatten f-alignments)))
 
 (defun spread (flatperm)
