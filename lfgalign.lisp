@@ -462,18 +462,28 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 					  (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
 					      link_a)))
 	      do
-	      (pushnew new alignments :test #'equal))
+	      (pushnew new alignments :test #'equal)
+	     ; (loop for adjperm in adjalign(argperms link tab_s tab_t LPTs)
+	     ;       for adjs = (copy-tree new)
+	     ;       (loop for link_a in adjperm
+	     ;             do the same stuff
+	     ;             collecting into adjs)
+	     ;       do (pushnew adjs alignments :test #'equal))
+	     )
+	; (when (and (null (get-args (car link))) (null (get-args (cdr link)))
+	;        do the same adjperm loop as above)
+	)
 	(when alignments (cons link alignments))))))
 
 (lisp-unit:define-test test-f-align
- (let ((tab_s (open-and-import "nb/1.pl"))
-       (tab_t (open-and-import "ka/1.pl")))
+ (let ((tab_s (open-and-import "dev/TEST_simple_s.pl"))
+       (tab_t (open-and-import "dev/TEST_simple_t.pl")))
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((0 . 0) (5 . 3)))
     (flatten (f-align '(0 . 0) tab_s tab_t (make-LPT)))))
- (let ((tab_s (open-and-import "nb/4.pl"))
-       (tab_t (open-and-import "ka/4.pl"))
+ (let ((tab_s (open-and-import "dev/TEST_regargadj_s.pl"))
+       (tab_t (open-and-import "dev/TEST_regargadj_t.pl"))
        (LPT (make-LPT)))
    (lisp-unit:assert-equality
     #'set-of-set-equal
@@ -486,6 +496,15 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
     #'set-of-set-equal
     '(((0 . 0) (11 . 6) (10 . 3) (9 . 9))
       ((0 . 0) (11 . 9) (10 . 3) (9 . 6)))
+    (flatten (f-align '(0 . 0) tab_s tab_t LPT))))
+ (let ((tab_s (open-and-import "dev/TEST_optadj_s.pl"))
+      (tab_t (open-and-import "dev/TEST_optadj_t.pl"))
+      (LPT (make-LPT)))
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '(((0 . 0) (8 . 2) (30 . 8))	; adjuncts optionally align
+      ((0 . 0) (8 . 8) (30 . 2))
+      ((0 . 0) (8 . 8)))
     (flatten (f-align '(0 . 0) tab_s tab_t LPT)))))
 
 (defun f-link? (x)
@@ -604,9 +623,9 @@ or 'trg, giving the side of `tree' (see `maketree') and `tab' in
 `f-alignment'.
 
 dyvik2009lmt says linked _lexical_ nodes, I use preterminals since
-some times we don't get all the way down terminals (eg in nb/1.pl in
+some times we don't get all the way down terminals (eg in dev/TEST_simple_s.pl in
 the MRS suite, Abrams is a different f-domain from its mother, while
-in ka/1.pl, qePa is a different f-domain; I don't know why, but their
+in dev/TEST_simple_t.pl, qePa is a different f-domain; I don't know why, but their
 phi's don't match anything in the files)."
   (when (trim? tree) (error "Trimmed tree sent to add-links, don't do that."))
   (labels ((get-link (src)
@@ -679,10 +698,10 @@ respectively.  TODO: cache/memoise maketree"
   (f-align-naive '0 (open-and-import "ka/23.pl")
 		 '0 (open-and-import "nb/24.pl"))
   (format t "---~%")
-  (f-align-naive '0 (open-and-import "ka/1.pl")
-		 '0 (open-and-import "nb/1.pl"))
+  (f-align-naive '0 (open-and-import "dev/TEST_simple_t.pl")
+		 '0 (open-and-import "dev/TEST_simple_s.pl"))
   (format t "---~% This one will be troublesome, head-switching:~%~%")
-  (f-align-naive '0 (open-and-import "ka/4.pl")
+  (f-align-naive '0 (open-and-import "dev/TEST_regargadj_t.pl")
 		 '0 (open-and-import "nb/5.pl")))
 
 
@@ -756,8 +775,8 @@ respectively.  TODO: cache/memoise maketree"
 			    (L (get-pred 0 tab) tab))))
 
 (lisp-unit:define-test test-LPT
-  (let* ((tab_s (open-and-import "nb/4.pl"))
-	 (tab_t (open-and-import "ka/4.pl"))
+  (let* ((tab_s (open-and-import "dev/TEST_regargadj_s.pl"))
+	 (tab_t (open-and-import "dev/TEST_regargadj_t.pl"))
 	 (Pr_s (get-pred 0 tab_s))
 	 (Pr_t (get-pred 0 tab_t))
 	 (Pr_s_wrong (get-pred 10 tab_s)))
@@ -918,7 +937,7 @@ respectively.  TODO: cache/memoise maketree"
 	      ((11 . 3) (10 . 6) (9 . 9)) ((11 . 3) (10 . 9) (9 . 6))))))
 
 (lisp-unit:define-test test-trimtree
- (let* ((tab_s (open-and-import "nb/1.pl"))
+ (let* ((tab_s (open-and-import "dev/TEST_simple_s.pl"))
         (tree_s (maketree tab_s))
 	(c0 (phi^-1 0 tab_s))
 	(c5 (phi^-1 5 tab_s)))
@@ -949,7 +968,7 @@ respectively.  TODO: cache/memoise maketree"
     (topnodes (phi^-1 3 tab) tree))))
 
 (lisp-unit:define-test test-preterms
-  (let ((tree_s (maketree (open-and-import "nb/4.pl"))))
+  (let ((tree_s (maketree (open-and-import "dev/TEST_regargadj_s.pl"))))
     (lisp-unit:assert-equality
      #'set-equal
      '(52 50 48)
@@ -965,7 +984,7 @@ respectively.  TODO: cache/memoise maketree"
      (LL-nodes-get '((9 . 3) (10 . 6) (11 . 9) (0 . 0)) s))))
 
 (lisp-unit:define-test test-add-links
-  (let* ((tab (open-and-import "nb/4.pl"))
+  (let* ((tab (open-and-import "dev/TEST_regargadj_s.pl"))
 	 (tree (maketree tab))
 	 (splits (make-instance 'LL-splits))
 	 (f-alignment '((9 . 6) (10 . 3) (11 . 9) (0 . 0))))
@@ -995,8 +1014,8 @@ respectively.  TODO: cache/memoise maketree"
      (LL-splits-get '((10 . 3)(0 . 0)(11 . 9)(9 . 6)) splits))))
 
 (lisp-unit:define-test test-LL
-  (let* ((tab_s (open-and-import "nb/4.pl"))
-	 (tab_t (open-and-import "ka/4.pl"))
+  (let* ((tab_s (open-and-import "dev/TEST_regargadj_s.pl"))
+	 (tab_t (open-and-import "dev/TEST_regargadj_t.pl"))
 	 (f-alignment '((0 . 0) (11 . 9) (10 . 3) (9 . 6))) ; flattened
 	 (tree_s (maketree tab_s))
 	 (tree_t (maketree tab_t)))
