@@ -17,6 +17,7 @@
 #+LaTeX_HEADER: \newcommand{\ADJ}{\F{adj}{}}
 #+LaTeX_HEADER: \newcommand{\ADJs}{\F{adj~}{}}
 #+LaTeX_HEADER: \newcommand{\XCOMP}{\F{xcomp}{}}
+#+LaTeX_HEADER: \newcommand{\XCOMPs}{\F{xcomp~}{}}
 #+LaTeX_HEADER: \newcommand{\SUBJ}{\F{subj}{}}
 #+LaTeX_HEADER: \newcommand{\SUBJs}{\F{subj~}{}}
 #+LaTeX_HEADER: \newcommand{\PRED}{\F{pred}{}}
@@ -1319,14 +1320,14 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 
 
 
-* Korleis fungerer implementasjonen min
+* Implementasjonen av =lfgalign=
 \label{SEC:implementasjon}
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
 beste evne i eit Lisp[fn:16]-program.
 
-\fxnote{intro todo, kanskje noko om kva eg faktisk har fått ut av
+\fxnote{intro TODO, kanskje noko om kva eg faktisk har fått ut av
 implementasjonen} Ei implementering gjer det svært synleg om det finst
 manglar i eit formelt krav, eller om noko ikkje er godt nok
 spesifisert.
@@ -1380,13 +1381,13 @@ kodefigur \ref{algo:argalign-p}) gir alle moglege
 argumenta til $F_s$ og $F_t$ som tilfredsstiller kravet om
 LPT-korrespondanse, men utan å sjekke at desse argumenta igjen kan
 samanstillast. Funksjonen prøver å lenkje kvart argument til eit
-argument eller eit adjunkt, men gir ingen lenkjer mellom to
-adjunkt. Funksjonen gir heller ikkje kombinasjonar der minst eitt
-argument ikkje er lenkja -- alle kombinasjonane må inkludere alle
-argument frå $F_s$ og $F_t$, jf. krav (iii) og (iv) i
-\citet[s.~75]{dyvik2009lmp}. Elles er krav (i) er tautologisk oppfylt,
-medan me som nemnt føreset at krav (ii) er oppfylt før alle kall på
-=f-align=.
+argument eller eit adjunkt, men gir ingen lenkjer mellom to adjunkt
+(sjå del \ref{SEC:impl-adjalign} nedanfor om dette). Funksjonen gir
+heller ikkje kombinasjonar der minst eitt argument ikkje er lenkja --
+alle kombinasjonane må inkludere alle argument frå $F_s$ og $F_t$,
+jf. krav (iii) og (iv) i \citet[s.~75]{dyvik2009lmp}. Elles er krav
+(i) er tautologisk oppfylt, medan me som nemnt føreset at krav (ii) er
+oppfylt før alle kall på =f-align=.
 
 Eit døme: viss $F_s$ har argumenta \SUBJs og \OBJs og ingen adjunkt,
 og $F_t$ har argumentet \SUBJs og eitt adjunkt \ADJ, der alle
@@ -1403,23 +1404,21 @@ argumentpermutasjon, og prøver å kalle =f-align= på alle
 lenkjene. Sidan lenkjene som =argalign= gir har LPT-korrespondanse,
 vil alle f-strukturane i dei rekursive kalla i =f-align= ha
 LPT-korrespondanse. Eit rekursivt kall kan gi nye samanstillingar i
-dei indre f-strukturane, viss dei relevante krava er oppfylte. Då
-lagrar me samanstillinga av understrukturane saman med paret
-$(F_s,F_t)$.
+dei indre f-strukturane, viss dei relevante krava er oppfylte.
 
 Det er mogleg at ei lenkje frå éi samanstilling kan finnast i andre
-samanstillingar, difor lagrar me alle delvise samanstillingar i
-tabellen $aligntable$. Dette føreset at \texttt{f-align}$(s,t)$ er
-uavhengig av konteksten rundt; t.d. må mengda av samanstillingar som
-kjem ved å lenkje subjektet til $F_s$ mot subjektet til $F_t$ vere
-uavhengig av om objektet til $F_s$ er lenkja mot eit objekt eller eit
-adjunkt osb. av $F_t$. \fxnote{nemne føresetnaden om uavhengnad i
-kapittel 3}
+samanstillingar, me unngår dobbeltarbeid ved å lagre alle delvise
+samanstillingar i tabellen $aligntable$. Dette føreset at
+\texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt; t.d. må
+mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
+mot subjektet til $F_t$ vere uavhengig av om objektet til $F_s$ er
+lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. \fxnote{TODO:
+nemne føresetnaden om uavhengnad i kapittel 3}
 
 #+BEGIN_LaTeX
       \SetKwComment{Comment}{ // }{}
      \SetKwInOut{Input}{usage}
-
+  
      \begin{algorithm}[]
       \caption{f-align($F_s$, $F_t$)}
       \label{algo:f-align}
@@ -1428,16 +1427,28 @@ kapittel 3}
       \ForAll{argperm in argalign($F_s$, $F_t$)} {
         $p \gets \emptyset$ \;
          \ForAll{$A_s$, $A_t$ in argperm} {
-           \uIf{not(aligntable[$F_s$,$F_t$])} {
-           aligntable[$F_s$,$F_t$] $\gets$ f-align($A_s$, $A_t$)\;
+           \uIf{not(aligntable[$A_s$,$A_t$])} {
+           aligntable[$A_s$,$A_t$] $\gets$ f-align($A_s$, $A_t$)\;
            }
-          \uIf{aligntable[$F_s$,$F_t$]}{add aligntable[$F_s$,$F_t$] to $p$\;}
-	  \uElse{add $(A_s, A_t)$ to $p$}
+          \uIf{aligntable[$A_s$,$A_t$]}{add aligntable[$A_s$,$A_t$] to $p$\;}
+          \uElse{add $(A_s, A_t)$ to $p$}
         }
         add $p$ to $alignments$ \;
-       }
-       \lIf {$alignments=\emptyset$} \Return $\emptyset$ \Comment*[l]{Fail}
-       \lElse \Return $((F_s, F_t), alignments)$ \;
+        \ForAll{adjperm in adjalign(argperm, $F_s$, $F_t$)} {
+          $a \gets$ copy-of($p$) \Comment*[r]{optional adjunct links}
+          \ForAll{$A_s$, $A_t$ in adjperm}{
+            \uIf{not(aligntable[$A_s$,$A_t$])} {
+              aligntable[$A_s$,$A_t$] $\gets$ f-align($A_s$, $A_t$)\;
+            }
+            \uIf{aligntable[$A_s$,$A_t$]}{add aligntable[$A_s$,$A_t$] to $a$\;}
+            \uElse{add $(A_s, A_t)$ to $a$}
+          }
+          add $a$ to $alignments$ \;
+        } % adjperm in adjalign
+       } % argperm in argalign
+       \Comment{loop through adjalign if no arguments exist}
+       \lIf {$alignments=\emptyset$}{ \Return $\emptyset$ \Comment*[l]{Fail} }
+       \lElse{ \Return $((F_s, F_t), alignments)$ \; }
        \end{algorithm}    
     
     
@@ -1494,11 +1505,11 @@ inneheld $(\OBJ,\ADJ)$ og $(\SUBJ,\SUBJ)$. Me kan sjå i $aligntable$
 for å finne ut av om kvar av f-strukturane kunne lenkjast; i dette
 tilfellet vil $aligntable[\OBJ,\ADJ]$ vere tom.
 
-\fxnote{forskjellen mellom LPT-krav og rekursjonskrav på argument må
+\fxnote{TODO: forskjellen mellom LPT-krav og rekursjonskrav på argument må
 inn i kapittel 3}
 
 Om me i tillegg krev at substrukturar kan samanstillast kan me
-utelukke lenkjing av $F_s$ og $F_t$ vist i \Next nedanfor:
+utelukke lenkjing av f-strukturane $F_s$ og $F_t$ i \Next under:
 
 #+BEGIN_LaTeX
 {\avmoptions{}
@@ -1516,43 +1527,132 @@ tilfelle. Ei tryggare løysing er å rangere ulike løysingar i
 etterkant, ved å spørje etter dei argumentsamanstillingane som har
 flest medlem i $aligntable$, dette kjem eg tilbake til i
 \ref{SEC:f-rangering} nedanfor.
+*** Overflødige adverbial
+   \label{SEC:impl-adjalign}
 
-** SKRIV Når f-lenkjene ikkje er 1-1
+Argumentpermutasjonane frå =argalign= prøver som nemnt ikkje reine
+adjunkt-adjunkt-lenkjer, sidan me ikkje vil forkaste lenkjing av $F_s$
+og $F_t$ berre på grunn av at ikkje alle adjunkt kunne lenkjast. Men
+når me har prøvd ein argumentpermutasjon, kan me lage ein kopi av
+denne som i tillegg inneheld lenkjer mellom «overflødige» adverbial,
+altså dei adjunkt-adjunkt-lenkjene som =argalign= ikkje
+prøver. Hjelpefunksjonen =adjalign= (ikkje vist her
+\fxnote[inline]{TODO: implementere :->}) konstruerer moglege
+permutasjonar av lenkjer mellom adjunkt som ikkje er inkludert i
+$argperm$, og =f-align= prøver desse rekursivt på same måte som med
+argumentlenkjene. \fxnote{og så er det spørsmålet om me kan lenkje
+adjunkt på ulike nivå i f-strukturane} Lenkjene blir lagt til ein
+/kopi/ av argumentpermutasjonane, sidan det ikkje er sikkert at me
+ønskjer å lenkje alle adjunktdøtre. Viss me har to overflødige adjunkt
+på kvar side, og kravet om LPT-korrespondanse er dekkja for alle fire
+moglege par, får me seks moglege permutasjonar, sidan me inkluderer
+dei fire permutasjonane der eitt adjunktpar er ulenkja.
+
+Viss $F_s$ og $F_t$ ikkje hadde argument i det heile teke, går me au
+gjennom moglege permutasjonar av adjunktdøtre, på same måte (ikkje
+vist i kodefigur \ref{algo:f-align}).
+
+*** SKRIV Når f-lenkjene ikkje er 1-1
 \fxnote{Dette må 1. spesifiserast (kap.3), og 2. implementerast...}
-*** notat 							     :ROTETE:
-filene 
-: ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
-:  (tab_t (open-and-import "dev/TEST_argadj_t.pl")))
-viser at me kan trenge samanføying av pred på ulike nivå.
-
+**** kausativ
+**** preposisjonsobjekt
 "sigaretten" og "sigaretze" er ikkje på same nivå i dei respektive
-f-strukturane, me har
+f-strukturane nedanfor:
 : 0[ PRED vedde<28,29,27,30>
 :    29[ PRED sigarett<> ] ]
-og
+
 : 0[ PRED da-najleveba<37,10,46>
 :    ADJUNCT { 2 }
 :    2[ ze<5>
 :       OBJ 5[ sigareti ] ] ]
 
+
+
 Sjå au del \ref{SEC:merge-daughters}.
-** TOGROK Overflødige adverbial
+
+**** notat 							     :ROTETE:
+filene 
+: ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
+:  (tab_t (open-and-import "dev/TEST_argadj_t.pl")))
+viser at me kan trenge samanføying av pred på ulike nivå.
+*** Kan me gjere f-struktursamanstillinga bottom-up?
+#+BEGIN_LaTeX
+  %     \begin{quotation}
+  %    Any sufficiently complex problem needs to be coded three times.\\
+  % \begin{minipage}{0.8\textwidth}
+  % \begin{flushright}
+  %        (ukjend, via Steve Gibson)
+  % \end{flushright}
+  % \end{minipage}
+  %    \end{quotation}
+#+END_LaTeX
+Ein alternativ metode for lenkjing av f-strukturane er å byrje med
+alle logisk moglege permutasjonar av LPT-korrespondansar, og så sile
+ut dei som ikkje svarer til krava. Prosessen ville nok blitt mykje
+meir oversiktleg på denne måten, sidan det då berre er snakk om å
+sjekke krav for kvar enkelt lenkje.  Men ein slik metode er vanskeleg
+i praksis; når avskjeringa skjer så seint, blir det alt for mange
+moglege kombinasjonar for lengre setningar med mange ukjende ord til
+at ein vanleg datamaskin kan halde styr på dei.
+
+Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
+(me har ingen informasjon om LPT-korrespondanse), slik at kvart
+kjeldeord kan lenkjast til kvart målord. Viss båe setningane er 4 ord,
+får me 16 moglege samanstillingar der alle ord er med i nøyaktig éi
+lenkje ($2^l$, kor $l$ er setningslengd). Men ofte har me
+null-lenkjer, me må altså i tillegg tillate samanstillingar der minst
+eitt ord er ulenkja, utan at me treng å vite kva for ord det er; med
+desse kortare listene inkludert får me endå fleire moglege
+samanstillingar per setning (4 ord gir 26, 8 ord gir 2186 moglege
+samanstillingar). Sjølv om me heile tida vel dei samanstillingane som
+lenkjar flest ord, ville maskinen raskt fått problem. I tillegg har me
+problemet med 1-mange-lenkjer, som skaper endå fleire moglege
+samanstillingar.
+
+Ein sideverknad av å byrje med ytre lenkjer og gå innover (prosessen
+skildra i del \ref{SEC:impl-f-lenkjing}) er at me automatisk unngår å
+prøve «kryssande» lenkjer, t.d. å lenkje $F_s$ med \XCOMPs av $F_t$, og
+\XCOMPs av $F_s$ med $F_t$ (denne kombinasjonen av lenkjer vil jo vere
+ein del av alle logisk moglege permutasjonar). Me får au prioritert å
+lenkje ytre element, som jo er sikrare lenkjer: gitt to f-strukturar
+for setningar der alt me veit om lenkjinga er at /setningane/ er
+omsetjingar av kvarandre, vil dei to ytre f-strukturane ha størst
+sjanse for å korrespondere med kvarandre. For kvart steg du går
+innover må du multiplisere inn sjansen for å trå feil i
+argumentpermutasjonane.
+
 ** SKRIV Rangering
 \label{SEC:f-rangering}
-   Ulike kriterium:
-*** lenkja f-argument > ulenkja
-    Dette sjekker med me longest-sublists. Me prøver jo å lenkje alt i
-    =f-align=, og om me finn argperms der alt kan lenkjast, er jo det
-    det beste.
+
+\fxnote[inline]{Rangering er ikkje implementert enno (akkurat no gir
+rank(f-alignments) berre ut første samanstilling.)}
+Rangering foregår etter ulike kriterium. Her er eit par forslag:
+*** rekursivt lenkja > ulenkja, men LPT
+    $aligntable$ seier om noko er rekursivt lenkja eller ikkje,
+    plusspoeng viss me har klart å lenkje rekursivt.
 *** argument-argument > argument-adjunkt
-    Eg ser ingen problem med dette.
+    Plusspoeng for argument-argument-lenkjer, burde vere eit bra
+    kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
+    i døme \ref{vedde} med \\
+    =da-najleveba<Abrams,Browne,regne>= adjunkt: =sigarett=\\
+    =bet<Abrams,sigarett,regne>= adjunkt: =Browne=
+    
 *** arg1-arg1 arg2-arg2 > arg1-arg2 arg2-arg1 (følgje)
-    Dette kjem til å gi problem når me lenkje «behage» og «like», viss
-    me ikkje har motstridande LPT-informasjon og argumentfølgje i
-    leksikon ikkje er basert på semantikk, men syntaks.
-*** Prioritet på av rangeringskriterium
-    Dette bør sjølvsagt testast empirisk, og er nok utanfor denne
-    oppgåva, men eg kjem til å diskutere det.
+    Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
+    viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
+    i leksikon ikkje er basert på semantikk, men syntaks). Men elles
+    er det vel OK.
+
+    Enklaste implementasjon: Levenshtein-avstand. Men burde visse
+    argument vektast? (T.d. vekte subjekt om alt anna er likt.)
+
+    Andre forslag: http://en.wikipedia.org/wiki/Edit_distance)
+*** flest lenkja adjunkt
+    Usikker på dette... avheng av om me tillèt lenkjer på tvers av
+    f-strukturar.
+*** Prioritet på rangeringskriterium
+    Dette bør sjølvsagt testast empirisk, blir kanskje utanfor denne
+    oppgåva (diskusjonsdel?), men kan jo prøve meg litt rundt.
 ** Lenkjing av c-strukturnodar
 Samanstilling mellom f-strukturar treng i =lfgalign= ikkje informasjon
 om c-strukturen, medan lenkjing av c-strukturnodar skjer på grunnlag
@@ -1649,7 +1749,7 @@ lenkjene er mellom c-strukturnodar kor kvar node dominerer ein
 konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
 
 
-*** TOGROK viss me har LPT (og altså lenkje i f-alignment), men ikkje ekte f-lenkje
+*** SKRIV viss me har LPT (og altså lenkje i f-alignment), men ikkje ekte f-lenkje
     Dette bør kanskje vere valfritt i programmet, for å sjå
     kva det fører til: vil du c-lenkje LPT-korrespondansar som ikkje
     har f-lenkjer?
@@ -1658,47 +1758,10 @@ konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
     f-alignment i det heile teke, men som likevel burde ha noko å seie
     for c-strukturlenkjinga? (Men burde dei ikkje då vere med i
     f-alignment au?)
-*** TOGROK Men kan me _fjerne_ visse f-samanstillingar mha. c-strukturinfo? :ROTETE:
+
+\fxnote{kan me \textbf{fjerne} visse f-samanstillingar mha. c-strukturinfo?
     dvs. disambiguere...
-    (dette er vel heller stoff for diskusjonsdelen?)
-** Kan me gjere f-struktursamanstillinga bottom-up?
-   «Any sufficiently complex problem needs to be coded three times.»
-   --via Steve Gibson
-
-Ein alternativ metode for lenkjing av f-strukturane er å byrje med
-alle logisk moglege permutasjonar av LPT-korrespondansar, og så sile
-ut dei som ikkje svarer til krava. Prosessen ville nok blitt mykje
-meir oversiktleg på denne måten, sidan det då berre er snakk om å
-sjekke krav for kvar enkelt lenkje.  Men ein slik metode er vanskeleg
-i praksis; når avskjeringa skjer så seint, blir det alt for mange
-moglege kombinasjonar for lengre setningar med mange ukjende ord til
-at ein vanleg datamaskin kan halde styr på dei.
-
-Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
-(me har ingen informasjon om LPT-korrespondanse), slik at kvart
-kjeldeord kan lenkjast til kvart målord. Viss båe setningane er 4 ord,
-får me 16 moglege samanstillingar der alle ord er med i nøyaktig éi
-lenkje ($2^l$, kor $l$ er setningslengd). Men ofte har me
-null-lenkjer, me må altså i tillegg tillate samanstillingar der minst
-eitt ord er ulenkja, utan at me treng å vite kva for ord det er; med
-desse kortare listene inkludert får me endå fleire moglege
-samanstillingar per setning (4 ord gir 26, 8 ord gir 2186 moglege
-samanstillingar). Sjølv om me heile tida vel dei samanstillingane som
-lenkjar flest ord, ville maskinen raskt fått problem. I tillegg har me
-problemet med 1-mange-lenkjer, som skaper endå fleire moglege
-samanstillingar.
-
-Ein sideverknad av å byrje med ytre lenkjer og gå innover (prosessen
-skildra i del \ref{SEC:impl-f-lenkjing}) er at me automatisk unngår å
-prøve «kryssande» lenkjer, t.d. å lenkje $F_s$ med \XCOMP av $F_t$, og
-\XCOMP av $F_s$ med $F_t$ (denne kombinasjonen av lenkjer vil jo vere
-ein del av alle logisk moglege permutasjonar). Me får au prioritert å
-lenkje ytre element, som jo er sikrare lenkjer: gitt to f-strukturar
-for setningar der alt me veit om lenkjinga er at /setningane/ er
-omsetjingar av kvarandre, vil dei to ytre f-strukturane ha størst
-sjanse for å korrespondere med kvarandre. For kvart steg du går
-innover må du multiplisere inn sjansen for å trå feil i
-argumentpermutasjonane.
+    (dette er vel heller stoff for diskusjonsdelen?)}
 
 
 * Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar
