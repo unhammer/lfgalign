@@ -1537,7 +1537,7 @@ når me har prøvd ein argumentpermutasjon, kan me lage ein kopi av
 denne som i tillegg inneheld lenkjer mellom «overflødige» adverbial,
 altså dei adjunkt-adjunkt-lenkjene som =argalign= ikkje
 prøver. Hjelpefunksjonen =adjalign= (ikkje vist her
-\fxnote[inline]{TODO: implementere :->}) konstruerer moglege
+\fxnote[inline,nomargin]{TODO: implementere :->}) konstruerer moglege
 permutasjonar av lenkjer mellom adjunkt som ikkje er inkludert i
 $argperm$, og =f-align= prøver desse rekursivt på same måte som med
 argumentlenkjene. \fxnote{og så er det spørsmålet om me kan lenkje
@@ -1624,7 +1624,7 @@ argumentpermutasjonane.
 ** SKRIV Rangering
 \label{SEC:f-rangering}
 
-\fxnote[inline]{Rangering er ikkje implementert enno (akkurat no gir
+\fxnote[inline,nomargin]{Rangering er ikkje implementert enno (akkurat no gir
 rank(f-alignments) berre ut første samanstilling.)}
 Rangering foregår etter ulike kriterium. Her er eit par forslag:
 *** rekursivt lenkja > ulenkja, men LPT
@@ -1743,23 +1743,25 @@ skal lenkjast på c-strukturnivå. Alle desse mange-til-mange-lenkjene
 blir til slutt returnert av =c-align=.
 
 Prosessen er no ferdig, mange-til-mange-lenkjene mellom
-c-strukturnodar definerer frasesamanstillinga\fxnote{til
+c-strukturnodar definerer frasesamanstillinga
+
+\fxnote[inline,nomargin]{til
 diskusjonsdel:\emph{Det er ikkje berre ei N-gramsamanstilling; sidan
 lenkjene er mellom c-strukturnodar kor kvar node dominerer ein
 konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
 
 
-*** SKRIV viss me har LPT (og altså lenkje i f-alignment), men ikkje ekte f-lenkje
-    Dette bør kanskje vere valfritt i programmet, for å sjå
-    kva det fører til: vil du c-lenkje LPT-korrespondansar som ikkje
-    har f-lenkjer?
+*** SKRIV viss me har LPT, men ikkje rekursiv f-lenkje
+    Dette bør kanskje vere valfritt i programmet, for å sjå kva det
+    fører til: vil du ta med LPT-korrespondansar som ikkje har
+    f-lenkjer i =add-links=?
 
     Og omvendt, finst det LPT-korrespondansar som ikkje kjem med i
     f-alignment i det heile teke, men som likevel burde ha noko å seie
     for c-strukturlenkjinga? (Men burde dei ikkje då vere med i
     f-alignment au?)
 
-\fxnote{kan me \textbf{fjerne} visse f-samanstillingar mha. c-strukturinfo?
+\fxnote{Kan me \textbf{fjerne} visse f-samanstillingar pga. c-strukturinfo?
     dvs. disambiguere...
     (dette er vel heller stoff for diskusjonsdelen?)}
 
@@ -1902,7 +1904,7 @@ MRS-suiten, med mindre anna er opplyst.
        har testa utnyttar ikkje det fulle spennet til formatet, så det
        finst ganske sikkert feil.
 
-[fn:16] Dette språkvalet burde gjere eventuell integrering med andre
+[fn:16] Dette språkvalet kan gjere eventuell integrering med andre
         LFG-system lettare (Common Lisp er m.a. nytta i LFG
         Parsebanker \citep{rosen2009lpt}).
 
