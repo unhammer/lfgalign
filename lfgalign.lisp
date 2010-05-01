@@ -472,7 +472,6 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	     )
 	; (when (and (null (get-args (car link))) (null (get-args (cdr link)))
 	;        do the same adjperm loop as above)
-	)
 	(when alignments (cons link alignments))))))
 
 (lisp-unit:define-test test-f-align
@@ -512,8 +511,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
        (atom (cdr x))))
 
 (defun rank (f-alignments aligntab)
-  (list 'todo f-alignments aligntab)
-  )
+  (car (flatten f-alignments)))
 
 (defun spread (flatperm)
   (when flatperm
