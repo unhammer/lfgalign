@@ -501,6 +501,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
  (let ((tab_s (open-and-import "dev/TEST_optadj_s.pl"))
       (tab_t (open-and-import "dev/TEST_optadj_t.pl"))
       (LPT (make-LPT)))
+   (out "~%TODO adjalign")
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((0 . 0) (8 . 2) (30 . 8))	; adjuncts optionally align
@@ -984,14 +985,14 @@ respectively.  TODO: cache/memoise maketree"
      '(52 50 48)
      (preterms (treefind 1077 tree_s)))))
 
-(lisp-unit:define-test test-LL-nodes
-  (let ((s (make-instance 'LL-nodes)))
-    (LL-nodes-add '( (10 . 6)(9 . 3) (11 . 9) (0 . 0)) 1077 s)
-    (LL-nodes-add '( (10 . 6)(9 . 3) (0 . 0) (11 . 9)) 1078 s)
+(lisp-unit:define-test test-LL-splits
+  (let ((s (make-instance 'LL-splits)))
+    (add '( (10 . 6)(9 . 3) (11 . 9) (0 . 0)) 1077 s)
+    (add '( (10 . 6)(9 . 3) (0 . 0) (11 . 9)) 1078 s)
     (lisp-unit:assert-equality
      #'set-equal
      '(1078 1077)
-     (LL-nodes-get '((9 . 3) (10 . 6) (11 . 9) (0 . 0)) s))))
+     (get-val '((9 . 3) (10 . 6) (11 . 9) (0 . 0)) s))))
 
 (lisp-unit:define-test test-add-links
   (let* ((tab (open-and-import "dev/TEST_regargadj_s.pl"))
@@ -1001,34 +1002,35 @@ respectively.  TODO: cache/memoise maketree"
     (add-links f-alignment tree tab splits 'src)
     (lisp-unit:assert-equality #'set-equal
      '(254 13 1225)
-     (LL-splits-get '((9 . 6)) splits))
+     (get-val '((9 . 6)) splits))
     (lisp-unit:assert-equality
      #'set-equal     
      '(52 479 482 483 1077 1805 50 48)
-     (LL-splits-get '((10 . 3)) splits))
+     (get-val '((10 . 3)) splits))
     (lisp-unit:assert-equality
      #'set-equal     
      '(995 56 475 474 473 64 62 60 58 445 66)
-     (LL-splits-get '((11 . 9)) splits))
+     (get-val '((11 . 9)) splits))
     (lisp-unit:assert-equality
      #'set-equal     
      '(1789 1792)
-     (LL-splits-get '((10 . 3)(11 . 9)) splits))
+     (get-val '((10 . 3)(11 . 9)) splits))
     (lisp-unit:assert-equality
      #'set-equal     
      '(1815)
-     (LL-splits-get '((10 . 3)(0 . 0)(11 . 9)) splits))
+     (get-val '((10 . 3)(0 . 0)(11 . 9)) splits))
     (lisp-unit:assert-equality
      #'set-equal	   ; note: PERIOD, 81, is part of the above
      '(1141 1165 1817)	   ; c-nodes here, but unaligned, so no split!
-     (LL-splits-get '((10 . 3)(0 . 0)(11 . 9)(9 . 6)) splits))))
+     (get-val '((10 . 3)(0 . 0)(11 . 9)(9 . 6)) splits))))
 
 (lisp-unit:define-test test-LL
   (let* ((tab_s (open-and-import "dev/TEST_regargadj_s.pl"))
-	 (tab_t (open-and-import "dev/TEST_regargadj_t.pl"))
+	 ;; (tab_t (open-and-import "dev/TEST_regargadj_t.pl"))
 	 (f-alignment '((0 . 0) (11 . 9) (10 . 3) (9 . 6))) ; flattened
 	 (tree_s (maketree tab_s))
-	 (tree_t (maketree tab_t)))
+	 ;; (tree_t (maketree tab_t))
+	 )
     (lisp-unit:assert-equality
      #'set-equal
      '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
