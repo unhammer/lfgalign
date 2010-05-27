@@ -434,7 +434,7 @@ the recursion loops through all possible `srcs'."
 	    ;; all args_s and args_t used up, make end-of-list:
 	    (list nil)))))
 
-(defun make-aligntab (make-hash-table :test #'equal))
+(defun make-aligntab () (make-hash-table :test #'equal))
 
 (defun f-align (link tab_s tab_t LPTs &optional aligntab)
   "Optional hash table `aligntab' (with :test #'equal) is
