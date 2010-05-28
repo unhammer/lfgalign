@@ -1169,7 +1169,7 @@ såfall burde dei vel heller vore analysert som argument?).
 *** 2. Adposisjonsobjekt
 
 I følgjande setningspar har me eit objekt «sigarett» som svarer til
-PP-en «sigaretze» («sigareti» + «ze»):
+PP-en «sigaretze» («sigareti» + «ze»), eit adjunkt:
 
 : Abrams veddet en sigarett med Browne på at det regnet.
 : abramsi brouns daenajleva sigaretze, rom cvimda.
@@ -1184,19 +1184,16 @@ kunne lenkje «veddet» og «daenajleva».  Her synest det feil å føye
 saman «sigareti» og «ze», =(F_s . (F_t 1))=, sidan «sigarett» ikkje
 inneheld informasjonen gitt av «ze».
 
-Eg ser to løysingar. Me kan slakke på LMT-kravet ved å la =L'(F_t) =
-{sigaretze, ze}= (evt. ={sigaret, ze}=), då kan me lenkje =(F_s
-. F_t)=, medan 1 er ulenkja.
+Det finst då to løysingar. Me kan slakke på LMT-kravet ved å la
+=L'(F_t) = {sigaretze, ze}= (evt. ={sigaret, ze}=), då kan me lenkje
+=(F_s . F_t)=, medan 1 er ulenkja.
 
 Eller me kan lenkje =(F_s . 1)=, kor me har skikkeleg
 LMT-korrespondanse, men då må me slakke på (iii) og (iv), og altså ha
 lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
-«daenajleva». F_t er då ulenkja.
-
-For meg synest det mest naturleg å lenkje NP til PP, om ein skal
-studere relasjonar mellom kasus, argumentstruktur og tematiske
-roller. 
-**** TOGROK Eller finst det gode argument for å lenkje (F_s . 1) ?
+«daenajleva». F_t er då ulenkja. Det er løysinga valt i
+\citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
+nedanfor.
 
 ** TOGROK kva var poenget med dette?				     :ROTETE:
 «etter og uten er dei einaste prep som tek setn utan å vere arg»
@@ -1566,7 +1563,10 @@ f-strukturane nedanfor:
 :    2[ ze<5>
 :       OBJ 5[ sigareti ] ] ]
 
-
+Men dette er fordi sigaretze er _adjunkt_, og i følgje fotnote 3 i
+\citet{dyvik2009lmp} er P(ADJ) lik den semantiske formen til
+_preposisjonsobjektet_ til ADJ. (Er dette heilt enkelt? Kan me ha
+adjunkt med fleire «preposisjonsargument»?)
 
 Sjå au del \ref{SEC:merge-daughters}.
 

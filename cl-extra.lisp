@@ -43,6 +43,13 @@ http://www.cliki.net/common-idioms"
 (defgeneric get-val (key store)
   (:documentation "Return the value indexed on `key' in `store'."))
 
+(defun member-either (pair list)
+  "Either car or cdr of `pair' appears as car or cdr, respectively, in
+the list of pairs `list'."
+  (member pair list
+	  :test (lambda (a b) (or (eq (car a) (car b))
+				  (eq (cdr a) (cdr b))))))
+
 ;;;;;;;; DSET implementations. Remember to (setf *print-circle* t) 
 ;;;;;;;; ----------------------------------------------------------
 

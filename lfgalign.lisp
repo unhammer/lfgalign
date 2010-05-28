@@ -389,9 +389,8 @@ included.
 Return nil if no alignments are possible, and (list nil) if no
 alignments are necessary (there are no arguments to align).
 
-If `LPTs', `tab_s' and `tab_t' are supplied, only return those
-combinations where all pairs are LPT. This should cover (iii)
-and (iv). See `argalign-p'."
+Only returns pairs which are LPT, as defined by `LPTs'. This should
+cover (iii) and (iv). See `argalign-p'."
   (let* ((var_s (car link))
 	 (var_t (cdr link))
 	 (adjs_s (get-adjs var_s tab_s 'no-error))
@@ -402,7 +401,8 @@ and (iv). See `argalign-p'."
     (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
 
 (defun argalign-p (args_s adjs_s args_t adjs_t &optional tab_s tab_t LPTs)
-  "Helper for `argalign'."
+  "Helper for `argalign'. If `LPTs', `tab_s' and `tab_t' are supplied,
+only return those combinations where all pairs are LPT. "
   (macrolet
       ((mapalign (srcs trgs)
 	 "Within one call, we have the same src, but loop through possible `trgs',
@@ -433,6 +433,48 @@ the recursion loops through all possible `srcs'."
 		nil)
 	    ;; all args_s and args_t used up, make end-of-list:
 	    (list nil)))))
+
+(defun adjalign (exclude link tab_s tab_t LPTs)
+  "Return all possible combinations of links between adjuncts that use
+id's from `exclude' (a list of links).
+
+Return nil if no alignments are possible.
+
+Only returns pairs which are LPT, as defined by `LPTs'. See
+`adjalign-p'."
+  (let* ((var_s (car link))
+	 (var_t (cdr link))
+	 (adjs_s (get-adjs var_s tab_s 'no-error))
+	 (adjs_t (get-adjs var_t tab_t 'no-error)))
+    (when *debug* (out "~A~%~A~%" adjs_s adjs_t))
+    (adjalign-p exclude adjs_s adjs_t tab_s tab_t LPTs)))
+
+(defun adjalign-p (exclude adjs_s adjs_t &optional tab_s tab_t LPTs)
+  "Helper for `adjalign'. If `LPTs', `tab_s' and `tab_t' are supplied,
+only return those combinations where all pairs are LPT."
+  (when (and adjs_s adjs_t)
+    (mapcan				; for each target adj
+     (lambda (trg)
+       (let ((link (cons (car adjs_s) trg)) ; "this one"
+	     ;; recursion, w/o this one:
+	     (perms (adjalign-p exclude
+				(cdr adjs_s)
+				(remove trg adjs_t :count 1)
+				tab_s tab_t LPTs)))
+	 (append		; Collecting:
+	  perms			; - all but this one
+	  (when (and
+		 (not (member-either link exclude))
+		 (or (not LPTs)
+		     (LPT? (get-pred (car adjs_s) tab_s) tab_s
+			   (get-pred     trg      tab_t) tab_t LPTs)))
+	    (append
+	     (list (list link))	; - just this one
+	     (mapcar-true       ; - this added to each permuation w/o this
+	      (lambda (perm)
+		(cons link perm))
+	      perms))))))
+     adjs_t)))
 
 (defun make-aligntab () (make-hash-table :test #'equal))
 
@@ -896,6 +938,27 @@ respectively.  TODO: cache/memoise maketree"
    #'set-of-set-equal
    '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
    (argalign-p '(a b) '() '(1) '(3))))
+
+(lisp-unit:define-test test-adjalign-p
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((A . 2)) ((B . 2)) ((A . 3)) ((B . 3)) ((A . 2) (B . 3)) ((B . 2) (A . 3)))
+   (adjalign-p '((c . 1)) '(a b) '(1 2 3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((A . 1)) ((B . 1)) ((A . 2)) ((B . 2)) ((A . 3)) ((B . 3))
+     ((A . 1)(B . 2)) ((A . 2)(B . 1))((A . 3)(B . 1))
+     ((A . 1)(B . 3)) ((A . 2)(B . 3))((A . 3)(B . 2)))
+   (adjalign-p nil '(a b) '(1 2 3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((A . 2)) ((B . 2)))
+   (adjalign-p '((c . 1)) '(a b) '(1 2)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((A . 1)) ((A . 1) (B . 2)) ((B . 2))
+     ((A . 2)) ((A . 2) (B . 1)) ((B . 1)))
+   (adjalign-p nil '(a b) '(1 2))))
 
 
 (lisp-unit:define-test test-spread
