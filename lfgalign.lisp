@@ -494,40 +494,26 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 	 (argperms (argalign link tab_s tab_t LPTs)) ; argalign covers (iii) and (iv)
 	 alignments)
     (when argperms		  ; don't do anything unless argperms are OK
-      (if (equal argperms '(nil))
-	  ;; no recursion on args needed, try adjs
-	  (loop for adjperm in (adjalign nil link tab_s tab_t LPTs)
-		for adjs = (loop for link_a in adjperm
-				 do
-				 (unless (gethash link_a aligntab)
-				   (setf (gethash link_a aligntab)
-					 (f-align link_a tab_s tab_t LPTs aligntab)))
-				 collect (or (gethash link_a aligntab)
-					     (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
-						 link_a)))
-		do (pushnew adjs alignments :test #'equal))
-	;; possible with recursion on args
-	(loop for argperm in argperms
-	      for new = (loop for link_a in argperm
-			      do
-			      (unless (gethash link_a aligntab)
-				(setf (gethash link_a aligntab)
-				      (f-align link_a tab_s tab_t LPTs aligntab)))
-			      collect (or (gethash link_a aligntab)
-					  (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
-					      link_a)))
-	      do (pushnew new alignments :test #'equal)
-	      ;; try to fill up adj alignments
-	      (loop for adjperm in (adjalign argperm link tab_s tab_t LPTs)
-		 for adjs = (loop for link_a in adjperm
-			       do
-				 (unless (gethash link_a aligntab)
-				   (setf (gethash link_a aligntab)
-					 (f-align link_a tab_s tab_t LPTs aligntab)))
-			       collect (or (gethash link_a aligntab)
-					   (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
-					       link_a)))
-		 do (pushnew (append new adjs) alignments :test #'equal))))
+      (flet ((sub-f (perm)
+	       ;; Try to recursively align links in perm, but keep unaligned links
+	       (loop for link_a in perm
+		  do (unless (gethash link_a aligntab)
+		       (setf (gethash link_a aligntab)
+			     (f-align link_a tab_s tab_t LPTs aligntab)))
+		  collect (or (gethash link_a aligntab)
+			      (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
+				  link_a)))))
+	(if (equal argperms '(nil))
+	    ;; no recursion on args needed, try adjs
+	    (loop for adjperm in (adjalign nil link tab_s tab_t LPTs)
+	       do (pushnew (sub-f adjperm) alignments :test #'equal))
+	    ;; possible with recursion on args
+	    (loop for argperm in argperms
+	       for new = (sub-f argperm)
+	       do (pushnew new alignments :test #'equal)
+	       ;; try to fill up adj alignments
+	       (loop for adjperm in (adjalign argperm link tab_s tab_t LPTs)
+		  do (pushnew (append (sub-f adjperm) new) alignments :test #'equal)))))
       (if alignments
 	  (cons link alignments)
 	link))))
@@ -557,7 +543,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
  (let ((tab_s (open-and-import "dev/TEST_optadj_s.pl"))
        (tab_t (open-and-import "dev/TEST_optadj_t.pl"))
        (LPT (make-LPT)))
-   (out "~%TODO: skip prepositions when aligning adjs (id 30 below)")
+   (out "~%~%TODO: skip prepositions when aligning adjs (id 30 below)~%~%")
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((0 . 0) (8 . 2) (30 . 8))	; adjuncts optionally align
@@ -1263,7 +1249,7 @@ we already know is true because `perm' came from `LPT-permute'."
 	 (adjuncts_s (get-adjs var_s tab_s 'no-error))
 	 (args_t (get-args Pr_t 'no-nulls))
 	 (args_s (get-args Pr_s 'no-nulls)))
-    (format t "~A ~A~%" Pr_s Pr_t)
+    (when *debug* (out "~A ~A~%" Pr_s Pr_t))
     (when
 	(and
 	 ;; these loops have overlapping responsibilities, TODO
@@ -1272,13 +1258,15 @@ we already know is true because `perm' came from `LPT-permute'."
 		always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
 			      (or (member (cdr it) args_t)
 				  (member (cdr it) adjuncts_t))))
-	  (format t "iii, args_s: ~A, args_t: ~A, adjs_t: ~A~%" args_s args_t adjuncts_t))	 
+	  (when *debug*
+	    (out "iii, args_s: ~A, args_t: ~A, adjs_t: ~A~%" args_s args_t adjuncts_t)))	 
 	 (or
 	  (loop for c_t in args_t	       ; (iv)
 		always (awhen (rassoc c_t perm) ; this assumes <=1-1 PRED alignments
 			      (or (member (car it) args_s)
 				  (member (car it) adjuncts_s))))
-	  (format t "iv, args_t: ~A, args_s: ~A, adjs_s: ~A~%" args_t args_s adjuncts_s))
+	  (when *debug*
+	    (out "iv, args_t: ~A, args_s: ~A, adjs_s: ~A~%" args_t args_s adjuncts_s)))
 					; TODO: (v) the LPT-correspondences can be aligned one-to-one
 	 (or
 	  (loop for adj_s in adjuncts_s	; (vi)
@@ -1287,7 +1275,7 @@ we already know is true because `perm' came from `LPT-permute'."
 					 Pr_t tab_t))
 					; unaligned adjuncts are OK:
 			    t))
-	  (format t "vi"))
+	  (when *debug* (out "vi")))
 	 (or
 	  (loop for adj_t in adjuncts_t	; (vi) vice versa
 		always (aif (rassoc adj_t perm) ; this assumes <=1-1 PRED alignments
@@ -1295,7 +1283,7 @@ we already know is true because `perm' came from `LPT-permute'."
 					 Pr_s tab_s))
 					; unaligned adjuncts are OK:
 			    t))
-	  (format t "vi")))
+	  (when *debug* (out "vi"))))
       link)))
 
 (lisp-unit:define-test test-try-f-align-perm
