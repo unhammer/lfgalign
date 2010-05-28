@@ -493,9 +493,20 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 		       (make-hash-table :test #'equal)))
 	 (argperms (argalign link tab_s tab_t LPTs)) ; argalign covers (iii) and (iv)
 	 alignments)
-    (if (equal argperms '(nil))	      ; OK arg-alignment, no recursion
-	link
-      (progn				; possible with recursion
+    (when argperms		  ; don't do anything unless argperms are OK
+      (if (equal argperms '(nil))
+	  ;; no recursion on args needed, try adjs
+	  (loop for adjperm in (adjalign nil link tab_s tab_t LPTs)
+		for adjs = (loop for link_a in adjperm
+				 do
+				 (unless (gethash link_a aligntab)
+				   (setf (gethash link_a aligntab)
+					 (f-align link_a tab_s tab_t LPTs aligntab)))
+				 collect (or (gethash link_a aligntab)
+					     (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
+						 link_a)))
+		do (pushnew adjs alignments :test #'equal))
+	;; possible with recursion on args
 	(loop for argperm in argperms
 	      for new = (loop for link_a in argperm
 			      do
@@ -505,18 +516,21 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
 			      collect (or (gethash link_a aligntab)
 					  (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
 					      link_a)))
-	      do
-	      (pushnew new alignments :test #'equal)
-	     ; (loop for adjperm in adjalign(argperms link tab_s tab_t LPTs)
-	     ;       for adjs = (copy-tree new)
-	     ;       (loop for link_a in adjperm
-	     ;             do the same stuff
-	     ;             collecting into adjs)
-	     ;       do (pushnew adjs alignments :test #'equal))
-	     )
-	; (when (and (null (get-args (car link))) (null (get-args (cdr link)))
-	;        do the same adjperm loop as above)
-	(when alignments (cons link alignments))))))
+	      do (pushnew new alignments :test #'equal)
+	      ;; try to fill up adj alignments
+	      (loop for adjperm in (adjalign argperm link tab_s tab_t LPTs)
+		 for adjs = (loop for link_a in adjperm
+			       do
+				 (unless (gethash link_a aligntab)
+				   (setf (gethash link_a aligntab)
+					 (f-align link_a tab_s tab_t LPTs aligntab)))
+			       collect (or (gethash link_a aligntab)
+					   (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
+					       link_a)))
+		 do (pushnew (append new adjs) alignments :test #'equal))))
+      (if alignments
+	  (cons link alignments)
+	link))))
 
 (lisp-unit:define-test test-f-align
  (let ((tab_s (open-and-import "dev/TEST_simple_s.pl"))
@@ -541,9 +555,9 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
       ((0 . 0) (11 . 9) (10 . 3) (9 . 6)))
     (flatten (f-align '(0 . 0) tab_s tab_t LPT))))
  (let ((tab_s (open-and-import "dev/TEST_optadj_s.pl"))
-      (tab_t (open-and-import "dev/TEST_optadj_t.pl"))
-      (LPT (make-LPT)))
-   (out "~%TODO adjalign")
+       (tab_t (open-and-import "dev/TEST_optadj_t.pl"))
+       (LPT (make-LPT)))
+   (out "~%TODO: skip prepositions when aligning adjs (id 30 below)")
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((0 . 0) (8 . 2) (30 . 8))	; adjuncts optionally align
