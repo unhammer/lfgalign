@@ -236,15 +236,24 @@ variable (ie. what `get-pred' returns)."
 		 (union (fourth Pr) (fifth Pr)))
     (union (fourth Pr) (fifth Pr))))
 
+(defun skip-adj-prep (var tab)
+  "Should skip prepositions of adjuncts, as defined in footnote 3 in
+dyvik2009lmp."
+  (out "TODO: skip adj prep for ~A~%" var)
+  var
+  )
+
 (defun get-adjs (var tab &optional no-error)
   "Use `no-error' to return nil if no ADJUNCT was found.
-TODO: find example to test where we need `unravel' / eq-sets."
+TODO: find example to test where we need `unravel' / eq-sets.
+TODO: Skip prepositions of adjuncts, as defined in footnote 3 in
+dyvik2009lmp, with `skip-adj-prep'."
   (let ((adjvar (assoc "ADJUNCT" (gethash var tab) :test #'equal)))
     (if adjvar
 	(if (get-equivs (cdr adjvar) tab)
 	    (error 'unexpected-input "eqvar of ADJUNCT, TODO")
 	    (mapcar-true (lambda (pair) (when (eq (cdr pair) (cdr adjvar))
-					  (car pair)))
+					  (skip-adj-prep (car pair) tab)))
 			 (cdr (gethash '|in_set| tab))))
 	(unless no-error (error 'no-adjs-error-todo var)))))
 
