@@ -1568,6 +1568,13 @@ Men dette er fordi sigaretze er _adjunkt_, og i følgje fotnote 3 i
 _preposisjonsobjektet_ til ADJ. (Er dette heilt enkelt? Kan me ha
 adjunkt med fleire «preposisjonsargument»?)
 
+I motsetning til å endre på P(ADJ) slik at pred-verdien til eit
+adjunkt hoppar over preposisjonar og inn i preposisjonsobjekt, har eg
+i implementasjonen min gjort det slik at funksjonen som henter ut
+/f-strukturen/ til adjunkt-døtre av ein f-struktur hoppar over
+preposisjonsobjekt (m.a. fordi ved eit kall P(X) kan ikkje P vite om X
+er eit adjunkt eller argument).
+
 Sjå au del \ref{SEC:merge-daughters}.
 
 **** notat 							     :ROTETE:

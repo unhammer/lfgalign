@@ -1,4 +1,4 @@
-% Created 2010-05-01 Sat 13:57
+% Created 2010-05-27 tor 12:44
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -46,7 +46,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{01/05, 2010}
+\date{27/05, 2010}
 
 \begin{document}
 
@@ -1295,7 +1295,7 @@ såfall burde dei vel heller vore analysert som argument?).
 
 
 I følgjande setningspar har me eit objekt «sigarett» som svarer til
-PP-en «sigaretze» («sigareti» + «ze»):
+PP-en «sigaretze» («sigareti» + «ze»), eit adjunkt:
 
 \begin{verbatim}
  Abrams veddet en sigarett med Browne på at det regnet.
@@ -1319,19 +1319,16 @@ kunne lenkje «veddet» og «daenajleva».  Her synest det feil å føye
 saman «sigareti» og «ze», \texttt{(F\_s . (F\_t 1))}, sidan «sigarett» ikkje
 inneheld informasjonen gitt av «ze».
 
-Eg ser to løysingar. Me kan slakke på LMT-kravet ved å la \texttt{L'(F\_t) = \{sigaretze, ze\}} (evt. \texttt{\{sigaret, ze\}}), då kan me lenkje \texttt{(F\_s . F\_t)}, medan 1 er ulenkja.
+Det finst då to løysingar. Me kan slakke på LMT-kravet ved å la
+\texttt{L'(F\_t) = \{sigaretze, ze\}} (evt. \texttt{\{sigaret, ze\}}), då kan me lenkje
+\texttt{(F\_s . F\_t)}, medan 1 er ulenkja.
 
 Eller me kan lenkje \texttt{(F\_s . 1)}, kor me har skikkeleg
 LMT-korrespondanse, men då må me slakke på (iii) og (iv), og altså ha
 lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
-«daenajleva». F$_t$ er då ulenkja.
-
-For meg synest det mest naturleg å lenkje NP til PP, om ein skal
-studere relasjonar mellom kasus, argumentstruktur og tematiske
-roller. 
-\subsubsection{\textbf{TOGROK} Eller finst det gode argument for å lenkje (F$_s$ . 1) ?}
-\label{sec-3.16.2.1}
-
+«daenajleva». F$_t$ er då ulenkja. Det er løysinga valt i
+\citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
+nedanfor.
 
 \section{\textbf{TOGROK} kva var poenget med dette? \textbf{:ROTETE:}}
 \label{sec-3.17}
@@ -1746,7 +1743,10 @@ f-strukturane nedanfor:
 \end{verbatim}
 
 
-
+Men dette er fordi sigaretze er \underline{adjunkt}, og i følgje fotnote 3 i
+\citet{dyvik2009lmp} er P(ADJ) lik den semantiske formen til
+\underline{preposisjonsobjektet} til ADJ. (Er dette heilt enkelt? Kan me ha
+adjunkt med fleire «preposisjonsargument»?)
 
 Sjå au del \ref{SEC:merge-daughters}.
 
