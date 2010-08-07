@@ -1112,7 +1112,7 @@ respectively.  TODO: cache/memoise maketree"
      #'set-equal	   ; note: PERIOD, 81, is part of the above
      '(1141 1165 1817)	   ; c-nodes here, but unaligned, so no split!
      (get-val '((10 . 3)(0 . 0)(11 . 9)(9 . 6)) splits)))
-  (let* ((tab (open-and-import "dev/TEST_subord-c-align.pl"))
+  (let* ((tab (open-and-import "dev/TEST_subord-c-align_s.pl"))
 	 (tree (maketree tab))
 	 (splits (make-instance 'LL-splits))
 	 (f-alignment '((0 . 0))))
