@@ -73,6 +73,18 @@ c-id number referring to what used to be there."
 	;; out-of-domain:
 	(maketrim tree))))
 
+(defun f-tag-tree (node tab)
+  "Debug function, just conses the phi(node) onto the node and 
+any non-terminal child under it."
+  (when node
+    (if (terminal? node)
+	node
+      (list (phi (first node) tab)
+	    (first node)
+	    (second node)
+	    (f-tag-tree (third node) tab)
+	    (f-tag-tree (fourth node) tab)))))
+
 (defun treefind (c-id tree)
   "Just return the subtree of `tree' starting with `c-id'."
   (if (and tree (listp tree))
@@ -681,14 +693,19 @@ the MRS suite, Abrams is a different f-domain from its mother, while
 in dev/TEST_simple_t.pl, qePa is a different f-domain; I don't know why, but their
 phi's don't match anything in the files)."
   (when (trim? tree) (error "Trimmed tree sent to add-links, don't do that."))
-  (labels ((get-link (src)
+  (labels ((get-link (f-id)
 	     (let* ((getter (if (eq from 'trg)
 				#'rassoc
 				#'assoc))
+		    (setter (if (eq from 'trg)
+				(lambda (f-id) (cons nil f-id))
+			      (lambda (f-id) (cons f-id nil))))
 		    (links (mapcar-true (lambda (var) (funcall getter var f-alignment))
-					(adjoin src (get-equivs src tab)))))
-	       (when (cdr links) (error "More than one link: ~A for f-var: ~A" links src))
-	       (car links))))
+					(adjoin f-id (get-equivs f-id tab)))))
+	       (when (cdr links) (error "More than one link: ~A for f-var: ~A" links f-id))
+	       (if (car links)
+		   (car links)
+		 (funcall setter f-id)))))
     (when tree
       (awhen (if (or (terminal? (third tree)) (terminal? (fourth tree)))
 		 (if (and (third tree) (fourth tree))
@@ -1094,7 +1111,21 @@ respectively.  TODO: cache/memoise maketree"
     (lisp-unit:assert-equality
      #'set-equal	   ; note: PERIOD, 81, is part of the above
      '(1141 1165 1817)	   ; c-nodes here, but unaligned, so no split!
-     (get-val '((10 . 3)(0 . 0)(11 . 9)(9 . 6)) splits))))
+     (get-val '((10 . 3)(0 . 0)(11 . 9)(9 . 6)) splits)))
+  (let* ((tab (open-and-import "dev/TEST_subord-c-align.pl"))
+	 (tree (maketree tab))
+	 (splits (make-instance 'LL-splits))
+	 (f-alignment '((0 . 0))))
+    (add-links f-alignment tree tab splits 'src)
+    (lisp-unit:assert-equality #'set-equal
+    '(44 46 48 104 735 734 733 1435)
+     (get-val '((0 . 0)) splits))
+    (lisp-unit:assert-equality #'set-equal
+    '(1236 1262 1338)
+     (get-val '((0 . 0) (8 . nil) (7 . nil)) splits))
+    (lisp-unit:assert-equality #'set-equal
+    '(1461)				; just I'
+     (get-val '((0 . 0) (8 . nil)) splits))))
 
 (lisp-unit:define-test test-LL
   (let* ((tab_s (open-and-import "dev/TEST_regargadj_s.pl"))
