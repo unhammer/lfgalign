@@ -120,6 +120,68 @@ subtrees)."
 		    (Ltree (values Ltree (1+ Ldepth)))
 		    (Rtree (values Rtree (1+ Rdepth)))))))))
 
+(defun c-link-until-neq-infoloss (mc-id_s mlinks_s node_s tab_s splits_s
+				  mc-id_t mlinks_t node_t tab_t splits_t)
+  (let ((c-id_s (car node_s))
+	(c-id_t (car node_t)))
+    (when (and (eq (phi c-id_s tab_s) (phi mc-id_s tab_s))
+	       (eq (phi c-id_t tab_t) (phi mc-id_t tab_t)))
+      (let ((links_s (get-links c-id_s splits_s))
+	    (links_t (get-links c-id_t splits_t)))
+	(labels ((rec (n_s n_t)
+		      (c-link-until-neq-infoloss c-id_s links_s n_s tab_s splits_s
+						 c-id_t links_t n_t tab_t splits_t)))
+	  (cond
+	   ;; first we move down along the equal nodes until we find a split
+	   ;; (these would also be covered by the third case, but should be added already)
+	   ((set-equal mlinks_s links_s)
+	    (append (rec (third node_s) node_t)
+		    (rec (fourth node_s) node_t)))
+	   ((set-equal mlinks_t links_t)
+	    (append (rec node_s (third node_t))
+		    (rec node_s (fourth node_t))))
+	   ;; found a split, only add if links(mother(s))-links(s) = links(mother(t))-links(t)
+	   ((set-equal (set-difference mlinks_s links_s)
+		       (set-difference mlinks_t links_t))
+	    (out "c-link ~A and ~A~%" (get-val links_s splits_s) (get-val links_t splits_t))
+	    (cons (cons (get-val links_s splits_s) (get-val links_t splits_t))
+		  (rec node_s node_t)))
+	   ;; If l(m(s))-l(s) != l(m(t))-l(t), stop; no more c-links in this f-domain
+	   ))))))
+
+(defun foo ()
+  "New c-structure alignment: align first topnodes, then align
+subordinate nodes only if they lose the same members of splits."
+  (let* 
+      ((tab_s (open-and-import "dev/TEST_subord-c-align_s.pl"))
+       (tree_s (maketree tab_s))
+       (splits_s (make-instance 'LL-splits))
+       (tab_t (open-and-import "dev/TEST_subord-c-align_t.pl"))
+       (tree_t (maketree tab_t))
+       (splits_t (make-instance 'LL-splits))
+       (f-alignment1 '((0 . 0)))
+       (f-alignment2 '((0 . 0) (8 . nil)))
+       (f-alignment '((0 . 0) (8 . nil) (7 . nil))))
+;    (out "~A~%~A~%" (f-tag-tree tree_s tab_s) (f-tag-tree tree_t tab_t))
+    (add-links f-alignment tree_s tab_s splits_s 'src)
+    (add-links f-alignment tree_t tab_t splits_t 'trg)
+    (let ((top-c-links 
+	   (mapcar-true (lambda (f-link)
+			  (when (and (car f-link) (cdr f-link))
+			    (cons (topnodes (phi^-1 (car f-link) tab_s) tree_s)
+				  (topnodes (phi^-1 (cdr f-link) tab_t) tree_t))))
+			f-alignment)))
+      (mapcar (lambda (c-link)
+		(out "c-link ~A and ~A~%"
+		     (get-val (get-links (caar c-link) splits_s) splits_s)
+		     (get-val (get-links (cadr c-link) splits_t) splits_t))
+		(c-link-until-neq-infoloss
+		 (caar c-link) (get-links (caar c-link) splits_s) tree_s tab_s splits_s
+		 (cadr c-link) (get-links (cadr c-link) splits_t) tree_t tab_t splits_t))
+	      top-c-links)
+      )
+    ))
+
 (defun phi (c-id tab)
   "Returns the f-var given by phi of `c-id', use (gethash f-var `tab')
 to find the content, but the f-var might have equivs..."
@@ -678,6 +740,12 @@ defined by `f-alignment', which must have been through `flatten';
 				      (and (= (car a) (car b))
 					   (< (cdr a) (cdr b))))))))
     (gethash skey (LL-tab splits))))
+
+(defmethod get-links (c-id (splits LL-splits))
+  "Return the first key (list of links) that has val (a c-id) as a member of its values."
+  (maphash (lambda (k v)
+	     (when (member c-id v) (return-from get-links k)))
+	   (LL-tab splits)))
 
 (defmethod add-links (f-alignment tree tab (splits LL-splits) from)
   "Return links of all pre-terminals under the subtree `tree' as a
