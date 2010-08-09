@@ -1,4 +1,4 @@
-% Created 2010-08-09 Mon 13:23
+% Created 2010-08-09 Mon 15:02
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -380,18 +380,36 @@ i den første publiseringa i XPar-prosjektet, \citet{dyvik2009lmp}.
 \section{\textbf{SKRIV} Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi}
 \label{sec-2.2}
 
+\label{SEC:omgrepsavklaring}
+
 I dei følgjande kapitla nyttar eg ein del LFG-terminologi (i tillegg
 til eit par eigne termar). Difor gir eg her eit kort oversyn over det
 som kan vere nytt for dei som er meir vand med andre grammatiske
 rammeverk.
 
 \begin{description}
-\item modellteoretisk (vs enumerativt) \fxnote[inline,nomargin]{TODO hente Pullum-del frå kap.3 og leggje inn her kanskje?}
-\item f-struktur
-\item c-struktur
-\item endosentrisitetsprinsippa
-\item \xbar
-\item $\phi$, $\phi^{-1}$
+\item [modellteoretisk (vs derivasjonelt)] LFG er eit modellteoretisk,
+  ikkje-derivasjonelt, rammeverk for grammatikk.
+  \citet{pullum2001dbm} gir ein god gjennomgang av forskjellen mellom
+  derivasjonelle (enumerative) grammatikkar og modellteoretiske
+  grammatikkar, kor førstnemnde definerer \emph{mengder av uttrykk} ved
+  avleiing frå startsymbol, medan sistnemnde gir skildringar av
+  \emph{enkeltuttrykk}. Ein modellteoretisk grammatikk kan i tillegg
+  skildre strukturen (eller dei moglege strukturane) til \emph{fragment} av
+  setningar, og denne strukturen er lik det bidraget som fragmentet
+  tilfører skildringa av heile setninga. Det tilsvarande er ikkje
+  mogleg å gjere derivasjonelt. \citet[s.~32--33]{pullum2001dbm} gir
+  t.d. eit fragment som kjem midt i eit høgreforgreina tre; ein
+  derivasjonell skildring ville måtte skildre treet over eller under,
+  men utan informasjon om kva som kjem til høgre eller venstre kan me
+  ikkje (på ein ikkje-vilkårleg måte) skildre subtreet utanfor
+  fragmentet heilt fram til terminal- eller startsymbol.
+\item [modellteoretisk (vs derivasjonelt)]f-struktur
+\item [modellteoretisk (vs derivasjonelt)]c-struktur
+\item [modellteoretisk (vs derivasjonelt)]endosentrisitetsprinsippa
+\item [modellteoretisk (vs derivasjonelt)]\xbar
+\item [modellteoretisk (vs derivasjonelt)]diskontinuerlege konstituentar
+\item [modellteoretisk (vs derivasjonelt)]$\phi$, $\phi^{-1}$
 \item [fraselenkjer vs frasesamanstilling] Eg nyttar her termane
   \emph{lenkjing} og \emph{samanstilling} i omtrent same tyding som dei engelske
   termane \emph{link} og \emph{alignment}, kor ei samanstilling er ei mengd
@@ -512,14 +530,18 @@ fullstendige, «perfekte» samanstillinga vil vere
 identitetsfunksjonen. Kor mykje mangel på samsvar me godtek blir då
 avgjort av formålet med samanstillinga.
 
-
-Eg føreset her at eitt av formåla med samanstillinga er å kunne
-oppdage korleis ulike språk realiserer semantiske roller syntaktisk;
-då spesielt i forhold til hypotesane gitt i \citet[s.~7]{xpar2008rcn},
+Eitt av formåla med samanstillinga i denne oppgåva er å kunne oppdage
+korleis ulike språk realiserer semantiske roller syntaktisk; då
+spesielt i forhold til hypotesane gitt i \citet[s.~7]{xpar2008rcn},
 t.d. at «case marking might be useful to further determine a given
 argument's semantic role». Skal me finne det siste, må me altså kunne
-samanstille frasar med ulik kasusmarkering, men ha krav om lik
-tildeling av semantiske roller.
+lenkje frasar med ulik kasusmarkering, men ha krav om lik tildeling av
+semantiske roller; samtidig skal me sjå at me ikkje kan ha krav om lik
+syntaktisk funksjon. I tillegg vil me sjølvsagt ikkje lenkje på tvers
+av konstituentgrenser, sidan det er fullstendige konstituentar\footnote{LFG tillèt som nemnt diskontinuerlege konstituentar, men dette
+        er ikkje det same som ikkje-konstituentar av typen «es gibt» /
+        «there is». }
+som fyller dei semantiske rollene.
 
 Eit anna mogleg formål er å nytte desse frasesamanstillingane til
 maskinomsetjing. \citet{riezler2006gmt} nyttar ein stokastisk
@@ -529,22 +551,26 @@ ein f-struktur på kjeldespråket til f-strukturfragment på
 målspråket. (Eit krav på utforminga av moglege transfer-reglar hindrar
 at ein får reglar som lenkjar ikkje-konstituentar, eg kjem tilbake til
 dette nedanfor.)  Samanstillinga utvikla her burde au kunne nyttast
-til å finne slike transfer-reglar.
+til å finne slike transfer-reglar, men dette er ikkje noko eg har lagt
+vekt på.
 
-Nedanfor utviklar eg eit forslag til krav for ei frasesamanstilling,
-med desse formåla i tankane. Om alle krava er moglege å implementere,
-er eit separat problem.
+Nedanfor gir eg eit forslag til krav for frasesamanstilling, med desse
+formåla i tankane. Om alle krava er moglege å implementere, er eit
+separat problem.
 
-\section{Krav / skrankar for frasesamanstilling i ein LFG-trebank}
+\section{Frasesamanstilling i ein LFG-trebank}
 \label{sec-3.3}
 
 
 Samanstilte frasar bør ha nok semantisk likskap til å kunne opptre som
 omsetjingar i liknande omgivnader
-\citep[s.~74]{dyvik2009lmp}. \citet{thunes2003eal} gir nokre passande prinsipp
-for å fastslå det som kan kallast \emph{omsetjingsmessig korrespondanse}, for
-ordsamanstilling. Dette er prinsipp som skal gjelde for eit litt forskjellig
-formål\footnote{\cite[s.~2]{thunes2003eal}: «Våre prinsipper er satt
+\citep[s.~74]{dyvik2009lmp}. \citet{thunes2003eal} gir nokre prinsipp
+-- som er passande å ha som utgangspunkt -- for å fastslå det som kan
+kallast \emph{omsetjingsmessig korrespondanse} (her for
+ordsamanstilling). Dette er prinsipp som skal gjelde for eit litt
+forskjellig formål, men som au «ligger nær opp til det vi intuitivt
+mener er riktig» \citep[s.~2]{thunes2003eal}. Prinsippa blir nytta til
+å lage ein gullstandard for ordsamanstilling\footnote{\cite[s.~2]{thunes2003eal}: «Våre prinsipper er satt
 opp for å tjene et bestemt formål, nemlig å samle inn data som metoden
 i Semantic Mirrors skal anvendes på», ein metode for å automatisk
 finne WordNet-liknande relasjonar frå parallelltekst. I denne metoden
@@ -552,55 +578,49 @@ vil det vere naturleg med høge krav til presisjon, men kanskje lågare
 krav til dekning: speilmetoden skal finne leksikale semantiske forhold
 som held på \emph{typenivå}, medan for trebanken er det viktigare korleis
 me kan annotere eit \emph{token} av t.d. eit verb i ein viss VP i ei gitt
-korpussetning. }, men som au «ligger nær opp til det vi intuitivt
-mener er riktig» \citep[s.~2]{thunes2003eal}. Prinsippa blir nytta til
-å lage ein gullstandard for ordsamanstilling (hovudsakleg for dei opne
-klassene), og er definert ved å vise til kva for rolle eit argumentord
-speler, eller kva for rolletildeling eit predikat eller modifiserande
-ord gir. Så for å t.d. samanstille to verb må dei ha like mange
-semantiske argument (men argumenta treng ikkje alle realiserast
-syntaktisk) og dei må \emph{tildele same roller}; medan argumenta må \emph{spele same rolle}, og både argument og adjunkt må vere \emph{koreferente}. Lenkja
-ord må vere del av frasar som speler same rolle i «det som er felles i
-interpretasjonene av [dei to setningane]» \citep[s.~3]{thunes2003eal}.
+korpussetning. },
+hovudsakleg for dei opne klassene, og er definert ved å vise til kva
+for rolle eit argumentord speler, eller kva for rolletildeling eit
+predikat eller modifiserande ord gir. Så for å t.d. samanstille to
+verb må dei ha like mange semantiske argument (men argumenta treng
+ikkje alle realiserast syntaktisk) og dei må \emph{tildele same roller};
+medan argumenta må \emph{spele same rolle}, og både argument og adjunkt må
+vere \emph{koreferente}. Lenkja ord må vere del av frasar som speler same
+rolle i «det som er felles i interpretasjonene av [dei to setningane]»
+\citep[s.~3]{thunes2003eal}.
 
 Viss me tek utgangspunkt i det siste, vil det vere naturleg å i
 tillegg lenkje desse frasane som speler same rolle i «det som er
 felles i interpretasjonene».
 
 Krava for ordsamanstillinga må au vere fylt for at desse frasane kan
-samanstillast. Ein ordsamanstilling er altså naudsynt for ein
-frasesamanstilling, og omvendt. Dette er berre motsetningsfylt om me
-føreset at det eine er derivert av det andre; men dette har me ingen a
-priori grunn til å gjere. Krava eg her utviklar bør i staden sjåast på
-som \emph{skrankar} på moglege samanstillingar, på same måte som dei
-modellteoretiske tolkingane av LFG og HPSG.
+samanstillast. Ei ordsamanstilling er altså naudsynt for ein
+frasesamanstilling, og omvendt. Dette er berre problematisk om me
+føreset at det eine er derivert av det andre; men dette har me ingen
+\emph{a priori} grunn til å gjere. Krava eg her utviklar bør i staden
+sjåast på som \emph{skrankar} på moglege samanstillingar i modellen (jamfør
+\ref{SEC:omgrepsavklaring} om modellteoretiske grammatikkar), heller
+enn derivasjonelle forhold. Samtidig er det som nemnt eit mål å finne
+ut kor uavhengig me kan gjere oss av ordlenkjingsinformasjonen (dette
+er au nyttig for implementasjonen), utan at det treng å gi krava ei
+\emph{retning}.
 
-\citet{pullum2001dbm} gir ein god gjennomgang av forskjellen
-mellom derivasjonelle (enumerative) grammatikkar og skrankebaserte
-modellteoretiske grammatikkar, kor førstnemnde definerer \emph{mengder av uttrykk} ved avleiing frå startsymbol, medan sistnemnde gir skildringar
-av \emph{enkeltuttrykk}. Ein modellteoretisk grammatikk kan i tillegg skildre
-strukturen (eller dei moglege strukturane) til \emph{fragment} av setningar,
-og denne strukturen er lik det bidraget som fragmentet tilfører
-skildringa av heile setninga. Det tilsvarande er ikkje mogleg å gjere
-derivasjonelt. \citet[s.~32--33]{pullum2001dbm} gir t.d. eit fragment
-som kjem midt i eit høgreforgreina tre; ein derivasjonell skildring
-ville måtte skildre treet over eller under, men utan informasjon om
-kva som kjem til høgre eller venstre kan me ikkje (på ein
-ikkje-vilkårleg måte) skildre subtreet utanfor fragmentet heilt fram
-til terminal- eller startsymbol. 
-
-Sidan ei frasesamanstilling er ei skildring av forhold mellom
-setningsfragment vil det vere naturleg å skildre dei ønskelege
-forholda som skrankar på moglege samanstillingar. Dette let oss au
-setje skrankar på både frase- og ordsamanstilling sameleis, utan å
-måtte ha krav om at den eine samanstillinga er fullstendig avleiia av
-den andre; noko me ikkje har eit \emph{a priori} grunnlag for å seie. 
+Ei frasesamanstilling er ei skildring av forhold mellom \emph{fragment} av
+setningar, dette er endå ein grunn til at det er naturleg å skildre
+dei ønskelege forholda som skrankar på moglege samanstillingar. Me kan
+setje skrankar på f-struktur-, konstituent- og ordsamanstilling
+samtidig, utan å måtte ha krav om at den eine samanstillinga er
+fullstendig (eller delvis) avleiia av den andre, før me veit om eit
+slikt avleiingsforhold er empirisk fundert. Me kan i tillegg ha
+ufullstendige samanstillingar i dei tilfella der det er ufullstendig
+samsvar mellom setningane (der ei fullstendig samanstilling ville
+brutt visse krav).
 
 Sidan metoden er mynta på bruk i ein LFG-parsa trebank, og delvis vil
-nytte denne parsen som datagrunnlag, er det naturleg å nytte same
-konsept som blir nytta i LFG\footnote{I tillegg finst andre positive biverknader av ein LFG-basert
+nytte denne annotasjonen som datagrunnlag, er det naturleg å nytte
+same konsept som blir nytta i LFG\footnote{I tillegg finst andre positive biverknader av ein LFG-basert
  frasesamanstilling for bruk i denne samanhengen, som at ein kan
- oppdage kor parallelle dei parallelle grammatikkane i
+ studere kor parallelle dei parallelle grammatikkane i
  ParGram-prosjektet \citep{butt2002pgp} faktisk er, på ulike nivå
  (leksikon og argumentstruktur, c-struktur, f-struktur). } (f-struktur, c-struktur,
 endosentrisitetsprinsipp, \xbar{}-tre, osb.)  au i desse krava til den
@@ -608,12 +628,17 @@ endosentrisitetsprinsipp, \xbar{}-tre, osb.)  au i desse krava til den
 skildring av syntaks, bør desse krava vere generaliserbare til andre
 teoriar.
 
-Eg byggjar vidare på krava frå \citet{thunes2003eal} nedanfor, men
-kjem som nemnd med visse endringsforslag.
+Utan skrankar i det heile vil alt kunne lenkjast til alt (noko som er
+like unyttig som å ikkje lenkje noko); i del \ref{SEC:kandidatar} ser
+eg på kva for typar element i dei lingvistiske analysane (ord,
+grammatiske trekk, konstituentar, \ldots{}) det er fornuftig å tillate
+lenkjer mellom. I avsnitta nedanfor spesifiserer eg kva som må til for
+at me skal lenkje element av desse typane.
 
-\section{Kva kan samanstillast?}
+\section{Kva kan lenkjast?}
 \label{sec-3.4}
 
+\label{SEC:kandidatar}
 
 Viss to uttrykk er samanstilt på setningsnivå (slik at me dimed kan gå
 ut frå at dei er omsetjingar av kvarandre), og begge har ein
@@ -624,27 +649,29 @@ ekvivalensforhold under setningsnivå:
 \item mellom f-strukturar,
 \item mellom c-strukturnodar.
 \end{enumerate}
-Alle ord i setninga er \emph{kandidatar} for samanstilling med ord i
-omsetjinga, men \emph{a priori} kan me ikkje utelukke at eit ord ikkje har ei
-lenkjing, og me kan heller ikkje utelate mange-til-mange-lenkjing. Det
-same gjeld nodane i c-strukturen.
+På begge språk har me alle nivå -- det er ingen grunn til å lenkje på
+tvers av nivå sidan forhold mellom desse nivåa er implisitt i
+LFG-analysen.
 
-\fxnote{i tillegg vil samanstilling av andre trekk vere endå eit steg
-lenger vekk frå observerte data}
+Alle ord i setninga er \emph{kandidatar} for samanstilling med ord i
+omsetjinga, men det kan godt hende at eit ord \emph{ikkje} har ei lenkje,
+og me kan heller ikkje utelukke at det finst mange-til-mange-lenkjer
+som ikkje kan «delast opp». Dette gjeld au nodane i c-strukturen.
+
 
 Når det gjeld f-strukturane er det ganske mange element me teoretisk
-sett kunne ha samanstilt, t.d. enkelttrekk som bestemtheit eller dei
-uordna mengdene med adjunkt, men det som er mest \emph{nyttig} er nok å
-berre gjere samanstillingar der det er ei nær kopling til orda i
-setninga. Sidan alle PRED-element i ein f-struktur unikt står for
-predikerande ord, kan me -- gitt to samanstilte setningar -- la
-\emph{kandidatane for samanstilling på f-strukturnivå} inkludere\footnote{I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
+sett kunne ha lenkja, t.d. enkelttrekk som kasus eller dei uordna
+mengdene med adjunkt, men det som er mest \emph{nyttig} er nok å berre
+lenkje der det er ei nær kopling til orda i setninga. Sidan alle
+PRED-element i ein f-struktur unikt står for predikerande ord, kan me
+-- gitt to samanstilte setningar -- la \emph{kandidatane for
+samanstilling på f-strukturnivå} inkludere\footnote{I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
         inkludere visse f-strukturar utan PRED-element i kandidatane
-        for samanstilling. }
-alle desse PRED-elementa i f-strukturane til setningane. PRED-element
-representerer semantiske bidrag som oftare er naudsyne på begge språk i
-omsetjingar, medan andre f-strukturtrekk gjerne er valfrie på det eine
-av språka; det er ikkje alle språk som har t.d. obligatorisk
+        for samanstilling. } alle desse
+PRED-elementa i f-strukturane til setningane. PRED-element
+representerer semantiske bidrag som oftare er naudsyne på begge språk
+i omsetjingar, medan andre f-strukturtrekk gjerne er valfrie på det
+eine av språka; det er ikkje alle språk som har t.d. obligatorisk
 kasusmarkering, og ein vil kanskje nytte trebanken til å oppdage
 nettopp slik variasjon.  PRED-elementa er i tillegg gjerne enklare å
 knyte direkte opp mot konkrete tekststrengen, medan t.d. aspekt
@@ -2136,6 +2163,7 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
 
 
 
