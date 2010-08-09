@@ -264,12 +264,12 @@ likt, medan mangel på samsvar i samanstillinga til døtre kan føre til
 at mornodar ikkje skal samanstillast; ein formalisering dette steget,
 med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
-* Bakgrunn og relaterte metodar
+* Bakgrunn og omgrepsavklaring
   \label{SEC:bakgrunn}
-\fxnote{TODO:\\
+\fxnote{TODO (innleiing?):\\
    - reine N-gram-samanstillingar, dependensbaserte\\
    - ulike formål for samanstilling gir ulike metodar\\
-   - kort introduksjon til LFG \\
+   - kort oversyn over LFG-termar \\
 }
 ** SKRIV Relaterte metodar
 Automatisk frasesamanstilling er eit nytt felt. Det finst allereie
@@ -357,27 +357,37 @@ overlapp mellom krava som kjem i kapittel \ref{SEC:ideell} og dei gitt
 i den første publiseringa i XPar-prosjektet, \citet{dyvik2009lmp}.
 
 
-** SKRIV Eit kort oversyn over leksikalsk-funksjonell grammatikk
-I dei følgjande kapitla nyttar eg ein del LFG-terminologi. Difor gir
-eg her eit kort oversyn over det som kan vere nytt for dei som er meir
-vand med andre grammatiske rammeverk.
+** SKRIV Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi
+I dei følgjande kapitla nyttar eg ein del LFG-terminologi (i tillegg
+til eit par eigne termar). Difor gir eg her eit kort oversyn over det
+som kan vere nytt for dei som er meir vand med andre grammatiske
+rammeverk.
 
 - modellteoretisk (vs enumerativt) \fxnote[inline,nomargin]{TODO hente Pullum-del frå kap.3 og leggje inn her kanskje?}
 
-- f-struktur
+- f-struktur 
 
-- c-struktur
+- c-struktur 
 
-- endosentrisitetsprinsippa
+- endosentrisitetsprinsippa 
 
-- \xbar
+- \xbar 
 
-- $\phi$, $\phi^{-1}$
+- $\phi$, $\phi^{-1}$ 
+
+- fraselenkjer vs frasesamanstilling :: Eg nyttar her termane
+  /lenkjing/ og /samanstilling/ i omtrent same tyding som dei engelske
+  termane /link/ og /alignment/, kor ei samanstilling er ei mengd
+  lenkjer. Dette er ekvivalensforhold som me kan finne mellom
+  lingvistiske /representasjonar/ (f-struktur, c-struktur) eller
+  /uttrykk/ (ord, setningar); lenkjing mellom dei siste altså er meir
+  ateoretisk / datanært.
+
 
 * Krav til frasesamanstilling
 \label{SEC:ideell}
 
-** Introduksjon
+** Innleiing
 I denne delen prøver eg å finne fram til kva som er den best moglege
 frasesamanstillinga. Eg argumenterer for at «best» her må tolkast i
 forhold til eit formål, her å finne samsvar mellom kasusmarkering og
@@ -385,33 +395,56 @@ semantisk rolletildeling. Som utgangspunkt har eg visse krav for
 ordsamanstilling gitt i \citet{thunes2003eal}, saman med krava for
 frasesamanstilling i \citet{dyvik2009lmp}. Eg viser kvifor ein, for
 våre formål, må revidere kravet til Thunes om likskap i
-argumentstruktur. Eg viser fleire døme for å grunngje krava i
+argumentstruktur. Eg gir nokre døme for å grunngje krava i
 \citet{dyvik2009lmp}, i tillegg til å utdjupe dei for å gjere dei
 enklare å implementere i kapittel \ref{SEC:implementasjon}. Dette
 involverer au å omformulere krava for c-struktursamanstilling slik at
-dei ikkje refererer til ordlenkjer, berre f-strukturlenkjer. Sidan ein
-del av målet med Xpar-prosjektet er å finne ut av kor mykje
+dei ikkje refererer til ordlenkjer, berre f-strukturlenkjer. Sidan eit
+av måla med Xpar-prosjektet er å finne ut kor mykje
 frasesamanstillingsinformasjon me kan få ut av parallellismen i
-f-strukturane (sett frå den andre sida, kor uavhengig ein kan gjere
-seg av bottom-up-informasjonen i ordlenkjer), blir det eit avleidd mål
-å formulere frasesamanstillingskrava med referanse til f-strukturane
-der det går an.
+f-strukturane (eller, sett frå den andre sida, kor uavhengig ein kan
+gjere seg av den bottom-up-informasjonen ei ordlenkje gir), blir det
+eit avleidd mål å formulere frasesamanstillingskrava med referanse til
+f-strukturane der det går an.
 
-** Kva er formålet med ei frasesamanstilling?
-I frasebasert statistisk maskinomsetjing (PBSMT) skal ei
-fraselenkje[fn:11] forbetre maskinomsetjing på eitt eller anna mål,
-t.d. \Bleu-skåren. \Bleu-skåren samanliknar ferdig
-omsett tekst (ein gullstandard) med det automatisk omsette, ved å
-sjekke kor mykje N-gram-overlapp det er mellom tekstene. Ei
-fraselenkje mellom N-grammet /es gibt/ og /there is/ (dvs. eit auka
-sannsyn for å nytte slike par i omsetjinga) kan gi ein høgare endeleg
-skåre i \Bleu. Som vist i \citet{koehn2003spb} fekk dei ein
-lågare \Bleu-skåre når dei fjerna lenkjer mellom nodar som, i
-# todo: referere til den faktiske parsaren? det var Bikel kanskje?
-følgje ein robust statistisk PCFG-parsar, ikkje var syntaktiske frasar
+** Formål med frasesamanstilling
+Ei frasesamanstilling er ein slag annotasjon av eit korpus. På same
+måte som oppbygginga av eit korpus avheng av formålet til korpuset,
+kan ein ikkje definere den ideelle annotasjonen av eit korpus utan å
+ta høgd for kva ein skal nytte annotasjonen til.
+
+Me kan illustrere dette med eit enkelt, praktisk døme: ved automatisk
+ordklassetagging må ein gjerne avvege mellom dekning (å finne flest
+moglege analysar for flest mogleg ord) og presisjon (å berre ende opp
+med korrekte analysar).  Viss formålet er å annotere ein
+leksikografisk ressurs, vil det vere viktigare med høg dekning på
+bekostning av presisjon, sidan leksikografen gjerne leiter etter
+nye/kreative bruksområde av ord. Skal taggaren nyttast til
+maskinomsetjing i staden, kan ein ikkje nytte meir enn éin analyse til
+slutt, så her er presisjon viktigast.
+
+Sjølvsagt kan ein her seie at den /ideelle/ annotasjonen vil vere å
+berre ha korrekte analysar, men sjølv ved ideelle krav er formålet
+viktig: er ein ute etter å finne N-gram som ofte blir omsett med
+kvarande, men som /ikkje/ er syntaktiske konstituentar, er det klart
+at retningslinjene nedanfor ikkje er så nyttige.
+
+Sidan utviklinga av automatisk frasesamanstilling hovudsakleg har
+skjedd innanfor frasebasert statistisk maskinomsetjing (PBSMT), kjem
+me ikkje utanom ei samanlikning her. I PBSMT er formålet med ei
+fraselenkje å betre maskinomsetjing på eitt eller anna mål,
+t.d. \Bleu-skåren. \Bleu-skåren samanliknar ferdig omsett tekst (ein
+gullstandard) med det automatisk omsette, ved å sjekke kor mykje
+N-gram-overlapp det er mellom tekstene. Ei fraselenkje mellom
+N-grammet /es gibt/ og /there is/ (dvs. eit auka sannsyn for å nytte
+slike par i omsetjinga) kan gi ein høgare endeleg skåre i \Bleu. Som
+vist i \citet{koehn2003spb} fekk dei ein lågare \Bleu-skåre når dei
+\fxnote{todo: referere til den faktiske parsaren? det var Bikel
+kanskje?}  fjerna lenkjer mellom nodar som, i følgje ein robust
+statistisk PCFG-parsar, ikkje var syntaktiske frasar
 (konstituentar). Dvs. at i figur \ref{fig:ikkjenode} vil lenkja vist
-ved den prikkete lenkja bli fjerna frå mengda over moglege lenkjingar
-om ein berre held seg til syntaktiske konstituentar, og
+ved den prikkete linja bli fjerna frå mengda over moglege lenkjer om
+ein berre held seg til syntaktiske konstituentar, og
 $p(es~gibt,~there~is)$ vil ikkje bli tilsvarande auka i den
 statistiske omsetjingsmodellen. Sidan PBSMT, som skildra i
 \citet{koehn2003spb}, er agnostisk til syntaktiske høve i
@@ -443,24 +476,27 @@ utgangspunktet meir nytte av kollokasjonsinformasjon.
 # es gibt Frost an meiner Tür
 
 Men sett no at me ikkje har som formål å nytte frasesamanstillinga til
-reint N-grambasert omsetjing. Kva for /lingvistiske/ krav kan me stille
-til å kalle to frasar samanstilte? I einkvar større parallelltekst vil
-parallellstilte setningar ha visse syntaktiske og semantiske[fn:6]
-omsetjingsskifte, t.d. leksikalisering av syntaktiske konstruksjonar
-eller omvendt, endring av ordklasse, presisering/depresisering,
-endringar i leksikale trekk (t.d. telleleg/utelleleg),
+reint N-grambasert omsetjing. Kva for /lingvistiske/ krav kan me
+stille til å kalle to frasar samanstilte? Me må i alle fall tillate
+ein del skilnad.  I alle større parallelltekster vil parallellstilte
+setningar ha visse syntaktiske og semantiske[fn:6] omsetjingsskifte,
+t.d. leksikalisering av syntaktiske konstruksjonar eller omvendt,
+endring av ordklasse, presisering/depresisering, endringar i leksikale
+trekk (t.d. telleleg/utelleleg),
 osb. \citep[s.~56--62]{munday2001its}, slik at den einaste
 fullstendige, «perfekte» samanstillinga vil vere
-identitetsfunksjonen. Me må godta ein del mangel på samsvar; kor mykje
-me godtek blir då avgjort av formålet med samanstillinga.
+identitetsfunksjonen. Kor mykje mangel på samsvar me godtek blir då
+avgjort av formålet med samanstillinga.
+
+# CURRENT
 
 Eg føreset her at eitt av formåla med samanstillinga er å kunne
 oppdage korleis ulike språk realiserer semantiske roller syntaktisk;
 då spesielt i forhold til hypotesane gitt i \citet[s.~7]{xpar2008rcn},
 t.d. at «case marking might be useful to further determine a given
-argument's semantic role». (Skal me finne det siste, må me altså kunne
+argument's semantic role». Skal me finne det siste, må me altså kunne
 samanstille frasar med ulik kasusmarkering, men ha krav om lik
-tildeling av semantiske roller.)
+tildeling av semantiske roller.
 
 Eit anna mogleg formål er å nytte desse frasesamanstillingane til
 maskinomsetjing. \citet{riezler2006gmt} nyttar ein stokastisk
@@ -640,9 +676,9 @@ diskontinuerlege konstituentar), men ikkje alle vil bli samanstilt.
 *** TOGROK finst det tilfelle der ordlenkjer ikkje impliserer PRED-lenkjer?
    hypotese: det er alltid slik at \\
    ordlenkjing av predikerande ord => PRED-lenkje
-** TOGROK kva med ekspletivar? ingen PRED men heller ikkje C/F/I     :ROTETE:
-Kandidatane på f-strukturnivå må jo inkludere desse au...
-** SKRIV LPT						     :ROTETE:
+** SKRIV Krav på ordnivå
+\label{SEC:ordkrav}
+*** SKRIV LPT 							     :ROTETE:
 «a source word WS and a target word WT are taken to correspond
 translationally only if (i) WT can in general (out of context) be
 taken to be among the semantically plausible translations of WS, i.e.,
@@ -655,6 +691,24 @@ corresponding argument structures.»
 phrase corresponding to a target word or phrase outside PHT, and
 similarly (iii) PHT contains no word or phrase corresponding to a
 source word or phrase outside PH.»
+
+
+*** Lik ordklasse?
+Ulike språk leksikaliserer same konsept på ulike
+måtar. \citet[s.~3]{cheung2002scg} skriv at det engelske ordet
+/fulfilment/ meir naturleg blir omsett til eit verb på kinesisk. Det
+same gjeld t.d. /solitude/ omsett til norsk. Eit georgisk
+verbalsubstantiv (/masdar/) kan bli omsett til eit verb i infinitiv på
+norsk[fn:13]. Slike skifte mellom ordklassar er svært vanlege i
+omsetjing[fn:3].
+# , sjå setning nr. 9 i MRS-suiten \citet{mrs-suite} for infinitiv
+# (men ingen masdar der på georgisk no!)
+# TODO: omformuler
+
+Me kan opne for ordklasseoverskridande lenkjer der det er samsvar
+mellom visse /trekk/, t.d. kan to predikerande ord lenkjast, eller to
+«nominale» ord. Ein annan måte å gjere dette på er rett og slett å
+krevje ein viss likskap i argumentstruktur. 
 ** Funksjonsord
 \label{SEC:fnord}
 I tillegg kan me ha ord i setninga som ikkje tilsvarer PRED-element i
@@ -704,6 +758,8 @@ vil vere oppfylt om me kan samanstille /cvimda/ med /det regnet/.
   \end{figure}
 #+END_LaTeX
 *** TOGROK cvimda<PRO> men regne<>expletive -- lenkje? 		     :ROTETE:
+*** TOGROK kva med ekspletivar? ingen PRED men heller ikkje C/F/I    :ROTETE:
+Kandidatane på f-strukturnivå må jo inkludere desse au...
 
 ** Lenkjing av underordna c-strukturnodar
 \label{SEC:subnode}
@@ -826,7 +882,7 @@ språket.»
 ** TOGROK mange-til-mange-lenkjing i f-strukturane? 		     :ROTETE:
     Eg er litt usikker på om me skal ha slike
     mange-til-mange-korrespondansar i f-strukturane; eg har rekna med
-    at ei f-strukturlenkje /impliserer/ ei slags lenkjing mellom det som
+    at ei f-strukturlenkje /impliserer/ ei slag lenkjing mellom det som
     er innanfor f-strukturane; men i \citet{riezler2006gmt} er det i
     staden berre eit krav om at desse f-strukturane er lenkja i same
     transfer-regel.
@@ -872,24 +928,6 @@ mellom /never/ og /nikby/.
 *** TODO døme på diskontinuerlege konstituentar som er lenkja	     :ROTETE:
 ** TOGROK Er «compounds» frasar?	     :ROTETE:
  \citep[p.~1]{giegerich2006aea}
-
-
-** Lik ordklasse?
-Ulike språk leksikaliserer same konsept på ulike
-måtar. \citet[s.~3]{cheung2002scg} skriv at det engelske ordet
-/fulfilment/ meir naturleg blir omsett til eit verb på kinesisk. Det
-same gjeld t.d. /solitude/ omsett til norsk. Eit georgisk
-verbalsubstantiv (/masdar/) kan bli omsett til eit verb i infinitiv på
-norsk[fn:13]. Slike skifte mellom ordklassar er svært vanlege i
-omsetjing[fn:3].
-# , sjå setning nr. 9 i MRS-suiten \citet{mrs-suite} for infinitiv
-# (men ingen masdar der på georgisk no!)
-# TODO: omformuler
-
-Me kan opne for ordklasseoverskridande lenkjer der det er samsvar
-mellom visse /trekk/, t.d. kan to predikerande ord lenkjast, eller to
-«nominale» ord. Ein annan måte å gjere dette på er rett og slett å
-krevje ein viss likskap i argumentstruktur. 
 
 
 ** Krav om lik argumentstruktur
@@ -1110,7 +1148,7 @@ resonnementet.)
 
 Alternativt ein konstruksjonslenkjing... 
 
-Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slags delmengd av
+Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slag delmengd av
 argstr til $PRED_{L2}$. 
 *** SKRIV True Arguments vs True Adjuncts, Pustejovsky 		     :ROTETE:
    - Treng døme først...
@@ -1378,6 +1416,7 @@ blir utvikla /etter kvart som ein finn problem/... (det er vanskeleg å
 seie noko /a priori/ om kva for vanskar ein kan finne).
 
 
+** SKRIV Rangering
 
 * Implementasjonen av =lfgalign=
 \label{SEC:implementasjon}
@@ -1911,9 +1950,9 @@ slike /klasseskifte/, og andre typar omsetjingsskifte.
 MRS-suiten, med mindre anna er opplyst.
 
 [fn:6] Sidan eg føreset setningssamanstilte data, kjem eg ikkje inn på
- diskurs-/pragmatiske verknader, med mindre det kan vere mogleg
- å handsame desse innanfor setningen.
-# SKRIV omformulere! og ekspliser...
+ diskurs-/pragmatiske verknader, med mindre dette fører til
+ forskjellar innanfor setningane (sjå t.d. del \ref{SEC:ordkrav} om
+ lenkjer mellom koreferente substantiv og pronomen).
 
 [fn:7] Det funksjonelle domenet til ein f-struktur er gitt ved
  $\phi^{-1}$, inversen av c-til-f-strukturavbildinga, og tilsvarer dei
@@ -1935,12 +1974,6 @@ MRS-suiten, med mindre anna er opplyst.
  ordet blir rekna for å vere eit innhaldsord. Frasane til deira
  funksjonelle domene vil uansett vere samanstilt via toppnodane
  (t.d. CP).
-
-[fn:11] Eg nyttar her termane /lenkjing/ og /samanstilling/ om
- kvarandre, i same tyding som det engelske /alignment/; dette er
- ekvivalensforhold som me kan finne mellom lingvistiske
- /representasjonar/ (f-struktur, c-struktur) eller /uttrykk/ (ord,
- setningar). Lenkjing mellom dei siste altså er meir ateoretisk / datanært.
 
 [fn:12] I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
         inkludere visse f-strukturar utan PRED-element i kandidatane
@@ -1980,7 +2013,7 @@ MRS-suiten, med mindre anna er opplyst.
         meiner eg sjølvsagt at ordformen til PRED-verdien til kvar
         f-struktur har LPT-korrespondanse.
 
-[fn:18] Eigentleg eit slags avgjerdstre; kvart element er eit par, kor
+[fn:18] Eigentleg eit slag avgjerdstre; kvart element er eit par, kor
         første element er lenkja mellom dei yttarste f-strukturane, og
         andre element er dei moglege samanstillingane for dei indre
         strukturane. Denne strukturen kan vere nyttig for å rangere

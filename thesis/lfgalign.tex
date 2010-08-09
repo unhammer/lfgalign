@@ -1,4 +1,4 @@
-% Created 2010-08-09 Mon 10:32
+% Created 2010-08-09 Mon 13:23
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -280,14 +280,14 @@ likt, medan mangel på samsvar i samanstillinga til døtre kan føre til
 at mornodar ikkje skal samanstillast; ein formalisering dette steget,
 med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
-\chapter{Bakgrunn og relaterte metodar}
+\chapter{Bakgrunn og omgrepsavklaring}
 \label{sec-2}
 
   \label{SEC:bakgrunn}
-\fxnote{TODO:\\
+\fxnote{TODO (innleiing?):\\
    - reine N-gram-samanstillingar, dependensbaserte\\
    - ulike formål for samanstilling gir ulike metodar\\
-   - kort introduksjon til LFG \\
+   - kort oversyn over LFG-termar \\
 }
 \section{\textbf{SKRIV} Relaterte metodar}
 \label{sec-2.1}
@@ -371,61 +371,102 @@ seinare?}
 
 Så langt har eg ikkje kome over metodar som går i motsett retning,
 altså prøver å finne eller betre på frase- og ordsamanstilling ut frå
-ein LFG-parse; det er dette som er strategien til programmet
-\texttt{lfgalign} i kapittel \ref{SEC:implementasjon}.
+ein LFG-parse -- det er dette som er strategien til programmet
+\texttt{lfgalign} i kapittel \ref{SEC:implementasjon} -- men det er stor
+overlapp mellom krava som kjem i kapittel \ref{SEC:ideell} og dei gitt
+i den første publiseringa i XPar-prosjektet, \citet{dyvik2009lmp}.
 
 
-\section{\textbf{SKRIV} Eit kort oversyn over leksikalsk-funksjonell grammatikk}
+\section{\textbf{SKRIV} Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi}
 \label{sec-2.2}
 
-I dei følgjande kapitla nyttar eg ein del LFG-terminologi. Difor gir
-eg her eit kort oversyn over det som kan vere nytt for dei som er meir
-vand med andre grammatiske rammeverk.
+I dei følgjande kapitla nyttar eg ein del LFG-terminologi (i tillegg
+til eit par eigne termar). Difor gir eg her eit kort oversyn over det
+som kan vere nytt for dei som er meir vand med andre grammatiske
+rammeverk.
 
-\begin{itemize}
+\begin{description}
 \item modellteoretisk (vs enumerativt) \fxnote[inline,nomargin]{TODO hente Pullum-del frå kap.3 og leggje inn her kanskje?}
 \item f-struktur
 \item c-struktur
 \item endosentrisitetsprinsippa
 \item \xbar
 \item $\phi$, $\phi^{-1}$
-\end{itemize}
+\item [fraselenkjer vs frasesamanstilling] Eg nyttar her termane
+  \emph{lenkjing} og \emph{samanstilling} i omtrent same tyding som dei engelske
+  termane \emph{link} og \emph{alignment}, kor ei samanstilling er ei mengd
+  lenkjer. Dette er ekvivalensforhold som me kan finne mellom
+  lingvistiske \emph{representasjonar} (f-struktur, c-struktur) eller
+  \emph{uttrykk} (ord, setningar); lenkjing mellom dei siste altså er meir
+  ateoretisk / datanært.
+\end{description}
 \chapter{Krav til frasesamanstilling}
 \label{sec-3}
 
 \label{SEC:ideell}
 
-\section{Introduksjon}
+\section{Innleiing}
 \label{sec-3.1}
 
 I denne delen prøver eg å finne fram til kva som er den best moglege
 frasesamanstillinga. Eg argumenterer for at «best» her må tolkast i
-forhold til eit formål, og tek utgangspunkt i visse krav for
-ordsamanstilling gitt i \citet{thunes2003eal}. Eg kjem fram til at når
-formålet er utvikling av fasesamanstilte trebankar må ein revidere
-kravet om likskap i argumentstruktur, og gir eit forslag til krav for
-frasesamanstilling i trebankar.
+forhold til eit formål, her å finne samsvar mellom kasusmarkering og
+semantisk rolletildeling. Som utgangspunkt har eg visse krav for
+ordsamanstilling gitt i \citet{thunes2003eal}, saman med krava for
+frasesamanstilling i \citet{dyvik2009lmp}. Eg viser kvifor ein, for
+våre formål, må revidere kravet til Thunes om likskap i
+argumentstruktur. Eg gir nokre døme for å grunngje krava i
+\citet{dyvik2009lmp}, i tillegg til å utdjupe dei for å gjere dei
+enklare å implementere i kapittel \ref{SEC:implementasjon}. Dette
+involverer au å omformulere krava for c-struktursamanstilling slik at
+dei ikkje refererer til ordlenkjer, berre f-strukturlenkjer. Sidan eit
+av måla med Xpar-prosjektet er å finne ut kor mykje
+frasesamanstillingsinformasjon me kan få ut av parallellismen i
+f-strukturane (eller, sett frå den andre sida, kor uavhengig ein kan
+gjere seg av den bottom-up-informasjonen ei ordlenkje gir), blir det
+eit avleidd mål å formulere frasesamanstillingskrava med referanse til
+f-strukturane der det går an.
 
-\section{Kva er formålet med ei frasesamanstilling?}
+\section{Formål med frasesamanstilling}
 \label{sec-3.2}
 
-I frasebasert statistisk maskinomsetjing (PBSMT) skal ei
-fraselenkje\footnote{Eg nyttar her termane \emph{lenkjing} og \emph{samanstilling} om
- kvarandre, i same tyding som det engelske \emph{alignment}; dette er
- ekvivalensforhold som me kan finne mellom lingvistiske
- \emph{representasjonar} (f-struktur, c-struktur) eller \emph{uttrykk} (ord,
- setningar). Lenkjing mellom dei siste altså er meir ateoretisk / datanært. } forbetre maskinomsetjing på eitt eller anna mål,
-t.d. \Bleu-skåren. \Bleu-skåren samanliknar ferdig
-omsett tekst (ein gullstandard) med det automatisk omsette, ved å
-sjekke kor mykje N-gram-overlapp det er mellom tekstene. Ei
-fraselenkje mellom N-grammet \emph{es gibt} og \emph{there is} (dvs. eit auka
-sannsyn for å nytte slike par i omsetjinga) kan gi ein høgare endeleg
-skåre i \Bleu. Som vist i \citet{koehn2003spb} fekk dei ein
-lågare \Bleu-skåre når dei fjerna lenkjer mellom nodar som, i
-følgje ein robust statistisk PCFG-parsar, ikkje var syntaktiske frasar
+Ei frasesamanstilling er ein slag annotasjon av eit korpus. På same
+måte som oppbygginga av eit korpus avheng av formålet til korpuset,
+kan ein ikkje definere den ideelle annotasjonen av eit korpus utan å
+ta høgd for kva ein skal nytte annotasjonen til.
+
+Me kan illustrere dette med eit enkelt, praktisk døme: ved automatisk
+ordklassetagging må ein gjerne avvege mellom dekning (å finne flest
+moglege analysar for flest mogleg ord) og presisjon (å berre ende opp
+med korrekte analysar).  Viss formålet er å annotere ein
+leksikografisk ressurs, vil det vere viktigare med høg dekning på
+bekostning av presisjon, sidan leksikografen gjerne leiter etter
+nye/kreative bruksområde av ord. Skal taggaren nyttast til
+maskinomsetjing i staden, kan ein ikkje nytte meir enn éin analyse til
+slutt, så her er presisjon viktigast.
+
+Sjølvsagt kan ein her seie at den \emph{ideelle} annotasjonen vil vere å
+berre ha korrekte analysar, men sjølv ved ideelle krav er formålet
+viktig: er ein ute etter å finne N-gram som ofte blir omsett med
+kvarande, men som \emph{ikkje} er syntaktiske konstituentar, er det klart
+at retningslinjene nedanfor ikkje er så nyttige.
+
+Sidan utviklinga av automatisk frasesamanstilling hovudsakleg har
+skjedd innanfor frasebasert statistisk maskinomsetjing (PBSMT), kjem
+me ikkje utanom ei samanlikning her. I PBSMT er formålet med ei
+fraselenkje å betre maskinomsetjing på eitt eller anna mål,
+t.d. \Bleu-skåren. \Bleu-skåren samanliknar ferdig omsett tekst (ein
+gullstandard) med det automatisk omsette, ved å sjekke kor mykje
+N-gram-overlapp det er mellom tekstene. Ei fraselenkje mellom
+N-grammet \emph{es gibt} og \emph{there is} (dvs. eit auka sannsyn for å nytte
+slike par i omsetjinga) kan gi ein høgare endeleg skåre i \Bleu. Som
+vist i \citet{koehn2003spb} fekk dei ein lågare \Bleu-skåre når dei
+\fxnote{todo: referere til den faktiske parsaren? det var Bikel
+kanskje?}  fjerna lenkjer mellom nodar som, i følgje ein robust
+statistisk PCFG-parsar, ikkje var syntaktiske frasar
 (konstituentar). Dvs. at i figur \ref{fig:ikkjenode} vil lenkja vist
-ved den prikkete lenkja bli fjerna frå mengda over moglege lenkjingar
-om ein berre held seg til syntaktiske konstituentar, og
+ved den prikkete linja bli fjerna frå mengda over moglege lenkjer om
+ein berre held seg til syntaktiske konstituentar, og
 $p(es~gibt,~there~is)$ vil ikkje bli tilsvarande auka i den
 statistiske omsetjingsmodellen. Sidan PBSMT, som skildra i
 \citet{koehn2003spb}, er agnostisk til syntaktiske høve i
@@ -456,26 +497,29 @@ utgangspunktet meir nytte av kollokasjonsinformasjon.
   \end{figure}
 
 Men sett no at me ikkje har som formål å nytte frasesamanstillinga til
-reint N-grambasert omsetjing. Kva for \emph{lingvistiske} krav kan me stille
-til å kalle to frasar samanstilte? I einkvar større parallelltekst vil
-parallellstilte setningar ha visse syntaktiske og semantiske\footnote{Sidan eg føreset setningssamanstilte data, kjem eg ikkje inn på
- diskurs-/pragmatiske verknader, med mindre det kan vere mogleg
- å handsame desse innanfor setningen. }
-omsetjingsskifte, t.d. leksikalisering av syntaktiske konstruksjonar
-eller omvendt, endring av ordklasse, presisering/depresisering,
-endringar i leksikale trekk (t.d. telleleg/utelleleg),
+reint N-grambasert omsetjing. Kva for \emph{lingvistiske} krav kan me
+stille til å kalle to frasar samanstilte? Me må i alle fall tillate
+ein del skilnad.  I alle større parallelltekster vil parallellstilte
+setningar ha visse syntaktiske og semantiske\footnote{Sidan eg føreset setningssamanstilte data, kjem eg ikkje inn på
+ diskurs-/pragmatiske verknader, med mindre dette fører til
+ forskjellar innanfor setningane (sjå t.d. del \ref{SEC:ordkrav} om
+ lenkjer mellom koreferente substantiv og pronomen). } omsetjingsskifte,
+t.d. leksikalisering av syntaktiske konstruksjonar eller omvendt,
+endring av ordklasse, presisering/depresisering, endringar i leksikale
+trekk (t.d. telleleg/utelleleg),
 osb. \citep[s.~56--62]{munday2001its}, slik at den einaste
 fullstendige, «perfekte» samanstillinga vil vere
-identitetsfunksjonen. Me må godta ein del mangel på samsvar; kor mykje
-me godtek blir då avgjort av formålet med samanstillinga.
+identitetsfunksjonen. Kor mykje mangel på samsvar me godtek blir då
+avgjort av formålet med samanstillinga.
+
 
 Eg føreset her at eitt av formåla med samanstillinga er å kunne
 oppdage korleis ulike språk realiserer semantiske roller syntaktisk;
 då spesielt i forhold til hypotesane gitt i \citet[s.~7]{xpar2008rcn},
 t.d. at «case marking might be useful to further determine a given
-argument's semantic role». (Skal me finne det siste, må me altså kunne
+argument's semantic role». Skal me finne det siste, må me altså kunne
 samanstille frasar med ulik kasusmarkering, men ha krav om lik
-tildeling av semantiske roller.)
+tildeling av semantiske roller.
 
 Eit anna mogleg formål er å nytte desse frasesamanstillingane til
 maskinomsetjing. \citet{riezler2006gmt} nyttar ein stokastisk
@@ -673,12 +717,12 @@ diskontinuerlege konstituentar), men ikkje alle vil bli samanstilt.
 
    hypotese: det er alltid slik at \\
    ordlenkjing av predikerande ord => PRED-lenkje
-\section{\textbf{TOGROK} kva med ekspletivar? ingen PRED men heller ikkje C/F/I \textbf{:ROTETE:}}
+\section{\textbf{SKRIV} Krav på ordnivå}
 \label{sec-3.5}
 
-Kandidatane på f-strukturnivå må jo inkludere desse au\ldots{}
-\section{\textbf{SKRIV} LPT \textbf{:ROTETE:}}
-\label{sec-3.6}
+\label{SEC:ordkrav}
+\subsection{\textbf{SKRIV} LPT \textbf{:ROTETE:}}
+\label{sec-3.5.1}
 
 «a source word WS and a target word WT are taken to correspond
 translationally only if (i) WT can in general (out of context) be
@@ -692,8 +736,30 @@ corresponding argument structures.»
 phrase corresponding to a target word or phrase outside PHT, and
 similarly (iii) PHT contains no word or phrase corresponding to a
 source word or phrase outside PH.»
+
+
+\subsection{Lik ordklasse?}
+\label{sec-3.5.2}
+
+Ulike språk leksikaliserer same konsept på ulike
+måtar. \citet[s.~3]{cheung2002scg} skriv at det engelske ordet
+\emph{fulfilment} meir naturleg blir omsett til eit verb på kinesisk. Det
+same gjeld t.d. \emph{solitude} omsett til norsk. Eit georgisk
+verbalsubstantiv (\emph{masdar}) kan bli omsett til eit verb i infinitiv på
+norsk\footnote{Det georgiske verbalsubstantivet (\emph{masdar}) er i følgje
+        \citet[kap.~2.5]{aronson1990grg} ein \emph{nominal} form, det kan i
+        motsetning til norske verbalsubstantiv og engelske gerundium
+        ikkje ta objekt, men kan ha modifiserande substantiv i
+        genitiv. }. Slike skifte mellom ordklassar er svært vanlege i
+omsetjing\footnote{\citet[Catford~(1965),~i][s.~61]{munday2001its} gir ein gjennomgang av
+slike \emph{klasseskifte}, og andre typar omsetjingsskifte. }.
+
+Me kan opne for ordklasseoverskridande lenkjer der det er samsvar
+mellom visse \emph{trekk}, t.d. kan to predikerande ord lenkjast, eller to
+«nominale» ord. Ein annan måte å gjere dette på er rett og slett å
+krevje ein viss likskap i argumentstruktur. 
 \section{Funksjonsord}
-\label{sec-3.7}
+\label{sec-3.6}
 
 \label{SEC:fnord}
 I tillegg kan me ha ord i setninga som ikkje tilsvarer PRED-element i
@@ -743,11 +809,15 @@ vil vere oppfylt om me kan samanstille \emph{cvimda} med \emph{det regnet}.
    \label{fig:fnord}
   \end{figure}
 \subsection{\textbf{TOGROK} cvimda<PRO> men regne<>expletive -- lenkje? \textbf{:ROTETE:}}
-\label{sec-3.7.1}
+\label{sec-3.6.1}
 
+\subsection{\textbf{TOGROK} kva med ekspletivar? ingen PRED men heller ikkje C/F/I \textbf{:ROTETE:}}
+\label{sec-3.6.2}
+
+Kandidatane på f-strukturnivå må jo inkludere desse au\ldots{}
 
 \section{Lenkjing av underordna c-strukturnodar}
-\label{sec-3.8}
+\label{sec-3.7}
 
 \label{SEC:subnode}
 
@@ -853,13 +923,13 @@ georgisk spesifikator som var lenkja til den norske PRONP.
 \end{figure}
 
 \subsection{\textbf{SKRIV} døme! \textbf{:ROTETE:}}
-\label{sec-3.8.1}
+\label{sec-3.7.1}
 
 \subsection{\textbf{TOGROK} me$_{\mathrm{OBJ}}$ gusta X$_{\mathrm{SUBJ}}$ // I$_{\mathrm{SUBJ}}$ like X$_{\mathrm{OBJ}}$ ?? \textbf{:ROTETE:}}
-\label{sec-3.8.2}
+\label{sec-3.7.2}
 
 \subsection{\textbf{TOGROK} korleis finn me \emph{there is}-lenkjer då? \textbf{:ROTETE:}}
-\label{sec-3.8.3}
+\label{sec-3.7.3}
 
 (og kva skal me med dei?)
 
@@ -868,11 +938,11 @@ georgisk spesifikator som var lenkja til den norske PRONP.
 språket.»
 
 \section{\textbf{TOGROK} mange-til-mange-lenkjing i f-strukturane? \textbf{:ROTETE:}}
-\label{sec-3.9}
+\label{sec-3.8}
 
     Eg er litt usikker på om me skal ha slike
     mange-til-mange-korrespondansar i f-strukturane; eg har rekna med
-    at ei f-strukturlenkje \emph{impliserer} ei slags lenkjing mellom det som
+    at ei f-strukturlenkje \emph{impliserer} ei slag lenkjing mellom det som
     er innanfor f-strukturane; men i \citet{riezler2006gmt} er det i
     staden berre eit krav om at desse f-strukturane er lenkja i same
     transfer-regel.
@@ -892,11 +962,11 @@ og \{ \emph{a, deep, appreciation} \} på den andre.
 
 
 \subsection{\textbf{SKRIV} Kva inneber ei mange-til-mange-lenkjing? \textbf{:ROTETE:}}
-\label{sec-3.9.1}
+\label{sec-3.8.1}
 
 
 \section{\textbf{SKRIV} Mangel på samsvar i syntaks og semantikk \textbf{:ROTETE:}}
-\label{sec-3.10}
+\label{sec-3.9}
 
 \cite[s.~5]{kruijffkorbayova2006agc} gir følgjande døme: 
 \ex.  nikdy nebyl \\
@@ -909,7 +979,7 @@ mellom \emph{never} og \emph{nikby}.
 
 
 \section{\textbf{TOGROK} Diskontinuerlege einingar \textbf{:ROTETE:}}
-\label{sec-3.11}
+\label{sec-3.10}
 
 \begin{itemize}
 \item diskontinuerlege einingar \cite[s.~4]{cheung2002scg}
@@ -917,38 +987,16 @@ mellom \emph{never} og \emph{nikby}.
      gir dei i forhold til c-strukturnivåsamanstilling?
 \end{itemize}
 \subsection{\textbf{TODO} døme på diskontinuerlege konstituentar som er lenkja \textbf{:ROTETE:}}
-\label{sec-3.11.1}
+\label{sec-3.10.1}
 
 \section{\textbf{TOGROK} Er «compounds» frasar? \textbf{:ROTETE:}}
-\label{sec-3.12}
+\label{sec-3.11}
 
  \citep[p.~1]{giegerich2006aea}
 
 
-\section{Lik ordklasse?}
-\label{sec-3.13}
-
-Ulike språk leksikaliserer same konsept på ulike
-måtar. \citet[s.~3]{cheung2002scg} skriv at det engelske ordet
-\emph{fulfilment} meir naturleg blir omsett til eit verb på kinesisk. Det
-same gjeld t.d. \emph{solitude} omsett til norsk. Eit georgisk
-verbalsubstantiv (\emph{masdar}) kan bli omsett til eit verb i infinitiv på
-norsk\footnote{Det georgiske verbalsubstantivet (\emph{masdar}) er i følgje
-        \citet[kap.~2.5]{aronson1990grg} ein \emph{nominal} form, det kan i
-        motsetning til norske verbalsubstantiv og engelske gerundium
-        ikkje ta objekt, men kan ha modifiserande substantiv i
-        genitiv. }. Slike skifte mellom ordklassar er svært vanlege i
-omsetjing\footnote{\citet[Catford~(1965),~i][s.~61]{munday2001its} gir ein gjennomgang av
-slike \emph{klasseskifte}, og andre typar omsetjingsskifte. }.
-
-Me kan opne for ordklasseoverskridande lenkjer der det er samsvar
-mellom visse \emph{trekk}, t.d. kan to predikerande ord lenkjast, eller to
-«nominale» ord. Ein annan måte å gjere dette på er rett og slett å
-krevje ein viss likskap i argumentstruktur. 
-
-
 \section{Krav om lik argumentstruktur}
-\label{sec-3.14}
+\label{sec-3.12}
 
 \label{SEC:lik-argstr}
 
@@ -1031,12 +1079,12 @@ f-strukturane har ingen hierarkisk inndeling av desse slik me har for
 verb og argument, dei er i staden representert som \emph{uordna mengder}.
 
 \subsection{forsvare «tilsvarande» \textbf{:ROTETE:}}
-\label{sec-3.14.1}
+\label{sec-3.12.1}
 
 Tilsvarande på engelsk: \footnote{''wagered * with * that *'' på Google gir 215 treff, kor 9 av dei
 første 10 følgjer det intenderte mønsteret. }
 \subsection{\textbf{TODO} Sitere eigen korpusundersøking av variasjon i arg-str?}
-\label{sec-3.14.2}
+\label{sec-3.12.2}
 
 Ei undersøking av den frasesamanstilte trebanken SMULTRON
 \citep{samuelsson2006pap} mot LFG-grammatikkane for engelsk og tysk
@@ -1048,10 +1096,10 @@ innhaldsverb fekk analysar kor argument korresponderte med adjunkt
 
 \fxnote{LCS, dorr}
 \subsection{\textbf{SKRIV} kvifor lik arg-str er bra, så kvifor det er eit problem \textbf{:ROTETE:}}
-\label{sec-3.14.3}
+\label{sec-3.12.3}
 
 \subsection{\textbf{TODO} Ulik følgje i argumentstruktur}
-\label{sec-3.14.4}
+\label{sec-3.12.4}
 
 I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
 argument ha ulik følgje i argumentstrukturen. Det er klart at me vil
@@ -1079,7 +1127,7 @@ til at bottom-up-informasjon trengst.
 
 
 \subsubsection{c- og f-strukturar for dømet over \textbf{:ROTETE:}}
-\label{sec-3.14.4.1}
+\label{sec-3.12.4.1}
 
 \begin{tikzpicture}
 \Tree
@@ -1148,11 +1196,11 @@ til at bottom-up-informasjon trengst.
 
 
 \subsection{\textbf{SKRIV} døme med wager/3 og vedde/4 og gewettet/3 \textbf{:ROTETE:}}
-\label{sec-3.14.5}
+\label{sec-3.12.5}
 
 
 \subsection{\textbf{SKRIV} (reinskriv) \textbf{:ROTETE:}}
-\label{sec-3.14.6}
+\label{sec-3.12.6}
 
 Same globale tyding krev i det minste at, i situasjonen verbet
 denoterer, speler deltakarane same rolle. Men dette er endå meir
@@ -1175,10 +1223,10 @@ resonnementet.)
 
 Alternativt ein konstruksjonslenkjing\ldots{} 
 
-Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slags delmengd av
+Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slag delmengd av
 argstr til $PRED_{L2}$. 
 \subsection{\textbf{SKRIV} True Arguments vs True Adjuncts, Pustejovsky \textbf{:ROTETE:}}
-\label{sec-3.14.7}
+\label{sec-3.12.7}
 
 \begin{itemize}
 \item Treng døme først\ldots{}
@@ -1203,7 +1251,7 @@ argstr til $PRED_{L2}$.
      a,b,c i same rekkjefølgje uansett\ldots{})
 \end{itemize}
 \section{\textbf{SKRIV} Kan adjunkt lenkjast til nodar \underline{under} mor-lenkja?}
-\label{sec-3.15}
+\label{sec-3.13}
 
 \label{SEC:merge-daughters}
 
@@ -1262,7 +1310,7 @@ rekursivt for at F$_s$ og F$_t$ skal lenkjast, t.d. både \texttt{(1 . 4)} og \t
 
 
 \subsection{1. Kausativar og inkorporering}
-\label{sec-3.15.1}
+\label{sec-3.13.1}
 
 Om me har 
 
@@ -1331,14 +1379,14 @@ informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
 me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
 vanskeleg å finne prinsipelle avgrensingar her. 
 \subsubsection{\textbf{TOGROK} adjunkt bør ikkje samanføyast? eller?}
-\label{sec-3.15.1.1}
+\label{sec-3.13.1.1}
 
 Det einaste eg kan
 tenkje meg er at adjunkt ikkje bør vere kandidatar for samanføying (i
 såfall burde dei vel heller vore analysert som argument?).
 
 \subsection{2. Adposisjonsobjekt}
-\label{sec-3.15.2}
+\label{sec-3.13.2}
 
 
 I følgjande setningspar har me eit objekt «sigarett» som svarer til
@@ -1378,11 +1426,11 @@ lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
 nedanfor.
 
 \section{\textbf{TOGROK} kva var poenget med dette? \textbf{:ROTETE:}}
-\label{sec-3.16}
+\label{sec-3.14}
 
 «etter og uten er dei einaste prep som tek setn utan å vere arg»
 \section{\textbf{ULEST} Cyrus, FuSe-prosjektet \textbf{:ROTETE:}}
-\label{sec-3.17}
+\label{sec-3.15}
 
 \citet{cyrus2004apa}
 «Abstract: We report on a recently initiated project which aims at
@@ -1394,7 +1442,7 @@ conceptual decisions and aspects of their technical realisation. We
 discuss some selected problems and conclude with a few remarks on how
 this project relates to similar projects in the field.»
 \section{\textbf{TODO} Konstruksjonar og komposisjonell inekvivalens}
-\label{sec-3.18}
+\label{sec-3.16}
 
 \xbar-teori føreset at det finst éi dotter i kvart ledd som kan
 reknast som predikatet for dette leddet. Ei utfordring for
@@ -1438,10 +1486,10 @@ iallfall eit omsetjingsforhold:
 
 
 \section{\textbf{SKRIV} definer sitering frå MRS-suiten \textbf{:ROTETE:}}
-\label{sec-3.19}
+\label{sec-3.17}
 
 \section{\textbf{SKRIV} setning 7 i MRS-suiten \textbf{:ROTETE:}}
-\label{sec-3.20}
+\label{sec-3.18}
 
 
 
@@ -1468,11 +1516,11 @@ Ein samanstilling bør i det minste gi følgjande:
 
  
 \section{\textbf{TOGROK} og så finst jo større forskjellar, stilistiske osb\ldots{} \textbf{:ROTETE:}}
-\label{sec-3.21}
+\label{sec-3.19}
 
 
 \section{\textbf{TOGROK} prosessering, kognitive modellar? \textbf{:ROTETE:}}
-\label{sec-3.22}
+\label{sec-3.20}
 
 finne empiri frå korleis menneske samanstillar? (dvs., korleis skjer
 omsetjing)
@@ -1502,12 +1550,15 @@ bilinguals in the specific context of translation.»
   sånn ute i naturen?
 \end{itemize}
 \section{\textbf{TOGROK} Retningslinjer for samanstilling \textbf{:ROTETE:}}
-\label{sec-3.23}
+\label{sec-3.21}
 
 Ved korpusbygging er det vanleg at retningslinjer for samanstilling
 blir utvikla \emph{etter kvart som ein finn problem}\ldots{} (det er vanskeleg å
 seie noko \emph{a priori} om kva for vanskar ein kan finne).
 
+
+\section{\textbf{SKRIV} Rangering}
+\label{sec-3.22}
 
 
 \chapter{Implementasjonen av \texttt{lfgalign}}
@@ -1572,7 +1623,7 @@ programmet.
 Hovudalgoritmen for lenkjing mellom f-strukturar er vist i kodefigur
 \ref{algo:f-align}. Funksjonen \texttt{f-align} returnerer ei mengd med
 moglege samanstillingar. Kvar samanstilling er ei mengd med par av
-f-strukturar\footnote{Eigentleg eit slags avgjerdstre; kvart element er eit par, kor
+f-strukturar\footnote{Eigentleg eit slag avgjerdstre; kvart element er eit par, kor
         første element er lenkja mellom dei yttarste f-strukturane, og
         andre element er dei moglege samanstillingane for dei indre
         strukturane. Denne strukturen kan vere nyttig for å rangere
@@ -2085,7 +2136,6 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
 
 \bibliographystyle{apacite}
 \bibliography{master}
-
 
 
 
