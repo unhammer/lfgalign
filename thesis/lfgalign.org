@@ -351,8 +351,10 @@ seinare?}
 
 Så langt har eg ikkje kome over metodar som går i motsett retning,
 altså prøver å finne eller betre på frase- og ordsamanstilling ut frå
-ein LFG-parse; det er dette som er strategien til programmet
-=lfgalign= i kapittel \ref{SEC:implementasjon}.
+ein LFG-parse -- det er dette som er strategien til programmet
+=lfgalign= i kapittel \ref{SEC:implementasjon} -- men det er stor
+overlapp mellom krava som kjem i kapittel \ref{SEC:ideell} og dei gitt
+i den første publiseringa i XPar-prosjektet, \citet{dyvik2009lmp}.
 
 
 ** SKRIV Eit kort oversyn over leksikalsk-funksjonell grammatikk
@@ -378,11 +380,22 @@ vand med andre grammatiske rammeverk.
 ** Introduksjon
 I denne delen prøver eg å finne fram til kva som er den best moglege
 frasesamanstillinga. Eg argumenterer for at «best» her må tolkast i
-forhold til eit formål, og tek utgangspunkt i visse krav for
-ordsamanstilling gitt i \citet{thunes2003eal}. Eg kjem fram til at når
-formålet er utvikling av fasesamanstilte trebankar må ein revidere
-kravet om likskap i argumentstruktur, og gir eit forslag til krav for
-frasesamanstilling i trebankar.
+forhold til eit formål, her å finne samsvar mellom kasusmarkering og
+semantisk rolletildeling. Som utgangspunkt har eg visse krav for
+ordsamanstilling gitt i \citet{thunes2003eal}, saman med krava for
+frasesamanstilling i \citet{dyvik2009lmp}. Eg viser kvifor ein, for
+våre formål, må revidere kravet til Thunes om likskap i
+argumentstruktur. Eg viser fleire døme for å grunngje krava i
+\citet{dyvik2009lmp}, i tillegg til å utdjupe dei for å gjere dei
+enklare å implementere i kapittel \ref{SEC:implementasjon}. Dette
+involverer au å omformulere krava for c-struktursamanstilling slik at
+dei ikkje refererer til ordlenkjer, berre f-strukturlenkjer. Sidan ein
+del av målet med Xpar-prosjektet er å finne ut av kor mykje
+frasesamanstillingsinformasjon me kan få ut av parallellismen i
+f-strukturane (sett frå den andre sida, kor uavhengig ein kan gjere
+seg av bottom-up-informasjonen i ordlenkjer), blir det eit avleidd mål
+å formulere frasesamanstillingskrava med referanse til f-strukturane
+der det går an.
 
 ** Kva er formålet med ei frasesamanstilling?
 I frasebasert statistisk maskinomsetjing (PBSMT) skal ei
