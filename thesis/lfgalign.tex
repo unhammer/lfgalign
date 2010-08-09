@@ -1,4 +1,4 @@
-% Created 2010-08-09 Mon 15:02
+% Created 2010-08-09 Mon 16:17
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -404,12 +404,20 @@ rammeverk.
   men utan informasjon om kva som kjem til høgre eller venstre kan me
   ikkje (på ein ikkje-vilkårleg måte) skildre subtreet utanfor
   fragmentet heilt fram til terminal- eller startsymbol.
-\item [modellteoretisk (vs derivasjonelt)]f-struktur
-\item [modellteoretisk (vs derivasjonelt)]c-struktur
-\item [modellteoretisk (vs derivasjonelt)]endosentrisitetsprinsippa
-\item [modellteoretisk (vs derivasjonelt)]\xbar
-\item [modellteoretisk (vs derivasjonelt)]diskontinuerlege konstituentar
-\item [modellteoretisk (vs derivasjonelt)]$\phi$, $\phi^{-1}$
+\item [f-struktur] \ldots{}
+\item [c-struktur] \ldots{}
+\item [endosentrisitetsprinsippa] \ldots{}
+\item [\xbar] \ldots{}
+\item [diskontinuerlege konstituentar] \ldots{}
+\item [$\phi$] c-struktur-f-strukturavbildinga $\phi$ \ldots{}
+\item [$\phi^{-1}$] Det funksjonelle domenet til ein f-struktur er gitt
+  ved $\phi^{-1}$, inversen av c-til-f-strukturavbildinga, og
+  tilsvarer dei nodane i c-strukturen som projiserer denne
+  f-strukturen, t.d. ein VP-node med dominerande IP og CP
+  \citep[s.~126]{bresnan2001lfs}. Sidan dette er inversen av ein
+  funksjon, kan me ha diskontinuerlege konstituentar i same
+  funksjonelle domene (på same måte som ulike argument til ein
+  funksjon kan gi same verdi).
 \item [fraselenkjer vs frasesamanstilling] Eg nyttar her termane
   \emph{lenkjing} og \emph{samanstilling} i omtrent same tyding som dei engelske
   termane \emph{link} og \emph{alignment}, kor ei samanstilling er ei mengd
@@ -658,55 +666,60 @@ omsetjinga, men det kan godt hende at eit ord \emph{ikkje} har ei lenkje,
 og me kan heller ikkje utelukke at det finst mange-til-mange-lenkjer
 som ikkje kan «delast opp». Dette gjeld au nodane i c-strukturen.
 
-
 Når det gjeld f-strukturane er det ganske mange element me teoretisk
 sett kunne ha lenkja, t.d. enkelttrekk som kasus eller dei uordna
 mengdene med adjunkt, men det som er mest \emph{nyttig} er nok å berre
 lenkje der det er ei nær kopling til orda i setninga. Sidan alle
 PRED-element i ein f-struktur unikt står for predikerande ord, kan me
 -- gitt to samanstilte setningar -- la \emph{kandidatane for
-samanstilling på f-strukturnivå} inkludere\footnote{I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
+samanstilling på f-strukturnivå} inkludere alle desse PRED-elementa i
+f-strukturane til setningane\footnote{I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
         inkludere visse f-strukturar utan PRED-element i kandidatane
-        for samanstilling. } alle desse
-PRED-elementa i f-strukturane til setningane. PRED-element
-representerer semantiske bidrag som oftare er naudsyne på begge språk
-i omsetjingar, medan andre f-strukturtrekk gjerne er valfrie på det
-eine av språka; det er ikkje alle språk som har t.d. obligatorisk
-kasusmarkering, og ein vil kanskje nytte trebanken til å oppdage
-nettopp slik variasjon.  PRED-elementa er i tillegg gjerne enklare å
-knyte direkte opp mot konkrete tekststrengen, medan t.d. aspekt
-kanskje er umogleg å skilje frå tempus i affikset.
+        for samanstilling. }. PRED-element representerer
+semantiske bidrag som oftast er påkrevde på begge språk i omsetjingar,
+medan andre f-strukturtrekk gjerne er valfrie på det eine av språka;
+det er ikkje alle språk som har t.d. obligatorisk kasusmarkering, og
+ein vil kanskje nytte trebanken til å oppdage nettopp slik variasjon.
+\fxnote[inline,nomargin]{Diskutabelt, TODO:} PRED-elementa er i tillegg
+gjerne enklare å knyte direkte opp mot den konkrete, observerte
+tekststrengen, medan t.d. aspekt kanskje er umogleg å skilje frå
+tempus i affikset.
 
-Eg føreslår følgjande føringar:
+Samtidig er det au eit omsetjingsforhold mellom trekka i same
+f-struktur som dei lenkja PRED-elementa, og me ville kanskje ikkje ha
+omsett dei to PRED-elementa i andre f-strukturkontekstar. Difor bør me
+au sjå på ei PRED-lenkje som ei lenkje mellom \emph{f-strukturane til desse PRED-elementa}. Med dette i tankane, kombinert med
+c-struktur-f-strukturavbildinga $\phi$ (sjå del
+\ref{SEC:omgrepsavklaring}), får me følgjande samanheng:
 
-\ex. \label{f-links} Ei samanstilling av to PRED-element i f-strukturane tilseier at:
-\a. \label{f-links-substr} f-strukturane til desse er lenkja,
+\ex. \label{f-links} Ei lenkje mellom to PRED-element $p$ og $q$ kor
+      $p$ er eit element i f-strukturen $f$ og $q$ er eit element i
+      f-strukturen $g$ tilseier at:
+\a. \label{f-links-substr} me tolkar f-strukturane $f$ og $g$ som lenkja,
 \b. \label{f-links-words} orda i setningane som projiserer
-   PRED-elementa tek del i ei samanstilling med kvarandre (kor andre
-   ord kan vere involvert), og at
-\c. \label{f-links-domain} iallfall dei øvste nodane i det funksjonelle
-   domenet\footnote{Det funksjonelle domenet til ein f-struktur er gitt ved
- $\phi^{-1}$, inversen av c-til-f-strukturavbildinga, og tilsvarer dei
- nodane i c-strukturen som projiserer denne f-strukturen, t.d. ein
- VP-node med dominerande IP og CP
- \citep[s.~126]{bresnan2001lfs}. Sidan dette er inversen av ein
- funksjon, kan me ha diskontinuerlege konstituentar i same
- funksjonelle domene (fleire funksjonsargument som gir same verdi). } til f-strukturen er samanstilt.
+     PRED-elementa tek del i ei samanstilling med kvarandre (kor andre
+     ord kan vere involvert), og at
+\c. \label{f-links-domain} iallfall dei øvste nodane i $\phi^{-1}(f)$
+     og $\phi^{-1}(g)$, dei funksjonelle domena til f-strukturane $f$
+     og $g$, er lenkja 
 
-(Underordna nodar i det funksjonelle domenet kan berre lenkjast om
-visse krav, gitt nedanfor, er oppfylt. Me kan altså gjerne ha
-c-strukturnodar som ikkje er lenkja til andre nodar.)
 
-\fxnote{backe det med eksemplar i trebank; kople til adj-arg-lenkje}
+Punkt \ref{f-links-substr} og \ref{f-links-domain} over seier at viss
+PRED-elementa projisert av t.d. to verb i verbfrasar er lenkja, vil
+VP-ane som heilskap vere lenkja (både VP-nodane som dominerer dei
+lenkja funksjonelle domena, og f-strukturane frå ytre PRED til verba),
+det er dette at heile VP-ane er lenkja som gjer det til ei fraselenkje
+og ikkje berre ei ordlenkje. Punkt \ref{f-links-substr} er forsvart
+over, medan punkt \ref{f-links-domain} kjem som ein konsekvens av at
+øvste node dominerer alle nodar i det funksjonelle domenet, og dimed
+all informasjonen i f-strukturane ved f-strukturlenkja.  (I del
+\ref{SEC:subnode} ser eg på kva som må til for å lenkje ikkje-øvste
+nodar i det funksjonelle domenet.  Me kan altså gjerne ha
+c-strukturnodar som ikkje er lenkja til nokon andre nodar.)
 
-Påstandane over må forsvarast. Punkt \ref{f-links-substr} og
-\ref{f-links-domain} over seier at viss PRED-elementa projisert av
-t.d. to verb i verbfrasar er lenkja, vil \emph{heile} VP-ane vere lenkja
-(både VP-nodane som dominerer dei lenkja funksjonelle domena og
-f-strukturane frå ytre PRED til verba), det er dette som gjer det til
-ei fraselenkje; medan i følgje punkt \ref{f-links-words} vil denne
-fraselenkja leie til at sjølve verba au er lenkja, ein sterkare
-påstand sidan dette tilseier at \emph{PRED-samanstilling impliserer ordsamanstilling}. I visse tilfelle er dette heilt uproblematisk,
+I følgje punkt \ref{f-links-words} vil denne fraselenkja leie til at
+sjølve verba i to lenkja VP-ar au er lenkja, ein sterkare påstand
+sidan dette tilseier at \emph{PRED-samanstilling impliserer ordsamanstilling}. I visse tilfelle er dette heilt uproblematisk,
 t.d. viss \emph{I slept down by the river} skal lenkjast med \emph{Eg sov nede med elva} vil me uansett lenkje \emph{slept} og \emph{sov}; dette kan gjelde
 transitive verb au:
 
@@ -724,11 +737,11 @@ PRED, ord}
 
 \emph{have/har} tek del i VP-samanstillinga \emph{have no king.../har ingen konge...}.
 
-Som nemnd over; ordsamanstillinga treng ikkje vere ein-til-ein, det
+Som nemnd treng ikkje ordsamanstillinga vere ein-til-ein, det
 punkt \ref{f-links-words} seier er at desse orda iallfall er ein del
-av ein samanstilling med kvarandre (i \Last altså
-VP-samanstillinga). Kanskje er dette ei mange-til-mange-lenkjing som
-ikkje \emph{kan} reduserast til ein-til-ein-lenkjingar; eller kanskje er
+av ein samanstilling med kvarandre (i døme \Last altså
+VP-samanstillinga). Kanskje er dette ei mange-til-mange-lenkje som
+ikkje \emph{kan} reduserast til ein-til-ein-lenkjer; eller kanskje er
 det som i \Last mogleg å skilje ut delsamanstillingar, som
 \emph{have/har}. Eg kjem tilbake til dette i del \ref{SEC:lik-argstr} om
 argumentstruktur og adjunkt. 
@@ -785,66 +798,9 @@ Me kan opne for ordklasseoverskridande lenkjer der det er samsvar
 mellom visse \emph{trekk}, t.d. kan to predikerande ord lenkjast, eller to
 «nominale» ord. Ein annan måte å gjere dette på er rett og slett å
 krevje ein viss likskap i argumentstruktur. 
-\section{Funksjonsord}
-\label{sec-3.6}
-
-\label{SEC:fnord}
-I tillegg kan me ha ord i setninga som ikkje tilsvarer PRED-element i
-f-strukturen, typisk funksjonsord (t.d. \emph{som}, \emph{at}). Ved
-endosentrisitetsprinsippa til \citet{bresnan2001lfs} er komplementet
-til funksjonelle kategoriar (C, I, P) ein funksjonell ko-kjerne. 
-
-\ex. \label{fnordkrav} Skal nodar for ord som ikkje projiserer
-     PRED-element\footnote{Skal ein lenkje ordet \emph{som} (utan PRED) med ordet \emph{which} (med
- PRED)? Viss begge står under C i treet, kan det kanskje vere
- informativt med ein type «defekt» lenkje, sjølv om berre det eine
- ordet blir rekna for å vere eit innhaldsord. Frasane til deira
- funksjonelle domene vil uansett vere samanstilt via toppnodane
- (t.d. CP). } samanstillast, må følgjande krav vere oppfylt:
-\a. det funksjonelle domenet (gitt ved komplementet) må vere
-   samanstilt, og
-\b. dei er begge c-strukturhovud.
-
-
-Om \Last[a og -b] er oppfylt, kan me få samanstillinga vist i figur
-\ref{fig:fnord}, og i dette tilfellet er \Last[b] oppfylt og \Last[a]
-vil vere oppfylt om me kan samanstille \emph{cvimda} med \emph{det regnet}.
-
-  \begin{figure}[htp]
-   \vfill{} % how todo?
-  
-  \begin{tikzpicture}
-  \Tree
-  [.IPfoc
-    [.PROPP [.PROP abramsma ] ] 
-    [.I' [.I \edge[roof]; {iCoda} ]
-             [.S [.CPsub
-                  [.\node(Csub){Csub};  rom ]
-                  [.IP \edge[roof]; {cvimda} ]]]]]
-      \begin{scope}[shift={(2in,0in)}]
-  \Tree
-  [.IP
-    [.PROPP [.PROP Abrams ] ]
-     [.I' [.Vfin visste ]
-              [.S [.VPmain [.CPnom
-                           [.\node(Cnom){Cnom};  at ] 
-                            [.Ssub \edge[roof]; {det regnet} ]]]]] ]
-  \end{scope}                      
-  \draw[dashed,-] (Csub)..controls +(south west:3) and +(south:1) .. (Cnom) ;
-  \end{tikzpicture}
-  \caption{Mogleg samanstilling av funksjonsord mellom georgisk og norsk (bokmål)}
-   \label{fig:fnord}
-  \end{figure}
-\subsection{\textbf{TOGROK} cvimda<PRO> men regne<>expletive -- lenkje? \textbf{:ROTETE:}}
-\label{sec-3.6.1}
-
-\subsection{\textbf{TOGROK} kva med ekspletivar? ingen PRED men heller ikkje C/F/I \textbf{:ROTETE:}}
-\label{sec-3.6.2}
-
-Kandidatane på f-strukturnivå må jo inkludere desse au\ldots{}
 
 \section{Lenkjing av underordna c-strukturnodar}
-\label{sec-3.7}
+\label{sec-3.6}
 
 \label{SEC:subnode}
 
@@ -864,7 +820,7 @@ at heile substrukturen au er samanstilt. \emph{There is} og \emph{Es gibt} i
 figur \ref{fig:ikkjenode} kan då ikkje samanstillast åleine, men berre
 som del av ei ytre frasesamanstilling.
 Så når \emph{kan} me samanstille nodane som står under øvste node i
-f-domenet?
+det funksjonelle domenet?
 
 \begin{figure}[htp]
    \vfill{} % how todo?
@@ -950,19 +906,77 @@ georgisk spesifikator som var lenkja til den norske PRONP.
 \end{figure}
 
 \subsection{\textbf{SKRIV} døme! \textbf{:ROTETE:}}
-\label{sec-3.7.1}
+\label{sec-3.6.1}
 
 \subsection{\textbf{TOGROK} me$_{\mathrm{OBJ}}$ gusta X$_{\mathrm{SUBJ}}$ // I$_{\mathrm{SUBJ}}$ like X$_{\mathrm{OBJ}}$ ?? \textbf{:ROTETE:}}
-\label{sec-3.7.2}
+\label{sec-3.6.2}
 
 \subsection{\textbf{TOGROK} korleis finn me \emph{there is}-lenkjer då? \textbf{:ROTETE:}}
-\label{sec-3.7.3}
+\label{sec-3.6.3}
 
 (og kva skal me med dei?)
 
 «Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
 (\emph{There} never \emph{is}) som opptrer utanfor N-grammet på det andre
 språket.»
+\section{Funksjonsord}
+\label{sec-3.7}
+
+\label{SEC:fnord}
+I tillegg kan me ha ord i setninga som ikkje tilsvarer PRED-element i
+f-strukturen, typisk funksjonsord (t.d. \emph{som}, \emph{at}). Ved
+endosentrisitetsprinsippa til \citet{bresnan2001lfs} er komplementet
+til funksjonelle kategoriar (C, I, P) ein funksjonell ko-kjerne. 
+
+\ex. \label{fnordkrav} Skal nodar for ord som ikkje projiserer
+     PRED-element\footnote{Skal ein lenkje ordet \emph{som} (utan PRED) med ordet \emph{which} (med
+ PRED)? Viss begge står under C i treet, kan det kanskje vere
+ informativt med ein type «defekt» lenkje, sjølv om berre det eine
+ ordet blir rekna for å vere eit innhaldsord. Frasane til deira
+ funksjonelle domene vil uansett vere samanstilt via toppnodane
+ (t.d. CP). } samanstillast, må følgjande krav vere oppfylt:
+\a. det funksjonelle domenet (gitt ved komplementet) må vere
+   samanstilt, og
+\b. dei er begge c-strukturhovud.
+
+
+Om \Last[a og -b] er oppfylt, kan me få samanstillinga vist i figur
+\ref{fig:fnord}, og i dette tilfellet er \Last[b] oppfylt og \Last[a]
+vil vere oppfylt om me kan samanstille \emph{cvimda} med \emph{det regnet}.
+
+  \begin{figure}[htp]
+   \vfill{} % how todo?
+  
+  \begin{tikzpicture}
+  \Tree
+  [.IPfoc
+    [.PROPP [.PROP abramsma ] ] 
+    [.I' [.I \edge[roof]; {iCoda} ]
+             [.S [.CPsub
+                  [.\node(Csub){Csub};  rom ]
+                  [.IP \edge[roof]; {cvimda} ]]]]]
+      \begin{scope}[shift={(2in,0in)}]
+  \Tree
+  [.IP
+    [.PROPP [.PROP Abrams ] ]
+     [.I' [.Vfin visste ]
+              [.S [.VPmain [.CPnom
+                           [.\node(Cnom){Cnom};  at ] 
+                            [.Ssub \edge[roof]; {det regnet} ]]]]] ]
+  \end{scope}                      
+  \draw[dashed,-] (Csub)..controls +(south west:3) and +(south:1) .. (Cnom) ;
+  \end{tikzpicture}
+  \caption{Mogleg samanstilling av funksjonsord mellom georgisk og norsk (bokmål)}
+   \label{fig:fnord}
+  \end{figure}
+
+\subsection{\textbf{TOGROK} cvimda<PRO> men regne<>expletive -- lenkje? \textbf{:ROTETE:}}
+\label{sec-3.7.1}
+
+\subsection{\textbf{TOGROK} kva med ekspletivar? ingen PRED men heller ikkje C/F/I \textbf{:ROTETE:}}
+\label{sec-3.7.2}
+
+Kandidatane på f-strukturnivå må jo inkludere desse au\ldots{}
 
 \section{\textbf{TOGROK} mange-til-mange-lenkjing i f-strukturane? \textbf{:ROTETE:}}
 \label{sec-3.8}
@@ -2163,7 +2177,6 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
 
 \bibliographystyle{apacite}
 \bibliography{master}
-
 
 
 
