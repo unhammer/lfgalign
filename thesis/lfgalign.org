@@ -29,7 +29,7 @@
 
 * COMMENT generell todo
 Nytt denne før INNLEVERING:
-# #+EXPORT_EXCLUDE_TAGS: ROTETE
+#+EXPORT_EXCLUDE_TAGS: ROTETE
 
 nyttig sparse tree: SKRIV
 
@@ -160,9 +160,9 @@ berre har konstituentstruktur (syntaktiske tre) i tillegg til
 ordsamanstilling.
 
 Eg nyttar språka georgisk og norsk i evalueringa, hovudsakleg fordi
-dei er svært ulike syntaktisk og morfologisk; Georgisk har t.d. mykje
-friare ordfølgje og rikare morfologi.
-\fxnote{fortelje om georgisk i kap.5 heller}
+dei er svært ulike syntaktisk og morfologisk; Georgisk er mellom anna
+eit pro-drop-språk, med friare ordfølgje og rikare morfologi enn
+norsk.  \fxnote{fortelje om georgisk i kap.5 heller}
 
 Sidan eg ikkje har tilgang på ferdig setningssamanstilt georgisk-norsk
 parallelltekst, blir det vanskeleg å køyre den statistiske
@@ -349,7 +349,7 @@ observerte uttrykk.
 \fxnote{Dette er motsett retning av det mitt program gjer, nemne
 seinare?}
 
-Så langt har eg ikkje kome over metodar som går i motsett retning,
+Så langt har eg ikkje komme over metodar som går i motsett retning,
 altså prøver å finne eller betre på frase- og ordsamanstilling ut frå
 ein LFG-parse -- det er dette som er strategien til programmet
 =lfgalign= i kapittel \ref{SEC:implementasjon} -- men det er stor
@@ -436,6 +436,8 @@ eit avleidd mål å formulere frasesamanstillingskrava med referanse til
 f-strukturane der det går an.
 
 ** Formål med frasesamanstilling
+\label{SEC:formaal}
+
 Ei frasesamanstilling er ein slag annotasjon av eit korpus. På same
 måte som oppbygginga av eit korpus avheng av formålet til korpuset,
 kan ein ikkje definere den ideelle annotasjonen av eit korpus utan å
@@ -645,22 +647,66 @@ tempus i affikset.
 Samtidig er det au eit omsetjingsforhold mellom trekka i same
 f-struktur som dei lenkja PRED-elementa, og me ville kanskje ikkje ha
 omsett dei to PRED-elementa i andre f-strukturkontekstar. Difor bør me
-au sjå på ei PRED-lenkje som ei lenkje mellom /f-strukturane til desse
-PRED-elementa/. Med dette i tankane, kombinert med
+au sjå på ei PRED-lenkje som ei lenkje mellom \emph{f-strukturane til
+desse PRED-elementa}[fn:7].  Med dette i tankane, kombinert med
 c-struktur-f-strukturavbildinga $\phi$ (sjå del
-\ref{SEC:omgrepsavklaring}), får me følgjande samanheng:
+\ref{SEC:omgrepsavklaring}), får me følgjande samanheng, illustrert i
+figur \ref{fig:viss-PRED-så-f-og-c}:
 
-\ex. \label{f-links} Ei lenkje mellom to PRED-element $p$ og $q$ kor
-      $p$ er eit element i f-strukturen $f$ og $q$ er eit element i
-      f-strukturen $g$ tilseier at:
+\ex. \label{f-links} Ei lenkje mellom to PRED-element $p$ og $q$, kor
+      $p$ er medlem av f-strukturen $f$, og $q$ er medlem av
+      f-strukturen $g$, tilseier at:
 \a. \label{f-links-substr} me tolkar f-strukturane $f$ og $g$ som lenkja,
 \b. \label{f-links-words} orda i setningane som projiserer
-     PRED-elementa tek del i ei samanstilling med kvarandre (kor andre
+     PRED-elementa tek del i ei lenkje (kor andre
      ord kan vere involvert), og at
 \c. \label{f-links-domain} iallfall dei øvste nodane i $\phi^{-1}(f)$
      og $\phi^{-1}(g)$, dei funksjonelle domena til f-strukturane $f$
      og $g$, er lenkja 
 
+#+BEGIN_LaTeX
+  \usetikzlibrary{calc}
+  \begin{figure}[htp]
+    \begin{tikzpicture}
+    {\avmoptions{}
+     \node(src){
+        \begin{avm}
+          $f$ \[pred  & `{\bf{}sove}<jeg>' \\
+          tense & pret \\
+          ... \]
+        \end{avm}
+      };
+      \node[right of=src, node distance=5cm](trg){
+        \begin{avm}
+          $g$ \[pred   &  `{\bf{}sleep}<I>'\\
+          tense  & pret  \\
+          aspect & simple \\
+          ... \]
+        \end{avm}
+      };
+      }
+      \draw[dashed,-] (src.west) .. controls +(-1,2) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
+      \draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
+
+      \begin{scope}[shift={(0,-3cm)}]
+     \Tree  [.\node(VPs){VP}; [.\node(Vs){V}; \node(sov){sov};  ] ]
+      \begin{scope}[shift={(5cm,0)}]
+        \Tree  [.\node(VPt){VP}; [.\node(Vt){V}; \node(slept){slept};  ] ]
+      \end{scope}
+      \end{scope}
+      \draw[-] (VPs)..controls +(north:1.5) and +(north:1.5) .. node[above,sloped]{$l_c$} (VPt) ;
+      \draw[dashed,-] (sov)..controls +(north east:1.5) and +(north west:1.5) .. node[above,sloped]{$l_o$} (slept) ;
+   \end{tikzpicture}
+    
+\fxnote{TODO: teikne inn f-domene}
+
+    \caption{Ei PRED-lenkje $l_p$ kan tolkast som ei f-strukturlenkje
+    $l_f$, og impliserer ei c-strukturlenkje $l_c$ mellom toppnodane i
+    dei funksjonelle domena. Orda som projiserer PRED-elementa er med
+    i ei lenkje $l_o$ (som kan inkludere fleire ord).}
+   \label{fig:viss-PRED-så-f-og-c}
+ \end{figure}
+#+END_LaTeX
 
 Punkt \ref{f-links-substr} og \ref{f-links-domain} over seier at viss
 PRED-elementa projisert av t.d. to verb i verbfrasar er lenkja, vil
@@ -669,19 +715,26 @@ lenkja funksjonelle domena, og f-strukturane frå ytre PRED til verba),
 det er dette at heile VP-ane er lenkja som gjer det til ei fraselenkje
 og ikkje berre ei ordlenkje. Punkt \ref{f-links-substr} er forsvart
 over, medan punkt \ref{f-links-domain} kjem som ein konsekvens av at
-øvste node dominerer alle nodar i det funksjonelle domenet, og dimed
-all informasjonen i f-strukturane ved f-strukturlenkja.  (I del
-\ref{SEC:subnode} ser eg på kva som må til for å lenkje ikkje-øvste
-nodar i det funksjonelle domenet.  Me kan altså gjerne ha
-c-strukturnodar som ikkje er lenkja til nokon andre nodar.)
+øvste node dominerer alle nodar i det funksjonelle domenet; det er det
+funksjonelle domenet som spesifiserer informasjonen i f-strukturane,
+toppnodane dominerer heile dette domenet og bør difor lenkjast viss og
+berre viss f-strukturane er lenkja.  
 
-I følgje punkt \ref{f-links-words} vil denne fraselenkja leie til at
-sjølve verba i to lenkja VP-ar au er lenkja, ein sterkare påstand
-sidan dette tilseier at /PRED-samanstilling impliserer
-ordsamanstilling/. I visse tilfelle er dette heilt uproblematisk,
-t.d. viss /I slept down by the river/ skal lenkjast med /Eg sov nede
-med elva/ vil me uansett lenkje /slept/ og /sov/; dette kan gjelde
-transitive verb au:
+Alle nodar i c-strukturen (alle syntaktiske /frasar/konstituentar/ i
+setninga) som kan koplast til PRED-haldande f-strukturar, vil vere
+kandidatar for samanstilling på c-strukturnivå (dette inkluderer
+diskontinuerlege konstituentar), men ikkje alle vil bli lenkja.  I del
+\ref{SEC:subnode} ser eg på kva som må til for å lenkje ikkje-øvste
+nodar i det funksjonelle domenet.
+I tillegg finst det nodar over ord som ikkje projiserer PRED-element,
+desse kjem eg tilbake til i del \ref{SEC:fnord}.
+
+I følgje punkt \ref{f-links-words} vil fraselenkja leie til at sjølve
+verba i to lenkja VP-ar au er lenkja, som tilseier at /ei PRED-lenkje
+impliserer ei ordlenkje/. I visse tilfelle er dette heilt
+uproblematisk, t.d. viss /I slept down by the river/ skal lenkjast med
+\emph{Eg sov nede med elva} vil me uansett lenkje /slept/ og /sov/; dette
+kan gjelde transitive verb au:
 
 \ex. \a. The locusts have no king, just noise and hard language\\
      $\leftrightarrow$
@@ -690,66 +743,105 @@ transitive verb au:
 \fxnote{der ADJUNKT ikkje er realisert, lenkjer me ikkje PRED.  skal
 me då ikkje lenkje ord heller?}
 
-\fxnote{PRED->ord :: iallfall\\
+\fxnote{finst det tilfelle der ordlenkjer ikkje impliserer PRED-lenkjer? 
+\\
+(hypotese: det er alltid slik at ordlenkjing av predikerande ord => PRED-lenkje)
+\\
+PRED->ord :: iallfall\\
 PRED<-ord :: ?\\
 PRED<->ord\\
 PRED, ord}
 
 #+BEGIN_LaTeX
-\emph{have/har} tek del i VP-samanstillinga \emph{have no king.../har ingen konge...}.
+\emph{have/har} tek del i VP-samanstillinga \emph{have no king.../har
+ingen konge...}, her au skal det vere uproblematisk å lenkje
+enkeltorda \emph{have} og \emph{har}.
 
-Som nemnd treng ikkje ordsamanstillinga vere ein-til-ein, det
+Men som nemnd treng ikkje ordsamanstillinga vere ein-til-ein, det
 punkt \ref{f-links-words} seier er at desse orda iallfall er ein del
 av ein samanstilling med kvarandre (i døme \Last altså
 VP-samanstillinga). Kanskje er dette ei mange-til-mange-lenkje som
 ikkje \emph{kan} reduserast til ein-til-ein-lenkjer; eller kanskje er
 det som i \Last mogleg å skilje ut delsamanstillingar, som
-\emph{have/har}. Eg kjem tilbake til dette i del \ref{SEC:lik-argstr} om
-argumentstruktur og adjunkt. 
+\emph{have/har}. Eg kjem tilbake til dette
+\fxnote[inline,nomargin]{TODO: når?} seinare.
 #+END_LaTeX
 
-\fxnote{avsnittet over er litt rotete TODO}
+Sidan PRED-lenkjing impliserer ordlenkjing, må me sjekke om krava på
+ordnivå (del \ref{SEC:ordkrav}) er oppfylte for å lenkje to
+PRED-element. \fxnote{TODO: litt brå avslutning}
 
-Alle nodar i c-strukturen (alle syntaktiske /frasar/konstituentar/ i
-setninga) som kan koplast til PRED-haldande f-strukturar, vil altså
-vere kandidatar for samanstilling på c-strukturnivå (dette inkluderer
-diskontinuerlege konstituentar), men ikkje alle vil bli samanstilt.
-*** TOGROK finst det tilfelle der ordlenkjer ikkje impliserer PRED-lenkjer?
-   hypotese: det er alltid slik at \\
-   ordlenkjing av predikerande ord => PRED-lenkje
-** SKRIV Krav på ordnivå
+** Krav på ordnivå
 \label{SEC:ordkrav}
-*** SKRIV LPT 							     :ROTETE:
-«a source word WS and a target word WT are taken to correspond
-translationally only if (i) WT can in general (out of context) be
-taken to be among the semantically plausible translations of WS, i.e.,
-WT belongs to the set of 'linguistically predictable translations
-(LPT)' of WS, and (ii) WS and WT occupy corresponding positions within
-corresponding argument structures.»
 
-«a source phrase PHS and target phrase PHT are taken to correspond if
-(i) they contain corresponding words, (ii) PHS contains no word or
-phrase corresponding to a target word or phrase outside PHT, and
-similarly (iii) PHT contains no word or phrase corresponding to a
-source word or phrase outside PH.»
+Ord som skal lenkjast må i \cite{thunes2003eal} vere del av frasar som
+speler same rolle i det som er felles i interpretasjonane, her kan me
+omskrive det til at dei må vere del av /frasar som er lenkja på
+c-strukturnivå/; forholda i \ref{f-links} gir då koplinga til krav på
+andre nivå (t.d. vil krav om tildeling av like mange roller vere
+meir passande å spesifisere på f-strukturnivå).
 
+Det er visse ting me ikkje kan spesifisere ut frå rein c- og
+f-strukturinformasjon. Den norske setninga /eg vil ete/ kan fint
+samanstillast med /I want to eat/, med ei lenkje mellom /ete/ og
+/eat/. Men kva står i vegen for å lenkje /ete/ til hovudverbet i /I
+want to drink/? Forskjellen på f-strukturnivå er berre at PRED-verdien
+er ulik (*eat* mot *drink*). Me må altså ha eit krav om at tydinga til
+lenkja ord (og deira predikat) er «lik nok» til at me kan sjå på dei
+som omsetjingar[fn:21]. \citet[s.~74]{dyvik2009lmp} krev dei at orda
+generelt, utan kontekst, må vere semantisk plausible omsetjingar,
+eller at målordet er eit medlem av mengda av /linguistically
+predictable translations/ av kjeldeordet. Målordet har då
+\emph{LPT-korrespondanse} med kjeldeordet. Informasjon om slik
+LPT-korrespondanse kan komme frå ei djup semantisk dekomponering av
+kvart ord, då blir det eit krav på f-strukturnivå (eller på ein
+semantisk struktur), eller han kan komme bottom-up, typisk frå
+automatisk ordsamanstilling. Bottom-up-informasjonen viser då om orda
+generelt (i ulike kontekstar) blir nytta som omsetjingar av kvarandre.
+Nedanfor reknar eg LPT-kravet som eit krav på ordnivå.
 
-*** Lik ordklasse?
+\fxnote{TODO: Er det mogleg å presisere LPT-kravet meir? Skal det
+berre vere eit rangeringskrav??}
+ 
+Ein type presisering/depresisering (del \ref{SEC:formaal}) me ofte ser
+i omsetjingar er at eit pronomen på kjeldespråket blir nytta der
+målspråket har eit koreferent substantiv, eller
+omvendt. \citet{dyvik2009lmp} opnar for at desse au har
+LPT-korrespondanse (som nemnt i \cite{thunes2003eal} må lenkja ord
+uansett vere koreferente).
+
+Men kva då med lenkjing av pronomen til verb bøygd for person og tal i
+pro-drop-språk?
+
+\ex. \a. iqePa                                  \hfill{} (georgisk) \\
+     $\leftrightarrow$
+     \b. han bjeffa
+
+Viss setningane i døme \Last er lenkja, der iqePa har eit pro-argument
+koreferent med /han/ som subjekt, bør dei to subjekta iallfall kunne
+lenkjast på f-strukturnivå; dei har same referent og speler same rolle
+i argumentstrukturen til verba (som me går ut frå er lenkja). På
+ordnivå, derimot, kan me ikkje lenkje /han/ til /iqePa/ åleine -- her
+må me ha ei mange-til-ein-lenkje mellom $\{ \rm han, bjeffa \}$ og $\{
+\rm iqePa \}$. 
+Generelt må me ha slike lenkjer der eitt ord projiserer fleire
+PRED-element[fn:13].
+
+*** Ordklasse
 Ulike språk leksikaliserer same konsept på ulike
-måtar. \citet[s.~3]{cheung2002scg} skriv at det engelske ordet
-/fulfilment/ meir naturleg blir omsett til eit verb på kinesisk. Det
-same gjeld t.d. /solitude/ omsett til norsk. Eit georgisk
-verbalsubstantiv (/masdar/) kan bli omsett til eit verb i infinitiv på
-norsk[fn:13]. Slike skifte mellom ordklassar er svært vanlege i
+måtar. \citet[s.~3]{cheung2002scg} nemnar vanskane med å ha eit krav
+om lik ordklasse i utviklinga av ein kinesisk-engelsk termbank, kor
+t.d. det engelske ordet /fulfilment/ meir naturleg blir omsett til eit
+verb på kinesisk. På same måte vil eit georgisk verbalsubstantiv
+(/masdar/) gjerne bli omsett til eit verb i infinitiv på
+norsk. Slike skifte mellom ordklasser er svært vanlege i
 omsetjing[fn:3].
-# , sjå setning nr. 9 i MRS-suiten \citet{mrs-suite} for infinitiv
-# (men ingen masdar der på georgisk no!)
-# TODO: omformuler
 
-Me kan opne for ordklasseoverskridande lenkjer der det er samsvar
-mellom visse /trekk/, t.d. kan to predikerande ord lenkjast, eller to
-«nominale» ord. Ein annan måte å gjere dette på er rett og slett å
-krevje ein viss likskap i argumentstruktur. 
+Me kan opne for ordklasseoverskridande lenkjer der det er samsvar på
+andre nivå, me bør iallfall krevje ein likskap i argumentstruktur; så
+om LPT-kravet og krava på c- og f-strukturnivå er fylt, bør det ikkje
+vere noko i vegen for å lenkje ord (eventuelt mengder av ord) av ulik
+ordklasse.
 
 ** Lenkjing av underordna c-strukturnodar
 \label{SEC:subnode}
@@ -963,9 +1055,7 @@ mellom /never/ og /nikby/.
 # samanstilling).
 
 ** TOGROK Diskontinuerlege einingar				     :ROTETE:
-   - diskontinuerlege einingar \cite[s.~4]{cheung2002scg}
-     [[http://scholar.google.no/scholar.bib%3Fhl%3Dno&lr%3D&ie%3DUTF-8&q%3Dinfo:Qh_MRSftNZgJ:scholar.google.com/&output%3Dcitation&oe%3DMACINTOSH&oi%3Dcitation][@books.google]] -- skal dei eigentleg samanstillast? Kva for problem
-     gir dei i forhold til c-strukturnivåsamanstilling?
+   - diskontinuerlege einingar \cite[s.~4]{cheung2002scg} [[http://scholar.google.no/scholar.bib%3Fhl%3Dno&lr%3D&ie%3DUTF-8&q%3Dinfo:Qh_MRSftNZgJ:scholar.google.com/&output%3Dcitation&oe%3DMACINTOSH&oi%3Dcitation][@books.google]] -- skal dei eigentleg samanstillast? Kva for problem gir dei i forhold til c-strukturnivåsamanstilling?
 
 *** TODO døme på diskontinuerlege konstituentar som er lenkja	     :ROTETE:
 ** TOGROK Er «compounds» frasar?	     :ROTETE:
@@ -1460,7 +1550,7 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 
 ** SKRIV Rangering
 
-* Implementasjonen av =lfgalign=
+* Implementasjonen av =lfgalign=				     :ROTETE:
 \label{SEC:implementasjon}
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
@@ -1510,7 +1600,7 @@ Hovudalgoritmen for lenkjing mellom f-strukturar er vist i kodefigur
 moglege samanstillingar. Kvar samanstilling er ei mengd med par av
 f-strukturar[fn:18]. Eit par $(F_s,F_t)$ representerer ei lenkje frå
 ein f-struktur på kjeldespråket, til ein f-struktur på målspråket. Me
-føreset at dette paret har LPT-korrespondanse[fn:17], dette blir
+går ut frå at dette paret har LPT-korrespondanse[fn:17], dette blir
 sjekka før alle kall på =f-align=. Der me ikkje har informasjon om
 LPT-korrespondanse mellom to ord (orda er ukjende), er lenkjing
 lov. Pro-element og substantiv kan alltid lenkjast med kvarandre.
@@ -1915,7 +2005,7 @@ konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
     (dette er vel heller stoff for diskusjonsdelen?)}
 
 
-* Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar
+* Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar :ROTETE:
 \label{SEC:diskusjon}
 
    - om kjeldematerialet
@@ -1970,54 +2060,50 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
 
 * Footnotes
 
-[fn:1] Både omsetjingsmodellen og
-språkmodellane er reint N-grambaserte her, og har difor ikkje nytte av
-syntaktisk informasjon (i motsetning til syntaktisk informert
-generering slik \citet{riezler2006gmt} implementerer).
+[fn:1] Både omsetjingsmodellen og språkmodellane er reint
+      N-grambaserte her, og har difor ikkje nytte av syntaktisk
+      informasjon (i motsetning til syntaktisk informert generering
+      slik \citet{riezler2006gmt} implementerer).
 
 [fn:typetoken] \cite[s.~2]{thunes2003eal}: «Våre prinsipper er satt
-opp for å tjene et bestemt formål, nemlig å samle inn data som metoden
-i Semantic Mirrors skal anvendes på», ein metode for å automatisk
-finne WordNet-liknande relasjonar frå parallelltekst. I denne metoden
-vil det vere naturleg med høge krav til presisjon, men kanskje lågare
-krav til dekning: speilmetoden skal finne leksikale semantiske forhold
-som held på /typenivå/, medan for trebanken er det viktigare korleis
-me kan annotere eit /token/ av t.d. eit verb i ein viss VP i ei gitt
-korpussetning.
+       opp for å tjene et bestemt formål, nemlig å samle inn data som
+       metoden i Semantic Mirrors skal anvendes på», ein metode for å
+       automatisk finne WordNet-liknande relasjonar frå
+       parallelltekst. I denne metoden vil det vere naturleg med høge
+       krav til presisjon, men kanskje lågare krav til dekning:
+       speilmetoden skal finne leksikale semantiske forhold som held
+       på /typenivå/, medan for trebanken er det viktigare korleis me
+       kan annotere eit /token/ av t.d. eit verb i ein viss VP i ei
+       gitt korpussetning.
 
 [fn:3] \citet[Catford~(1965),~i][s.~61]{munday2001its} gir ein gjennomgang av
-slike /klasseskifte/, og andre typar omsetjingsskifte.
+       slike /klasseskifte/, og andre typar omsetjingsskifte.
 
 [fn:4] Setningane i første og tredje linje i døma er direkte henta frå
-MRS-suiten, med mindre anna er opplyst.
+       MRS-suiten, med mindre anna er opplyst.
 
-[fn:6] Sidan eg føreset setningssamanstilte data, kjem eg ikkje inn på
- diskurs-/pragmatiske verknader, med mindre dette fører til
- forskjellar innanfor setningane (sjå t.d. del \ref{SEC:ordkrav} om
- lenkjer mellom koreferente substantiv og pronomen).
+[fn:6] Sidan eg går ut frå at data er setningssamanstilt, kjem eg
+       ikkje inn på diskurs-/pragmatiske verknader, med mindre dette
+       fører til forskjellar innanfor setningane (sjå t.d. del
+       \ref{SEC:ordkrav} om lenkjer mellom koreferente substantiv og
+       pronomen).
 
 [fn:9] I tillegg finst andre positive biverknader av ein LFG-basert
- frasesamanstilling for bruk i denne samanhengen, som at ein kan
- studere kor parallelle dei parallelle grammatikkane i
- ParGram-prosjektet \citep{butt2002pgp} faktisk er, på ulike nivå
- (leksikon og argumentstruktur, c-struktur, f-struktur).
+       frasesamanstilling for bruk i denne samanhengen, som at ein kan
+       studere kor parallelle dei parallelle grammatikkane i
+       ParGram-prosjektet \citep{butt2002pgp} faktisk er, på ulike
+       nivå (leksikon og argumentstruktur, c-struktur, f-struktur).
 
 [fn:10] Skal ein lenkje ordet /som/ (utan PRED) med ordet /which/ (med
- PRED)? Viss begge står under C i treet, kan det kanskje vere
- informativt med ein type «defekt» lenkje, sjølv om berre det eine
- ordet blir rekna for å vere eit innhaldsord. Frasane til deira
- funksjonelle domene vil uansett vere samanstilt via toppnodane
- (t.d. CP).
+        PRED)? Viss begge står under C i treet, kan det kanskje vere
+        informativt med ein type «defekt» lenkje, sjølv om berre det
+        eine ordet blir rekna for å vere eit innhaldsord. Frasane til
+        deira funksjonelle domene vil uansett vere samanstilt via
+        toppnodane (t.d. CP).
 
 [fn:12] I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
         inkludere visse f-strukturar utan PRED-element i kandidatane
         for samanstilling.
-
-[fn:13] Det georgiske verbalsubstantivet (/masdar/) er i følgje
-        \citet[kap.~2.5]{aronson1990grg} ein /nominal/ form, det kan i
-        motsetning til norske verbalsubstantiv og engelske gerundium
-        ikkje ta objekt, men kan ha modifiserande substantiv i
-        genitiv.
 
 [fn:14] Analysane er henta 18. mai, 2009, frå
         http://decentius.aksis.uib.no/logon/xle.xml, som implementerer
@@ -2068,4 +2154,18 @@ MRS-suiten, med mindre anna er opplyst.
 [fn:11] LFG tillèt som nemnt diskontinuerlege konstituentar, men dette
         er ikkje det same som ikkje-konstituentar av typen «es gibt» /
         «there is».
+
+[fn:7] Eventuelt kunne me ha definert lenkjingskandidatane på
+       f-strukturnivå som alle PRED-haldande f-strukturar, resultatet
+       blir det same.
+
+[fn:21] Eigentleg burde slike setningar ikkje vere lenkja på
+        setningsnivå ein gong, men som me skal sjå i del
+        \ref{SEC:lik-argstr} treng me kravet om lik tyding 
+        sjølv innanfor setninga.
+
+[fn:13] Me ville au fått ei mange-til-ein-lenkje om me tillot
+        /komplekse predikat/ i analysane, t.d. slik
+        \citet{butt1998merger} foreslår ved å la kombinasjonen av to
+        ord endre argumentstrukturen til eitt PRED-element.
 
