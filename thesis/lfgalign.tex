@@ -1,4 +1,4 @@
-% Created 2010-08-11 Wed 16:22
+% Created 2010-08-12 Thu 21:20
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -46,7 +46,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{11/08, 2010}
+\date{12/08, 2010}
 
 \begin{document}
 
@@ -550,7 +550,8 @@ same konsept som blir nytta i LFG\footnote{I tillegg finst andre positive biverk
 endosentrisitetsprinsipp, \xbar{}-tre, osb.)  au i desse krava til den
 «beste» frasesamanstillinga; i den grad LFG gir ein generaliserbar
 skildring av syntaks, bør desse krava vere generaliserbare til andre
-teoriar.
+teoriar, men ein del forhold som er avleidd av LFG-prinsipp må
+sjølvsagt modifiserast om krava skal generaliserast til andre teoriar.
 
 Utan skrankar i det heile vil alt kunne lenkjast til alt (noko som er
 like unyttig som å ikkje lenkje noko); i del \ref{SEC:kandidatar} ser
@@ -805,8 +806,311 @@ om LPT-kravet og krava på c- og f-strukturnivå er fylt, bør det ikkje
 vere noko i vegen for å lenkje ord (eventuelt mengder av ord) av ulik
 ordklasse.
 
-\section{Lenkjing av underordna c-strukturnodar}
+
+\section{\textbf{SKRIV} Krav på f-strukturnivå}
 \label{sec-3.6}
+
+   \fxnote{utgangspunkt i det som står i kap.4}
+\section{Krav om lik argumentstruktur}
+\label{sec-3.7}
+
+\label{SEC:lik-argstr}
+
+\citet{thunes2003eal} gir som nemnd eit krav om at \emph{predikat må ha tilsvarande semantiske argument} for å samanstillast.
+
+Om det alltid er slik at to predikat har like mange argument, som kjem i
+same rekkjefølgje i argumentstrukturen, vil det gjere den praktiske
+oppgåva med å samanstille predikata, og argument med argument, mykje
+enklare. Men kan me stille så sterke krav?
+
+Sett at ein setning på språk 1 har ei \emph{at}-setning som adjunkt, medan
+denne setninga på språk 2 er eit argument, og at desse setningane
+ville vore samanstilte om dei opptredde åleine. Om dei uttrykkjer same
+proposisjon og \emph{speler same rolle i verbsituasjonen},
+synest det naturleg å lenkje desse.  
+
+Omsetjingsrelasjonar gir data for verbsituasjon, på eit meir generelt
+grunnlag enn det me kan få frå einspråklege analysar åleine. Om me har
+gode semantiske grunnar for å kalle ein deltakar i ein verbsituasjon
+eit argument på eitt språk, vil dei same grunnane gjelde for
+omsetjingsmessig korresponderande verb på andre språk. Ein kan då
+nytte unionen over alle argument til korresponderande verb til å
+karakterisere kva ein meiner med \emph{deltakarane i verbsituasjonen}. Syntaktiske forhold i språket kan sjølvsagt gi
+grunnar til å \emph{ikkje} kalle dette eit argument (om det er mogleg å
+finne akseptable syntaktiske grunnar for å kalle noko ein adjunkt
+heller enn eit argument).
+ 
+For å gjere dette konkret kan me sjå på setning 7 i MRS-suiten
+\citep{mrs-suite}\footnote{Setningane i første og tredje linje i døma er direkte henta frå
+       MRS-suiten, med mindre anna er opplyst. }:
+
+\exg.  abramsi brouns       daenajleva sigaretze, rom cvimda \\
+      Abrams.NOM Brown.DAT vedde.3SG sigarett.om, at  regne.3SG.IMP \\
+     `Abrams veddet en sigarett med Brown på at det regnet' 
+
+I følgje LFG-parsen til desse setningane har hovudpredikata svært ulik
+argumentstruktur\footnote{Analysane er henta 18. mai, 2009, frå
+        \href{http://decentius.aksis.uib.no/logon/xle.xml}{http://decentius.aksis.uib.no/logon/xle.xml}, som implementerer
+        LFG-grammatikkane frå ParGram-prosjektet \citep{butt2002pgp}. }. Det norske \emph{vedde} har \underline{fire} argument, medan
+\emph{da-najleveba} har \underline{to} (\emph{Abrams} og \emph{Browne}), kor at-setninga på
+norsk og \emph{rom cvimda} uttrykkjer same proposisjon og speler same rolle
+i verbsituasjonen. Den engelske LFG-parsen av den tilsvarande setninga
+(mine omsetjingar) gir \underline{tre} argument, \emph{with} blir her adjunkt, medan
+den tyske grammatikken, som au har \underline{tre} argument, gjer \emph{at}-setninga
+til adjunkt. I \Next nedanfor har eg representert dei omsetjingsmessig
+korresponderande frasane i f-strukturane med dei norske omsetjingane
+for å illustrere dette:
+
+{\avmoptions{}
+\ex. \label{vedde}
+\a. Adams veddet en sigarett med Browne \hfill{} (norsk bokmål)\\ på at det regnet.\\
+    $\\\begin{avm}\[pred & `{\bf{}vedde}<Abrams, sigarett, Browne, regne>' \\
+                 adjunct & \{\}\]\end{avm}\\$
+\b. abramsi brouns daenajleva sigaretze, rom cvimda. \hfill{} (georgisk)\\
+    $\\\begin{avm}\[pred &  `{\bf{}da-najleveba}<Abrams, Browne, regne>'\\
+    adjunct &  \{ \rm sigarett \}\]\end{avm}\\$ 
+\c. Abrams hat mit Browne um eine Zigarette gewettet, \hfill{}(tysk)\\
+    daß es regnet.\\
+    $\\\begin{avm}\[pred & `{\bf{}wetten}<Abrams, sigarett>' \\
+                  adjunct & \{ \rm Browne, sigarett \}\]\end{avm}\\$
+\d. Abrams bet a cigarette with Brown that it was raining. \hfill{}(engelsk)\\
+    $\\\begin{avm}\[pred & `{\bf{}bet}<Abrams, sigarett, regne>'\\
+                  adjunct & \{ \rm Browne \}\]\end{avm}$
+
+}
+
+Om ein skal ha grammatikkane som datagrunnlag er det altså eit reellt
+problem kva ein skal gjere med mangel på samsvar i
+argumentstruktur. Om det alltid var fullstendig samsvar i
+argumentstruktur, ville det vore trivielt å lenkje argument: viss to
+korresponderande verb hadde tre argument, ville me lenkja det første
+med det første, det andre med det andre og det tredje med det
+tredje. Men om me har analysar som dei over, ser det ut til at me
+treng bottom-up-informasjon om kva for adjunkt og argument som
+samsvarer.
+
+Det same gjeld forøvrig lenkjing av adjunkt til adjunkt. Adjunkt
+plukker ut si eiga rolle der argument får rolla tildelt frå verbet, og
+f-strukturane har ingen hierarkisk inndeling av desse slik me har for
+verb og argument, dei er i staden representert som \emph{uordna mengder}.
+
+\subsection{\textbf{TODO} Sitere eigen korpusundersøking av variasjon i arg-str?}
+\label{sec-3.7.1}
+
+Ei undersøking av den frasesamanstilte trebanken SMULTRON
+\citep{samuelsson2006pap} mot LFG-grammatikkane for engelsk og tysk
+fann at 2 av 15 korresponderande verbtoken\footnote{25 om ein inkluderer analysar kor minst eitt av argumenta
+        ikkje hadde korrekt analyse (t.d. eit \textsc{PRO} der
+        grammatikken burde funne eit substantiv). } for høgfrekvente
+innhaldsverb fekk analysar kor argument korresponderte med adjunkt
+\citep{unhammer2009aaa}.
+
+\fxnote{LCS, dorr}
+\subsection{\textbf{TODO} Ulik følgje i argumentstruktur}
+\label{sec-3.7.2}
+
+I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
+argument ha ulik følgje i argumentstrukturen. Det er klart at me vil
+lenkje objektet til \emph{gefallen} (eller bokmål: \emph{behage}) med subjektet
+til \emph{like}, og omvendt.  Men rekkjefølgje i argumentstrukturane i
+ParGram-prosjektet er ofte basert på syntaktisk funksjon heller enn
+rolle, slik at eit verb som har opplevar som objekt og tema som
+subjekt vil ha opplevar nedanfor tema i argumentstrukturen, medan ei
+omsetjing av dette verbet kan ha tema nedanfor:
+
+{\avmoptions{}
+\ex. \a. sie$_j$ gefallen ihnen$_i$ \\
+     $\begin{avm}\[pred & `{\bf{}gefallen}<de$_j$, de$_i$>' \]\end{avm}$
+    $\\\\\leftrightarrow$\\
+     \b. de$_i$ liker dem$_j$ \\
+     $\begin{avm}\[pred & `{\bf{}like}<de$_i$, de$_j$>' \]\end{avm}$
+
+}
+
+Argumentstrukturane i \Last har omvendt intern følgje, og som vist ved
+dette dømet er det heller ikkje noko f-strukturinformasjon me kunne
+nytta til å sikre lenkjinga \emph{sie/dem} og \emph{ihnen/de}. Igjen ser det ut
+til at bottom-up-informasjon trengst.
+
+
+
+\section{\textbf{SKRIV} Kan adjunkt lenkjast til nodar \underline{under} mor-lenkja?}
+\label{sec-3.8}
+
+\label{SEC:merge-daughters}
+
+Krav (vi) i \citet[s.~75]{dyvik2009lmp} krev at viss F$_s$ og F$_t$ er
+lenkja, så kan ingen adjunkt D$_s$ til F$_s$ vere lenkja til nodar utanfor
+F$_t$. Men kan ein D$_s$ lenkjast til ei dotternode av argument eller
+adjunkt til F$_t$?
+
+R$_t$ er dotter til F$_t$, og må då vere lenkja til ei dotter av F$_s$,
+A$_s$. Då må au alle argument til R$_t$ vere lenkja til døtre av A$_s$, så
+D$_s$ kan ikkje lenkjast til argument av dotternodar til F$_t$. Kva med
+adjunkt? Om me finn eit ulenkja adjunkt til R$_t$ kan me heller ikkje
+lenkje dette til D$_s$ ved krav (vi) igjen, sidan D$_s$ står utanfor
+A$_s$.
+
+Men om D$_t$ er ei ulenkja \emph{adjunkt}dotter av F$_t$, så vil døtre av
+D$_t$ kunne lenkjast til D$_s$, så lenge D$_t$ forblir ulenkja. Me kan altså
+sjå ned i adjunktdøtre av F$_t$ for å lenkje D$_s$. 
+
+På same måte bør ein kunne rekursivt sjå ned i ulenkja adjunktdøtre av
+R$_t$, men ein bør kanskje ikkje kunne lenkje så djupt uansett? Ikkje
+automatisk, uansett.
+
+
+
+Programmet mitt vil, gitt to initielle f-strukturar med
+LPT-korrespondanse, finne alle moglege kombinasjonar av lenkjer som
+inneheld alle argument og kanskje adjunkt, dvs. om me har
+
+\begin{verbatim}
+ F_s [ PRED p<1,2> ADJUNCT { 3 } ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_t [ PRED p<4> ADJUNCT { 5,6 } ]
+\end{verbatim}
+
+
+vil dette vere logisk moglege samanstillingar av «f-strukturdøtre»:
+
+\begin{verbatim}
+    (((1 . 4) (2 . 5)) ((1 . 4) (2 . 6)) ((1 . 5) (2 . 4))
+     ((1 . 5) (2 . 6) (3 . 4)) ((1 . 6) (2 . 4)) ((1 . 6) (2 . 5) (3 . 4)))
+\end{verbatim}
+
+
+Me luker ut kombinasjonar som bryt med LPT-korrespondanse. Med full
+informasjon bør me sjølvsagt berre ende opp med éin kombinasjon,
+t.d. \texttt{((1 . 4) (2 . 5))}.
+
+Så langt bør altså krav (i-iv) frå \citet{dyvik2009lmp} vere dekkja.
+
+Me \underline{kan} krevje at f strukturane-til f strukturdøtre-kan lenkjast
+rekursivt for at F$_s$ og F$_t$ skal lenkjast, t.d. både \texttt{(1 . 4)} og \texttt{(2 . 5)}. Men her kjem det (iallfall) to problem.
+
+
+\subsection{1. Kausativar og inkorporering}
+\label{sec-3.8.1}
+
+Om me har 
+
+\begin{verbatim}
+ F_s [ PRED p<SUBJ, 1, 2> XCOMP 2[ PRED q<1> ] ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_t [ PRED pq<SUBJ,OBJ> ]
+\end{verbatim}
+
+
+kor pq er t.d. ein kausativ som tilsvarer \texttt{p<..., q>}, så vil me ikkje
+kunne lenkje F$_s$ og F$_t$ sidan det bryt med krav (iii), F$_s$ har eit
+argument for mykje. Men her vil det kanskje vere naturleg å ha ei
+ein-mange-lenkje:
+
+\begin{verbatim}
+ ((F_s 2) . F_t)
+\end{verbatim}
+
+
+No kan me sjå på unionen av argument av F$_s$ (minus XCOMP) og argument
+av XCOMP, alle argument i denne unionen må då ha LPT-korrespondanse
+med argument/adjunkt av F$_t$, og alle argument av F$_t$ må ha
+LPT-korrespondanse med argument/adjunkt av unionen.
+
+Det same bør kanskje skje ved vanleg inkorporering av substantiv, då
+må det altså vere mogleg å føye saman t.d. verb og objekt; ein
+kombinasjon av dette og kausativ bør vel vere mogleg, t.d.
+
+\begin{verbatim}
+ F_s [ PRED la<SUBJ, 1>  XCOMP 2[ få<1, 3:pengar> ] ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_ t [ PRED belønn<SUBJ, 1> ]
+\end{verbatim}
+
+
+Igjen ser me på argument frå unionen av \texttt{(F\_s 2 3)} minus 2 og 3, og
+om det er mogleg å lenkje dei til argument/adjunkt av F$_t$, og omvendt.
+
+Men det bør kanskje vere grenser for kor langt samanføying kan gå… eg
+kan ikkje tenkje meg at me vil lenkje \texttt{((F\_s 2) . F\_t)} eller \texttt{((F\_s 1 2) . F\_t)} her:
+
+\begin{verbatim}
+ F_s [ PRED p<…, 1> XCOMP 1[ PRED q<…, 2> XCOMP 2[ PRED r<…> ] ] ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_t [ PRED pr<…> ]
+\end{verbatim}
+
+
+\ldots{}men det kan jo hende det finst situasjonar der dette au vil vere
+rett. Problemet er altså kor me skal setje grensene i
+implementasjonen. Om me skal prøve å samanføye på alle moglege måtar
+(altså, der me ikkje har informasjon om LPT), i tillegg til «vanlege»
+lenkjer, blir det fort komputasjonelt vanskeleg. Me kan sjølvsagt snu
+på LPT-kravet her, og seie at dette er berre lov der me har positiv
+informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
+me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
+vanskeleg å finne prinsipelle avgrensingar her. 
+\subsubsection{\textbf{TOGROK} adjunkt bør ikkje samanføyast? eller?}
+\label{sec-3.8.1.1}
+
+Det einaste eg kan
+tenkje meg er at adjunkt ikkje bør vere kandidatar for samanføying (i
+såfall burde dei vel heller vore analysert som argument?).
+
+\subsection{2. Adposisjonsobjekt}
+\label{sec-3.8.2}
+
+
+I følgjande setningspar har me eit objekt «sigarett» som svarer til
+PP-en «sigaretze» («sigareti» + «ze»), eit adjunkt:
+
+\begin{verbatim}
+ Abrams veddet en sigarett med Browne på at det regnet.
+ abramsi brouns daenajleva sigaretze, rom cvimda.
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_s [ PRED sigarett ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ F_t [ PRED ze<1> 1[ PRED sigareti ] ]
+\end{verbatim}
+
+
+F$_s$ og F$_t$ er døtre av dei ytre predikata i kvar setning, krav (iii)
+seier at det må vere LPT-korrespondanse mellom desse for at me skal
+kunne lenkje «veddet» og «daenajleva».  Her synest det feil å føye
+saman «sigareti» og «ze», \texttt{(F\_s . (F\_t 1))}, sidan «sigarett» ikkje
+inneheld informasjonen gitt av «ze».
+
+Det finst då to løysingar. Me kan slakke på LMT-kravet ved å la
+\texttt{L'(F\_t) = \{sigaretze, ze\}} (evt. \texttt{\{sigaret, ze\}}), då kan me lenkje
+\texttt{(F\_s . F\_t)}, medan 1 er ulenkja.
+
+Eller me kan lenkje \texttt{(F\_s . 1)}, kor me har skikkeleg
+LMT-korrespondanse, men då må me slakke på (iii) og (iv), og altså ha
+lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
+«daenajleva». F$_t$ er då ulenkja. Det er løysinga valt i
+\citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
+nedanfor.
+
+\section{Lenkjing av underordna c-strukturnodar}
+\label{sec-3.9}
 
 \label{SEC:subnode}
 
@@ -912,13 +1216,16 @@ georgisk spesifikator som var lenkja til den norske PRONP.
 \end{figure}
 
 \section{Funksjonsord}
-\label{sec-3.7}
+\label{sec-3.10}
 
 \label{SEC:fnord}
-I tillegg kan me ha ord i setninga som ikkje tilsvarer PRED-element i
-f-strukturen, typisk funksjonsord (t.d. \emph{som}, \emph{at}). Ved
+
+Ikkje alle ord ikkje tilsvarer PRED-element i f-strukturen, dette
+gjeld typisk funksjonsord (t.d. \emph{som}, \emph{at}). Ved
 endosentrisitetsprinsippa til \citet{bresnan2001lfs} er komplementet
-til funksjonelle kategoriar (C, I, P) ein funksjonell ko-kjerne. 
+til funksjonelle kategoriar (C, I, P) ein funksjonell ko-kjerne, det
+er altså komplementet som gir PRED-elementet i dette funksjonelle
+domenet.
 
 \ex. \label{fnordkrav} Skal nodar for ord som ikkje projiserer
      PRED-element\footnote{Skal ein lenkje ordet \emph{som} (utan PRED) med ordet \emph{which} (med
@@ -933,8 +1240,9 @@ til funksjonelle kategoriar (C, I, P) ein funksjonell ko-kjerne.
 
 
 Om \Last[a og -b] er oppfylt, kan me få samanstillinga vist i figur
-\ref{fig:fnord}, og i dette tilfellet er \Last[b] oppfylt og \Last[a]
-vil vere oppfylt om me kan samanstille \emph{cvimda} med \emph{det regnet}.
+\ref{fig:fnord}, og i dette tilfellet er \Last[b] oppfylt sidan Csub er
+c-strukturhovud i CPsub og Cnom er c-strukturhovud i CPnom, medan
+\Last[a] vil vere oppfylt om me kan samanstille \emph{cvimda} med \emph{det regnet}, noko som skal gå greit.
 
   \begin{figure}[htp]
    \vfill{} % how todo?
@@ -961,348 +1269,6 @@ vil vere oppfylt om me kan samanstille \emph{cvimda} med \emph{det regnet}.
   \caption{Mogleg samanstilling av funksjonsord mellom georgisk og norsk (bokmål)}
    \label{fig:fnord}
   \end{figure}
-
-\section{Krav om lik argumentstruktur}
-\label{sec-3.8}
-
-\label{SEC:lik-argstr}
-
-\citet{thunes2003eal} gir som nemnd eit krav om at \emph{predikat må ha tilsvarande semantiske argument} for å samanstillast.
-
-Om det alltid er slik at to predikat har like mange argument, som kjem i
-same rekkjefølgje i argumentstrukturen, vil det gjere den praktiske
-oppgåva med å samanstille predikata, og argument med argument, mykje
-enklare. Men kan me stille så sterke krav?
-
-Sett at ein setning på språk 1 har ei \emph{at}-setning som adjunkt, medan
-denne setninga på språk 2 er eit argument, og at desse setningane
-ville vore samanstilte om dei opptredde åleine. Om dei uttrykkjer same
-proposisjon og \emph{speler same rolle i verbsituasjonen},
-synest det naturleg å lenkje desse.  
-
-Omsetjingsrelasjonar gir data for verbsituasjon, på eit meir generelt
-grunnlag enn det me kan få frå einspråklege analysar åleine. Om me har
-gode semantiske grunnar for å kalle ein deltakar i ein verbsituasjon
-eit argument på eitt språk, vil dei same grunnane gjelde for
-omsetjingsmessig korresponderande verb på andre språk. Ein kan då
-nytte unionen over alle argument til korresponderande verb til å
-karakterisere kva ein meiner med \emph{deltakarane i verbsituasjonen}. Syntaktiske forhold i språket kan sjølvsagt gi
-grunnar til å \emph{ikkje} kalle dette eit argument (om det er mogleg å
-finne akseptable syntaktiske grunnar for å kalle noko ein adjunkt
-heller enn eit argument).
- 
-For å gjere dette konkret kan me sjå på setning 7 i MRS-suiten
-\citep{mrs-suite}\footnote{Setningane i første og tredje linje i døma er direkte henta frå
-       MRS-suiten, med mindre anna er opplyst. }:
-
-\exg.  abramsi brouns       daenajleva sigaretze, rom cvimda \\
-      Abrams.NOM Brown.DAT vedde.3SG sigarett.om, at  regne.3SG.IMP \\
-     `Abrams veddet en sigarett med Brown på at det regnet' 
-
-I følgje LFG-parsen til desse setningane har hovudpredikata svært ulik
-argumentstruktur\footnote{Analysane er henta 18. mai, 2009, frå
-        \href{http://decentius.aksis.uib.no/logon/xle.xml}{http://decentius.aksis.uib.no/logon/xle.xml}, som implementerer
-        LFG-grammatikkane frå ParGram-prosjektet \citep{butt2002pgp}. }. Det norske \emph{vedde} har \underline{fire} argument, medan
-\emph{da-najleveba} har \underline{to} (\emph{Abrams} og \emph{Browne}), kor at-setninga på
-norsk og \emph{rom cvimda} uttrykkjer same proposisjon og speler same rolle
-i verbsituasjonen. Den engelske LFG-parsen av den tilsvarande setninga
-(mine omsetjingar) gir \underline{tre} argument, \emph{with} blir her adjunkt, medan
-den tyske grammatikken, som au har \underline{tre} argument, gjer \emph{at}-setninga
-til adjunkt. I \Next nedanfor har eg representert dei omsetjingsmessig
-korresponderande frasane i f-strukturane med dei norske omsetjingane
-for å illustrere dette:
-
-{\avmoptions{}
-\ex. \label{vedde}
-\a. Adams veddet en sigarett med Browne \hfill{} (norsk bokmål)\\ på at det regnet.\\
-    $\\\begin{avm}\[pred & `{\bf{}vedde}<Abrams, sigarett, Browne, regne>' \\
-                 adjunct & \{\}\]\end{avm}\\$
-\b. abramsi brouns daenajleva sigaretze, rom cvimda. \hfill{} (georgisk)\\
-    $\\\begin{avm}\[pred &  `{\bf{}da-najleveba}<Abrams, Browne, regne>'\\
-    adjunct &  \{ \rm sigarett \}\]\end{avm}\\$ 
-\c. Abrams hat mit Browne um eine Zigarette gewettet, \hfill{}(tysk)\\
-    daß es regnet.\\
-    $\\\begin{avm}\[pred & `{\bf{}wetten}<Abrams, sigarett>' \\
-                  adjunct & \{ \rm Browne, sigarett \}\]\end{avm}\\$
-\d. Abrams bet a cigarette with Brown that it was raining. \hfill{}(engelsk)\\
-    $\\\begin{avm}\[pred & `{\bf{}bet}<Abrams, sigarett, regne>'\\
-                  adjunct & \{ \rm Browne \}\]\end{avm}$
-
-}
-
-Om ein skal ha grammatikkane som datagrunnlag er det altså eit reellt
-problem kva ein skal gjere med mangel på samsvar i
-argumentstruktur. Om det alltid var fullstendig samsvar i
-argumentstruktur, ville det vore trivielt å lenkje argument: viss to
-korresponderande verb hadde tre argument, ville me lenkja det første
-med det første, det andre med det andre og det tredje med det
-tredje. Men om me har analysar som dei over, ser det ut til at me
-treng bottom-up-informasjon om kva for adjunkt og argument som
-samsvarer.
-
-Det same gjeld forøvrig lenkjing av adjunkt til adjunkt. Adjunkt
-plukker ut si eiga rolle der argument får rolla tildelt frå verbet, og
-f-strukturane har ingen hierarkisk inndeling av desse slik me har for
-verb og argument, dei er i staden representert som \emph{uordna mengder}.
-
-\subsection{\textbf{TODO} Sitere eigen korpusundersøking av variasjon i arg-str?}
-\label{sec-3.8.1}
-
-Ei undersøking av den frasesamanstilte trebanken SMULTRON
-\citep{samuelsson2006pap} mot LFG-grammatikkane for engelsk og tysk
-fann at 2 av 15 korresponderande verbtoken\footnote{25 om ein inkluderer analysar kor minst eitt av argumenta
-        ikkje hadde korrekt analyse (t.d. eit \textsc{PRO} der
-        grammatikken burde funne eit substantiv). } for høgfrekvente
-innhaldsverb fekk analysar kor argument korresponderte med adjunkt
-\citep{unhammer2009aaa}.
-
-\fxnote{LCS, dorr}
-\subsection{\textbf{TODO} Ulik følgje i argumentstruktur}
-\label{sec-3.8.2}
-
-I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
-argument ha ulik følgje i argumentstrukturen. Det er klart at me vil
-lenkje objektet til \emph{gefallen} (eller bokmål: \emph{behage}) med subjektet
-til \emph{like}, og omvendt.  Men rekkjefølgje i argumentstrukturane i
-ParGram-prosjektet er ofte basert på syntaktisk funksjon heller enn
-rolle, slik at eit verb som har opplevar som objekt og tema som
-subjekt vil ha opplevar nedanfor tema i argumentstrukturen, medan ei
-omsetjing av dette verbet kan ha tema nedanfor:
-
-{\avmoptions{}
-\ex. \a. sie$_j$ gefallen ihnen$_i$ \\
-     $\begin{avm}\[pred & `{\bf{}gefallen}<de$_j$, de$_i$>' \]\end{avm}$
-    $\\\\\leftrightarrow$\\
-     \b. de$_i$ liker dem$_j$ \\
-     $\begin{avm}\[pred & `{\bf{}like}<de$_i$, de$_j$>' \]\end{avm}$
-
-}
-
-Argumentstrukturane i \Last har omvendt intern følgje, og som vist ved
-dette dømet er det heller ikkje noko f-strukturinformasjon me kunne
-nytta til å sikre lenkjinga \emph{sie/dem} og \emph{ihnen/de}. Igjen ser det ut
-til at bottom-up-informasjon trengst.
-
-
-
-\section{\textbf{SKRIV} Kan adjunkt lenkjast til nodar \underline{under} mor-lenkja?}
-\label{sec-3.9}
-
-\label{SEC:merge-daughters}
-
-Krav (vi) i \citet[s.~75]{dyvik2009lmp} krev at viss F$_s$ og F$_t$ er
-lenkja, så kan ingen adjunkt D$_s$ til F$_s$ vere lenkja til nodar utanfor
-F$_t$. Men kan ein D$_s$ lenkjast til ei dotternode av argument eller
-adjunkt til F$_t$?
-
-R$_t$ er dotter til F$_t$, og må då vere lenkja til ei dotter av F$_s$,
-A$_s$. Då må au alle argument til R$_t$ vere lenkja til døtre av A$_s$, så
-D$_s$ kan ikkje lenkjast til argument av dotternodar til F$_t$. Kva med
-adjunkt? Om me finn eit ulenkja adjunkt til R$_t$ kan me heller ikkje
-lenkje dette til D$_s$ ved krav (vi) igjen, sidan D$_s$ står utanfor
-A$_s$.
-
-Men om D$_t$ er ei ulenkja \emph{adjunkt}dotter av F$_t$, så vil døtre av
-D$_t$ kunne lenkjast til D$_s$, så lenge D$_t$ forblir ulenkja. Me kan altså
-sjå ned i adjunktdøtre av F$_t$ for å lenkje D$_s$. 
-
-På same måte bør ein kunne rekursivt sjå ned i ulenkja adjunktdøtre av
-R$_t$, men ein bør kanskje ikkje kunne lenkje så djupt uansett? Ikkje
-automatisk, uansett.
-
-
-
-Programmet mitt vil, gitt to initielle f-strukturar med
-LPT-korrespondanse, finne alle moglege kombinasjonar av lenkjer som
-inneheld alle argument og kanskje adjunkt, dvs. om me har
-
-\begin{verbatim}
- F_s [ PRED p<1,2> ADJUNCT { 3 } ]
-\end{verbatim}
-
-
-\begin{verbatim}
- F_t [ PRED p<4> ADJUNCT { 5,6 } ]
-\end{verbatim}
-
-
-vil dette vere logisk moglege samanstillingar av «f-strukturdøtre»:
-
-\begin{verbatim}
-    (((1 . 4) (2 . 5)) ((1 . 4) (2 . 6)) ((1 . 5) (2 . 4))
-     ((1 . 5) (2 . 6) (3 . 4)) ((1 . 6) (2 . 4)) ((1 . 6) (2 . 5) (3 . 4)))
-\end{verbatim}
-
-
-Me luker ut kombinasjonar som bryt med LPT-korrespondanse. Med full
-informasjon bør me sjølvsagt berre ende opp med éin kombinasjon,
-t.d. \texttt{((1 . 4) (2 . 5))}.
-
-Så langt bør altså krav (i-iv) frå \citet{dyvik2009lmp} vere dekkja.
-
-Me \underline{kan} krevje at f strukturane-til f strukturdøtre-kan lenkjast
-rekursivt for at F$_s$ og F$_t$ skal lenkjast, t.d. både \texttt{(1 . 4)} og \texttt{(2 . 5)}. Men her kjem det (iallfall) to problem.
-
-
-\subsection{1. Kausativar og inkorporering}
-\label{sec-3.9.1}
-
-Om me har 
-
-\begin{verbatim}
- F_s [ PRED p<SUBJ, 1, 2> XCOMP 2[ PRED q<1> ] ]
-\end{verbatim}
-
-
-\begin{verbatim}
- F_t [ PRED pq<SUBJ,OBJ> ]
-\end{verbatim}
-
-
-kor pq er t.d. ein kausativ som tilsvarer \texttt{p<..., q>}, så vil me ikkje
-kunne lenkje F$_s$ og F$_t$ sidan det bryt med krav (iii), F$_s$ har eit
-argument for mykje. Men her vil det kanskje vere naturleg å ha ei
-ein-mange-lenkje:
-
-\begin{verbatim}
- ((F_s 2) . F_t)
-\end{verbatim}
-
-
-No kan me sjå på unionen av argument av F$_s$ (minus XCOMP) og argument
-av XCOMP, alle argument i denne unionen må då ha LPT-korrespondanse
-med argument/adjunkt av F$_t$, og alle argument av F$_t$ må ha
-LPT-korrespondanse med argument/adjunkt av unionen.
-
-Det same bør kanskje skje ved vanleg inkorporering av substantiv, då
-må det altså vere mogleg å føye saman t.d. verb og objekt; ein
-kombinasjon av dette og kausativ bør vel vere mogleg, t.d.
-
-\begin{verbatim}
- F_s [ PRED la<SUBJ, 1>  XCOMP 2[ få<1, 3:pengar> ] ]
-\end{verbatim}
-
-
-\begin{verbatim}
- F_ t [ PRED belønn<SUBJ, 1> ]
-\end{verbatim}
-
-
-Igjen ser me på argument frå unionen av \texttt{(F\_s 2 3)} minus 2 og 3, og
-om det er mogleg å lenkje dei til argument/adjunkt av F$_t$, og omvendt.
-
-Men det bør kanskje vere grenser for kor langt samanføying kan gå… eg
-kan ikkje tenkje meg at me vil lenkje \texttt{((F\_s 2) . F\_t)} eller \texttt{((F\_s 1 2) . F\_t)} her:
-
-\begin{verbatim}
- F_s [ PRED p<…, 1> XCOMP 1[ PRED q<…, 2> XCOMP 2[ PRED r<…> ] ] ]
-\end{verbatim}
-
-
-\begin{verbatim}
- F_t [ PRED pr<…> ]
-\end{verbatim}
-
-
-\ldots{}men det kan jo hende det finst situasjonar der dette au vil vere
-rett. Problemet er altså kor me skal setje grensene i
-implementasjonen. Om me skal prøve å samanføye på alle moglege måtar
-(altså, der me ikkje har informasjon om LPT), i tillegg til «vanlege»
-lenkjer, blir det fort komputasjonelt vanskeleg. Me kan sjølvsagt snu
-på LPT-kravet her, og seie at dette er berre lov der me har positiv
-informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
-me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
-vanskeleg å finne prinsipelle avgrensingar her. 
-\subsubsection{\textbf{TOGROK} adjunkt bør ikkje samanføyast? eller?}
-\label{sec-3.9.1.1}
-
-Det einaste eg kan
-tenkje meg er at adjunkt ikkje bør vere kandidatar for samanføying (i
-såfall burde dei vel heller vore analysert som argument?).
-
-\subsection{2. Adposisjonsobjekt}
-\label{sec-3.9.2}
-
-
-I følgjande setningspar har me eit objekt «sigarett» som svarer til
-PP-en «sigaretze» («sigareti» + «ze»), eit adjunkt:
-
-\begin{verbatim}
- Abrams veddet en sigarett med Browne på at det regnet.
- abramsi brouns daenajleva sigaretze, rom cvimda.
-\end{verbatim}
-
-
-\begin{verbatim}
- F_s [ PRED sigarett ]
-\end{verbatim}
-
-
-\begin{verbatim}
- F_t [ PRED ze<1> 1[ PRED sigareti ] ]
-\end{verbatim}
-
-
-F$_s$ og F$_t$ er døtre av dei ytre predikata i kvar setning, krav (iii)
-seier at det må vere LPT-korrespondanse mellom desse for at me skal
-kunne lenkje «veddet» og «daenajleva».  Her synest det feil å føye
-saman «sigareti» og «ze», \texttt{(F\_s . (F\_t 1))}, sidan «sigarett» ikkje
-inneheld informasjonen gitt av «ze».
-
-Det finst då to løysingar. Me kan slakke på LMT-kravet ved å la
-\texttt{L'(F\_t) = \{sigaretze, ze\}} (evt. \texttt{\{sigaret, ze\}}), då kan me lenkje
-\texttt{(F\_s . F\_t)}, medan 1 er ulenkja.
-
-Eller me kan lenkje \texttt{(F\_s . 1)}, kor me har skikkeleg
-LMT-korrespondanse, men då må me slakke på (iii) og (iv), og altså ha
-lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
-«daenajleva». F$_t$ er då ulenkja. Det er løysinga valt i
-\citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
-nedanfor.
-
-\section{\textbf{TODO} Konstruksjonar og komposisjonell inekvivalens}
-\label{sec-3.10}
-
-\xbar-teori føreset at det finst éi dotter i kvart ledd som kan
-reknast som predikatet for dette leddet. Ei utfordring for
-\xbar-baserte teoriar er då handsaming av \emph{komplekse predikat}. Desse
-har fleire grammatiske element innanfor same ledd som alle bidrar med
-«a non-trivial part of the information of the complex predicate»
-\citep{alsina1997cp}. I LFG er det ein føresetnad at me berre har éin
-\textsc{pred} ytterst i kvar f-struktur; ulike mekanismar har blitt
-føreslått for å handsame dette fenomenet.
-
-I omsette tekster kan me få eit analogt problem:
-
-\ex. It can't be done \\
-     Det lar seg ikke gjøre
-
-Her vil ytre predikat i f-strukturen på norsk vere
-`la<det$_1$,XCOMP>PRO', kor XCOMP[PRED `gjøre<NULL,det$_1$>NULL'].
-
-På engelsk får me `can<XCOMP,it$_2$>', kor
-XCOMP[PRED `do<NULL,it$_2$>']. 
-
-
-Skal me lenkje orda \emph{can} og \emph{la}? På \emph{heile konstruksjonen} finn me
-iallfall eit omsetjingsforhold:
-
-
-\begin{center}
-\begin{tabular}{lll}
- It can't be done                    &  Det lar seg ikke gjøre               &      \\
- can't be done                       &  lar seg ikke gjøre                   &      \\
- be done                             &  gjøre                                &  s?  \\
- \_{} can't be VPASS                 &  \_{} lar seg ikke VPASS              &  ??  \\
- \_$_{1}$ can \_$_{2}$ be VPASS$_3$  &  \_$_{1}$ lar seg \_$_{2}$ VPASS$_3$  &  ??  \\
-\end{tabular}
-\end{center}
-
-
-
-
-(kan me få den siste generaliseringa frå trebanken?)
-
 
 \section{\textbf{SKRIV} Rangering}
 \label{sec-3.11}

@@ -598,7 +598,8 @@ same konsept som blir nytta i LFG[fn:9] (f-struktur, c-struktur,
 endosentrisitetsprinsipp, \xbar{}-tre, osb.)  au i desse krava til den
 «beste» frasesamanstillinga; i den grad LFG gir ein generaliserbar
 skildring av syntaks, bør desse krava vere generaliserbare til andre
-teoriar.
+teoriar, men ein del forhold som er avleidd av LFG-prinsipp må
+sjølvsagt modifiserast om krava skal generaliserast til andre teoriar.
 
 Utan skrankar i det heile vil alt kunne lenkjast til alt (noko som er
 like unyttig som å ikkje lenkje noko); i del \ref{SEC:kandidatar} ser
@@ -843,225 +844,9 @@ om LPT-kravet og krava på c- og f-strukturnivå er fylt, bør det ikkje
 vere noko i vegen for å lenkje ord (eventuelt mengder av ord) av ulik
 ordklasse.
 
-** Lenkjing av underordna c-strukturnodar
-\label{SEC:subnode}
 
-Toppnodane i eit lenkja funksjonelt domene i c-struktur (XP på språk
-1, ZP på språk 2) vil ha ein informasjonsmessig korrespondanse, og kan
-samanstillast. Men det er mogleg å samanstille to toppnodar i
-funksjonelle domene i c-strukturen utan at nodane under (X', Z') er
-samanstilt. Ein grunn til å ikkje samanstille desse underordna nodane,
-vil vere viss spesifikator til X ikkje speler same rolle i tolkinga
-som spesifikator til Z, dvs. viss YP og WP i figur \ref{fig:subnode}
-ikkje er lenkja.
-
-
-Me kan utelukke lenkjing av ikkje-konstituentar som /there is/ ved å
-krevje at ei fullstendig samanstilling mellom to frasar må vere slik
-at heile substrukturen au er samanstilt. /There is/ og /Es gibt/ i
-figur \ref{fig:ikkjenode} kan då ikkje samanstillast åleine, men berre
-som del av ei ytre frasesamanstilling.
-Så når /kan/ me samanstille nodane som står under øvste node i
-det funksjonelle domenet?
-
-#+BEGIN_LaTeX
-\begin{figure}[htp]
-   \vfill{} % how todo?
-   \begin{tikzpicture}
-  \Tree  [.\node(XP){XP};  \node(YP){YP};  
-                                    \node(X'){X'};   ]
-      \begin{scope}[shift={(2in,0in)}]
-  \Tree  [.\node(ZP){ZP};  \node(WP){WP};  
-                                    \node(Z'){Z'};   ]
-\end{scope}
-\draw[-] (XP)..controls +(north:1) and +(north:1) .. (ZP) ;
-  \draw[dashed,-] (YP)..controls +(south:1) and +(south:1) .. (WP) ;
-
-\end{tikzpicture}
-   \caption{Lenkjing av underordna c-strukturnodar}
-   \label{fig:subnode}
-  \end{figure}
-#+END_LaTeX
-
-I figur \ref{fig:subnode} der XP og ZP er lenkja, vil YP og WP -- i
-kraft av å vere toppnodar i sine domene -- måtte ha ei lenkje i
-f-strukturen for at c-strukturnodane kan lenkjast (det kunne jo
-t.d. hende at f-strukturen projisert av YP samsvarte med den projisert
-av Z', eller ein struktur under Z').
-
-Om me skal lenkje Z' og X' i figuren over må dei respektive
-spesifikatornodane vere lenkja. Me får då følgjande krav:
-
-\ex. \label{subnodekrav} Krav for lenkjing av underordna
-c-strukturnodar:
-\a. c-strukturnodar som ligg under øvste node i to funksjonelle
-    domena kan berre samanstillast med nodar som ligg innanfor desse
-    domena,
-\b. c-strukturnodar kan berre samanstillast om deira funksjonelle
-    domene er lenkja på f-strukturnivå,
-\c. om ein c-strukturnode X' som ikkje er toppnode i det funksjonelle
-    domenet har ein søsternode YP, må YP vere samanstilt med ein
-    søsternode til Z' for å samanstille X' og Z'
-
-# føresetnad at me berre har binære tre...hmm...
-
-\Last[a] seier at om XP og ZP er samanstilt, der XP er t.d. OBJ til
-IP, kan ikkje Z' samanstillast med SUBJ til IP osb., men berre til
-nodar innanfor OBJ-domenet. \Last[c] påført figur \ref{fig:subnode}
-seier altså at spesifikatornodane må vere lenkja for at X' og Z' skal
-lenkjast (manglande søsternode på den eine sida vil au hindre
-samanstilling).
-
-I figur \ref{fig:fnord} er alle nodane under S vist i dei to trea i
-same funksjonelle domene (kvar node under S er annotert med $\uparrow
-= \downarrow$), så om dei funksjonelle domena er samanstilt (som krev
-at /rom cvimda/ og /at det regner/ er samanstilt), vil \Last[a og -b]
-vere oppfylt kva gjeld CP-komplementa -- lenkjinga går ikkje ut over
-dei funksjonelle domena. Sidan Csub og Cnom er funksjonelle kategoriar
-er dei au samanstilt via samanstillinga av S-nodane og føringane i
-\ref{fnordkrav}, og \Last[c] er då oppfylt. \Last står altså ikkje i
-vegen for å samanstille IP-en over /cvimda/ og Ssub.
-
-I figur \ref{fig:ikkjesub} derimot \citep{mrs-suite}, kan me ikkje
-samanstille I'-nodane. PRONP-noden, spesifikator på den norske sida,
-er ikkje lenkja med nokon spesifikator på den georgiske sida. Den
-informasjonen (her reint syntaktisk) som ordet /det/ tilfører IP, ligg
-under I' på georgisk. Om me skulle lenkja I', måtte me altså hatt ein
-georgisk spesifikator som var lenkja til den norske PRONP.
-
-#+BEGIN_LaTeX
-\begin{figure}[htp]
- \vfill{} % how todo?
-\begin{tikzpicture}
-\Tree [.\node(IPb){IP}; 
-  [.PRONP \edge[roof]; {det} ] 
-  [.\node(Ibarb){I'};  [.Vfin \node(åpnet){åpnet};  ]
-       [.S \edge[roof]; {seg} ] ] ]
-      \begin{scope}[shift={(2in,0in)}]
-\Tree [.\node(IPk){IP}; 
-  [.\node(Ibark){I'};  [.V    \node(gaiGo){gaiGo};  ]
-  ] ]
-\end{scope}
- \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
-  \draw[dashed,-] (Ibark)..controls +(north:1) and +(north:1) .. (Ibarb) ;
- \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
-
-\end{tikzpicture}
-\caption{Umogleg samanstilling av funksjonsord mellom bokmål og georgisk}
- \label{fig:ikkjesub}
-\end{figure}
-#+END_LaTeX
-
-*** SKRIV døme!							     :ROTETE:
-*** TOGROK me_OBJ gusta X_SUBJ // I_SUBJ like X_OBJ ??		     :ROTETE:
-*** TOGROK korleis finn me /there is/-lenkjer då? 		     :ROTETE:
-(og kva skal me med dei?)
-
-«Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
-(/There/ never /is/) som opptrer utanfor N-grammet på det andre
-språket.»
-** Funksjonsord
-\label{SEC:fnord}
-I tillegg kan me ha ord i setninga som ikkje tilsvarer PRED-element i
-f-strukturen, typisk funksjonsord (t.d. /som/, /at/). Ved
-endosentrisitetsprinsippa til \citet{bresnan2001lfs} er komplementet
-til funksjonelle kategoriar (C, I, P) ein funksjonell ko-kjerne. 
-
-\ex. \label{fnordkrav} Skal nodar for ord som ikkje projiserer
-     PRED-element[fn:10] samanstillast, må følgjande krav vere oppfylt:
-\a. det funksjonelle domenet (gitt ved komplementet) må vere
-   samanstilt, og
-\b. dei er begge c-strukturhovud.
-
-#c-strukturen må vere tilstrekkeleg parallell \citep{dyvik2009lmp} til
-#    å lenkje dei preterminale nodane, jf. krav \ref{subnodekrav} (gitt
-#    i del \ref{SEC:subnode} nedanfor, om underordna c-strukturnodar).
-
-Om \Last[a og -b] er oppfylt, kan me få samanstillinga vist i figur
-\ref{fig:fnord}, og i dette tilfellet er \Last[b] oppfylt og \Last[a]
-vil vere oppfylt om me kan samanstille /cvimda/ med /det regnet/.
-
-#+BEGIN_LaTeX
-  \begin{figure}[htp]
-   \vfill{} % how todo?
-  
-  \begin{tikzpicture}
-  \Tree
-  [.IPfoc
-    [.PROPP [.PROP abramsma ] ] 
-    [.I' [.I \edge[roof]; {iCoda} ]
-             [.S [.CPsub
-                  [.\node(Csub){Csub};  rom ]
-                  [.IP \edge[roof]; {cvimda} ]]]]]
-      \begin{scope}[shift={(2in,0in)}]
-  \Tree
-  [.IP
-    [.PROPP [.PROP Abrams ] ]
-     [.I' [.Vfin visste ]
-              [.S [.VPmain [.CPnom
-                           [.\node(Cnom){Cnom};  at ] 
-                            [.Ssub \edge[roof]; {det regnet} ]]]]] ]
-  \end{scope}                      
-  \draw[dashed,-] (Csub)..controls +(south west:3) and +(south:1) .. (Cnom) ;
-  \end{tikzpicture}
-  \caption{Mogleg samanstilling av funksjonsord mellom georgisk og norsk (bokmål)}
-   \label{fig:fnord}
-  \end{figure}
-#+END_LaTeX
-
-*** TOGROK cvimda<PRO> men regne<>expletive -- lenkje? 		     :ROTETE:
-*** TOGROK kva med ekspletivar? ingen PRED men heller ikkje C/F/I    :ROTETE:
-Kandidatane på f-strukturnivå må jo inkludere desse au...
-
-** TOGROK mange-til-mange-lenkjing i f-strukturane? 		     :ROTETE:
-    Eg er litt usikker på om me skal ha slike
-    mange-til-mange-korrespondansar i f-strukturane; eg har rekna med
-    at ei f-strukturlenkje /impliserer/ ei slag lenkjing mellom det som
-    er innanfor f-strukturane; men i \citet{riezler2006gmt} er det i
-    staden berre eit krav om at desse f-strukturane er lenkja i same
-    transfer-regel.
-
-# Ikkje-komposisjonell mange-til-mange-lenkjing 
-
-\citet[s.~40--41]{riezler2006gmt} tillet mange-til-mange-lenkjing
-mellom f-strukturar, så lenge alle f-strukturane som blir lenkja til
-slutt opptrer i same transfer-regel. Frå følgjande setningspar:
-
-\ex. Dafür bin ich zutiefst dankbar \\
-     I have a deep appreciation for that
-
-lenkjar dei \{/zutiefst/\} med \{ /a, deep, appreciation/ \}, men
-sidan \{/appreciation/\} er samanstilt med \{/dankbar/\}, må
-transfer-regelen inkludere \{ /zutiefst, dankbar/ \} på den eine sida
-og \{ /a, deep, appreciation/ \} på den andre.
-
-
-*** SKRIV Kva inneber ei mange-til-mange-lenkjing?		     :ROTETE:
-
-** SKRIV Mangel på samsvar i syntaks og semantikk		     :ROTETE:
-\cite[s.~5]{kruijffkorbayova2006agc} gir følgjande døme: 
-#+BEGIN_LaTeX
-\ex.  nikdy nebyl \\
-      never was.not\\
-      `has never been'
-#+END_LaTeX
-
-/nebyl/ blir «svakt» samanstilt med /never/, men «sterkt» samanstilt med
-\emph{has ... been} i deira system. I tillegg er det ein sterk samanstilling
-mellom /never/ og /nikby/.
-
-# Og i kvantitetsfrasar er talet det semantiske hovudet på tsjekkisk,
-# medan einingen er det på engelsk (her følgjer dei semantikken i
-# samanstilling).
-
-** TOGROK Diskontinuerlege einingar				     :ROTETE:
-   - diskontinuerlege einingar \cite[s.~4]{cheung2002scg} [[http://scholar.google.no/scholar.bib%3Fhl%3Dno&lr%3D&ie%3DUTF-8&q%3Dinfo:Qh_MRSftNZgJ:scholar.google.com/&output%3Dcitation&oe%3DMACINTOSH&oi%3Dcitation][@books.google]] -- skal dei eigentleg samanstillast? Kva for problem gir dei i forhold til c-strukturnivåsamanstilling?
-
-*** TODO døme på diskontinuerlege konstituentar som er lenkja	     :ROTETE:
-** TOGROK Er «compounds» frasar?	     :ROTETE:
- \citep[p.~1]{giegerich2006aea}
-
-
+** SKRIV Krav på f-strukturnivå
+   \fxnote{utgangspunkt i det som står i kap.4}
 ** Krav om lik argumentstruktur
 \label{SEC:lik-argstr}
 
@@ -1297,6 +1082,31 @@ argstr til $PRED_{L2}$.
      vedde<a,d,b,c> og vedde<d,a,b,c> -- men sannsynlegvis er altså
      a,b,c i same rekkjefølgje uansett...)
 
+** TOGROK mange-til-mange-lenkjing i f-strukturane? 		     :ROTETE:
+    Eg er litt usikker på om me skal ha slike
+    mange-til-mange-korrespondansar i f-strukturane; eg har rekna med
+    at ei f-strukturlenkje /impliserer/ ei slag lenkjing mellom det som
+    er innanfor f-strukturane; men i \citet{riezler2006gmt} er det i
+    staden berre eit krav om at desse f-strukturane er lenkja i same
+    transfer-regel.
+
+# Ikkje-komposisjonell mange-til-mange-lenkjing 
+
+\citet[s.~40--41]{riezler2006gmt} tillet mange-til-mange-lenkjing
+mellom f-strukturar, så lenge alle f-strukturane som blir lenkja til
+slutt opptrer i same transfer-regel. Frå følgjande setningspar:
+
+\ex. Dafür bin ich zutiefst dankbar \\
+     I have a deep appreciation for that
+
+lenkjar dei \{/zutiefst/\} med \{ /a, deep, appreciation/ \}, men
+sidan \{/appreciation/\} er samanstilt med \{/dankbar/\}, må
+transfer-regelen inkludere \{ /zutiefst, dankbar/ \} på den eine sida
+og \{ /a, deep, appreciation/ \} på den andre.
+
+
+*** SKRIV Kva inneber ei mange-til-mange-lenkjing?		     :ROTETE:
+
 ** SKRIV Kan adjunkt lenkjast til nodar _under_ mor-lenkja?
 \label{SEC:merge-daughters}
 
@@ -1427,6 +1237,205 @@ lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
 \citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
 nedanfor.
 
+** Lenkjing av underordna c-strukturnodar
+\label{SEC:subnode}
+
+Toppnodane i eit lenkja funksjonelt domene i c-struktur (XP på språk
+1, ZP på språk 2) vil ha ein informasjonsmessig korrespondanse, og kan
+samanstillast. Men det er mogleg å samanstille to toppnodar i
+funksjonelle domene i c-strukturen utan at nodane under (X', Z') er
+samanstilt. Ein grunn til å ikkje samanstille desse underordna nodane,
+vil vere viss spesifikator til X ikkje speler same rolle i tolkinga
+som spesifikator til Z, dvs. viss YP og WP i figur \ref{fig:subnode}
+ikkje er lenkja.
+
+
+Me kan utelukke lenkjing av ikkje-konstituentar som /there is/ ved å
+krevje at ei fullstendig samanstilling mellom to frasar må vere slik
+at heile substrukturen au er samanstilt. /There is/ og /Es gibt/ i
+figur \ref{fig:ikkjenode} kan då ikkje samanstillast åleine, men berre
+som del av ei ytre frasesamanstilling.
+Så når /kan/ me samanstille nodane som står under øvste node i
+det funksjonelle domenet?
+
+#+BEGIN_LaTeX
+\begin{figure}[htp]
+   \vfill{} % how todo?
+   \begin{tikzpicture}
+  \Tree  [.\node(XP){XP};  \node(YP){YP};  
+                                    \node(X'){X'};   ]
+      \begin{scope}[shift={(2in,0in)}]
+  \Tree  [.\node(ZP){ZP};  \node(WP){WP};  
+                                    \node(Z'){Z'};   ]
+\end{scope}
+\draw[-] (XP)..controls +(north:1) and +(north:1) .. (ZP) ;
+  \draw[dashed,-] (YP)..controls +(south:1) and +(south:1) .. (WP) ;
+
+\end{tikzpicture}
+   \caption{Lenkjing av underordna c-strukturnodar}
+   \label{fig:subnode}
+  \end{figure}
+#+END_LaTeX
+
+I figur \ref{fig:subnode} der XP og ZP er lenkja, vil YP og WP -- i
+kraft av å vere toppnodar i sine domene -- måtte ha ei lenkje i
+f-strukturen for at c-strukturnodane kan lenkjast (det kunne jo
+t.d. hende at f-strukturen projisert av YP samsvarte med den projisert
+av Z', eller ein struktur under Z').
+
+Om me skal lenkje Z' og X' i figuren over må dei respektive
+spesifikatornodane vere lenkja. Me får då følgjande krav:
+
+\ex. \label{subnodekrav} Krav for lenkjing av underordna
+c-strukturnodar:
+\a. c-strukturnodar som ligg under øvste node i to funksjonelle
+    domena kan berre samanstillast med nodar som ligg innanfor desse
+    domena,
+\b. c-strukturnodar kan berre samanstillast om deira funksjonelle
+    domene er lenkja på f-strukturnivå,
+\c. om ein c-strukturnode X' som ikkje er toppnode i det funksjonelle
+    domenet har ein søsternode YP, må YP vere samanstilt med ein
+    søsternode til Z' for å samanstille X' og Z'
+
+# føresetnad at me berre har binære tre...hmm...
+
+\Last[a] seier at om XP og ZP er samanstilt, der XP er t.d. OBJ til
+IP, kan ikkje Z' samanstillast med SUBJ til IP osb., men berre til
+nodar innanfor OBJ-domenet. \Last[c] påført figur \ref{fig:subnode}
+seier altså at spesifikatornodane må vere lenkja for at X' og Z' skal
+lenkjast (manglande søsternode på den eine sida vil au hindre
+samanstilling).
+
+I figur \ref{fig:fnord} er alle nodane under S vist i dei to trea i
+same funksjonelle domene (kvar node under S er annotert med $\uparrow
+= \downarrow$), så om dei funksjonelle domena er samanstilt (som krev
+at /rom cvimda/ og /at det regner/ er samanstilt), vil \Last[a og -b]
+vere oppfylt kva gjeld CP-komplementa -- lenkjinga går ikkje ut over
+dei funksjonelle domena. Sidan Csub og Cnom er funksjonelle kategoriar
+er dei au samanstilt via samanstillinga av S-nodane og føringane i
+\ref{fnordkrav}, og \Last[c] er då oppfylt. \Last står altså ikkje i
+vegen for å samanstille IP-en over /cvimda/ og Ssub.
+
+I figur \ref{fig:ikkjesub} derimot \citep{mrs-suite}, kan me ikkje
+samanstille I'-nodane. PRONP-noden, spesifikator på den norske sida,
+er ikkje lenkja med nokon spesifikator på den georgiske sida. Den
+informasjonen (her reint syntaktisk) som ordet /det/ tilfører IP, ligg
+under I' på georgisk. Om me skulle lenkja I', måtte me altså hatt ein
+georgisk spesifikator som var lenkja til den norske PRONP.
+
+#+BEGIN_LaTeX
+\begin{figure}[htp]
+ \vfill{} % how todo?
+\begin{tikzpicture}
+\Tree [.\node(IPb){IP}; 
+  [.PRONP \edge[roof]; {det} ] 
+  [.\node(Ibarb){I'};  [.Vfin \node(åpnet){åpnet};  ]
+       [.S \edge[roof]; {seg} ] ] ]
+      \begin{scope}[shift={(2in,0in)}]
+\Tree [.\node(IPk){IP}; 
+  [.\node(Ibark){I'};  [.V    \node(gaiGo){gaiGo};  ]
+  ] ]
+\end{scope}
+ \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
+  \draw[dashed,-] (Ibark)..controls +(north:1) and +(north:1) .. (Ibarb) ;
+ \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
+
+\end{tikzpicture}
+\caption{Umogleg samanstilling av funksjonsord mellom bokmål og georgisk}
+ \label{fig:ikkjesub}
+\end{figure}
+#+END_LaTeX
+
+*** SKRIV døme!							     :ROTETE:
+*** TOGROK me_OBJ gusta X_SUBJ // I_SUBJ like X_OBJ ??		     :ROTETE:
+*** TOGROK korleis finn me /there is/-lenkjer då? 		     :ROTETE:
+(og kva skal me med dei?)
+
+«Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
+(/There/ never /is/) som opptrer utanfor N-grammet på det andre
+språket.»
+** Funksjonsord
+\label{SEC:fnord}
+
+Ikkje alle ord ikkje tilsvarer PRED-element i f-strukturen, dette
+gjeld typisk funksjonsord (t.d. /som/, /at/). Ved
+endosentrisitetsprinsippa til \citet{bresnan2001lfs} er komplementet
+til funksjonelle kategoriar (C, I, P) ein funksjonell ko-kjerne, det
+er altså komplementet som gir PRED-elementet i dette funksjonelle
+domenet.
+
+\ex. \label{fnordkrav} Skal nodar for ord som ikkje projiserer
+     PRED-element[fn:10] samanstillast, må følgjande krav vere oppfylt:
+\a. det funksjonelle domenet (gitt ved komplementet) må vere
+   samanstilt, og
+\b. dei er begge c-strukturhovud.
+
+#c-strukturen må vere tilstrekkeleg parallell \citep{dyvik2009lmp} til
+#    å lenkje dei preterminale nodane, jf. krav \ref{subnodekrav} (gitt
+#    i del \ref{SEC:subnode} nedanfor, om underordna c-strukturnodar).
+
+Om \Last[a og -b] er oppfylt, kan me få samanstillinga vist i figur
+\ref{fig:fnord}, og i dette tilfellet er \Last[b] oppfylt sidan Csub er
+c-strukturhovud i CPsub og Cnom er c-strukturhovud i CPnom, medan
+\Last[a] vil vere oppfylt om me kan samanstille /cvimda/ med /det
+regnet/, noko som skal gå greit.
+
+#+BEGIN_LaTeX
+  \begin{figure}[htp]
+   \vfill{} % how todo?
+  
+  \begin{tikzpicture}
+  \Tree
+  [.IPfoc
+    [.PROPP [.PROP abramsma ] ] 
+    [.I' [.I \edge[roof]; {iCoda} ]
+             [.S [.CPsub
+                  [.\node(Csub){Csub};  rom ]
+                  [.IP \edge[roof]; {cvimda} ]]]]]
+      \begin{scope}[shift={(2in,0in)}]
+  \Tree
+  [.IP
+    [.PROPP [.PROP Abrams ] ]
+     [.I' [.Vfin visste ]
+              [.S [.VPmain [.CPnom
+                           [.\node(Cnom){Cnom};  at ] 
+                            [.Ssub \edge[roof]; {det regnet} ]]]]] ]
+  \end{scope}                      
+  \draw[dashed,-] (Csub)..controls +(south west:3) and +(south:1) .. (Cnom) ;
+  \end{tikzpicture}
+  \caption{Mogleg samanstilling av funksjonsord mellom georgisk og norsk (bokmål)}
+   \label{fig:fnord}
+  \end{figure}
+#+END_LaTeX
+
+** SKRIV grunn for at me må krevje a og b, døme der det ikkje går
+*** TOGROK cvimda<PRO> men regne<>expletive -- lenkje? 		     :ROTETE:
+*** TOGROK kva med ekspletivar? ingen PRED men heller ikkje C/F/I    :ROTETE:
+Kandidatane på f-strukturnivå må jo inkludere desse au...
+
+** SKRIV Mangel på samsvar i syntaks og semantikk		     :ROTETE:
+\cite[s.~5]{kruijffkorbayova2006agc} gir følgjande døme: 
+#+BEGIN_LaTeX
+\ex.  nikdy nebyl \\
+      never was.not\\
+      `has never been'
+#+END_LaTeX
+
+/nebyl/ blir «svakt» samanstilt med /never/, men «sterkt» samanstilt med
+\emph{has ... been} i deira system. I tillegg er det ein sterk samanstilling
+mellom /never/ og /nikby/.
+
+# Og i kvantitetsfrasar er talet det semantiske hovudet på tsjekkisk,
+# medan einingen er det på engelsk (her følgjer dei semantikken i
+# samanstilling).
+
+** TOGROK Diskontinuerlege einingar				     :ROTETE:
+   - diskontinuerlege einingar \cite[s.~4]{cheung2002scg} [[http://scholar.google.no/scholar.bib%3Fhl%3Dno&lr%3D&ie%3DUTF-8&q%3Dinfo:Qh_MRSftNZgJ:scholar.google.com/&output%3Dcitation&oe%3DMACINTOSH&oi%3Dcitation][@books.google]] -- skal dei eigentleg samanstillast? Kva for problem gir dei i forhold til c-strukturnivåsamanstilling?
+
+*** TODO døme på diskontinuerlege konstituentar som er lenkja	     :ROTETE:
+** TOGROK Er «compounds» frasar?	     :ROTETE:
+ \citep[p.~1]{giegerich2006aea}
+
 ** TOGROK kva var poenget med dette?				     :ROTETE:
 «etter og uten er dei einaste prep som tek setn utan å vere arg»
 ** ULEST Cyrus, FuSe-prosjektet					     :ROTETE:
@@ -1439,7 +1448,7 @@ equivalent sentences of the two languages. We describe both our
 conceptual decisions and aspects of their technical realisation. We
 discuss some selected problems and conclude with a few remarks on how
 this project relates to similar projects in the field.»
-** TODO Konstruksjonar og komposisjonell inekvivalens
+** TODO Konstruksjonar og komposisjonell inekvivalens		     :ROTETE:
 # eg siterer her alsina frå min eigen artikkel..heller sitere min??
 \xbar-teori føreset at det finst éi dotter i kvart ledd som kan
 reknast som predikatet for dette leddet. Ei utfordring for
