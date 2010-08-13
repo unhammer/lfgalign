@@ -1,4 +1,4 @@
-% Created 2010-08-13 Fri 15:12
+% Created 2010-08-13 Fri 18:07
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -1126,17 +1126,36 @@ nedanfor.
 \label{SEC:subnode}
 
 Toppnodane i to funksjonelle domene som er lenkja på f-strukturnivå
-vil ha ein informasjonsmessig korrespondanse, og kan som nemnt i del
-\ref{SEC:kandidatar} utan vidare lenkjast. Men det er mogleg å lenkje
+vil ha ein informasjonsmessig korrespondanse, og kan, som nemnt i del
+\ref{SEC:kandidatar}, utan vidare lenkjast. Men det er mogleg å lenkje
 desse toppnodane, t.d. XP på kjeldespråket og ZP på målspråket, utan
-at nodane under (X', Z') er lenkja. 
+at nodane under (X', Z') er lenkja til noko. I denne delen går eg
+gjennom kva som må til for å lenkje slike underordna (ikkje-øvste)
+c-strukturnodar.
 
-Éin grunn til å ikkje lenkje desse underordna nodane, er viss YP og WP
-i figur \ref{fig:subnode} ikkje er lenkja, og det finst informasjon
-som korresponderer mellom X' og WP eller mellom Z' og YP.
-Ein annan grunn til å ikkje lenkje X' og Z' er viss WP ikkje fantest
-og YP hadde informasjon som på målspråket blei spesifisert av nodar
-under Z'. 
+Me kan byrje med eit par enkle krav, me seinare utvidar:
+
+\ex. Enkle krav for lenkjing av underordna c-strukturnodar:
+\a. \label{subnodekrav-innan-domene} c-strukturnodar som ligg under øvste node i to funksjonelle
+    domena kan berre samanstillast med nodar som ligg innanfor desse
+    domena,
+\b. \label{subnodekrav-f-lenkja} c-strukturnodar kan berre samanstillast om deira funksjonelle
+    domene er lenkja på f-strukturnivå
+
+\Last[a] seier at om XP og ZP er lenkja, der XP og ZP er toppnodar,
+kan ikkje dotter til XP, X', lenkjast med t.d. mor eller søster til
+ZP. Og om ZP dominerer ein node WP, der $\phi(WP) \neq \phi(ZP)$, kan
+me heller ikkje ha ei c-strukturlenkje frå X' til WP. Grunnen er at
+f-strukturane er sett saman av informasjonsinnhaldet projisert av
+nodane, så det vil vere unaturleg å ha ei c-strukturlenkje som står i
+konflikt med f-strukturlenkjer.
+
+Men sjølv der to underordna c-strukturnodar er i lenkja funksjonelle
+domene (altså, der dei respektive toppnodane er lenkja) er det ikkje
+alltid slik at me vil lenkje dei underordna nodane. I figur
+\ref{fig:subnode} er XP og ZP to lenkja toppnodar i som inkluderer
+høvesvis X' og Z' i dei funksjonelle domena. Her kan me ha gode
+grunnar for å ikkje lenkje X' og Z'. 
 
 \begin{figure}[htp]
 \centering
@@ -1156,73 +1175,205 @@ under Z'.
    \label{fig:subnode}
   \end{figure}
 
-Når treet deler seg i to som i figur \ref{fig:subnode}, får me au ei
+Éin grunn til å ikkje lenkje desse underordna nodane, er viss YP og WP
+i figur \ref{fig:subnode} ikkje er lenkja, og det finst informasjon
+som korresponderer mellom X' og WP eller mellom Z' og YP; dette gir
+eit mangel på samsvar mellom X' og Z'.  Ein annan situasjon der me
+ikkje vil lenkje X' og Z' er når WP ikkje finst og YP har informasjon
+som på målspråket blir spesifisert av nodar under Z'.
+
+Når treet deler seg i to som i figur \ref{fig:subnode}, får me ei
 mogleg oppdeling av kjeldene til f-strukturinformasjonen. Me vil ikkje
-lenkje nodar som ikkje gir same tilskot til f-strukturen, men i begge
-situasjonane nemnt ovanfor er det slik at X' og Z' gir ulike tilskot
-til f-strukturen; dei kan difor ikkje lenkjast. Likevel må me tillate
-litt slingringsmonn her, X' og Z' skal ikkje trenge projisere heilt
-like f-strukturar. Det som er relevant er det som blir lenkja i
-f-strukturen, eller \emph{kva for lenkjer som finst mellom f-strukturane til nodane under}.
+lenkje nodar som ikkje gir same tilskot til f-strukturen, på same måte
+som me ikkje vil lenkje på tvers av f-strukturlenkjer. I begge
+situasjonane nemnt i avsnittet ovanfor er det slik at X' og Z' gir
+ulike tilskot til f-strukturen, dei kan difor ikkje lenkjast. Likevel
+må me tillate litt slingringsmonn her, X' og Z' skal ikkje trenge
+projisere heilt like f-strukturar. Det som er relevant er det som blir
+lenkja i f-strukturen, eller \emph{kva for lenkjer som finst mellom f-strukturane til nodane under}.
 
-Om me skal lenkje Z' og X' i figuren over må dei respektive
-spesifikatornodane vere lenkja. Me får då følgjande krav:
+For å gjere dette meir konkret kan me sjå på dømet i figur
+\ref{fig:ikkjesub}. IP-nodane er her lenkja, men me kan ikkje lenkje
+I'-nodane i same funksjonelle domene. PRONP-noden, spesifikator på den
+norske sida, er ikkje lenkja med nokon spesifikator på den georgiske
+sida. Den informasjonen (her reint syntaktisk) som ordet \emph{det}
+tilfører IP, ligg under I' på georgisk. Me kunne lenkja I' om me hadde
+ein georgisk spesifikator som var lenkja til den norske PRONP. Me kan
+heller ikkje lenkje Vfin til V, her manglar endå meir informasjon
+(både frå \emph{det} og frå \emph{seg}). 
 
-\fxnote{a og b er avleidd av c! TODO omskriv}
+\begin{figure}[htp]
+\centering
+\begin{tikzpicture}
+\Tree [.\node(IPk){IP}; 
+  [.\node(Ibark){I'};  [. \node(Vk){V};  \node(gaiGo){gaiGo};  ]
+  ] ]
+     \begin{scope}[shift={(2in,0in)}]
+\Tree [.\node(IPb){IP}; 
+  [.PRONP \edge[roof]; {det} ] 
+  [.\node(Ibarb){I'};  [.\node(Vfinb){Vfin};   \node(åpnet){åpnet};  ]
+       [.S \edge[roof]; {seg} ] ] ]
+\end{scope}
+ \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
+  \draw[dashed,-] (Ibark)..controls +(north east:1.3) and +(north west:1.3) .. node[midway,sloped]{$\times$}(Ibarb) ;
+  \draw[dashed,-] (Vk)..controls +(north east:1.3) and +(north west:1.3) .. node[midway,sloped]{$\times$}(Vfinb) ;
+% \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
 
-\ex. \label{subnodekrav} Krav for lenkjing av underordna
-c-strukturnodar:
-\a. \label{subnodekrav-innan-domene} c-strukturnodar som ligg under øvste node i to funksjonelle
-    domena kan berre samanstillast med nodar som ligg innanfor desse
-    domena,
-\b. \label{subnodekrav-f-lenkja} c-strukturnodar kan berre samanstillast om deira funksjonelle
-    domene er lenkja på f-strukturnivå,
-\c. \label{subnodekrav-infotap} TODO
+\end{tikzpicture}
 
-\Last[a] seier at om XP og ZP er lenkja, der XP og ZP er toppnodar,
-kan ikkje Z' lenkjast med t.d. mor eller søster til XP. Om $\phi(YP)
-\neq \phi(XP)$, kan me heller ikkje ha ei c-strukturlenkje frå Z' til
-YP. Sidan f-strukturar representerer informasjonsinnhaldet projisert
-av nodane vil det vere unaturleg å ha ei c-strukturlenkje som står i
-konflikt med f-strukturlenkjer.
+\fxnote{TODO: teikne inn f-domene her òg}
+
+\caption{Umogleg lenkjing av underordna c-strukturnodar mellom georgisk og bokmål}
+ \label{fig:ikkjesub}
+\end{figure}
+
+Hadde det georgiske treet hatt spesifikator og komplement som kunne
+lenkjast til spesifikator og komplement på norsk, kunne me ha lenkja
+I' og Vfin. For å tillate desse lenkjene, men ikkje dei i figur
+\ref{fig:ikkjesub}, ville det vore nok å krevje at søsternodane var
+lenkja. Hadde me hatt situasjon i figur \ref{fig:enkelsub} nedanfor
+ville dette stemt, Vfin-nodane kan lenkjast fordi S-nodane er lenkja,
+I'-nodane fordi PRONP-nodane er lenkja. 
+
+    \begin{figure}[htp]
+    \centering
+    \begin{tikzpicture}
+      \Tree
+      [.\node(IPk){IPfoc};
+         [.\node(NPk){PRONP}; \edge[roof]; {...} ] 
+         [.\node(Ibark){I'};  [.\node(Vfink){Vfin}; {...}  ]
+                                     [.\node(Sk){S}; \edge[roof]; {...} ]
+         ]
+      ]
+  \begin{scope}[shift={(2in,0in)}]
+    \Tree [.\node(IPb){IP}; 
+      [.\node(PRONPb){PRONP}; \edge[roof]; {det} ] 
+      [.\node(Ibarb){I'};  [. \node(Vfinb){Vfin}; \node(åpnet){åpnet};  ]
+           [.\node(Sb){S}; \edge[roof]; {seg} ] ] ]
+  \end{scope}
+     \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
+      \draw[-,very thick] (Vfink)..controls +(north east:1.5) and +(north west:1.5) .. (Vfinb) ;
+      \draw[-,very thick] (Ibark)..controls +(north east:1.5) and +(north west:1.5) .. (Ibarb) ;
+    % \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
+     \draw[-] (NPk)..controls +(north east:1) and +(north west:1) .. (PRONPb) ;
+     \draw[-] (Sk)..controls +(north east:1) and +(north west:1) .. (Sb) ;    
+    \end{tikzpicture}
+    
+    \fxnote{TODO: teikne inn f-domene her òg}
+    
+    \caption{Ei enkel lenkjing av c-strukturnodar}
+     \label{fig:enkelsub}
+    \end{figure}
 
 
-I figur \ref{fig:ikkjesub} kan me ikkje samanstille
-I'-nodane. PRONP-noden, spesifikator på den norske sida, er ikkje
-lenkja med nokon spesifikator på den georgiske sida. Den informasjonen
-(her reint syntaktisk) som ordet \emph{det} tilfører IP, ligg under I' på
-georgisk. Om me skulle lenkja I', måtte me altså hatt ein georgisk
-spesifikator som var lenkja til den norske PRONP.
+Men det blir for strengt å krevje at søsternodar er lenkja; S-noden i
+den norske analysen er ein del av det funksjonelle domenet til IP,
+medan komplementet i andre språk kanskje går rett på eit nytt
+funksjonelt domene. Figur \ref{fig:enkelsub2} demonstrerer denne
+situasjonen. Her kan ikkje S lenkjast til PRONrfl sidan dei ikkje er i
+same funksjonelle domene, men me vil jo likevel lenkje Vfin-nodane. 
 
+    \begin{figure}[htp]
+    \centering
+    \begin{tikzpicture}
+      \Tree
+      [.\node(IPk){IPfoc};
+         [.\node(NPk){PRONP}; \edge[roof]; {...} ] 
+         [.\node(Ibark){I'};  [.\node(Vfink){Vfin}; {...}  ]
+                                     [.\node(PRONrflk){PRONrfl}; \edge[roof]; {...} ]
+         ]
+      ]
+  \begin{scope}[shift={(2in,0in)}]
+    \Tree [.\node(IPb){IP}; 
+      [.\node(PRONPb){PRONP}; \edge[roof]; {det} ] 
+      [.\node(Ibarb){I'};  [. \node(Vfinb){Vfin}; \node(åpnet){åpnet};  ]
+           [.\node(Sb){S}; [.\node(PRONrflb){PRONrfl}; {seg} ] ] ] ]
+  \end{scope}
+     \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
+      \draw[-,very thick] (Vfink)..controls +(north east:1.5) and +(north west:1.5) .. (Vfinb) ;
+      \draw[-,very thick] (Ibark)..controls +(north east:1.5) and +(north west:1.5) .. (Ibarb) ;
+    % \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
+     \draw[-] (NPk)..controls +(north east:1) and +(north west:1) .. (PRONPb) ;
+     \draw[-] (PRONrflk)..controls +(north east:1) and +(north west:1) .. (PRONrflb) ;    
+    \end{tikzpicture}
+    
+    \fxnote{TODO: teikne inn f-domene her òg}
+    
+    \caption{Ei enkel lenkjing av c-strukturnodar}
+     \label{fig:enkelsub2}
+    \end{figure}
+
+Me treng altså eit litt meir nyansert
+krav. \citet[s.~77]{dyvik2009lmp} definerer omgrepet \emph{lenkja leksikalske nodar}, $LL$, kor $LL(n)$ er mengda av nodar dominert av
+$n$ som har ei ordlenkje; og krev at alle nodane i mengda $LL(n_s)$
+(kor $n_s$ er ein lenkjingskandidat på kjeldesida) er lenkja til nodar
+i $LL(n_t)$ (kor $n_t$ er ein lenkjingskandidat på målsida). Ulenkja
+nodar står ikkje i vegen for lenkjing av $n_s$ og $n_t$.  For at me
+skal unngå å lenkje I' og Vfin i figur \ref{fig:ikkjesub} må altså
+\emph{det} og \emph{seg} vere ordlenkja, men ikkje til \emph{gaiGo}.
+\fxnote[inline,nomargin]{det går vel ikkje an?? skal \emph{det} vere
+ordlenkja til ein \emph{del} av gaiGo? TOGROK}
+
+Eg vel i staden å definere kravet i form av f-strukturlenkjer på
+preterminale nodar, og dimed unngå krav på ordnivå her. 
+
+\ex. \label{subnodekrav-infotap} For å lenkje dei underordna
+     c-strukturnodane $n_s$ og $n_t$ (kor toppnodane i dei
+     funksjonelle domena er lenkja ved
+     krav \ref{f-links-domain}):\\
+     La $L_c(n_s)$ vere alle
+     f-strukturlenkjer frå $\phi(n'_s)$ for alle preterminale $n'_s$
+     som er dominert av $n_s$. Ein ulenkja node $n'_s$ har ei «tom»
+     f-strukturlenkje frå $\phi(n'_s)$ til $\emptyset$. Nodane $n_s$ og $n_t$
+     kan då lenkjast viss
+\a.  mor av $n_s$, $m_s$, har same funksjonelle domene som $n_s$,
+     og mor av $n_t$, $m_t$, har same funksjonelle domene som $n_t$, 
+\b.  $m_s$ og $m_t$ er lenkja, 
+\c.  og $L_c(m_s)-L_c(n_s)=L_c(m_t)-L-c(n_t)$.
+
+
+\Last[a og -b] seier til saman det same som
+\ref{subnodekrav-innan-domene} og \ref{subnodekrav-f-lenkja}. Det
+\Last[c] seier er at me må ha same \emph{informasjonstap} når me går
+nedover i c-strukturtreet.
+
+
+Figur \ref{fig:enkelsub2} illusterer dette kravet.
+
+
+\begin{figure}[htp]
+\centering
+\begin{tikzpicture}
+\Tree [.\node(IPk){IPfoc}; 
+  [.\node(NPk){NP}; \edge[roof]; {PanJara} ] 
+  [.\node(Ibark){I'};  [.\node(Vfink){Vfin};    \node(gaiGo){gaiGo};  ]
+  ] ]
+     \begin{scope}[shift={(2in,0in)}]
+\Tree [.\node(IPb){IP}; 
+  [.\node(PRONPb){PRONP}; \edge[roof]; {det} ] 
+  [.\node(Ibarb){I'};  [. \node(Vfinb){Vfin}; \node(åpnet){åpnet};  ]
+       [.S \edge[roof]; {seg} ] ] ]
+\end{scope}
+ \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
+  \draw[dashed,-] (Vfink)..controls +(north east:1) and +(north west:1) .. node[midway,sloped]{$\times$}(Vfinb) ;
+  \draw[-,very thick] (Ibark)..controls +(north east:1.5) and +(north west:1.5) .. (Ibarb) ;
+% \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
+ \draw[-] (NPk)..controls +(north east:1) and +(north west:1) .. (PRONPb) ;
+
+\end{tikzpicture}
+
+\fxnote{TODO: teikne inn f-domene her òg}
+
+\caption{Delvis mogleg lenkjing av underordna c-strukturnodar mellom georgisk og bokmål}
+ \label{fig:ikkjesub2}
+\end{figure}
+ 
 Krav \Last[c] sørgjer for at me ikkje får ei lenkje mellom I'-nodane;
 den georgiske I'-noden dominerer lenkjemengda ${g}$, den norske,
 ${f,i}$. Lenkjene dei dominerer er ${(f,g)}$ og
 ${(f,g),(i,\emptyset)}$ høvesvis -- desse har ulikt informasjonstap
 frå nodane over, difor kan me ikkje lenkje I'-nodane.
 
-\begin{figure}[htp]
-\centering
-\begin{tikzpicture}
-\Tree [.\node(IPb){IP}; 
-  [.PRONP \edge[roof]; {det} ] 
-  [.\node(Ibarb){I'};  [.Vfin \node(åpnet){åpnet};  ]
-       [.S \edge[roof]; {seg} ] ] ]
-      \begin{scope}[shift={(2in,0in)}]
-\Tree [.\node(IPk){IP}; 
-  [.\node(Ibark){I'};  [.V    \node(gaiGo){gaiGo};  ]
-  ] ]
-\end{scope}
- \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
-  \draw[dashed,-] (Ibark)..controls +(north:1) and +(north:1) .. (Ibarb) ;
- \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
-
-\end{tikzpicture}
-
-\fxnote{TODO: teikne inn f-domene her òg}
-
-\caption{Umogleg samanstilling av underordna c-strukturnodar mellom bokmål og georgisk}
- \label{fig:ikkjesub}
-\end{figure}
 
 \section{Funksjonelle c-strukturnodar}
 \label{sec-3.10}
@@ -1283,7 +1434,6 @@ Då får me følgjande:
     av nodemengden som blir lenkja til XP.
 
 
-
 Om \Last[a] er oppfylt, kan me få samanstillinga vist i figur
 \ref{fig:fnord}. Her vil dei funksjonelle domena til CPsub og CPnom
 kvar kunne delast opp i to deler, kor den funksjonelle delen har
@@ -1297,7 +1447,7 @@ så om dei funksjonelle domena er lenkja, vil
 krav\~{}\ref{subnodekrav-innan-domene} og krav\~{}\ref{subnodekrav-f-lenkja}
 vere oppfylt kva gjeld CP-komplementa -- lenkjinga går ikkje ut over
 dei funksjonelle domena, medan krav\~{}\ref{subnodekrav-infotap} er
-dekkja med unntaket over.)
+dekkja for IP og Ssub med unntaket over.)
 
   \begin{figure}[htp]
    \centering
