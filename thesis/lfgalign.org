@@ -24,10 +24,12 @@
 #+LaTeX_HEADER: \newcommand{\falign}{\ensuremath{\operatorname{\emph{falign}}}}
 #+LaTeX_HEADER: \newcommand{\fpairs}{\ensuremath{\operatorname{\emph{fpairs}}}}
 #+LaTeX_HEADER: \newcommand{\Bleu}{\textsc{Bleu}}
+#+LaTeX_HEADER: \usetikzlibrary{calc}
+
 
 \listoffixmes
 
-* COMMENT generell todo
+* COMMENT Generell TODO
 Nytt denne før INNLEVERING:
 #+EXPORT_EXCLUDE_TAGS: ROTETE
 
@@ -35,11 +37,6 @@ nyttig sparse tree: SKRIV
 
 [[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
 
-Konsekvent terminologi:
-- samanstilling: ei mengd lenkjer mellom to setningar
-- lenkje: éin korrespondanse mellom f-strukturar på kjelde- og
-  målspråket, men dette inkluderer au kausativ-situasjonen der to på
-  kjeldespråket korresponderer med éin på målspråket.
 
 * Innleiing
 \label{SEC:innleiing}
@@ -406,10 +403,11 @@ rammeverk.
 - fraselenkjer vs frasesamanstilling :: Eg nyttar her termane
   /lenkjing/ og /samanstilling/ i omtrent same tyding som dei engelske
   termane /link/ og /alignment/, kor ei samanstilling er ei mengd
-  lenkjer. Dette er ekvivalensforhold som me kan finne mellom
-  lingvistiske /representasjonar/ (f-struktur, c-struktur) eller
-  /uttrykk/ (ord, setningar); lenkjing mellom dei siste altså er meir
-  ateoretisk / datanært.
+  lenkjer. Merk at ei enkeltlenkje treng ikkje å vere ein-til-ein.
+  Lenkjer og samanstillingar er ekvivalensforhold som me kan finne
+  mellom lingvistiske /representasjonar/ (f-struktur, c-struktur)
+  eller /uttrykk/ (ord, setningar); lenkjing mellom dei siste altså er
+  meir ateoretisk / datanært.
 
 
 * Krav til frasesamanstilling
@@ -483,9 +481,9 @@ seg til samanstilling mellom syntaktiske konstituentar; dei har i
 utgangspunktet meir nytte av kollokasjonsinformasjon.
 
 #+BEGIN_LaTeX
-  \begin{figure}[htp]
-    \vfill{} % how todo?
-\begin{tikzpicture}
+\begin{figure}[htp]
+   \centering
+   \begin{tikzpicture}
    \Tree [ [.\node(aDE){Es}; ]
     [.\node(pDE){XP};      
     \edge[roof]; \node(rDE){    gibt Frost an meiner Tür };  ] ] 
@@ -493,8 +491,8 @@ utgangspunktet meir nytte av kollokasjonsinformasjon.
       \Tree [ [.\node(aEN){There};  ]
             [.\node(pEN){YP}; \edge[roof]; \node(rEN){ is frost at my door}; ] ]
           \end{scope}
-          \draw[-] (pDE)..controls +(north:2) and +(north:2) .. (pEN); 
-          \draw[dashed,-] (rDE.west)..controls +(south:2) and +(south:2) .. (rEN.west); 
+          \draw[-] (pDE)..controls +(north east:2) and +(north:2) .. (pEN); 
+          \draw[dashed,-] ($(rDE.west)-(0.5,0)$)..controls +(south:2) and +(south:2)..($(rEN.west)-(0.5,0)$); 
           \draw[dashed,-] (aEN)..controls +(south west:1) and +(south:1) .. (rEN.north west); 
           \draw[dashed,-] (aDE)..controls +(south west:1) and +(south:1) .. (rDE.north west); 
 \end{tikzpicture}
@@ -628,6 +626,14 @@ omsetjinga, men det kan godt hende at eit ord /ikkje/ har ei lenkje,
 og me kan heller ikkje utelukke at det finst mange-til-mange-lenkjer
 som ikkje kan «delast opp». Dette gjeld au nodane i c-strukturen.
 
+Me utelukker lenkjing av ikkje-konstituentar som /there is/ på
+c-strukturnivå sidan ei lenkje mellom to c-strukturnodar impliserer at
+heile frasen under er lenkja. Det finst ingen c-strukturnoda som
+dominerer berre /there/, /is/ og ingen andre ord (heller ikkje /es/,
+/gibt/), så dette er ikkje lenkjekandidatar.  /There is/ og /Es gibt/
+i figur \ref{fig:ikkjenode} kan då ikkje samanstillast åleine, men
+berre som del av ei ytre frasesamanstilling.
+
 Når det gjeld f-strukturane er det ganske mange element me teoretisk
 sett kunne ha lenkja, t.d. enkelttrekk som kasus eller dei uordna
 mengdene med adjunkt, men det som er mest /nyttig/ er nok å berre
@@ -666,8 +672,8 @@ figur \ref{fig:viss-PRED-så-f-og-c}:
      og $g$, er lenkja 
 
 #+BEGIN_LaTeX
-  \usetikzlibrary{calc}
-  \begin{figure}[htp]
+ \begin{figure}[htp]
+    \centering
     \begin{tikzpicture}
     {\avmoptions{}
      \node(src){
@@ -851,20 +857,21 @@ ordklasse.
 \label{SEC:lik-argstr}
 
 \citet{thunes2003eal} gir som nemnd eit krav om at /predikat må ha
-tilsvarande semantiske argument/ for å samanstillast.
+tilsvarande semantiske argument/ for å lenkjast.
 
 Om det alltid er slik at to predikat har like mange argument, som kjem i
 same rekkjefølgje i argumentstrukturen, vil det gjere den praktiske
-oppgåva med å samanstille predikata, og argument med argument, mykje
+oppgåva med å lenkje predikata, og argument med argument, mykje
 enklare. Men kan me stille så sterke krav?
 
 Sett at ein setning på språk 1 har ei /at/-setning som adjunkt, medan
 denne setninga på språk 2 er eit argument, og at desse setningane
-ville vore samanstilte om dei opptredde åleine. Om dei uttrykkjer same
+ville vore lenkja om dei opptredde åleine. Om dei uttrykkjer same
 proposisjon og \emph{speler same rolle i verbsituasjonen},
 synest det naturleg å lenkje desse.  
 
-Omsetjingsrelasjonar gir data for verbsituasjon, på eit meir generelt
+\fxnote[inline,nomargin]{TODO: kva var meininga med dette avsnittet?}
+Slike omsetjingsrelasjonar gir data for verbsituasjonen, på eit meir generelt
 grunnlag enn det me kan få frå einspråklege analysar åleine. Om me har
 gode semantiske grunnar for å kalle ein deltakar i ein verbsituasjon
 eit argument på eitt språk, vil dei same grunnane gjelde for
@@ -876,8 +883,8 @@ grunnar til å /ikkje/ kalle dette eit argument (om det er mogleg å
 finne akseptable syntaktiske grunnar for å kalle noko ein adjunkt
 heller enn eit argument).
  
-For å gjere dette konkret kan me sjå på setning 7 i MRS-suiten
-\citep{mrs-suite}[fn:4]:
+For å gjere dette konkret kan me sjå på setning 7 i test-suiten til
+XPar-prosjektet:
 
 \exg.  abramsi brouns       daenajleva sigaretze, rom cvimda \\
       Abrams.NOM Brown.DAT vedde.3SG sigarett.om, at  regne.3SG.IMP \\
@@ -920,9 +927,9 @@ argumentstruktur. Om det alltid var fullstendig samsvar i
 argumentstruktur, ville det vore trivielt å lenkje argument: viss to
 korresponderande verb hadde tre argument, ville me lenkja det første
 med det første, det andre med det andre og det tredje med det
-tredje. Men om me har analysar som dei over, ser det ut til at me
-treng bottom-up-informasjon om kva for adjunkt og argument som
-samsvarer.
+tredje. Men om me har analysar som dei over, ser det ut til at me er
+avhengig av LPT-kravet frå del \ref{SEC:ordkrav} for å avgjere kva for
+adjunkt og argument som samsvarer.
 
 Det same gjeld forøvrig lenkjing av adjunkt til adjunkt. Adjunkt
 plukker ut si eiga rolle der argument får rolla tildelt frå verbet, og
@@ -1240,36 +1247,32 @@ nedanfor.
 ** SKRIV Underordna c-strukturnodar
 \label{SEC:subnode}
 
-Toppnodane i eit lenkja funksjonelt domene i c-struktur (XP på språk
-1, ZP på språk 2) vil ha ein informasjonsmessig korrespondanse, og kan
-samanstillast. Men det er mogleg å samanstille to toppnodar i
-funksjonelle domene i c-strukturen utan at nodane under (X', Z') er
-samanstilt. Ein grunn til å ikkje samanstille desse underordna nodane,
-vil vere viss spesifikator til X ikkje speler same rolle i tolkinga
-som spesifikator til Z, dvs. viss YP og WP i figur \ref{fig:subnode}
-ikkje er lenkja.
+Toppnodane i to funksjonelle domene som er lenkja på f-strukturnivå
+vil ha ein informasjonsmessig korrespondanse, og kan som nemnt i del
+\ref{SEC:kandidatar} utan vidare lenkjast. Men det er mogleg å lenkje
+desse toppnodane, t.d. XP på kjeldespråket og ZP på målspråket, utan
+at nodane under (X', Z') er lenkja. 
 
-
-Me kan utelukke lenkjing av ikkje-konstituentar som /there is/ ved å
-krevje at ei fullstendig samanstilling mellom to frasar må vere slik
-at heile substrukturen au er samanstilt. /There is/ og /Es gibt/ i
-figur \ref{fig:ikkjenode} kan då ikkje samanstillast åleine, men berre
-som del av ei ytre frasesamanstilling.
-Så når /kan/ me samanstille nodane som står under øvste node i
-det funksjonelle domenet?
+Éin grunn til å ikkje lenkje desse underordna nodane, er viss YP og WP
+i figur \ref{fig:subnode} ikkje er lenkja, og det finst informasjon
+som korresponderer mellom X' og WP eller mellom Z' og YP.
+Ein annan grunn til å ikkje lenkje X' og Z' er viss WP ikkje fantest
+og YP hadde informasjon som på målspråket blei spesifisert av nodar
+under Z'. 
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
-   \vfill{} % how todo?
-   \begin{tikzpicture}
+\centering
+  \begin{tikzpicture}
   \Tree  [.\node(XP){XP};  \node(YP){YP};  
                                     \node(X'){X'};   ]
       \begin{scope}[shift={(2in,0in)}]
   \Tree  [.\node(ZP){ZP};  \node(WP){WP};  
                                     \node(Z'){Z'};   ]
 \end{scope}
-\draw[-] (XP)..controls +(north:1) and +(north:1) .. (ZP) ;
-  \draw[dashed,-] (YP)..controls +(south:1) and +(south:1) .. (WP) ;
+\draw[-] (XP)..controls +(north east:1) and +(north:1) .. (ZP) ;
+\draw[dashed,-] (X')..controls +(south:1) and +(south:1) .. node[above,sloped]{?} (Z') ;
+%\draw[dashed,-] (YP)..controls +(south:1) and +(south:1) .. node[below,sloped]{manglar} (WP) ;
 
 \end{tikzpicture}
    \caption{Lenkjing av underordna c-strukturnodar}
@@ -1277,55 +1280,62 @@ det funksjonelle domenet?
   \end{figure}
 #+END_LaTeX
 
-I figur \ref{fig:subnode} der XP og ZP er lenkja, vil YP og WP -- i
-kraft av å vere toppnodar i sine domene -- måtte ha ei lenkje i
-f-strukturen for at c-strukturnodane kan lenkjast (det kunne jo
-t.d. hende at f-strukturen projisert av YP samsvarte med den projisert
-av Z', eller ein struktur under Z').
+Når treet deler seg i to som i figur \ref{fig:subnode}, får me au ei
+mogleg oppdeling av kjeldene til f-strukturinformasjonen. Me vil ikkje
+lenkje nodar som ikkje gir same tilskot til f-strukturen, men i begge
+situasjonane nemnt ovanfor er det slik at X' og Z' gir ulike tilskot
+til f-strukturen; dei kan difor ikkje lenkjast. Likevel må me tillate
+litt slingringsmonn her, X' og Z' skal ikkje trenge projisere heilt
+like f-strukturar. Det som er relevant er det som blir lenkja i
+f-strukturen, eller /kva for lenkjer som finst mellom f-strukturane
+til nodane under/.
 
 Om me skal lenkje Z' og X' i figuren over må dei respektive
 spesifikatornodane vere lenkja. Me får då følgjande krav:
 
+\fxnote{a og b er avleidd av c! TODO omskriv}
+
 \ex. \label{subnodekrav} Krav for lenkjing av underordna
 c-strukturnodar:
-\a. c-strukturnodar som ligg under øvste node i to funksjonelle
+\a. \label{subnodekrav-innan-domene} c-strukturnodar som ligg under øvste node i to funksjonelle
     domena kan berre samanstillast med nodar som ligg innanfor desse
     domena,
-\b. c-strukturnodar kan berre samanstillast om deira funksjonelle
+\b. \label{subnodekrav-f-lenkja} c-strukturnodar kan berre samanstillast om deira funksjonelle
     domene er lenkja på f-strukturnivå,
-\c. om ein c-strukturnode X' som ikkje er toppnode i det funksjonelle
-    domenet har ein søsternode YP, må YP vere samanstilt med ein
-    søsternode til Z' for å samanstille X' og Z'
+\c. \label{subnodekrav-infotap} TODO
 
-# føresetnad at me berre har binære tre...hmm...
+\Last[a] seier at om XP og ZP er lenkja, der XP og ZP er toppnodar,
+kan ikkje Z' lenkjast med t.d. mor eller søster til XP. Om $\phi(YP)
+\neq \phi(XP)$, kan me heller ikkje ha ei c-strukturlenkje frå Z' til
+YP. Sidan f-strukturar representerer informasjonsinnhaldet projisert
+av nodane vil det vere unaturleg å ha ei c-strukturlenkje som står i
+konflikt med f-strukturlenkjer.
 
-\Last[a] seier at om XP og ZP er samanstilt, der XP er t.d. OBJ til
-IP, kan ikkje Z' samanstillast med SUBJ til IP osb., men berre til
-nodar innanfor OBJ-domenet. \Last[c] påført figur \ref{fig:subnode}
-seier altså at spesifikatornodane må vere lenkja for at X' og Z' skal
-lenkjast (manglande søsternode på den eine sida vil au hindre
-samanstilling).
+# \c. om ein c-strukturnode X' som ikkje er toppnode i det funksjonelle
+#     domenet har ein søsternode YP, må YP vere samanstilt med ein
+#     søsternode til Z' for å samanstille X' og Z'
+## NEI, me kan vel ha null? Dette gamle kravet er eit sterkare krav, treng me det?
+# \Last[c] påført figur \ref{fig:subnode}
+# seier altså at spesifikatornodane må vere lenkja for at X' og Z' skal
+# lenkjast (manglande søsternode på den eine sida vil au hindre
+# samanstilling).
 
-I figur \ref{fig:fnord} er alle nodane under S vist i dei to trea i
-same funksjonelle domene (kvar node under S er annotert med $\uparrow
-= \downarrow$), så om dei funksjonelle domena er samanstilt (som krev
-at /rom cvimda/ og /at det regner/ er samanstilt), vil \Last[a og -b]
-vere oppfylt kva gjeld CP-komplementa -- lenkjinga går ikkje ut over
-dei funksjonelle domena. Sidan Csub og Cnom er funksjonelle kategoriar
-er dei au samanstilt via samanstillinga av S-nodane og føringane i
-\ref{fnordkrav}, og \Last[c] er då oppfylt. \Last står altså ikkje i
-vegen for å samanstille IP-en over /cvimda/ og Ssub.
+I figur \ref{fig:ikkjesub} kan me ikkje samanstille
+I'-nodane. PRONP-noden, spesifikator på den norske sida, er ikkje
+lenkja med nokon spesifikator på den georgiske sida. Den informasjonen
+(her reint syntaktisk) som ordet /det/ tilfører IP, ligg under I' på
+georgisk. Om me skulle lenkja I', måtte me altså hatt ein georgisk
+spesifikator som var lenkja til den norske PRONP.
 
-I figur \ref{fig:ikkjesub} derimot \citep{mrs-suite}, kan me ikkje
-samanstille I'-nodane. PRONP-noden, spesifikator på den norske sida,
-er ikkje lenkja med nokon spesifikator på den georgiske sida. Den
-informasjonen (her reint syntaktisk) som ordet /det/ tilfører IP, ligg
-under I' på georgisk. Om me skulle lenkja I', måtte me altså hatt ein
-georgisk spesifikator som var lenkja til den norske PRONP.
+Krav \Last[c] sørgjer for at me ikkje får ei lenkje mellom I'-nodane;
+den georgiske I'-noden dominerer lenkjemengda ${g}$, den norske,
+${f,i}$. Lenkjene dei dominerer er ${(f,g)}$ og
+${(f,g),(i,\emptyset)}$ høvesvis -- desse har ulikt informasjonstap
+frå nodane over, difor kan me ikkje lenkje I'-nodane.
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
- \vfill{} % how todo?
+\centering
 \begin{tikzpicture}
 \Tree [.\node(IPb){IP}; 
   [.PRONP \edge[roof]; {det} ] 
@@ -1341,19 +1351,14 @@ georgisk spesifikator som var lenkja til den norske PRONP.
  \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
 
 \end{tikzpicture}
-\caption{Umogleg samanstilling av funksjonsord mellom bokmål og georgisk}
+
+\fxnote{TODO: teikne inn f-domene her òg}
+
+\caption{Umogleg samanstilling av underordna c-strukturnodar mellom bokmål og georgisk}
  \label{fig:ikkjesub}
 \end{figure}
 #+END_LaTeX
 
-*** SKRIV døme!							     :ROTETE:
-*** TOGROK me_OBJ gusta X_SUBJ // I_SUBJ like X_OBJ ??		     :ROTETE:
-*** TOGROK korleis finn me /there is/-lenkjer då? 		     :ROTETE:
-(og kva skal me med dei?)
-
-«Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
-(/There/ never /is/) som opptrer utanfor N-grammet på det andre
-språket.»
 ** Funksjonelle c-strukturnodar
 \label{SEC:fnord}
 
@@ -1423,30 +1428,39 @@ er ingen informasjonstap frå CPsub til Csub som ikkje er reflektert i
 CPnom til Cnom, og det er ingen informasjonstap frå CPsub til IP som
 ikkje er reflektert i CPnom til Ssub.
 
+(Alle nodane under S vist i dei to trea er i same funksjonelle domene,
+så om dei funksjonelle domena er lenkja, vil
+krav~\ref{subnodekrav-innan-domene} og krav~\ref{subnodekrav-f-lenkja}
+vere oppfylt kva gjeld CP-komplementa -- lenkjinga går ikkje ut over
+dei funksjonelle domena, medan krav~\ref{subnodekrav-infotap} er
+dekkja med unntaket over.)
+
 #+BEGIN_LaTeX
   \begin{figure}[htp]
-   \vfill{} % how todo?
+   \centering
   
   \begin{tikzpicture}
   \Tree
   [.IPfoc
     [.PROPP [.PROP abramsma ] ] 
     [.I' [.I \edge[roof]; {iCoda} ]
-             [.S [.CPsub
+             [.S [.\node(CPsub){CPsub};
                   [.\node(Csub){Csub};  rom ]
-                  [.IP \edge[roof]; {cvimda} ]]]]]
+                  [.\node(IP){IP}; \edge[roof]; {cvimda} ]]]]]
       \begin{scope}[shift={(2in,0in)}]
   \Tree
   [.IP
     [.PROPP [.PROP Abrams ] ]
      [.I' [.Vfin visste ]
-              [.S [.VPmain [.CPnom
+              [.S [.VPmain [.\node(CPnom){CPnom};
                            [.\node(Cnom){Cnom};  at ] 
-                            [.Ssub \edge[roof]; {det regnet} ]]]]] ]
+                            [.\node(Ssub){Ssub}; \edge[roof]; {det regnet} ]]]]] ]
   \end{scope}                      
-  \draw[dashed,-] (Csub)..controls +(south west:3) and +(south:1) .. (Cnom) ;
+  \draw[-] (CPsub)..controls +(1,6) and +(north east:6) .. (CPnom) ;
+  \draw[-] (IP)..controls +(north east:1.5) and +(west:0.5) .. (Ssub) ;
+  \draw[-,very thick] (Csub)..controls +(south west:3) and +(south west:1) .. (Cnom) ;
   \end{tikzpicture}
-  \caption{Mogleg samanstilling av funksjonsord mellom georgisk og norsk (bokmål)}
+  \caption{Mogleg samanstilling av funksjonelle c-strukturnodar mellom georgisk og norsk (bokmål)}
    \label{fig:fnord}
   \end{figure}
 #+END_LaTeX
@@ -1485,6 +1499,8 @@ mellom /never/ og /nikby/.
 ** TOGROK Diskontinuerlege einingar				     :ROTETE:
    - diskontinuerlege einingar \cite[s.~4]{cheung2002scg} [[http://scholar.google.no/scholar.bib%3Fhl%3Dno&lr%3D&ie%3DUTF-8&q%3Dinfo:Qh_MRSftNZgJ:scholar.google.com/&output%3Dcitation&oe%3DMACINTOSH&oi%3Dcitation][@books.google]] -- skal dei eigentleg samanstillast? Kva for problem gir dei i forhold til c-strukturnivåsamanstilling?
 
+bør ikkje finnast på f-nivå, PRED er unikt instansiert; MEN: prøv «jeg
+tror på ham» i XLE, ser ut som dei har komplekse predikat :-/
 *** TODO døme på diskontinuerlege konstituentar som er lenkja	     :ROTETE:
 ** TOGROK Er «compounds» frasar?	     :ROTETE:
  \citep[p.~1]{giegerich2006aea}
@@ -1612,7 +1628,7 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 
 ** SKRIV Rangering
 
-* Implementasjonen av =lfgalign=
+* Implementasjonen av =lfgalign=				     :ROTETE:
 \label{SEC:implementasjon}
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
@@ -2115,6 +2131,14 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
      delmengd av /there is/es gibt/. * Avslutning
 
 
+** TOGROK korleis finn me /there is/-lenkjer då?		     :ROTETE:
+(og kva skal me med dei?)
+
+«Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
+(/There/ never /is/) som opptrer utanfor N-grammet på det andre
+språket.»
+
+
 
 
 * Avslutning
@@ -2143,9 +2167,6 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
 
 [fn:3] \citet[Catford~(1965),~i][s.~61]{munday2001its} gir ein gjennomgang av
        slike /klasseskifte/, og andre typar omsetjingsskifte.
-
-[fn:4] Setningane i første og tredje linje i døma er direkte henta frå
-       MRS-suiten, med mindre anna er opplyst.
 
 [fn:6] Sidan eg går ut frå at data er setningssamanstilt, kjem eg
        ikkje inn på diskurs-/pragmatiske verknader, med mindre dette
@@ -2195,7 +2216,7 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
         Parsebanker \citep{rosen2009lpt}).
 
 [fn:17] Når eg her skriv at to f-strukturar har LPT-korrespondanse,
-        meiner eg sjølvsagt at ordformen til PRED-verdien til kvar
+        meiner eg sjølvsagt at ordformene til PRED-verdien til kvar
         f-struktur har LPT-korrespondanse.
 
 [fn:18] Eigentleg eit slag avgjerdstre; kvart element er eit par, kor
