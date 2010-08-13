@@ -1354,7 +1354,7 @@ georgisk spesifikator som var lenkja til den norske PRONP.
 «Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
 (/There/ never /is/) som opptrer utanfor N-grammet på det andre
 språket.»
-** SKRIV Funksjonelle c-strukturnodar
+** Funksjonelle c-strukturnodar
 \label{SEC:fnord}
 
 Ikkje alle ord tilsvarer PRED-element i f-strukturen, dette gjeld
@@ -1363,7 +1363,7 @@ til \citet{bresnan2001lfs} er komplementet til funksjonelle kategoriar
 (C, I, P) ein funksjonell ko-kjerne, det er altså komplementet som gir
 PRED-elementet i dette funksjonelle domenet.
 
-Problemet med å nytte metoden frå del \ref{SEC:subnode} for i dette
+Problemet med å nytte metoden frå del \ref{SEC:subnode} i dette
 tilfellet er at nodar over funksjonsord er i det same funksjonelle
 domenet som komplementet, og nodane over funksjonsorda tilføyer ikkje
 ei ny PRED-lenkje som kan dele opp treet slik me gjorde tidlegare. Så
@@ -1373,20 +1373,23 @@ likt informasjonstap.
 Ord som ikkje projiserer PRED-lenkjer kan likevel ha
 LPT-korrespondanse og bestå krava på ordnivå, men når me skal lenkje
 desse på c-strukturnivå må me sjekke ordkrava direkte (me kan ikkje gå
-via nokon f-strukturlenkjing).
+via nokon f-strukturlenkjing); dette gir oss eit utgangspunkt for
+lenkjing.
 
-Samtidig vil me ikkje at eit manglande funksjonsord på det eine
-språket skal hindre lenkjing av komplementa, sidan det kan hende at
-funksjonsordet ikkje er krevd på det språket (eventuelt kjem dette
-fram som korrespondansar i f-strukturtrekk, kontroll av dette har eg
-ikkje teke høgd for i denne oppgåva). Men viss begge språk har
-funksjonsord, men funksjonsord som ikkje kan sjåast på som moglege
-omsetjingar (t.d. /fordi/ og /whether/), bør me ikkje ein gong lenkje
-komplementa[fn:10].
+Viss begge språk har funksjonsord, men funksjonsord som ikkje kan
+sjåast på som moglege omsetjingar (t.d. /fordi/ og /whether/), bør me
+ikkje ein gong lenkje komplementa[fn:10]. Samtidig vil me ikkje at eit
+manglande funksjonsord på det eine språket skal hindre lenkjing av
+komplementa, sidan det kan hende at funksjonsordet ikkje er krevd på
+det språket (eventuelt kjem dette fram som korrespondansar i
+f-strukturtrekk, eg har ikkje teke høgd for korrespondansar mellom
+element som ikkje er PRED i denne oppgåva).
 
 Me krev at komplementa er lenkja for å sikre at me ikkje lenkjer nodar
 som står i ulike konstekstar (me vil ikkje lenkje /at/ i «han såg at
-det gjekk bra» med /that/ i «he saw that she drew a picture»).
+det gjekk bra» med /that/ i «he saw that she drew a picture»), jamfør
+kravet om lenkja argument for lenkja predikat i del
+\ref{SEC:lik-argstr}.
 
 Då får me følgjande:
 
@@ -1398,8 +1401,9 @@ Då får me følgjande:
     lenkjast, då kan me au lenkje F' og G'.  
 \b. Gitt ei mogleg lenkjing av FP og XP, der F er ein funksjonell
     kategori, medan X er ein ikkje-funksjonell kategori, ignorerer me
-    den funksjonelle kategorien i c-strukturlenkjinga. F' er medlem av
-    nodemengden som blir lenkja til XP.
+    den funksjonelle kategorien i c-strukturlenkjinga. Sidan det ikkje
+    er noko forskjell i informasjonstap mellom FP og F', er F' medlem
+    av nodemengden som blir lenkja til XP.
 
 # \ex. \label{fnordkrav} Skal nodar over ord som ikkje projiserer
 #      PRED-element lenkjast, må følgjande krav vere oppfylt:
@@ -1417,7 +1421,7 @@ kvar kunne delast opp i to deler, kor den funksjonelle delen har
 LPT-korrespondanse medan komplementa er lenkja på f-strukturnivå. Det
 er ingen informasjonstap frå CPsub til Csub som ikkje er reflektert i
 CPnom til Cnom, og det er ingen informasjonstap frå CPsub til IP som
-ikkje er reflekter i CPnom til Ssub.
+ikkje er reflektert i CPnom til Ssub.
 
 #+BEGIN_LaTeX
   \begin{figure}[htp]
@@ -1453,11 +1457,11 @@ slikt må me som nemnt sjå på andre trekk enn PRED i f-strukturane,
 noko som blir utanfor denne oppgåva; men om me hadde sjekka slike
 f-strukturkorrespondansar kunne me unngått kravet om
 LPT-korrespondanse og i staden nytta informasjon frå f-strukturane til
-lenkjing av funksjonelle kategoriar.
+lenkjing av funksjonelle kategoriar. Utan å ha slike mekanismar på
+plass blir f-strukturlenkjinga avhengig av c-strukturforhold, og i
+implementasjonen min har eg difor lagt mindre vekt lenkjing av
+funksjonelle kategoriar.
 
-I implementasjonen min har eg lagt mindre vekt lenkjing av
-funksjonelle kategoriar sidan dei gjer f-strukturlenkjinga avhengig av
-c-strukturforhold.
 *** TOGROK cvimda<PRO> men regne<>expletive -- lenkje? 		     :ROTETE:
 *** TOGROK kva med ekspletivar? ingen PRED men heller ikkje C/F/I    :ROTETE:
 Kandidatane på f-strukturnivå må jo inkludere desse au...
