@@ -511,7 +511,7 @@ stille til å kalle to frasar samanstilte? Me må i alle fall tillate
 ein del skilnad.  I alle større parallelltekster vil parallellstilte
 setningar ha visse syntaktiske og semantiske[fn:6] omsetjingsskifte,
 t.d. leksikalisering av syntaktiske konstruksjonar eller omvendt,
-endring av ordklasse, presisering/depresisering, endringar i leksikale
+endring av ordklasse, presisering/depresisering, endringar i leksikalske
 trekk (t.d. telleleg/utelleleg),
 osb. \citep[s.~56--62]{munday2001its}, slik at den einaste
 fullstendige, «perfekte» samanstillinga vil vere
@@ -1237,7 +1237,7 @@ lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
 \citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
 nedanfor.
 
-** Lenkjing av underordna c-strukturnodar
+** SKRIV Underordna c-strukturnodar
 \label{SEC:subnode}
 
 Toppnodane i eit lenkja funksjonelt domene i c-struktur (XP på språk
@@ -1354,31 +1354,70 @@ georgisk spesifikator som var lenkja til den norske PRONP.
 «Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
 (/There/ never /is/) som opptrer utanfor N-grammet på det andre
 språket.»
-** Funksjonsord
+** SKRIV Funksjonelle c-strukturnodar
 \label{SEC:fnord}
 
-Ikkje alle ord ikkje tilsvarer PRED-element i f-strukturen, dette
-gjeld typisk funksjonsord (t.d. /som/, /at/). Ved
-endosentrisitetsprinsippa til \citet{bresnan2001lfs} er komplementet
-til funksjonelle kategoriar (C, I, P) ein funksjonell ko-kjerne, det
-er altså komplementet som gir PRED-elementet i dette funksjonelle
-domenet.
+Ikkje alle ord tilsvarer PRED-element i f-strukturen, dette gjeld
+typisk funksjonsord (t.d. /som/, /at/). Ved endosentrisitetsprinsippa
+til \citet{bresnan2001lfs} er komplementet til funksjonelle kategoriar
+(C, I, P) ein funksjonell ko-kjerne, det er altså komplementet som gir
+PRED-elementet i dette funksjonelle domenet.
 
-\ex. \label{fnordkrav} Skal nodar for ord som ikkje projiserer
-     PRED-element[fn:10] samanstillast, må følgjande krav vere oppfylt:
-\a. det funksjonelle domenet (gitt ved komplementet) må vere
-   samanstilt, og
-\b. dei er begge c-strukturhovud.
+Problemet med å nytte metoden frå del \ref{SEC:subnode} for i dette
+tilfellet er at nodar over funksjonsord er i det same funksjonelle
+domenet som komplementet, og nodane over funksjonsorda tilføyer ikkje
+ei ny PRED-lenkje som kan dele opp treet slik me gjorde tidlegare. Så
+me må utvide prinsippa for å dele opp c-strukturtreet i buntar med
+likt informasjonstap.
+
+Ord som ikkje projiserer PRED-lenkjer kan likevel ha
+LPT-korrespondanse og bestå krava på ordnivå, men når me skal lenkje
+desse på c-strukturnivå må me sjekke ordkrava direkte (me kan ikkje gå
+via nokon f-strukturlenkjing).
+
+Samtidig vil me ikkje at eit manglande funksjonsord på det eine
+språket skal hindre lenkjing av komplementa, sidan det kan hende at
+funksjonsordet ikkje er krevd på det språket (eventuelt kjem dette
+fram som korrespondansar i f-strukturtrekk, kontroll av dette har eg
+ikkje teke høgd for i denne oppgåva). Men viss begge språk har
+funksjonsord, men funksjonsord som ikkje kan sjåast på som moglege
+omsetjingar (t.d. /fordi/ og /whether/), bør me ikkje ein gong lenkje
+komplementa[fn:10].
+
+Me krev at komplementa er lenkja for å sikre at me ikkje lenkjer nodar
+som står i ulike konstekstar (me vil ikkje lenkje /at/ i «han såg at
+det gjekk bra» med /that/ i «he saw that she drew a picture»).
+
+Då får me følgjande:
+
+\ex. \label{fnordkrav} Krav for lenkjing av funksjonelle kategoriar i c-strukturen:
+\a. Gitt ei mogleg lenkjing av FP og GP, kor F og G er funksjonelle
+    kategoriar der komplementa elles kan lenkjast, introduserer me eit
+    «falskt informasjonstap» mellom FP og F' og mellom GP og G'; orda
+    under F' og G' må ha LPT-korrespondanse for at FP og GP skal kunne
+    lenkjast, då kan me au lenkje F' og G'.  
+\b. Gitt ei mogleg lenkjing av FP og XP, der F er ein funksjonell
+    kategori, medan X er ein ikkje-funksjonell kategori, ignorerer me
+    den funksjonelle kategorien i c-strukturlenkjinga. F' er medlem av
+    nodemengden som blir lenkja til XP.
+
+# \ex. \label{fnordkrav} Skal nodar over ord som ikkje projiserer
+#      PRED-element lenkjast, må følgjande krav vere oppfylt:
+# \a. dei funksjonelle domena (gitt ved komplementa) må vere
+#   lenkja, og
+# \b. nodane er begge c-strukturhovud.
 
 #c-strukturen må vere tilstrekkeleg parallell \citep{dyvik2009lmp} til
 #    å lenkje dei preterminale nodane, jf. krav \ref{subnodekrav} (gitt
 #    i del \ref{SEC:subnode} nedanfor, om underordna c-strukturnodar).
 
-Om \Last[a og -b] er oppfylt, kan me få samanstillinga vist i figur
-\ref{fig:fnord}, og i dette tilfellet er \Last[b] oppfylt sidan Csub er
-c-strukturhovud i CPsub og Cnom er c-strukturhovud i CPnom, medan
-\Last[a] vil vere oppfylt om me kan samanstille /cvimda/ med /det
-regnet/, noko som skal gå greit.
+Om \Last[a] er oppfylt, kan me få samanstillinga vist i figur
+\ref{fig:fnord}. Her vil dei funksjonelle domena til CPsub og CPnom
+kvar kunne delast opp i to deler, kor den funksjonelle delen har
+LPT-korrespondanse medan komplementa er lenkja på f-strukturnivå. Det
+er ingen informasjonstap frå CPsub til Csub som ikkje er reflektert i
+CPnom til Cnom, og det er ingen informasjonstap frå CPsub til IP som
+ikkje er reflekter i CPnom til Ssub.
 
 #+BEGIN_LaTeX
   \begin{figure}[htp]
@@ -1408,7 +1447,17 @@ regnet/, noko som skal gå greit.
   \end{figure}
 #+END_LaTeX
 
-** SKRIV grunn for at me må krevje a og b, døme der det ikkje går
+Der det eine språket har eit funksjonsord og det andre språket ikkje
+krever det, bryr me oss ikkje om funksjonsordet. For å sjekke noko
+slikt må me som nemnt sjå på andre trekk enn PRED i f-strukturane,
+noko som blir utanfor denne oppgåva; men om me hadde sjekka slike
+f-strukturkorrespondansar kunne me unngått kravet om
+LPT-korrespondanse og i staden nytta informasjon frå f-strukturane til
+lenkjing av funksjonelle kategoriar.
+
+I implementasjonen min har eg lagt mindre vekt lenkjing av
+funksjonelle kategoriar sidan dei gjer f-strukturlenkjinga avhengig av
+c-strukturforhold.
 *** TOGROK cvimda<PRO> men regne<>expletive -- lenkje? 		     :ROTETE:
 *** TOGROK kva med ekspletivar? ingen PRED men heller ikkje C/F/I    :ROTETE:
 Kandidatane på f-strukturnivå må jo inkludere desse au...
@@ -1559,7 +1608,7 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 
 ** SKRIV Rangering
 
-* Implementasjonen av =lfgalign=				     :ROTETE:
+* Implementasjonen av =lfgalign=
 \label{SEC:implementasjon}
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
@@ -1613,6 +1662,8 @@ går ut frå at dette paret har LPT-korrespondanse[fn:17], dette blir
 sjekka før alle kall på =f-align=. Der me ikkje har informasjon om
 LPT-korrespondanse mellom to ord (orda er ukjende), er lenkjing
 lov. Pro-element og substantiv kan alltid lenkjast med kvarandre.
+\fxnote{TOGROK: kan me i tillegg sjekke om funksjonelle nodar i same
+f-domene som PRED-ordformen har LPT-korrespondanse?}
 
 Hjelpefunksjonen =argalign= (som igjen kallar =argalign-p=, vist i
 kodefigur \ref{algo:argalign-p}) gir alle moglege
@@ -1791,6 +1842,7 @@ Viss $F_s$ og $F_t$ ikkje hadde argument i det heile teke, går me au
 gjennom moglege permutasjonar av adjunktdøtre, på same måte (ikkje
 vist i kodefigur \ref{algo:f-align}).
 
+*** SKRIV Funksjonsord utan LPT-korrespondanse bør eigentleg hindre f-strukturlenkjing
 *** SKRIV Når f-lenkjene ikkje er 1-1
 \fxnote{Dette må 1. spesifiserast (kap.3), og 2. implementerast...}
 **** kausativ
@@ -2080,7 +2132,7 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
        automatisk finne WordNet-liknande relasjonar frå
        parallelltekst. I denne metoden vil det vere naturleg med høge
        krav til presisjon, men kanskje lågare krav til dekning:
-       speilmetoden skal finne leksikale semantiske forhold som held
+       speilmetoden skal finne leksikalske semantiske forhold som held
        på /typenivå/, medan for trebanken er det viktigare korleis me
        kan annotere eit /token/ av t.d. eit verb i ein viss VP i ei
        gitt korpussetning.
@@ -2104,7 +2156,7 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
        nivå (leksikon og argumentstruktur, c-struktur, f-struktur).
 
 [fn:10] Skal ein lenkje ordet /som/ (utan PRED) med ordet /which/ (med
-        PRED)? Viss begge står under C i treet, kan det kanskje vere
+        PRED)? Viss krava elles er oppfylt, kan det kanskje vere
         informativt med ein type «defekt» lenkje, sjølv om berre det
         eine ordet blir rekna for å vere eit innhaldsord. Frasane til
         deira funksjonelle domene vil uansett vere samanstilt via
