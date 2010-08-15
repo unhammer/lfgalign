@@ -1,4 +1,4 @@
-% Created 2010-08-13 Fri 18:07
+% Created 2010-08-15 Sun 10:35
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -47,7 +47,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{13/08, 2010}
+\date{15/08, 2010}
 
 \begin{document}
 
@@ -822,6 +822,18 @@ ordklasse.
 \label{sec-3.6}
 
    \fxnote{utgangspunkt i det som står i kap.4}
+\begin{itemize}
+\item PRED må ha LPT-korrespondanse
+\item arg må ha LPT-korrespondanse med arg/adj
+
+\begin{itemize}
+\item problematiser: må me ha \emph{PRED-lenkje} frå arg til arg/adj? (ikkje
+    krevd no\ldots{}men kan rangere)
+\end{itemize}
+
+\item kryssande f-lenkjer?
+\item mange-mange-f-lenkjer?
+\end{itemize}
 \section{Krav om lik argumentstruktur}
 \label{sec-3.7}
 
@@ -1304,18 +1316,21 @@ same funksjonelle domene, men me vil jo likevel lenkje Vfin-nodane.
     \end{figure}
 
 Me treng altså eit litt meir nyansert
-krav. \citet[s.~77]{dyvik2009lmp} definerer omgrepet \emph{lenkja leksikalske nodar}, $LL$, kor $LL(n)$ er mengda av nodar dominert av
-$n$ som har ei ordlenkje; og krev at alle nodane i mengda $LL(n_s)$
-(kor $n_s$ er ein lenkjingskandidat på kjeldesida) er lenkja til nodar
-i $LL(n_t)$ (kor $n_t$ er ein lenkjingskandidat på målsida). Ulenkja
-nodar står ikkje i vegen for lenkjing av $n_s$ og $n_t$.  For at me
-skal unngå å lenkje I' og Vfin i figur \ref{fig:ikkjesub} må altså
-\emph{det} og \emph{seg} vere ordlenkja, men ikkje til \emph{gaiGo}.
-\fxnote[inline,nomargin]{det går vel ikkje an?? skal \emph{det} vere
-ordlenkja til ein \emph{del} av gaiGo? TOGROK}
+krav. \citet[s.~77]{dyvik2009lmp} definerer i denne samanhengen
+omgrepet \emph{lenkja leksikalske nodar}, $LL$, kor $LL(n)$ er mengda av
+nodar dominert av $n$ som har ei ordlenkje. For å lenkje
+c-strukturnodane $n_s$ og $n_t$, som er i lenkja funksjonelle domene,
+må alle nodane i mengda $LL(n_s)$ vere lenkja til nodar i
+$LL(n_t)$. Ulenkja nodar står ikkje i vegen for lenkjing av $n_s$ og
+$n_t$.  For at me skal unngå å lenkje I' og Vfin i figur
+\ref{fig:ikkjesub} må altså \emph{det} og \emph{seg} òg vere ordlenkja til
+\emph{gaiGo}, på ein måte som let oss sjå på mange-til-ein-ordlenkjene som
+delelege.\fxnote{TODO forklar}
+
 
 Eg vel i staden å definere kravet i form av f-strukturlenkjer på
-preterminale nodar, og dimed unngå krav på ordnivå her. 
+preterminale nodar, og dimed unngå krav på ordnivå og delelege
+mange-til-ein-lenkjer.
 
 \ex. \label{subnodekrav-infotap} For å lenkje dei underordna
      c-strukturnodane $n_s$ og $n_t$ (kor toppnodane i dei
@@ -1323,9 +1338,8 @@ preterminale nodar, og dimed unngå krav på ordnivå her.
      krav \ref{f-links-domain}):\\
      La $L_c(n_s)$ vere alle
      f-strukturlenkjer frå $\phi(n'_s)$ for alle preterminale $n'_s$
-     som er dominert av $n_s$. Ein ulenkja node $n'_s$ har ei «tom»
-     f-strukturlenkje frå $\phi(n'_s)$ til $\emptyset$. Nodane $n_s$ og $n_t$
-     kan då lenkjast viss
+     som er dominert av $n_s$. Ulenkja nodar $n'_s$ er ikkje med i $L_c$.
+     Nodane $n_s$ og $n_t$ kan då lenkjast viss
 \a.  mor av $n_s$, $m_s$, har same funksjonelle domene som $n_s$,
      og mor av $n_t$, $m_t$, har same funksjonelle domene som $n_t$, 
 \b.  $m_s$ og $m_t$ er lenkja, 
