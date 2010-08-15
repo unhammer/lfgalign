@@ -27,12 +27,13 @@
 #+LaTeX_HEADER: \usetikzlibrary{calc}
 
 
-\listoffixmes
 
 * COMMENT Generell TODO
 Nytt denne før INNLEVERING:
 #+EXPORT_EXCLUDE_TAGS: ROTETE
 
+\listoffixmes
+ 
 nyttig sparse tree: SKRIV
 
 [[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
@@ -263,11 +264,7 @@ med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
 * Bakgrunn og omgrepsavklaring
   \label{SEC:bakgrunn}
-\fxnote{TODO (innleiing?):\\
-   - reine N-gram-samanstillingar, dependensbaserte\\
-   - ulike formål for samanstilling gir ulike metodar\\
-   - kort oversyn over LFG-termar \\
-}
+
 ** SKRIV Relaterte metodar
 Automatisk frasesamanstilling er eit nytt felt. Det finst allereie
 veldig gode system for automatisk setningssamanstilling, og automatisk
@@ -747,17 +744,6 @@ kan gjelde transitive verb au:
      $\leftrightarrow$
      \b. Grashoppene har ingen konge, berre støy og krasse ord
 
-\fxnote{der ADJUNKT ikkje er realisert, lenkjer me ikkje PRED.  skal
-me då ikkje lenkje ord heller?}
-
-\fxnote{finst det tilfelle der ordlenkjer ikkje impliserer PRED-lenkjer? 
-\\
-(hypotese: det er alltid slik at ordlenkjing av predikerande ord => PRED-lenkje)
-\\
-PRED->ord :: iallfall\\
-PRED<-ord :: ?\\
-PRED<->ord\\
-PRED, ord}
 
 #+BEGIN_LaTeX
 \emph{have/har} tek del i VP-samanstillinga \emph{have no king.../har
@@ -776,7 +762,20 @@ det som i \Last mogleg å skilje ut delsamanstillingar, som
 
 Sidan PRED-lenkjing impliserer ordlenkjing, må me sjekke om krava på
 ordnivå (del \ref{SEC:ordkrav}) er oppfylte for å lenkje to
-PRED-element. \fxnote{TODO: litt brå avslutning}
+PRED-element. \fxnote[inline,nomargin]{TODO: litt brå avslutning}
+
+** Forholdet mellom ordlenkjer og PRED-lenkjer 			     :ROTETE:
+\fxnote{der ADJUNKT ikkje er realisert, lenkjer me ikkje PRED.  skal
+me då ikkje lenkje ord heller?}
+
+\fxnote{finst det tilfelle der ordlenkjer ikkje impliserer PRED-lenkjer? 
+\\
+(hypotese: det er alltid slik at ordlenkjing av predikerande ord => PRED-lenkje)
+\\
+PRED->ord :: iallfall\\
+PRED<-ord :: ?\\
+PRED<->ord\\
+PRED, ord}
 
 ** Krav på ordnivå
 \label{SEC:ordkrav}
@@ -851,7 +850,12 @@ vere noko i vegen for å lenkje ord (eventuelt mengder av ord) av ulik
 ordklasse.
 
 
-** SKRIV Krav på f-strukturnivå
+** Krav på f-strukturnivå
+\fxnote{problematiser: må me ha /PRED-lenkje/ frå arg til arg/adj? (ikkje
+    krevd no...men skal me rangere ved det?)}
+\fxnote{kryssande f-lenkjer?}
+\fxnote{mange-mange-f-lenkjer?}
+ 
 På f-strukturnivå har me direkte tilgang til informasjon om
 argumentstrukturen til eit predikat, og mengda av adjunkt som
 modifiserer predikatet. Når \citet[s.~3]{thunes2003eal} skriv at to
@@ -859,18 +863,25 @@ lenkja ord $a$ og $b$ må opptre i frasar som har «tilstrekkelig like
 argumentstrukturer til at uttrykkene i \emph{a}s omgivelser står i de
 samme semantiske relasjonene til hverandre og til \emph{a} som de
 korresponderende uttrykkene i \emph{b}s omgivelser gjør til hverandre
-og til \emph{b}» er det nærliggande å gjere dette til eit krav på
-f-strukturnivå.
+og til \emph{b}» er det difor passande å prøve å gjere dette til eit
+krav på f-strukturnivå.
 
+Den enklaste lenkjingssituasjonen, f-strukturmessig, er der
+rotpredikata kan lenkjast, og første argument av predikatet på
+kjeldespråket kan lenkjast til første argument på målspråket, andre
+argument til andre argument, osb., og lenkjinga kan fortsetje slik
+rekursivt inn i f-strukturane. I ein slik situasjon er det fullstendig
+samsvar mellom kor mange argument det finst på kvar side, og
+fullstendig samsvar i det tematiske rollehierarkiet (dvs. kva for
+posisjon kvar rolle har i argumentstrukturen), i heile strukturen.
 
-
-- PRED må ha LPT-korrespondanse
-- arg må ha LPT-korrespondanse med arg/adj
-  - problematiser: må me ha /PRED-lenkje/ frå arg til arg/adj? (ikkje
-    krevd no...men kan rangere)
-- kryssande f-lenkjer?
-- mange-mange-f-lenkjer?
-** Krav om lik argumentstruktur
+Som me skal sjå er det ikkje vanskeleg å komme over situasjonar der
+dette ikkje held, og me blir nøydt til å tillate lenkjer mellom
+argument og adjunkt, og lenkjer som går på tvers av følgja i
+argumentstrukturane. I tillegg kan me ikkje klare oss utan
+LPT-informasjon for å avgjere /når/ me har å gjere med slike meir
+komplekse situasjonar. 
+*** Krav om lik argumentstruktur
 \label{SEC:lik-argstr}
 
 \citet{thunes2003eal} gir som nemnd eit krav om at /predikat må ha
@@ -887,18 +898,15 @@ ville vore lenkja om dei opptredde åleine. Om dei uttrykkjer same
 proposisjon og \emph{speler same rolle i verbsituasjonen},
 synest det naturleg å lenkje desse.  
 
-\fxnote[inline,nomargin]{TODO: kva var meininga med dette avsnittet?}
-Slike omsetjingsrelasjonar gir data for verbsituasjonen, på eit meir generelt
-grunnlag enn det me kan få frå einspråklege analysar åleine. Om me har
-gode semantiske grunnar for å kalle ein deltakar i ein verbsituasjon
-eit argument på eitt språk, vil dei same grunnane gjelde for
-omsetjingsmessig korresponderande verb på andre språk. Ein kan då
-nytte unionen over alle argument til korresponderande verb til å
-karakterisere kva ein meiner med /deltakarane i
+Slike omsetjingsrelasjonar gir data for verbsituasjonen, på eit meir
+generelt grunnlag enn det me kan få frå einspråklege analysar
+åleine. Om me har gode semantiske grunnar for å kalle ein deltakar i
+ein verbsituasjon eit argument på eitt språk, vil dei same grunnane
+gjelde for omsetjingsmessig korresponderande verb på andre språk. Ein
+kan då nytte unionen over alle argument til korresponderande verb til
+å karakterisere kva ein meiner med /deltakarane i
 verbsituasjonen/. Syntaktiske forhold i språket kan sjølvsagt gi
-grunnar til å /ikkje/ kalle dette eit argument (om det er mogleg å
-finne akseptable syntaktiske grunnar for å kalle noko ein adjunkt
-heller enn eit argument).
+grunnar til å /ikkje/ kalle dette eit argument.
  
 For å gjere dette konkret kan me sjå på setning 7 i test-suiten til
 XPar-prosjektet:
@@ -951,14 +959,9 @@ adjunkt og argument som samsvarer.
 Det same gjeld forøvrig lenkjing av adjunkt til adjunkt. Adjunkt
 plukker ut si eiga rolle der argument får rolla tildelt frå verbet, og
 f-strukturane har ingen hierarkisk inndeling av desse slik me har for
-verb og argument, dei er i staden representert som /uordna mengder/.
+verb og argument, dei er i staden representert som uordna mengder.
 
-*** forsvare «tilsvarande» 					     :ROTETE:
-Tilsvarande på engelsk: [fn:8]
-
-[fn:8] "wagered * with * that *" på Google gir 215 treff, kor 9 av dei
-første 10 følgjer det intenderte mønsteret.
-*** TODO Sitere eigen korpusundersøking av variasjon i arg-str?
+*** SKRIV Sitere eigen korpusundersøking av variasjon i arg-str?
 Ei undersøking av den frasesamanstilte trebanken SMULTRON
 \citep{samuelsson2006pap} mot LFG-grammatikkane for engelsk og tysk
 fann at 2 av 15 korresponderande verbtoken[fn:15] for høgfrekvente
@@ -967,7 +970,7 @@ innhaldsverb fekk analysar kor argument korresponderte med adjunkt
 
 \fxnote{LCS, dorr}
 *** SKRIV kvifor lik arg-str er bra, så kvifor det er eit problem    :ROTETE:
-*** TODO Ulik følgje i argumentstruktur
+*** SKRIV Ulik følgje i argumentstruktur
 I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
 argument ha ulik følgje i argumentstrukturen. Det er klart at me vil
 lenkje objektet til /gefallen/ (eller bokmål: /behage/) med subjektet
@@ -1106,7 +1109,7 @@ argstr til $PRED_{L2}$.
      vedde<a,d,b,c> og vedde<d,a,b,c> -- men sannsynlegvis er altså
      a,b,c i same rekkjefølgje uansett...)
 
-** TOGROK mange-til-mange-lenkjing i f-strukturane? 		     :ROTETE:
+*** TOGROK mange-til-mange-lenkjing i f-strukturane?		     :ROTETE:
     Kva inneber ei mange-til-mange-lenkjing? 
 
     Eg er litt usikker på om me skal ha slike
@@ -1133,7 +1136,7 @@ og \{ /a, deep, appreciation/ \} på den andre.
 
 
 
-** SKRIV Kan adjunkt lenkjast til nodar _under_ mor-lenkja?
+*** SKRIV Kan adjunkt lenkjast til nodar _under_ mor-lenkja?
 \label{SEC:merge-daughters}
 
 Krav (vi) i \citet[s.~75]{dyvik2009lmp} krev at viss F_s og F_t er
@@ -1182,7 +1185,7 @@ rekursivt for at F_s og F_t skal lenkjast, t.d. både =(1 . 4)= og =(2
 . 5)=. Men her kjem det (iallfall) to problem.
 
 
-*** 1. Kausativar og inkorporering
+**** 1. Kausativar og inkorporering
 Om me har 
 
 : F_s [ PRED p<SUBJ, 1, 2> XCOMP 2[ PRED q<1> ] ]
@@ -1229,12 +1232,12 @@ på LPT-kravet her, og seie at dette er berre lov der me har positiv
 informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
 me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
 vanskeleg å finne prinsipelle avgrensingar her. 
-**** TOGROK adjunkt bør ikkje samanføyast? eller?
+***** TOGROK adjunkt bør ikkje samanføyast? eller?		     :ROTETE:
 Det einaste eg kan
 tenkje meg er at adjunkt ikkje bør vere kandidatar for samanføying (i
 såfall burde dei vel heller vore analysert som argument?).
 
-*** 2. Adposisjonsobjekt
+**** 2. Adposisjonsobjekt
 
 I følgjande setningspar har me eit objekt «sigarett» som svarer til
 PP-en «sigaretze» («sigareti» + «ze»), eit adjunkt:
@@ -1261,7 +1264,7 @@ LMT-korrespondanse, men då må me slakke på (iii) og (iv), og altså ha
 lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
 «daenajleva». F_t er då ulenkja. Det er løysinga valt i
 \citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
-nedanfor.
+vidare i oppgåva.
 
 ** Underordna c-strukturnodar
 \label{SEC:subnode}
@@ -1498,13 +1501,13 @@ nedover i c-strukturtreet.
 Figur \ref{fig:enkelsub2} illusterer dette kravet. IPfoc og IP er
 toppnodar, lenkja ved krav \ref{f-links-domain}. I'-nodane er i lenkja
 funksjonelle domene og har lenkja mødre. I tillegg har dei same
-informasjonstap:
+informasjonstap:\\
 #+BEGIN_LaTeX
 \\$L_c(IPfoc_s)=\{(\textbf{PanJara},\textbf{den}),(\textbf{ga-Geba},\textbf{åpne})\}$,
 $L_c(I'_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
 \\$L_c(IP_t)=\{(\textbf{PanJara},\textbf{den}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$,
 $L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$
-\\$L_c(IPfoc_s)-L_c(I'_s)=\{(\textbf{PanJara},\textbf{den})\}=L_c(IP_t)-L_c(I'_t)$
+\\$L_c(IPfoc_s)-L_c(I'_s)=\{(\textbf{PanJara},\textbf{den})\}=L_c(IP_t)-L_c(I'_t)$\\
 #+END_LaTeX
 
 #+BEGIN_LaTeX
@@ -1537,14 +1540,14 @@ $L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$
 #+END_LaTeX
  
 Vfin-nodane er au i same funksjonelle domene, og har lenkja mødre, men
-her har dei ulikt informasjonstap:
+her har dei ulikt informasjonstap:\\
 #+BEGIN_LaTeX
 \\$L_c(I'_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$,
 $L_c(Vfin_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
 \\$L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$,
 $L_c(Vfin_t)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
 \\$L_c(I'_s)-L_c(Vfin_s)=\{\}$
-\\$L_c(I'_t)-L_c(Vfin_t)=\{(\textbf{pro},\textbf{pro})\}$
+\\$L_c(I'_t)-L_c(Vfin_t)=\{(\textbf{pro},\textbf{pro})\}$\\
 #+END_LaTeX
 
 Me ikkje har altså ein c-strukturnode som direkte projiserer
@@ -1829,7 +1832,7 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 
 
 ** SKRIV Rangering
-(meir i del~\ref{SEC:f-rangering})
+(meir om dette i del \ref{SEC:f-rangering})
 
 * Implementasjonen av =lfgalign=
 \label{SEC:implementasjon}
@@ -2200,7 +2203,7 @@ f-struktursamanstillinga avgrenser vidare moglege ordlenkjer gitt
 f-strukturinformasjon. Preterminale nodar er dei mest ordnære nodane
 som kan ha ei f-strukturlenkje (ved $\phi$); når formålet er å lenkje
 c-strukturnodar kan me nytte f-strukturlenkja til den preterminale
-noden i staden for ordlenkjer.  \fxnote{To problem (kva vil me ha
+noden i staden for ordlenkjer.  \fxnote[inline,nomargin]{To problem (kva vil me ha
 med?)\\
 1. me får \emph{ikkje} med LPT-korrespondansar som er OK, men
 ikkje med i $f-alignment$;\\
@@ -2209,6 +2212,7 @@ som er med i $f-alignment$ men ikkje $aligntable$ (ikkje er rekursivt
 lenkja).}
 
 #+BEGIN_LaTeX
+\fxnote{TODO: gammal implementasjon, er ganske annleis no.}
  \begin{algorithm}[]
    \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
    \label{algo:c-align}
@@ -2289,7 +2293,7 @@ konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
     (dette er vel heller stoff for diskusjonsdelen?)}
 
 
-* Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar
+* Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar :ROTETE:
 \label{SEC:diskusjon}
 
    - om kjeldematerialet

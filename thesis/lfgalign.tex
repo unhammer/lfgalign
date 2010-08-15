@@ -1,4 +1,4 @@
-% Created 2010-08-15 Sun 16:30
+% Created 2010-08-15 Sun 20:15
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -58,7 +58,6 @@
 \vspace*{1cm}
 
 
-\listoffixmes
 
 \chapter{Innleiing}
 \label{sec-1}
@@ -198,11 +197,7 @@ då kva som er ein syntaktisk konstituent.
 \label{sec-2}
 
   \label{SEC:bakgrunn}
-\fxnote{TODO (innleiing?):\\
-   - reine N-gram-samanstillingar, dependensbaserte\\
-   - ulike formål for samanstilling gir ulike metodar\\
-   - kort oversyn over LFG-termar \\
-}
+
 \section{\textbf{SKRIV} Relaterte metodar}
 \label{sec-2.1}
 
@@ -708,17 +703,6 @@ kan gjelde transitive verb au:
      $\leftrightarrow$
      \b. Grashoppene har ingen konge, berre støy og krasse ord
 
-\fxnote{der ADJUNKT ikkje er realisert, lenkjer me ikkje PRED.  skal
-me då ikkje lenkje ord heller?}
-
-\fxnote{finst det tilfelle der ordlenkjer ikkje impliserer PRED-lenkjer? 
-\\
-(hypotese: det er alltid slik at ordlenkjing av predikerande ord => PRED-lenkje)
-\\
-PRED->ord :: iallfall\\
-PRED<-ord :: ?\\
-PRED<->ord\\
-PRED, ord}
 
 \emph{have/har} tek del i VP-samanstillinga \emph{have no king.../har
 ingen konge...}, her au skal det vere uproblematisk å lenkje
@@ -735,7 +719,7 @@ det som i \Last mogleg å skilje ut delsamanstillingar, som
 
 Sidan PRED-lenkjing impliserer ordlenkjing, må me sjekke om krava på
 ordnivå (del \ref{SEC:ordkrav}) er oppfylte for å lenkje to
-PRED-element. \fxnote{TODO: litt brå avslutning}
+PRED-element. \fxnote[inline,nomargin]{TODO: litt brå avslutning}
 
 \section{Krav på ordnivå}
 \label{sec-3.5}
@@ -818,9 +802,14 @@ vere noko i vegen for å lenkje ord (eventuelt mengder av ord) av ulik
 ordklasse.
 
 
-\section{\textbf{SKRIV} Krav på f-strukturnivå}
+\section{Krav på f-strukturnivå}
 \label{sec-3.6}
 
+\fxnote{problematiser: må me ha /PRED-lenkje/ frå arg til arg/adj? (ikkje
+    krevd no...men skal me rangere ved det?)}
+\fxnote{kryssande f-lenkjer?}
+\fxnote{mange-mange-f-lenkjer?}
+ 
 På f-strukturnivå har me direkte tilgang til informasjon om
 argumentstrukturen til eit predikat, og mengda av adjunkt som
 modifiserer predikatet. Når \citet[s.~3]{thunes2003eal} skriv at to
@@ -828,25 +817,26 @@ lenkja ord $a$ og $b$ må opptre i frasar som har «tilstrekkelig like
 argumentstrukturer til at uttrykkene i \emph{a}s omgivelser står i de
 samme semantiske relasjonene til hverandre og til \emph{a} som de
 korresponderende uttrykkene i \emph{b}s omgivelser gjør til hverandre
-og til \emph{b}» er det nærliggande å gjere dette til eit krav på
-f-strukturnivå.
+og til \emph{b}» er det difor passande å prøve å gjere dette til eit
+krav på f-strukturnivå.
 
+Den enklaste lenkjingssituasjonen, f-strukturmessig, er der
+rotpredikata kan lenkjast, og første argument av predikatet på
+kjeldespråket kan lenkjast til første argument på målspråket, andre
+argument til andre argument, osb., og lenkjinga kan fortsetje slik
+rekursivt inn i f-strukturane. I ein slik situasjon er det fullstendig
+samsvar mellom kor mange argument det finst på kvar side, og
+fullstendig samsvar i det tematiske rollehierarkiet (dvs. kva for
+posisjon kvar rolle har i argumentstrukturen), i heile strukturen.
 
-
-\begin{itemize}
-\item PRED må ha LPT-korrespondanse
-\item arg må ha LPT-korrespondanse med arg/adj
-
-\begin{itemize}
-\item problematiser: må me ha \emph{PRED-lenkje} frå arg til arg/adj? (ikkje
-    krevd no\ldots{}men kan rangere)
-\end{itemize}
-
-\item kryssande f-lenkjer?
-\item mange-mange-f-lenkjer?
-\end{itemize}
-\section{Krav om lik argumentstruktur}
-\label{sec-3.7}
+Som me skal sjå er det ikkje vanskeleg å komme over situasjonar der
+dette ikkje held, og me blir nøydt til å tillate lenkjer mellom
+argument og adjunkt, og lenkjer som går på tvers av følgja i
+argumentstrukturane. I tillegg kan me ikkje klare oss utan
+LPT-informasjon for å avgjere \emph{når} me har å gjere med slike meir
+komplekse situasjonar. 
+\subsection{Krav om lik argumentstruktur}
+\label{sec-3.6.1}
 
 \label{SEC:lik-argstr}
 
@@ -863,17 +853,14 @@ ville vore lenkja om dei opptredde åleine. Om dei uttrykkjer same
 proposisjon og \emph{speler same rolle i verbsituasjonen},
 synest det naturleg å lenkje desse.  
 
-\fxnote[inline,nomargin]{TODO: kva var meininga med dette avsnittet?}
-Slike omsetjingsrelasjonar gir data for verbsituasjonen, på eit meir generelt
-grunnlag enn det me kan få frå einspråklege analysar åleine. Om me har
-gode semantiske grunnar for å kalle ein deltakar i ein verbsituasjon
-eit argument på eitt språk, vil dei same grunnane gjelde for
-omsetjingsmessig korresponderande verb på andre språk. Ein kan då
-nytte unionen over alle argument til korresponderande verb til å
-karakterisere kva ein meiner med \emph{deltakarane i verbsituasjonen}. Syntaktiske forhold i språket kan sjølvsagt gi
-grunnar til å \emph{ikkje} kalle dette eit argument (om det er mogleg å
-finne akseptable syntaktiske grunnar for å kalle noko ein adjunkt
-heller enn eit argument).
+Slike omsetjingsrelasjonar gir data for verbsituasjonen, på eit meir
+generelt grunnlag enn det me kan få frå einspråklege analysar
+åleine. Om me har gode semantiske grunnar for å kalle ein deltakar i
+ein verbsituasjon eit argument på eitt språk, vil dei same grunnane
+gjelde for omsetjingsmessig korresponderande verb på andre språk. Ein
+kan då nytte unionen over alle argument til korresponderande verb til
+å karakterisere kva ein meiner med \emph{deltakarane i verbsituasjonen}. Syntaktiske forhold i språket kan sjølvsagt gi
+grunnar til å \emph{ikkje} kalle dette eit argument.
  
 For å gjere dette konkret kan me sjå på setning 7 i test-suiten til
 XPar-prosjektet:
@@ -926,10 +913,10 @@ adjunkt og argument som samsvarer.
 Det same gjeld forøvrig lenkjing av adjunkt til adjunkt. Adjunkt
 plukker ut si eiga rolle der argument får rolla tildelt frå verbet, og
 f-strukturane har ingen hierarkisk inndeling av desse slik me har for
-verb og argument, dei er i staden representert som \emph{uordna mengder}.
+verb og argument, dei er i staden representert som uordna mengder.
 
-\subsection{\textbf{TODO} Sitere eigen korpusundersøking av variasjon i arg-str?}
-\label{sec-3.7.1}
+\subsection{\textbf{SKRIV} Sitere eigen korpusundersøking av variasjon i arg-str?}
+\label{sec-3.6.2}
 
 Ei undersøking av den frasesamanstilte trebanken SMULTRON
 \citep{samuelsson2006pap} mot LFG-grammatikkane for engelsk og tysk
@@ -940,8 +927,8 @@ innhaldsverb fekk analysar kor argument korresponderte med adjunkt
 \citep{unhammer2009aaa}.
 
 \fxnote{LCS, dorr}
-\subsection{\textbf{TODO} Ulik følgje i argumentstruktur}
-\label{sec-3.7.2}
+\subsection{\textbf{SKRIV} Ulik følgje i argumentstruktur}
+\label{sec-3.6.3}
 
 I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
 argument ha ulik følgje i argumentstrukturen. Det er klart at me vil
@@ -968,8 +955,8 @@ til at bottom-up-informasjon trengst.
 
 
 
-\section{\textbf{SKRIV} Kan adjunkt lenkjast til nodar \underline{under} mor-lenkja?}
-\label{sec-3.8}
+\subsection{\textbf{SKRIV} Kan adjunkt lenkjast til nodar \underline{under} mor-lenkja?}
+\label{sec-3.6.4}
 
 \label{SEC:merge-daughters}
 
@@ -1027,8 +1014,8 @@ Me \underline{kan} krevje at f strukturane-til f strukturdøtre-kan lenkjast
 rekursivt for at F$_s$ og F$_t$ skal lenkjast, t.d. både \texttt{(1 . 4)} og \texttt{(2 . 5)}. Men her kjem det (iallfall) to problem.
 
 
-\subsection{1. Kausativar og inkorporering}
-\label{sec-3.8.1}
+\subsubsection{1. Kausativar og inkorporering}
+\label{sec-3.6.4.1}
 
 Om me har 
 
@@ -1096,15 +1083,8 @@ på LPT-kravet her, og seie at dette er berre lov der me har positiv
 informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
 me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
 vanskeleg å finne prinsipelle avgrensingar her. 
-\subsubsection{\textbf{TOGROK} adjunkt bør ikkje samanføyast? eller?}
-\label{sec-3.8.1.1}
-
-Det einaste eg kan
-tenkje meg er at adjunkt ikkje bør vere kandidatar for samanføying (i
-såfall burde dei vel heller vore analysert som argument?).
-
-\subsection{2. Adposisjonsobjekt}
-\label{sec-3.8.2}
+\subsubsection{2. Adposisjonsobjekt}
+\label{sec-3.6.4.2}
 
 
 I følgjande setningspar har me eit objekt «sigarett» som svarer til
@@ -1141,10 +1121,10 @@ LMT-korrespondanse, men då må me slakke på (iii) og (iv), og altså ha
 lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
 «daenajleva». F$_t$ er då ulenkja. Det er løysinga valt i
 \citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
-nedanfor.
+vidare i oppgåva.
 
 \section{Underordna c-strukturnodar}
-\label{sec-3.9}
+\label{sec-3.7}
 
 \label{SEC:subnode}
 
@@ -1376,12 +1356,12 @@ nedover i c-strukturtreet.
 Figur \ref{fig:enkelsub2} illusterer dette kravet. IPfoc og IP er
 toppnodar, lenkja ved krav \ref{f-links-domain}. I'-nodane er i lenkja
 funksjonelle domene og har lenkja mødre. I tillegg har dei same
-informasjonstap:
+informasjonstap:\\
 \\$L_c(IPfoc_s)=\{(\textbf{PanJara},\textbf{den}),(\textbf{ga-Geba},\textbf{åpne})\}$,
 $L_c(I'_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
 \\$L_c(IP_t)=\{(\textbf{PanJara},\textbf{den}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$,
 $L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$
-\\$L_c(IPfoc_s)-L_c(I'_s)=\{(\textbf{PanJara},\textbf{den})\}=L_c(IP_t)-L_c(I'_t)$
+\\$L_c(IPfoc_s)-L_c(I'_s)=\{(\textbf{PanJara},\textbf{den})\}=L_c(IP_t)-L_c(I'_t)$\\
 
 \begin{figure}[htp]
 \centering
@@ -1411,13 +1391,13 @@ $L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$
 \end{figure}
  
 Vfin-nodane er au i same funksjonelle domene, og har lenkja mødre, men
-her har dei ulikt informasjonstap:
+her har dei ulikt informasjonstap:\\
 \\$L_c(I'_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$,
 $L_c(Vfin_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
 \\$L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$,
 $L_c(Vfin_t)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
 \\$L_c(I'_s)-L_c(Vfin_s)=\{\}$
-\\$L_c(I'_t)-L_c(Vfin_t)=\{(\textbf{pro},\textbf{pro})\}$
+\\$L_c(I'_t)-L_c(Vfin_t)=\{(\textbf{pro},\textbf{pro})\}$\\
 
 Me ikkje har altså ein c-strukturnode som direkte projiserer
 f-strukturen til \emph{pro} på georgisk, lenkja til \emph{seg} på norsk;
@@ -1428,7 +1408,7 @@ det er lenkja til \emph{seg}, difor mister me informasjon når me går frå I'
 til Vfin.
 
 \subsection{Alternativ formulering, utan å sjekke informasjonstap}
-\label{sec-3.9.1}
+\label{sec-3.7.1}
 
 F-strukturen til \emph{gaiGo} i dømet over har pro-elementet (lenkja til
 \emph{seg}) som argument, difor burde det au vere mogleg å finne
@@ -1440,7 +1420,7 @@ ein passe på å spesifisere kor djupt ned i f-strukturen ein skal
 kikke, om adjunkt-lenkjer skal med, osb.
 
 \section{Funksjonelle c-strukturnodar}
-\label{sec-3.10}
+\label{sec-3.8}
 
 \label{SEC:fnord}
 
@@ -1553,9 +1533,9 @@ implementasjonen min har eg difor lagt mindre vekt lenkjing av
 funksjonelle kategoriar.
 
 \section{\textbf{SKRIV} Rangering}
-\label{sec-3.11}
+\label{sec-3.9}
 
-(meir i del\~{}\ref{SEC:f-rangering})
+(meir om dette i del \ref{SEC:f-rangering})
 
 \chapter{Implementasjonen av \texttt{lfgalign}}
 \label{sec-4}
@@ -1974,7 +1954,7 @@ f-struktursamanstillinga avgrenser vidare moglege ordlenkjer gitt
 f-strukturinformasjon. Preterminale nodar er dei mest ordnære nodane
 som kan ha ei f-strukturlenkje (ved $\phi$); når formålet er å lenkje
 c-strukturnodar kan me nytte f-strukturlenkja til den preterminale
-noden i staden for ordlenkjer.  \fxnote{To problem (kva vil me ha
+noden i staden for ordlenkjer.  \fxnote[inline,nomargin]{To problem (kva vil me ha
 med?)\\
 1. me får \emph{ikkje} med LPT-korrespondansar som er OK, men
 ikkje med i $f-alignment$;\\
@@ -1982,6 +1962,7 @@ ikkje med i $f-alignment$;\\
 som er med i $f-alignment$ men ikkje $aligntable$ (ikkje er rekursivt
 lenkja).}
 
+\fxnote{TODO: gammal implementasjon, er ganske annleis no.}
  \begin{algorithm}[]
    \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
    \label{algo:c-align}
@@ -2061,53 +2042,8 @@ konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
     (dette er vel heller stoff for diskusjonsdelen?)}
 
 
-\chapter{Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar}
-\label{sec-5}
-
-\label{SEC:diskusjon}
-
-\begin{itemize}
-\item om kjeldematerialet
-\item manglar med implementasjonen
-\item samanlikning av lenkjing basert på f-struktur og lenkjing basert
-     på N-gram
-\item bruksområde for samanstillingar
-\end{itemize}
-\section{Oppdage argumentstrukturalternasjon}
-\label{sec-5.1}
-
-\fixme{ref} I døme TODO i kapittel TODO viste eg at f-strukturar og
-LPT-korrespondanse kanskje ikkje har nok informasjon til å kunne
-handtere ulik følgje i argumentstruktur. Programmet mitt vil her gi
-begge løysingar, ei rangering basert på lik argumentfølgje vil gi feil
-løysing på topp.
-
-Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
-objekt til å lære slike argumentstrukturalternasjonar.  Om me
-observerer \emph{sie gefällt mir/jeg liker henne} vil me jo ha
-f-strukturinformasjon som kan nyttast til å informere
-argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.), om det var
-substantiv der ville LPT-korrespondanse kunne informere dette.
-\section{Samanlikning med tremetodar og n-grammetodar}
-\label{sec-5.2}
-
-I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
-som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
-informasjon som er kvalitativt forskjellig frå det ein kan få med å
-berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
-
-\subsection{c->f er mange-til-ein}
-\label{sec-5.2.1}
-
-Avbildinga frå c-strukturnodar til f-struktur er mange-til-ein, kan me
-t.d. innanfor eitt tre ha fleire N-gram per f-strukturhovud; ein
-metode som berre ser på enkle N-gramlenkjer vil ikkje registrere desse
-relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
- 
-
-
 \chapter{Avslutning}
-\label{sec-6}
+\label{sec-5}
 
 
 \bibliographystyle{apacite}
