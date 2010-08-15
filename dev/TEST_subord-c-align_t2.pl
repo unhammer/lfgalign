@@ -21,7 +21,8 @@ fstructure('PanJara gaiGo.',
 	],
 	% Equivalences:
 	[
-	select(A2, 1),
+	select(A1, 1),
+	select(B2, 1),
 	
 	],
 	% Constraints:
