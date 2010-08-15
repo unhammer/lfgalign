@@ -418,7 +418,7 @@ cover (iii) and (iv). See `argalign-p'."
 	 (adjs_t (get-adjs var_t tab_t 'no-error))
 	 (args_s (get-args (get-pred var_s tab_s t) 'no-nulls))
 	 (args_t (get-args (get-pred var_t tab_t t) 'no-nulls)))
-    (when *debug* (format t "~A ~A~%~A ~A~%" args_s adjs_s args_t adjs_t))
+    (when *debug* (format t "args_s:~A adjs_s:~A args_t:~A adjs_t:~A~%" args_s adjs_s args_t adjs_t))
     (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
 
 (defun argalign-p (args_s adjs_s args_t adjs_t &optional tab_s tab_t LPTs)
@@ -702,21 +702,16 @@ phi's don't match anything in the files)."
   (labels ((get-link (f-id)
 	     (let* ((getter (if (eq from 'trg)
 				#'rassoc
-				#'assoc))
-		    (setter (if (eq from 'trg)
-				(lambda (f-id) (cons nil f-id))
-			      (lambda (f-id) (cons f-id nil))))
+			      #'assoc))
 		    (links (mapcar-true (lambda (var) (funcall getter var f-alignment))
 					(adjoin f-id (get-equivs f-id tab)))))
 	       (when (cdr links) (error "More than one link: ~A for f-var: ~A" links f-id))
-	       (if (car links)
-		   (car links)
-		 (funcall setter f-id)))))
+	       (car links))))
     (when tree
       (awhen (if (or (terminal? (third tree)) (terminal? (fourth tree)))
 		 (if (and (third tree) (fourth tree))
 		     (error "Unexpected branching in preterminal, TODO")
-		     (list (get-link (phi (car tree) tab))))
+		   (awhen (get-link (phi (car tree) tab)) (list it)))
 		 (union (add-links f-alignment (third tree) tab splits from)
 			(add-links f-alignment (fourth tree) tab splits from)))
 	(add it (car tree) splits)
@@ -760,7 +755,7 @@ phi's don't match anything in the files)."
        (tree_s (maketree tab_s))
        (tab_t (open-and-import "dev/TEST_subord-c-align_t.pl"))
        (tree_t (maketree tab_t))
-       (f-alignment '((0 . 0))))
+       (f-alignment '((0 . 0) (7 . 14) (8 . 9))))
     (when *debug*
       ;; compare old and new c-align-ranked:
       (out "~A~%~A~%~A~%~A~%"
@@ -769,21 +764,23 @@ phi's don't match anything in the files)."
 	   (c-align-ranked-old f-alignment tree_s tab_s tree_t tab_t)))
     ;; det åpnet seg --- gaiGo
     (lisp-unit:assert-equal
-     '(((1236 1262 1338)
-	(186 42 183 180 178 161 157 2 156 20 307 22 154 24 314 26 313 28 311
-	     32)))
+     '(((1236 1262 1338)		; just IP
+	(186 42 183 180 178 161 157 2 156 4 155 6 154 8 153 10 152 12 150 16)))
      (c-align-ranked f-alignment tree_s tab_s tree_t tab_t)))
   (let* 
       ((tab_s (open-and-import "dev/TEST_subord-c-align_s.pl"))
        (tree_s (maketree tab_s))
        (tab_t (open-and-import "dev/TEST_subord-c-align_t2.pl"))
        (tree_t (maketree tab_t))
-       (f-alignment '((0 . 0) (7 . 51))))
+       (f-alignment '((0 . 0)(7 . 12)(8 . 3))))
     ;; det åpnet seg --- PanJara gaiGo
     (lisp-unit:assert-equal
-     '(((1236 1262 1338) (662 659 595))
-       ((1461) (58 592 487 482 18 481 20 480 22 479 40 641 42 640 44 638 48))
-       ((1353 1477 25) (331 321 318 6 168 9 166 10 164 12)))
+     '(((1236 1262 1338)		; IP
+	(662 659 595))
+       ((1461)				; Ibar
+	(58 592 487 482 18 481 20 480 22 479 24 478 26 477 28 475 32))
+       ((1353 1477 25)			; det/PanJara
+	(331 321 318 6 168 9 166 10 164 12)))
      (c-align-ranked f-alignment tree_s tab_s tree_t tab_t))))
    
 (defun c-align-ranked (f-alignment tree_s tab_s tree_t tab_t)
@@ -796,8 +793,10 @@ subordinate nodes only if they lose the same members of splits."
     (add-links f-alignment tree_s tab_s splits_s 'src)
     (add-links f-alignment tree_t tab_t splits_t 'trg)
     (let ((top-c-links (mapcar-true (lambda (f-link)
-				      (cons (topnodes (phi^-1 (car f-link) tab_s) tree_s)
-					    (topnodes (phi^-1 (cdr f-link) tab_t) tree_t)))
+				      (let ((nodes_s (topnodes (phi^-1 (car f-link) tab_s) tree_s))
+					    (nodes_t (topnodes (phi^-1 (cdr f-link) tab_t) tree_t)))
+					(when (and nodes_s nodes_t)
+					  (cons nodes_s nodes_t))))
 				    f-alignment)))
       (mapcan-true
        (lambda (c-link)
@@ -831,12 +830,12 @@ subordinate nodes only if they lose the same members of splits."
 (defun align (tab_s tab_t LPT)
   (let* ((aligntab (make-aligntab))
 	 (f-alignments (f-align '(0 . 0) tab_s tab_t LPT aligntab))
-	 (best-f-alignment (rank f-alignments))
+	 (best-f-alignment (rank f-alignments aligntab))
 	 (c-alignments (c-align-ranked best-f-alignment 
 				       (maketree tab_s) tab_s
-				       (maketree tab_t) tab_t))
+				       (maketree tab_t) tab_t)))
 	 ;; TODO: pretty-print
-	 c-alignments)))
+    c-alignments))
 
 
 (defun f-align-naive (var1 tab1 var2 tab2)
@@ -1204,14 +1203,8 @@ respectively.  TODO: cache/memoise maketree"
 	 (f-alignment '((0 . 0))))
     (add-links f-alignment tree tab splits 'src)
     (lisp-unit:assert-equality #'set-equal
-    '(44 46 48 104 735 734 733 1435)
-     (get-val '((0 . 0)) splits))
-    (lisp-unit:assert-equality #'set-equal
-    '(1236 1262 1338)
-     (get-val '((0 . 0) (8 . nil) (7 . nil)) splits))
-    (lisp-unit:assert-equality #'set-equal
-    '(1461)				; just I'
-     (get-val '((0 . 0) (8 . nil)) splits))))
+    '(1236 104 1262 1338 1461 1435 735 44 734 46 733 48)
+     (get-val '((0 . 0)) splits))))
 
 (lisp-unit:define-test test-LL
   (let* ((tab_s (open-and-import "dev/TEST_regargadj_s.pl"))
