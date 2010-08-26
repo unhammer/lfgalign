@@ -560,6 +560,10 @@ vere /koreferente/. Lenkja ord må vere del av frasar som speler same
 rolle i «det som er felles i interpretasjonene av [dei to setningane]»
 \citep[s.~3]{thunes2003eal}.
 
+# - /Anafori/: ulike _system_-setningar, like _tekst_-setningar
+#   1) studenten ... studenten ...
+#   2) the student ... he ...
+
 Viss me tek utgangspunkt i det siste, vil det vere naturleg å i
 tillegg lenkje desse frasane som speler same rolle i «det som er
 felles i interpretasjonene».
