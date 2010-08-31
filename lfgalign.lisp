@@ -728,26 +728,32 @@ phi's don't match anything in the files)."
 
 (defun c-link-until-neq-infoloss (mc-id_s mlinks_s tab_s splits_s
 				  mc-id_t mlinks_t tab_t splits_t)
-  (loop for f-link_s in mlinks_s
-	for f-link_t in mlinks_t
-	;; Find equal members. By never removing the link connecting
-	;; these f-domain's (the phi checks), we won't go below this
-	;; f-domain. Since we never add anything, we won't move into
-	;; surrounding f-domains.
-	when (and (equal f-link_s f-link_t)
-		  (not (eq (car f-link_s)
-			   (phi mc-id_s tab_s)))
-		  (not (eq (cdr f-link_s)
-			   (phi mc-id_t tab_t))))
-	collect (let ((nodes_s (get-val (remove f-link_s mlinks_s :test #'equal) splits_s))
-		     (nodes_t (get-val (remove f-link_s mlinks_t :test #'equal) splits_t)))
-		 (when (and nodes_s nodes_t)
-		   (list (mapcar-true
-			  (lambda (c-id) (when (eq (phi c-id tab_s) (phi mc-id_s tab_s)) c-id))
-			  nodes_s)
-			 (mapcar-true
-			  (lambda (c-id) (when (eq (phi c-id tab_t) (phi mc-id_t tab_t)) c-id))
-			  nodes_t))))))
+  (loop for f-link in mlinks_s
+	with mf_s = (phi mc-id_s tab_s) and mf_t = (phi mc-id_t tab_t)
+	when (and
+	      ;; Only try removing links that exist on both sides:
+	      (member f-link mlinks_t :test #'equal)
+	      ;; Only try removing _subordinate_ links, we don't want
+	      ;; to remove the link connecting these f-domains
+	      ;; (that would let us move into domains below this one):
+	      (not (equal f-link (cons mf_s mf_t)))
+	      ;; Since we never add links, we won't move into surrounding f-domains.
+	      )
+	collect
+	(let* ((mlinks_s/f-link (remove f-link mlinks_s :test #'equal))
+	       (mlinks_t/f-link (remove f-link mlinks_t :test #'equal))
+	       (nodes_s (get-val mlinks_s/f-link splits_s))
+	       (nodes_t (get-val mlinks_t/f-link splits_t)))
+	  ;; Are there any nodes in the splits that result from having f-link removed?
+	  ;; In that case, they have equal information loss, and we add them
+	  ;; (but only if they stay within the same functional domain as their mother)
+	  (when (and nodes_s nodes_t)
+	    (list (mapcar-true
+		   (lambda (c-id) (when (eq mf_s (phi c-id tab_s)) c-id))
+		   nodes_s)
+		  (mapcar-true
+		   (lambda (c-id) (when (eq mf_t (phi c-id tab_t)) c-id))
+		   nodes_t))))))
 
 (lisp-unit:define-test test-c-align-ranked ()
   (let* 
