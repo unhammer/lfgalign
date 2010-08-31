@@ -792,22 +792,24 @@ subordinate nodes only if they lose the same members of splits."
 	 (splits_t (make-instance 'LL-splits)))
     (add-links f-alignment tree_s tab_s splits_s 'src)
     (add-links f-alignment tree_t tab_t splits_t 'trg)
-    (let ((top-c-links (mapcar-true (lambda (f-link)
-				      (let ((nodes_s (topnodes (phi^-1 (car f-link) tab_s) tree_s))
-					    (nodes_t (topnodes (phi^-1 (cdr f-link) tab_t) tree_t)))
-					(when (and nodes_s nodes_t)
-					  (cons nodes_s nodes_t))))
-				    f-alignment)))
+    (let ((top-c-links (mapcar-true
+			(lambda (f-link)
+			  (let ((subtree_s (topnodes (phi^-1 (car f-link) tab_s) tree_s))
+				(subtree_t (topnodes (phi^-1 (cdr f-link) tab_t) tree_t)))
+			    (when (and subtree_s subtree_t)
+			      (cons (car subtree_s)
+				    (car subtree_t)))))
+			f-alignment)))
       (mapcan-true
        (lambda (c-link)
-	 (let ((links_s (get-val (get-links (caar c-link) splits_s) splits_s))
-	       (links_t (get-val (get-links (cadr c-link) splits_t) splits_t)))
+	 (let ((links_s (get-links (car c-link) splits_s))
+	       (links_t (get-links (cdr c-link) splits_t)))
 	   (cons (list			; topnodes in f-domain are always linked
-		  (get-val (get-links (caar c-link) splits_s) splits_s)
-		  (get-val (get-links (cadr c-link) splits_t) splits_t))
+		  (get-val links_s splits_s)
+		  (get-val links_t splits_t))
 		 (c-link-until-neq-infoloss ; possible list of subordinate links
-		  (caar c-link) (get-links (caar c-link) splits_s) tab_s splits_s
-		  (cadr c-link) (get-links (cadr c-link) splits_t) tab_t splits_t))))
+		  (car c-link) links_s tab_s splits_s
+		  (cdr c-link) links_t tab_t splits_t))))
        top-c-links))))
 
 (defun hash-key-intersect (tab1 tab2)
