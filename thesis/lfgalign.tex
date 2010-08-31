@@ -1,4 +1,4 @@
-% Created 2010-08-31 ty. 13:49
+% Created 2010-08-31 ty. 17:19
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -1936,8 +1936,10 @@ om c-strukturen, medan lenkjing av c-strukturnodar skjer på grunnlag
 av f-struktursamanstillinga. Programmet utfører difor samanstilling av
 c-strukturar sist\footnote{Som nemnt i del \ref{SEC:fnord} kan funksjonsord gjere
        f-strukturlenkjinga avhengig av forhold i c-strukturen,
-       evt. krevje meir nyansert f-strukturlenkjing; dette har eg teke
-       høgd for i implementasjonen. }.
+       evt. krevje meir nyansert f-strukturlenkjing. Dette har eg
+       ikkje teke høgd for i implementasjonen, så der eit funksjonsord
+       burde blokkert ei f-strukturlenkje vil \texttt{lfgalign} gi feil
+       samanstilling. }.
 
 Funksjonen \texttt{c-align} har som inndata c-strukturanalysane av kjelde- og
 målsetninga, og éi f-struktursamanstilling; utdata er ei mengd med
@@ -1960,15 +1962,18 @@ f-struktursamanstillinga avgrenser vidare moglege ordlenkjer gitt
 f-strukturinformasjon. Preterminale nodar er dei mest ordnære nodane
 som kan ha ei f-strukturlenkje (ved $\phi$); når formålet er å lenkje
 c-strukturnodar kan me nytte f-strukturlenkja til den preterminale
-noden i staden for ordlenkjer.  \fxnote[inline,nomargin]{To problem (kva vil me ha
-med?)\\
+noden i staden for ordlenkjer.\fxnote[inline,nomargin]{To problem (kva vil me ha med?)\\
 1. me får \emph{ikkje} med LPT-korrespondansar som er OK, men
 ikkje med i $f-alignment$;\\
 2. me \emph{får} med LPT-korrespondansar
 som er med i $f-alignment$ men ikkje $aligntable$ (ikkje er rekursivt
 lenkja).}
 
-  \fxnote{TODO: gammal implementasjon, er ganske annleis no.}
+Programmet \texttt{lfgalign} følgjer krav \ref{subnodekrav-infotap} og
+lenkjer øvste nodar i funksjonelle domene, og subordinate nodar som
+har same informasjonstap. Prosedyren \texttt{c-align} i kodefigur
+\ref{algo:c-align} implementerer dette kravet. 
+
    \begin{algorithm}[]
      \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
      \label{algo:c-align}
@@ -1981,14 +1986,17 @@ lenkja).}
      \ForAll{$src$, $trg$ in f-alignment} {
        $top_s \gets$ topnode($src$) \;
        $top_t \gets$ topnode($trg$) \;
+       \uIf{$top_s = \emptyset$ or $top_t = \emptyset$} { continue\; }
        add $(top_s,top_t)$ to c-alignments \;
-       \ForAll{$f-link$ in keys of $splits_s$} {
-         \uIf{$f-link$ in keys of $splits_t$ and $f-link \neq (src,trg)$} {
-           $links_s \gets$ keys of $splits_s$ where $src$ is a value, minus $f-link$ \;
-           $links_t \gets$ keys of $splits_t$ where $trg$ is a value, minus $f-link$ \;
+       \ForAll{$link$ being the keys of $splits_s$} {
+         \uIf{$link$ in keys of $splits_t$ and $link \neq (src,trg)$} {
+         \Comment{We try to remove $link$ from $splits_s$ and $splits_t$}
+           $links_s \gets keys(src, splits_s) - link$ \;
+           $links_t \gets keys(trg, splits_t) - link$ \;
            $nodes_s \gets splits_s[links_s]$ \;
            $nodes_t \gets splits_t[links_t]$ \;
            \uIf{$nodes_s$ and $nodes_t$ are non-empty} {
+           \Comment{$nodes_s$ and $nodes_t$ have the same infoloss}
              add $(nodes_s,nodes_t)$ to c-alignments \;
            }
          }
@@ -1997,16 +2005,17 @@ lenkja).}
       \Return c-alignments \;
       \end{algorithm}    
 
-Hjelpeprosedyren \texttt{add-links} utfører hovudjobben. Inndata er rotnoden
-til c-strukturtreet for eitt av språka, og
-f-samanstillinga. Prosedyren kappar opp treet i nodemengder, kor kvar
-nodemengd dominerer same lenkjemengd (som definert over).
-Nodemengdene blir lagra i ein tabell, indeksert på
+Hjelpeprosedyren \texttt{add-links} (kodefigur \ref{algo:add-links}) utfører
+hovudjobben. Inndata er rotnoden til c-strukturtreet for eitt av
+språka, og f-samanstillinga. Prosedyren kappar opp treet i
+nodemengder, kor kvar nodemengd dominerer same lenkjemengd (som
+definert over).  Nodemengdene blir lagra i ein tabell, indeksert på
 lenkjemengdene. Prosedyren går rekursivt gjennom treet frå rot til
 lauv; lenkjemengden for kvar node er unionen av lenkjemengdene
 returnert av \texttt{add-links} kalt på kvar av døtrene. Viss ein node
 dominerer ei lenkjemengd $links$, legg me til denne noden i tabellen
-$splits[links]$. 
+$splits[links]$. Merk at kvar c-strukturnode berre opptrer éin gong i
+tabellen.
 
    \begin{algorithm}[]
    \caption{add-links(f-alignment, $node, splits$)}
@@ -2027,11 +2036,9 @@ $splits[links]$.
   \end{algorithm}
 
 Sidan \texttt{c-align} kallar \texttt{add-links} for kvar av sidene, får me to
-tabellar $splits_s$ og $splits_t$. Me hentar så ut alle dei
-lenkjemengdene som er i begge tabellane (dvs. snittet av oppslagsnøklene
-til tabellen); nodane som er lagra med mengd med f-strukturlenkjer
-skal lenkjast på c-strukturnivå. Alle desse mange-til-mange-lenkjene
-blir til slutt returnert av \texttt{c-align}.
+tabellar $splits_s$ og $splits_t$. Me går så gjennom kvar
+f-strukturlenkje; viss 
+
 
 Prosessen er no ferdig, mange-til-mange-lenkjene mellom
 c-strukturnodar definerer frasesamanstillinga
