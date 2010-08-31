@@ -739,15 +739,15 @@ phi's don't match anything in the files)."
 			   (phi mc-id_s tab_s)))
 		  (not (eq (cdr f-link_s)
 			   (phi mc-id_t tab_t))))
-	collect (let ((links_s (get-val (remove f-link_s mlinks_s :test #'equal) splits_s))
-		     (links_t (get-val (remove f-link_s mlinks_t :test #'equal) splits_t)))
-		 (when (and links_s links_t)
+	collect (let ((nodes_s (get-val (remove f-link_s mlinks_s :test #'equal) splits_s))
+		     (nodes_t (get-val (remove f-link_s mlinks_t :test #'equal) splits_t)))
+		 (when (and nodes_s nodes_t)
 		   (list (mapcar-true
 			  (lambda (c-id) (when (eq (phi c-id tab_s) (phi mc-id_s tab_s)) c-id))
-			  links_s)
+			  nodes_s)
 			 (mapcar-true
 			  (lambda (c-id) (when (eq (phi c-id tab_t) (phi mc-id_t tab_t)) c-id))
-			  links_t))))))
+			  nodes_t))))))
 
 (lisp-unit:define-test test-c-align-ranked ()
   (let* 
