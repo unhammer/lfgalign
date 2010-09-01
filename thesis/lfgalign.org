@@ -1053,10 +1053,36 @@ denne oppgåva ikkje vere nok til å gi korrekt lenkjing.
 
 
 *** SKRIV Krav om argumentlenkjer
-Sjølv om argument kan lenkjast til adjunkt, eller i omvendt følgje,
-er det ønskeleg å krevje at alle argument er lenkja. 
-# CURRENT TODO!
+Sjølv om me ikkje krev lik følgje i argumentlenkjer, og tillèt
+argument-adjunkt-lenkjer, er det eit minstekrav for å lenkje to
+PRED-element at alle argumenta til det eine PRED-elementet kan
+korrespondere med argument eller adjunkt av det andre PRED-elementet.
+Dette følgjer av formålet med å finne ut korleis ulike språk
+realiserer ulike semantiske roller syntaktisk; om eit verbargument
+ikkje kan lenkjast til noko i omsetjinga (ikkje ein gong eit
+pro-element), er det usannsynleg at verba uttrykker same situasjon, og
+tildeler same roller. På same måte må sjølvsagt lenkja predikat ha
+LPT-korrespondanse. \citet[s.~75]{dyvik2009lmp} gir følgjande krav på
+f-strukturnivå:
 
+\ex. \label{PRED-krav} Krav for lenkjing av to PRED-element $p$ og $q$:
+\a. ordformene til til $p$ og $q$ har LPT-korrespondanse
+\b. alle argument av $p$ har LPT-korrespondanse med eit argument eller adjunkt av $q$
+\c. alle argument av $q$ har LPT-korrespondanse med eit argument eller adjunkt av $p$
+\d. LPT-korrespondansane er ein-til-ein
+\e. ingen adjunkt til $p$ er lenkja til f-strukturar utanfor $q$, og omvendt
+
+Det \Last[d] seier er at me ikkje lenkjer t.d. to instansar av «hest»
+på det eine språket til éin instans av «horse» på det andre. Krav
+\Last[e] kjem eg tilbake til i \ref{SEC:merge-daughters} nedanfor.
+
+Det går an å gjere \Last strengare, og krevje at argumenta, i tillegg
+til å ha LPT-korrespondanse, sjølv er PRED-lenkja. Dette har eg ikkje
+gjort i implementasjonen min, men det er mogleg å ha det som eit
+rangeringskriterium, noko eg kjem tilbake til i del
+\ref{SEC:rangering}. 
+
+# CURRENT TODO like omgivnader, top-down, treng ikkje vere likt inni, granularitet
 *** SKRIV (reinskriv) om global tyding, ikkje-komposisjonell..    :ROTETE:
 Same globale tyding krev i det minste at, i situasjonen verbet
 denoterer, speler deltakarane same rolle. Men dette er endå meir
@@ -1124,7 +1150,7 @@ og \{ /a, deep, appreciation/ \} på den andre.
 
 
 
-*** SKRIV Kan adjunkt lenkjast til nodar _under_ mor-lenkja?
+*** SKRIV Adjunkt-lenkjer
 \label{SEC:merge-daughters}
 
 Krav (vi) i \citet[s.~75]{dyvik2009lmp} krev at viss F_s og F_t er
@@ -1825,7 +1851,8 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
 
 
 ** SKRIV Rangering
-(meir om dette i del \ref{SEC:f-rangering})
+   \label{SEC:rangering}
+(meir om dette i del \ref{SEC:impl-f-rangering})
 
 * Implementasjonen av =lfgalign=
 \label{SEC:implementasjon}
@@ -2035,7 +2062,7 @@ Men det kan vere at me ikkje /vil/ krevje dette i alle moglege
 tilfelle. Ei tryggare løysing er å rangere ulike løysingar i
 etterkant, ved å spørje etter dei argumentsamanstillingane som har
 flest medlem i $aligntable$, dette kjem eg tilbake til i
-\ref{SEC:f-rangering} nedanfor.
+\ref{SEC:impl-f-rangering} nedanfor.
 *** Overflødige adverbial
    \label{SEC:impl-adjalign}
 
@@ -2141,7 +2168,7 @@ innover må du multiplisere inn sjansen for å trå feil i
 argumentpermutasjonane.
 
 ** SKRIV Rangering
-\label{SEC:f-rangering}
+\label{SEC:impl-f-rangering}
 
 \fxnote[inline,nomargin]{Rangering er ikkje implementert enno (akkurat no gir
 rank(f-alignments) berre ut første samanstilling.)}
