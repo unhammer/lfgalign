@@ -1,4 +1,4 @@
-% Created 2010-09-01 on. 17:21
+% Created 2010-09-01 Wed 22:06
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -1031,77 +1031,58 @@ f-strukturnivå:
 
 Det \Last[d] seier er at me ikkje lenkjer t.d. to instansar av «hest»
 på det eine språket til éin instans av «horse» på det andre. Krav
-\Last[e] kjem eg tilbake til i \ref{SEC:merge-daughters} nedanfor.
+\Last[e] kjem eg tilbake til nedanfor.
 
-Det går an å gjere \Last strengare, og krevje at argumenta, i tillegg
-til å ha LPT-korrespondanse, sjølv er PRED-lenkja. Dette har eg ikkje
-gjort i implementasjonen min, men det er mogleg å ha det som eit
-rangeringskriterium, noko eg kjem tilbake til i del
+Det går an å gjere \Last strengare, og krevje at argumenta -- i
+tillegg til å ha LPT-korrespondanse -- sjølv er PRED-lenkja. Dette har
+eg ikkje gjort i implementasjonen min, men det er mogleg å ha det som
+eit rangeringskriterium, noko eg kjem tilbake til i del
 \ref{SEC:rangering}. 
 
-\subsection{\textbf{SKRIV} Adjunkt-lenkjer}
+Kva med f-strukturomgivnadene til $p$ og $q$, skal me krevje at dei er
+like?  I \Last[e] har me eit krav om at adjunkt til $p$ ikkje er
+lenkja til f-strukturar utanfor $q$, og omvendt. Men viss $a_p$ er eit
+adjunkt til $p$, kan det lenkjast til ein \emph{dotternode} av argument
+eller adjunkt til $q$? La $a_q$ vere eit argument eller adjunkt til
+$q$, viss $a_q$ er eit argument må det ved \Last ha LPT-korrespondanse
+med argument/adjunkt i $p$, men det treng ikkje vere lenkja -- viss
+det er ulenkja gjeld ikkje krav \Last for $a_q$, så \Last hindrar
+ikkje ei lenkje mellom $a_p$ og døtre av $a_q$. 
+
+I tillegg vil ikkje \Last hindre at t.d. den ytste f-strukturen i
+kjeldespråket er lenkja til eit XCOMP-argument på målspråket; men i
+dette tilfellet bør kanskje ikkje \emph{setningane} vere lenkja i
+utgangspunktet.
+
+Sjølv om det er logisk mogleg å gjere slike lenkjingar, er det
+vanskeleg å finne ikkje-vilkårlege avgrensingar for når ein skal kunne
+lenkje f-strukturar som står i ulike omgivnader; i implementasjonen
+min har eg difor følgt eit strengare krav enn \Last[e]:
+
+\ex. PRED-elementa $p$ og $q$ kan berre lenkjast om dei er ytste
+     f-strukturar eller er argument/adjunkt til lenkja f-strukturar.
+
+
+\subsection{\textbf{SKRIV} Kausativar og inkorporering}
 \label{sec-3.6.4}
 
-\label{SEC:merge-daughters}
-
-Krav (vi) i \citet[s.~75]{dyvik2009lmp} krev at viss F$_s$ og F$_t$ er
-lenkja, så kan ingen adjunkt D$_s$ til F$_s$ vere lenkja til nodar utanfor
-F$_t$. Men kan ein D$_s$ lenkjast til ei dotternode av argument eller
-adjunkt til F$_t$?
-
-R$_t$ er dotter til F$_t$, og må då vere lenkja til ei dotter av F$_s$,
-A$_s$. Då må au alle argument til R$_t$ vere lenkja til døtre av A$_s$, så
-D$_s$ kan ikkje lenkjast til argument av dotternodar til F$_t$. Kva med
-adjunkt? Om me finn eit ulenkja adjunkt til R$_t$ kan me heller ikkje
-lenkje dette til D$_s$ ved krav (vi) igjen, sidan D$_s$ står utanfor
-A$_s$.
-
-Men om D$_t$ er ei ulenkja \emph{adjunkt}dotter av F$_t$, så vil døtre av
-D$_t$ kunne lenkjast til D$_s$, så lenge D$_t$ forblir ulenkja. Me kan altså
-sjå ned i adjunktdøtre av F$_t$ for å lenkje D$_s$. 
-
-På same måte bør ein kunne rekursivt sjå ned i ulenkja adjunktdøtre av
-R$_t$, men ein bør kanskje ikkje kunne lenkje så djupt uansett? Ikkje
-automatisk, uansett.
-
-
-
-Programmet mitt vil, gitt to initielle f-strukturar med
-LPT-korrespondanse, finne alle moglege kombinasjonar av lenkjer som
-inneheld alle argument og kanskje adjunkt, dvs. om me har
-
-\begin{verbatim}
- F_s [ PRED p<1,2> ADJUNCT { 3 } ]
-\end{verbatim}
-
-
-\begin{verbatim}
- F_t [ PRED p<4> ADJUNCT { 5,6 } ]
-\end{verbatim}
-
-
-vil dette vere logisk moglege samanstillingar av «f-strukturdøtre»:
-
-\begin{verbatim}
-    (((1 . 4) (2 . 5)) ((1 . 4) (2 . 6)) ((1 . 5) (2 . 4))
-     ((1 . 5) (2 . 6) (3 . 4)) ((1 . 6) (2 . 4)) ((1 . 6) (2 . 5) (3 . 4)))
-\end{verbatim}
-
-
-Me luker ut kombinasjonar som bryt med LPT-korrespondanse. Med full
-informasjon bør me sjølvsagt berre ende opp med éin kombinasjon,
-t.d. \texttt{((1 . 4) (2 . 5))}.
-
-Så langt bør altså krav (i-iv) frå \citet{dyvik2009lmp} vere dekkja.
-
-Me \underline{kan} krevje at f strukturane-til f strukturdøtre-kan lenkjast
-rekursivt for at F$_s$ og F$_t$ skal lenkjast, t.d. både \texttt{(1 . 4)} og \texttt{(2 . 5)}. Men her kjem det (iallfall) to problem.
-
-
-\subsubsection{1. Kausativar og inkorporering}
-\label{sec-3.6.4.1}
+Eit meir komplisert problem er der éin f-struktur på kjeldespråket
+korresponderer med to (eller fleire) på målspråket. Dette skjer
+t.d. ved omsetjing av ein kausativ på georgisk til ein
+\emph{la}-konstruksjon på norsk, eller der eit verb på det eine språket har
+inkorporert eit objekt som på det andre språket er uttrykt åleine.
 
 Om me har 
+
+{\avmoptions{}
+\ex. \a. SUBJ $la-q$ OBJ \\
+     $\begin{avm}\[pred & `{\bf{}la-q}<SUBJ, OBJ>' \]\end{avm}$
+    $\\\\\leftrightarrow$\\
+     \b. SUBJ lar OBJ $q$ \\
+     $\begin{avm}\[pred & `{\bf{}la}<SUBJ, OBJ1, XCOMP:2>' \\
+     xcomp & 2 \[pred & `{\bf{}q}<SUBJ1>'\]\]\end{avm}$
+
+}
 
 \begin{verbatim}
  F_s [ PRED p<SUBJ, 1, 2> XCOMP 2[ PRED q<1> ] ]
@@ -1170,8 +1151,8 @@ på LPT-kravet her, og seie at dette er berre lov der me har positiv
 informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
 me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
 vanskeleg å finne prinsipelle avgrensingar her. 
-\subsubsection{2. Adposisjonsobjekt}
-\label{sec-3.6.4.2}
+\subsection{\textbf{SKRIV} Adposisjonsobjekt}
+\label{sec-3.6.5}
 
 
 I følgjande setningspar har me eit objekt «sigarett» som svarer til
@@ -1209,7 +1190,6 @@ lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
 «daenajleva». F$_t$ er då ulenkja. Det er løysinga valt i
 \citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
 vidare i oppgåva.
-
 \section{Krav på c-strukturnivå}
 \label{sec-3.7}
 

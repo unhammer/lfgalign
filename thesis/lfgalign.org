@@ -1074,15 +1074,140 @@ f-strukturnivå:
 
 Det \Last[d] seier er at me ikkje lenkjer t.d. to instansar av «hest»
 på det eine språket til éin instans av «horse» på det andre. Krav
-\Last[e] kjem eg tilbake til i \ref{SEC:merge-daughters} nedanfor.
+\Last[e] kjem eg tilbake til nedanfor.
 
-Det går an å gjere \Last strengare, og krevje at argumenta, i tillegg
-til å ha LPT-korrespondanse, sjølv er PRED-lenkja. Dette har eg ikkje
-gjort i implementasjonen min, men det er mogleg å ha det som eit
-rangeringskriterium, noko eg kjem tilbake til i del
+Det går an å gjere \Last strengare, og krevje at argumenta -- i
+tillegg til å ha LPT-korrespondanse -- sjølv er PRED-lenkja. Dette har
+eg ikkje gjort i implementasjonen min, men det er mogleg å ha det som
+eit rangeringskriterium, noko eg kjem tilbake til i del
 \ref{SEC:rangering}. 
 
+Kva med f-strukturomgivnadene til $p$ og $q$, skal me krevje at dei er
+like?  I \Last[e] har me eit krav om at adjunkt til $p$ ikkje er
+lenkja til f-strukturar utanfor $q$, og omvendt. Men viss $a_p$ er eit
+adjunkt til $p$, kan det lenkjast til ein /dotternode/ av argument
+eller adjunkt til $q$? La $a_q$ vere eit argument eller adjunkt til
+$q$, viss $a_q$ er eit argument må det ved \Last ha LPT-korrespondanse
+med argument/adjunkt i $p$, men det treng ikkje vere lenkja -- viss
+det er ulenkja gjeld ikkje krav \Last for $a_q$, så \Last hindrar
+ikkje ei lenkje mellom $a_p$ og døtre av $a_q$. 
+
+I tillegg vil ikkje \Last hindre at t.d. den ytste f-strukturen i
+kjeldespråket er lenkja til eit XCOMP-argument på målspråket; men i
+dette tilfellet bør kanskje ikkje /setningane/ vere lenkja i
+utgangspunktet.
+
+Sjølv om det er logisk mogleg å gjere slike lenkjingar, er det
+vanskeleg å finne ikkje-vilkårlege avgrensingar for når ein skal kunne
+lenkje f-strukturar som står i ulike omgivnader; i implementasjonen
+min har eg difor følgt eit strengare krav enn \Last[e]:
+
+\ex. PRED-elementa $p$ og $q$ kan berre lenkjast om dei er ytste
+     f-strukturar eller er argument/adjunkt til lenkja f-strukturar.
+
 # CURRENT TODO like omgivnader, top-down, treng ikkje vere likt inni, granularitet
+
+*** SKRIV Kausativar og inkorporering
+Eit meir komplisert problem er der éin f-struktur på kjeldespråket
+korresponderer med to (eller fleire) på målspråket. Dette skjer
+t.d. ved omsetjing av ein kausativ på georgisk til ein
+/la/-konstruksjon på norsk, eller der eit verb på det eine språket har
+inkorporert eit objekt som på det andre språket er uttrykt åleine.
+
+Om me har 
+
+#+BEGIN_LaTeX
+{\avmoptions{}
+\ex. \a. SUBJ $la-q$ OBJ \\
+     $\begin{avm}\[pred & `{\bf{}la-q}<SUBJ, OBJ>' \]\end{avm}$
+    $\\\\\leftrightarrow$\\
+     \b. SUBJ lar OBJ $q$ \\
+     $\begin{avm}\[pred & `{\bf{}la}<SUBJ, OBJ1, XCOMP:2>' \\
+     xcomp & 2 \[pred & `{\bf{}q}<SUBJ1>'\]\]\end{avm}$
+
+}
+#+END_LaTeX
+
+: F_s [ PRED p<SUBJ, 1, 2> XCOMP 2[ PRED q<1> ] ]
+
+: F_t [ PRED pq<SUBJ,OBJ> ]
+
+kor pq er t.d. ein kausativ som tilsvarer =p<..., q>=, så vil me ikkje
+kunne lenkje F_s og F_t sidan det bryt med krav (iii), F_s har eit
+argument for mykje. Men her vil det kanskje vere naturleg å ha ei
+ein-mange-lenkje:
+
+: ((F_s 2) . F_t)
+
+No kan me sjå på unionen av argument av F_s (minus XCOMP) og argument
+av XCOMP, alle argument i denne unionen må då ha LPT-korrespondanse
+med argument/adjunkt av F_t, og alle argument av F_t må ha
+LPT-korrespondanse med argument/adjunkt av unionen.
+
+Det same bør kanskje skje ved vanleg inkorporering av substantiv, då
+må det altså vere mogleg å føye saman t.d. verb og objekt; ein
+kombinasjon av dette og kausativ bør vel vere mogleg, t.d.
+
+: F_s [ PRED la<SUBJ, 1>  XCOMP 2[ få<1, 3:pengar> ] ]
+
+: F_ t [ PRED belønn<SUBJ, 1> ]
+
+Igjen ser me på argument frå unionen av =(F_s 2 3)= minus 2 og 3, og
+om det er mogleg å lenkje dei til argument/adjunkt av F_t, og omvendt.
+
+Men det bør kanskje vere grenser for kor langt samanføying kan gå… eg
+kan ikkje tenkje meg at me vil lenkje =((F_s 2) . F_t)= eller =((F_s
+1 2) . F_t)= her:
+
+: F_s [ PRED p<…, 1> XCOMP 1[ PRED q<…, 2> XCOMP 2[ PRED r<…> ] ] ]
+
+: F_t [ PRED pr<…> ]
+
+...men det kan jo hende det finst situasjonar der dette au vil vere
+rett. Problemet er altså kor me skal setje grensene i
+implementasjonen. Om me skal prøve å samanføye på alle moglege måtar
+(altså, der me ikkje har informasjon om LPT), i tillegg til «vanlege»
+lenkjer, blir det fort komputasjonelt vanskeleg. 
+
+\fxnote[inline,nomargin]{TODO: dette blei litt implementasjonsinternt...spesielt det
+med «motstridande informasjon»} Me kan sjølvsagt snu
+på LPT-kravet her, og seie at dette er berre lov der me har positiv
+informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
+me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
+vanskeleg å finne prinsipelle avgrensingar her. 
+***** TOGROK adjunkt bør ikkje samanføyast? eller?		     :ROTETE:
+Det einaste eg kan
+tenkje meg er at adjunkt ikkje bør vere kandidatar for samanføying (i
+såfall burde dei vel heller vore analysert som argument?).
+
+*** SKRIV Adposisjonsobjekt
+
+I følgjande setningspar har me eit objekt «sigarett» som svarer til
+PP-en «sigaretze» («sigareti» + «ze»), eit adjunkt:
+
+: Abrams veddet en sigarett med Browne på at det regnet.
+: abramsi brouns daenajleva sigaretze, rom cvimda.
+
+: F_s [ PRED sigarett ]
+
+: F_t [ PRED ze<1> 1[ PRED sigareti ] ]
+
+F_s og F_t er døtre av dei ytre predikata i kvar setning, krav (iii)
+seier at det må vere LPT-korrespondanse mellom desse for at me skal
+kunne lenkje «veddet» og «daenajleva».  Her synest det feil å føye
+saman «sigareti» og «ze», =(F_s . (F_t 1))=, sidan «sigarett» ikkje
+inneheld informasjonen gitt av «ze».
+
+Det finst då to løysingar. Me kan slakke på LMT-kravet ved å la
+=L'(F_t) = {sigaretze, ze}= (evt. ={sigaret, ze}=), då kan me lenkje
+=(F_s . F_t)=, medan 1 er ulenkja.
+
+Eller me kan lenkje =(F_s . 1)=, kor me har skikkeleg
+LMT-korrespondanse, men då må me slakke på (iii) og (iv), og altså ha
+lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
+«daenajleva». F_t er då ulenkja. Det er løysinga valt i
+\citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
+vidare i oppgåva.
 *** SKRIV (reinskriv) om global tyding, ikkje-komposisjonell..    :ROTETE:
 Same globale tyding krev i det minste at, i situasjonen verbet
 denoterer, speler deltakarane same rolle. Men dette er endå meir
@@ -1146,142 +1271,6 @@ lenkjar dei \{/zutiefst/\} med \{ /a, deep, appreciation/ \}, men
 sidan \{/appreciation/\} er samanstilt med \{/dankbar/\}, må
 transfer-regelen inkludere \{ /zutiefst, dankbar/ \} på den eine sida
 og \{ /a, deep, appreciation/ \} på den andre.
-
-
-
-
-*** SKRIV Adjunkt-lenkjer
-\label{SEC:merge-daughters}
-
-Krav (vi) i \citet[s.~75]{dyvik2009lmp} krev at viss F_s og F_t er
-lenkja, så kan ingen adjunkt D_s til F_s vere lenkja til nodar utanfor
-F_t. Men kan ein D_s lenkjast til ei dotternode av argument eller
-adjunkt til F_t?
-
-R_t er dotter til F_t, og må då vere lenkja til ei dotter av F_s,
-A_s. Då må au alle argument til R_t vere lenkja til døtre av A_s, så
-D_s kan ikkje lenkjast til argument av dotternodar til F_t. Kva med
-adjunkt? Om me finn eit ulenkja adjunkt til R_t kan me heller ikkje
-lenkje dette til D_s ved krav (vi) igjen, sidan D_s står utanfor
-A_s.
-
-Men om D_t er ei ulenkja \emph{adjunkt}dotter av F_t, så vil døtre av
-D_t kunne lenkjast til D_s, så lenge D_t forblir ulenkja. Me kan altså
-sjå ned i adjunktdøtre av F_t for å lenkje D_s. 
-
-På same måte bør ein kunne rekursivt sjå ned i ulenkja adjunktdøtre av
-R_t, men ein bør kanskje ikkje kunne lenkje så djupt uansett? Ikkje
-automatisk, uansett.
-
-
-
-Programmet mitt vil, gitt to initielle f-strukturar med
-LPT-korrespondanse, finne alle moglege kombinasjonar av lenkjer som
-inneheld alle argument og kanskje adjunkt, dvs. om me har
-
-: F_s [ PRED p<1,2> ADJUNCT { 3 } ]
-
-: F_t [ PRED p<4> ADJUNCT { 5,6 } ]
-
-vil dette vere logisk moglege samanstillingar av «f-strukturdøtre»:
-
-:    (((1 . 4) (2 . 5)) ((1 . 4) (2 . 6)) ((1 . 5) (2 . 4))
-:     ((1 . 5) (2 . 6) (3 . 4)) ((1 . 6) (2 . 4)) ((1 . 6) (2 . 5) (3 . 4)))
-
-Me luker ut kombinasjonar som bryt med LPT-korrespondanse. Med full
-informasjon bør me sjølvsagt berre ende opp med éin kombinasjon,
-t.d. =((1 . 4) (2 . 5))=.
-
-Så langt bør altså krav (i-iv) frå \citet{dyvik2009lmp} vere dekkja.
-
-Me _kan_ krevje at f strukturane-til f strukturdøtre-kan lenkjast
-rekursivt for at F_s og F_t skal lenkjast, t.d. både =(1 . 4)= og =(2
-. 5)=. Men her kjem det (iallfall) to problem.
-
-
-**** 1. Kausativar og inkorporering
-Om me har 
-
-: F_s [ PRED p<SUBJ, 1, 2> XCOMP 2[ PRED q<1> ] ]
-
-: F_t [ PRED pq<SUBJ,OBJ> ]
-
-kor pq er t.d. ein kausativ som tilsvarer =p<..., q>=, så vil me ikkje
-kunne lenkje F_s og F_t sidan det bryt med krav (iii), F_s har eit
-argument for mykje. Men her vil det kanskje vere naturleg å ha ei
-ein-mange-lenkje:
-
-: ((F_s 2) . F_t)
-
-No kan me sjå på unionen av argument av F_s (minus XCOMP) og argument
-av XCOMP, alle argument i denne unionen må då ha LPT-korrespondanse
-med argument/adjunkt av F_t, og alle argument av F_t må ha
-LPT-korrespondanse med argument/adjunkt av unionen.
-
-Det same bør kanskje skje ved vanleg inkorporering av substantiv, då
-må det altså vere mogleg å føye saman t.d. verb og objekt; ein
-kombinasjon av dette og kausativ bør vel vere mogleg, t.d.
-
-: F_s [ PRED la<SUBJ, 1>  XCOMP 2[ få<1, 3:pengar> ] ]
-
-: F_ t [ PRED belønn<SUBJ, 1> ]
-
-Igjen ser me på argument frå unionen av =(F_s 2 3)= minus 2 og 3, og
-om det er mogleg å lenkje dei til argument/adjunkt av F_t, og omvendt.
-
-Men det bør kanskje vere grenser for kor langt samanføying kan gå… eg
-kan ikkje tenkje meg at me vil lenkje =((F_s 2) . F_t)= eller =((F_s
-1 2) . F_t)= her:
-
-: F_s [ PRED p<…, 1> XCOMP 1[ PRED q<…, 2> XCOMP 2[ PRED r<…> ] ] ]
-
-: F_t [ PRED pr<…> ]
-
-...men det kan jo hende det finst situasjonar der dette au vil vere
-rett. Problemet er altså kor me skal setje grensene i
-implementasjonen. Om me skal prøve å samanføye på alle moglege måtar
-(altså, der me ikkje har informasjon om LPT), i tillegg til «vanlege»
-lenkjer, blir det fort komputasjonelt vanskeleg. 
-
-\fxnote[inline,nomargin]{TODO: dette blei litt implementasjonsinternt...spesielt det
-med «motstridande informasjon»} Me kan sjølvsagt snu
-på LPT-kravet her, og seie at dette er berre lov der me har positiv
-informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
-me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
-vanskeleg å finne prinsipelle avgrensingar her. 
-***** TOGROK adjunkt bør ikkje samanføyast? eller?		     :ROTETE:
-Det einaste eg kan
-tenkje meg er at adjunkt ikkje bør vere kandidatar for samanføying (i
-såfall burde dei vel heller vore analysert som argument?).
-
-**** 2. Adposisjonsobjekt
-
-I følgjande setningspar har me eit objekt «sigarett» som svarer til
-PP-en «sigaretze» («sigareti» + «ze»), eit adjunkt:
-
-: Abrams veddet en sigarett med Browne på at det regnet.
-: abramsi brouns daenajleva sigaretze, rom cvimda.
-
-: F_s [ PRED sigarett ]
-
-: F_t [ PRED ze<1> 1[ PRED sigareti ] ]
-
-F_s og F_t er døtre av dei ytre predikata i kvar setning, krav (iii)
-seier at det må vere LPT-korrespondanse mellom desse for at me skal
-kunne lenkje «veddet» og «daenajleva».  Her synest det feil å føye
-saman «sigareti» og «ze», =(F_s . (F_t 1))=, sidan «sigarett» ikkje
-inneheld informasjonen gitt av «ze».
-
-Det finst då to løysingar. Me kan slakke på LMT-kravet ved å la
-=L'(F_t) = {sigaretze, ze}= (evt. ={sigaret, ze}=), då kan me lenkje
-=(F_s . F_t)=, medan 1 er ulenkja.
-
-Eller me kan lenkje =(F_s . 1)=, kor me har skikkeleg
-LMT-korrespondanse, men då må me slakke på (iii) og (iv), og altså ha
-lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
-«daenajleva». F_t er då ulenkja. Det er løysinga valt i
-\citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
-vidare i oppgåva.
 
 ** Krav på c-strukturnivå
 \label{SEC:subnode}
