@@ -987,21 +987,24 @@ det iallfall ikkje gi verre lenkjingsresultat.
 
 Og ei enkel korpusundersøking tyder på at det er relativt sjeldan at
 ein får slike situasjonar som \Last illustrerer.  I
-\citep{unhammer2009aaa} analyserte eg setningane frå den manuelt
+\citet{unhammer2009aaa} analyserte eg setningane frå den manuelt
 frasesamanstilte trebanken SMULTRON \citep{samuelsson2006pap} med
 LFG-grammatikkane for engelsk og tysk i ParGram-prosjektet
-\citep{butt2002pgp}, for å teste følgjande hypotese:
+\citep{butt2002pgp}, for å undersøkje følgjande hypotese:
 \begin{quote}
-participants in a verbal situation are
-expressed as arguments (rather than adjuncts) in the source language of a trans-
-lation if and only if they are expressed as arguments (rather than adjuncts) in the
-target language.
+participants in a verbal situation are expressed as
+arguments (rather than adjuncts) in the source language of a
+translation if and only if they are expressed as arguments (rather
+than adjuncts) in the target language.
 \end{quote}
 
-For høgfrekvente innhaldsverb fann eg at berre 2 av 15
-korresponderande verbtoken fekk LFG-analysar kor argument
-korresponderte med adjunkt[fn:15], men datagrunnlaget her var svært
-tynt.
+Mellom anna fann eg at 2 av 15 korresponderande verbtoken hadde
+LFG-analysar kor argument korresponderte med adjunkt[fn:15]. Her
+utgjorde altså dei grammatiske analysane (ein del av) data, og
+undersøkinga seier nok meir om analysane enn om språklege forhold. På
+et så tynt datagrunnlag kan me vel berre konstatere at me må kunne
+handtere argument-adjunkt-lenkjer, men argument-argument-lenkjer bør
+prioriterast viss alt anna er likt.
 
 *** Ulik følgje i argumentstruktur
 I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
@@ -1009,9 +1012,9 @@ argument ha ulik følgje i argumentstrukturen. Det er klart at me vil
 lenkje objektet til /gefallen/ (eller bokmål: /behage/) med subjektet
 til /like/, og omvendt.  Men rekkjefølgje i argumentstrukturane i
 ParGram-prosjektet er ofte basert på syntaktisk funksjon heller enn
-rolle, slik at eit verb som har opplevar som objekt og tema som
-subjekt vil ha opplevar nedanfor tema i argumentstrukturen, medan ei
-omsetjing av dette verbet kan ha tema nedanfor:
+rolle, slik at eit verb som har tema som subjekt og opplevar som
+objekt vil ha tema før opplevar i argumentstrukturen, medan ei
+omsetjing av dette verbet kan ha opplevar før tema:
 
 #+BEGIN_LaTeX
 {\avmoptions{}
@@ -1024,7 +1027,7 @@ omsetjing av dette verbet kan ha tema nedanfor:
 }
 #+END_LaTeX
 
-Argumentstrukturane i \Last har omvendt intern følgje, igjen må me ha
+Argumentstrukturane i \Last har omvendt intern følgje. Igjen må me ha
 LPT-informasjon for å avgjere kva for lenkjing som er korrekt. Men i
 visse tilfelle vil ikkje ein gong LPT-informasjon vere nok:
 
@@ -1043,10 +1046,16 @@ Det finst ingen f-strukturinformasjon eller LPT-informasjon me kunne
 nytta til å sikre den korrekte lenkjinga /sie/dem/ og /ihnen/de/; og
 viss me rangerer lik argumentstruktur over ulik, vil me her få feil
 resultat. Det me /kan/ gjere (utanom å endre grammatikkane slik at
-argumentstruktur korresponderer med eit tematisk rollehierarki) er å
-sjå på mange lenkjingar av same verbpar, og på den måten oppdage
-moglege feil, men for slike enkelttilfelle vil krava i denne oppgåva
-ikkje vere nok til å gi korrekt lenkjing.
+argumentstruktur korresponderer med eit universelt tematisk
+rollehierarki) er å sjå på mange lenkjingar av same verbpar, og på den
+måten oppdage moglege feil. For enkelttilfelle, derimot, vil krava i
+denne oppgåva ikkje vere nok til å gi korrekt lenkjing.
+
+
+*** SKRIV Krav om argumentlenkjer
+Sjølv om argument kan lenkjast til adjunkt, eller i omvendt følgje,
+er det ønskeleg å krevje at alle argument er lenkja. 
+# CURRENT TODO!
 
 *** SKRIV (reinskriv) om global tyding, ikkje-komposisjonell..    :ROTETE:
 Same globale tyding krev i det minste at, i situasjonen verbet
@@ -1206,7 +1215,10 @@ kan ikkje tenkje meg at me vil lenkje =((F_s 2) . F_t)= eller =((F_s
 rett. Problemet er altså kor me skal setje grensene i
 implementasjonen. Om me skal prøve å samanføye på alle moglege måtar
 (altså, der me ikkje har informasjon om LPT), i tillegg til «vanlege»
-lenkjer, blir det fort komputasjonelt vanskeleg. Me kan sjølvsagt snu
+lenkjer, blir det fort komputasjonelt vanskeleg. 
+
+\fxnote[inline,nomargin]{TODO: dette blei litt implementasjonsinternt...spesielt det
+med «motstridande informasjon»} Me kan sjølvsagt snu
 på LPT-kravet her, og seie at dette er berre lov der me har positiv
 informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
 me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
@@ -1245,7 +1257,7 @@ lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
 \citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
 vidare i oppgåva.
 
-** Underordna c-strukturnodar
+** Krav på c-strukturnivå
 \label{SEC:subnode}
 
 Toppnodane i to funksjonelle domene som er lenkja på f-strukturnivå
@@ -1256,7 +1268,7 @@ at nodane under (X', Z') er lenkja til noko. I denne delen går eg
 gjennom kva som må til for å lenkje slike underordna (ikkje-øvste)
 c-strukturnodar.
 
-Me kan byrje med eit par enkle krav, me seinare utvidar:
+Me kan byrje med eit par enkle krav, som me seinare utvidar:
 
 \ex. Enkle krav for lenkjing av underordna c-strukturnodar:
 \a. \label{subnodekrav-innan-domene} c-strukturnodar som ligg under øvste node i to funksjonelle
@@ -1270,8 +1282,8 @@ kan ikkje dotter til XP, X', lenkjast med t.d. mor eller søster til
 ZP. Og om ZP dominerer ein node WP, der $\phi(WP) \neq \phi(ZP)$, kan
 me heller ikkje ha ei c-strukturlenkje frå X' til WP. Grunnen er at
 f-strukturane er sett saman av informasjonsinnhaldet projisert av
-nodane, så det vil vere unaturleg å ha ei c-strukturlenkje som står i
-konflikt med f-strukturlenkjer.
+nodane, det vil aldri vere grunnlag for å ha ei c-strukturlenkje som
+står i konflikt med f-strukturlenkjer.
 
 Men sjølv der to underordna c-strukturnodar er i lenkja funksjonelle
 domene (altså, der dei respektive toppnodane er lenkja) er det ikkje
@@ -1549,7 +1561,7 @@ kikke, og avgjere om adjunkt-lenkjer skal med, osb. I implementasjonen
 min har eg valt å følgje krav \ref{subnodekrav-infotap} for å unngå å
 måtte kode denne typen informasjon inn i systemet.
 
-** Funksjonelle c-strukturnodar
+*** Funksjonelle c-strukturnodar
 \label{SEC:fnord}
 
 Ikkje alle ord tilsvarer PRED-element i f-strukturen, dette gjeld
