@@ -2223,6 +2223,7 @@ har same informasjonstap. Prosedyren =c-align= i kodefigur
 
 #+BEGIN_LaTeX
    \begin{algorithm}[]
+   \fxnote{TODO: fjerning av nodar skjer rekursivt, oppdatere dette...}
      \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
      \label{algo:c-align}
       
@@ -2288,7 +2289,11 @@ tabellen.
 
 Sidan =c-align= kallar =add-links= for kvar av sidene, får me to
 tabellar $splits_s$ og $splits_t$. Me går så gjennom kvar
-f-strukturlenkje; viss 
+f-strukturlenkje; viss denne korresponderer med c-strukturnodar, blir
+toppnodane lenkja. Me prøver så å rekursivt fjerne ei og ei av dei subordinate
+f-strukturlenkjene som finst i både $splits_s$ og $splits_t$, og sjå
+om både $splits_s$ og $splits_t$ har nodemengdar med same
+informasjonstap.
 
 ## TODO CURRENT!!
 # Me hentar så ut alle dei lenkjemengdene som er i begge tabellane

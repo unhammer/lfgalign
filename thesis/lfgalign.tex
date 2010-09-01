@@ -1,4 +1,4 @@
-% Created 2010-08-31 ty. 17:19
+% Created 2010-09-01 on. 08:59
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -47,7 +47,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{31/08, 2010}
+\date{01/09, 2010}
 
 \begin{document}
 
@@ -1975,6 +1975,7 @@ har same informasjonstap. Prosedyren \texttt{c-align} i kodefigur
 \ref{algo:c-align} implementerer dette kravet. 
 
    \begin{algorithm}[]
+   \fxnote{TODO: fjerning av nodar skjer rekursivt, oppdatere dette...}
      \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
      \label{algo:c-align}
       
@@ -2037,7 +2038,11 @@ tabellen.
 
 Sidan \texttt{c-align} kallar \texttt{add-links} for kvar av sidene, får me to
 tabellar $splits_s$ og $splits_t$. Me går så gjennom kvar
-f-strukturlenkje; viss 
+f-strukturlenkje; viss denne korresponderer med c-strukturnodar, blir
+toppnodane lenkja. Me prøver så å rekursivt fjerne ei og ei av dei subordinate
+f-strukturlenkjene som finst i både $splits_s$ og $splits_t$, og sjå
+om både $splits_s$ og $splits_t$ har nodemengdar med same
+informasjonstap.
 
 
 Prosessen er no ferdig, mange-til-mange-lenkjene mellom

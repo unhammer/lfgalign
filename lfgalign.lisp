@@ -726,8 +726,39 @@ phi's don't match anything in the files)."
 	      (c-align-ranked f-alignment tree_s tab_s tree_t tab_t))
 	    flat-alignments)))
 
+(defun c-link-remove (removable
+	    mf_s mlinks_s tab_s splits_s
+	    mf_t mlinks_t tab_t splits_t)
+  (loop for f-link in removable
+	with links_s = (remove f-link mlinks_s :test #'equal)
+	with links_t = (remove f-link mlinks_t :test #'equal)
+	with nodes_s = (get-val links_s splits_s)
+	with nodes_t = (get-val links_t splits_t)
+	when (and nodes_s nodes_t)
+	;; TODO: phi modulo eqvars... really need a predicate for that!!
+	do (list (remove-if (lambda (c-id)
+			      (not (eq mf_s (phi c-id tab_s))))
+			    nodes_s)
+		 (remove-if (lambda (c-id)
+			      (not (eq mf_t (phi c-id tab_t))))
+			    nodes_t))
+	)
+  )
+
 (defun c-link-until-neq-infoloss (mc-id_s mlinks_s tab_s splits_s
 				  mc-id_t mlinks_t tab_t splits_t)
+  (let* ((mf_s (phi mc-id_s tab_s))
+	 (mf_t (phi mc-id_t tab_t))
+	 (removable (remove-if (lambda (f-link)
+				 (or (not (member f-link mlinks_t :test #'equal))
+				     (equal f-link (cons mf_s mf_t))))
+			       mlinks_s)))
+    (c-link-remove removable
+	 mf_s mlinks_s tab_s splits_s
+	 mf_t mlinks_t tab_t splits_t)
+    )
+  )
+(defun c-link-until-neq-infoloss-old () ; ...
   (loop for f-link in mlinks_s
 	with mf_s = (phi mc-id_s tab_s) and mf_t = (phi mc-id_t tab_t)
 	when (and
