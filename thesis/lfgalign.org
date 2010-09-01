@@ -1015,6 +1015,21 @@ omsetjing av dette verbet kan ha tema nedanfor:
 
 #+BEGIN_LaTeX
 {\avmoptions{}
+\ex. \a. der Tonfall gefällt mir nicht \\
+     $\begin{avm}\[pred & `{\bf{}gefallen}<Tonfall, ich$_i$>' ... \]\end{avm}$
+    $\\\\\leftrightarrow$\\
+     \b. jeg liker ikke tonen \\
+     $\begin{avm}\[pred & `{\bf{}like}<jeg$_i$, tonen>' ... \]\end{avm}$
+
+}
+#+END_LaTeX
+
+Argumentstrukturane i \Last har omvendt intern følgje, igjen må me ha
+LPT-informasjon for å avgjere kva for lenkjing som er korrekt. Men i
+visse tilfelle vil ikkje ein gong LPT-informasjon vere nok:
+
+#+BEGIN_LaTeX
+{\avmoptions{}
 \ex. \a. sie$_j$ gefallen ihnen$_i$ \\
      $\begin{avm}\[pred & `{\bf{}gefallen}<de$_j$, de$_i$>' \]\end{avm}$
     $\\\\\leftrightarrow$\\
@@ -1024,85 +1039,16 @@ omsetjing av dette verbet kan ha tema nedanfor:
 }
 #+END_LaTeX
 
-Argumentstrukturane i \Last har omvendt intern følgje, og som vist ved
-dette dømet er det heller ikkje noko f-strukturinformasjon me kunne
-nytta til å sikre lenkjinga /sie/dem/ og /ihnen/de/. Igjen ser det ut
-til at bottom-up-informasjon trengst.
+Det finst ingen f-strukturinformasjon eller LPT-informasjon me kunne
+nytta til å sikre den korrekte lenkjinga /sie/dem/ og /ihnen/de/; og
+viss me rangerer lik argumentstruktur over ulik, vil me her få feil
+resultat. Det me /kan/ gjere (utanom å endre grammatikkane slik at
+argumentstruktur korresponderer med eit tematisk rollehierarki) er å
+sjå på mange lenkjingar av same verbpar, og på den måten oppdage
+moglege feil, men for slike enkelttilfelle vil krava i denne oppgåva
+ikkje vere nok til å gi korrekt lenkjing.
 
-
-
-**** c- og f-strukturar for dømet over				     :ROTETE:
-#+BEGIN_LaTeX
-\begin{tikzpicture}
-\Tree
-[.CP
-  [.DP \edge[roof]; {sie} ]   [.C'
-    [.V
- \edge[roof]; {gefallen} ]     [.DP \edge[roof]; {ihnen} ]  
-]]
-\begin{scope}[shift={(2in,0in)}]
-\Tree
-[.IP
-  [.PRONP \edge[roof]; {de} ] 
-  [.I'
-    [.V \edge[roof]; {liker} ] 
-    [.S \edge[roof]; {dem} ] 
-]]
-  \end{scope}
-\end{tikzpicture}
-
-\avmoptions{}
-\begin{avm}
-\sort{$^{0}$}{\[ {\sc pred} `{\bf gefallen}<[1:{\it pro}],[2:{\it pro}]>'\\
-{\sc topic} \sort{$^{1}$}{\[ {\sc pred} `{\it pro}'\\
-{\sc ntype} \sort{$^{7}$}{\[ {\sc nsyn} pronoun\]}
-\\
-{\sc pron-type} pers, {\sc pron-form} sie, {\sc pers} 3,\\
-{\sc num} pl, {\sc case} nom\]}
-\\
-{\sc tns-asp} \sort{$^{4}$}{\[ {\sc tense} pres, {\sc mood} indicative\]}
-\\
-{\sc obj-th} \sort{$^{2}$}{\[ {\sc pred} `{\it pro}'\\
-{\sc ntype} \sort{$^{10}$}{\[ {\sc nsyn} pronoun\]}
-\\
-{\sc pron-type} pers, {\sc pron-form} sie, {\sc pers} 3,\\
-{\sc num} pl, {\sc case} dat\]}
-\\
-{\sc subj} \[1\]\\
-{\sc vtype} main, {\sc stmt-type} decl,\\
-{\sc passive} -, {\sc clause-type} decl\]}
-\end{avm}
-
-
-
-
-\begin{avm}
-\sort{$^{0}$}{\[ {\sc pred} `{\bf like}<[10:de],[11:de]>NULL'\\
-{\sc tns-asp} \sort{$^{13}$}{\[ {\sc tense} pres, {\sc mood} indicative\]}
-\\
-{\sc topic} \sort{$^{10}$}{\[ {\sc pred} `{\bf de}'\\
-{\sc ntype} \sort{$^{18}$}{\[ {\sc nsyn} pronoun\]}
-\\
-{\sc def} +, {\sc case} nom, {\sc ref} +,\\
-{\sc pron-type} pers, {\sc pron-form} de, {\sc pers} 3,\\
-{\sc num} pl\]}
-\\
-{\sc obj} \sort{$^{11}$}{\[ {\sc pred} `{\bf de}'\\
-{\sc ntype} \sort{$^{45}$}{\[ {\sc nsyn} pronoun\]}
-\\
-{\sc ref} +, {\sc pron-type} pers, {\sc pron-form} de,\\
-{\sc pers} 3, {\sc num} pl, {\sc def} +,\\
-{\sc case} obl\]}
-\\
-{\sc subj} \[10\]\\
-{\sc vtype} main, {\sc vform} fin, {\sc stmt-type} decl\]}
-\end{avm}
-
-#+END_LaTeX
-
-*** SKRIV døme med wager/3 og vedde/4 og gewettet/3 		     :ROTETE:
-
-*** SKRIV (reinskriv) 						     :ROTETE:
+*** SKRIV (reinskriv) om global tyding, ikkje-komposisjonell..    :ROTETE:
 Same globale tyding krev i det minste at, i situasjonen verbet
 denoterer, speler deltakarane same rolle. Men dette er endå meir
 abstrakt/semantisk enn (semantisk) argumentstruktur...

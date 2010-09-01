@@ -1,4 +1,4 @@
-% Created 2010-09-01 on. 08:59
+% Created 2010-09-01 on. 15:38
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -82,7 +82,7 @@ skildring av tekstene.
 
 
 
-Det at me kan omsetje mellom lingvistiske skildringar
+Det at me kan finne korrespondansar mellom lingvistiske skildringar
 (t.d. trekkstrukturane til dei grammatiske rammeverka HPSG eller LFG)
 gjer det tydeleg at me arbeider med ein \emph{modell} av språket; ulike
 skildringar kan vere sanne innanfor modellen, utan at modellen er lik
@@ -93,7 +93,7 @@ omsetjingar av kvarandre.
 Kriteria avheng av formålet. Samanstillingsannotasjon kan t.d. nyttast
 som grunnlag for statistisk eller eksempelbasert maskinomsetjing, i
 tillegg til oppbygging av parallelle korpora for meir teoretiske
-språkstudie.  For statistisk maskinomsetjing vil alle uttrykk vere
+språkstudium.  For statistisk maskinomsetjing vil alle uttrykk vere
 omsetjingar av kvarandre med eit visst sannsyn (kanskje null), ein
 har vanlegvis ikkje kriterium som krev lingvistisk analyse. Når
 samanstillinga skal nyttast i parallelle korpora for lingvistiske
@@ -105,22 +105,25 @@ fraselenkjer i ein parallell trebank, men dei har ikkje krav om
 syntaktisk likskap.
 
 Xpar-prosjektet, som denne masteroppgåva er ein del av, har mellom
-anna som mål å oppdage relasjonar mellom grammatiske funksjonar,
+anna som mål å oppdage forhold mellom grammatiske funksjonar,
 tematiske roller og kasusmarkering, ved hjelp av parallelle trebankar
-annotert med djupe grammatiske analysar.  Samanstillinga planlagt der
-krev i større grad syntaktisk likskap for å kalle to uttrykk
-omsetjingar, men kan difor au tene på det at dei grammatiske analysane
-er utvikla med tanke på å vere så parallelle som mogleg.  Dei
-grammatiske analysane er gjort i leksikalsk-funksjonell grammatikk,
-LFG \citep{bresnan2001lfs}. Ei grammatisk analyse i LFG involverer
-både konstituentstruktur (c-struktur) og funksjonell struktur
-(f-struktur). Konstituentstrukturen liknar på frasestrukturtrea frå
-andre grammatiske tradisjonar. Dei funksjonelle strukturane er
-trekkstrukturar, som mellom anna representerer avhengnadsforhold
-mellom syntaktiske funksjonar som predikat, subjekt og objekt, i
-tillegg til å halde informasjon om grammatiske trekk som genus, tal
-eller kasus. Nodar i c-strukturen kan spesifisere informasjon på ulike
-stader i f-strukturen\footnote{Ved c-struktur-f-strukturavbildinga $\phi$, ein funksjon som
+annotert med djupe grammatiske analysar.  For å lenkje to frasar i
+dette prosjektet krev me ein viss syntaktisk likskap i omgivnadene til
+frasane, sjølv om frasane internt kanskje er syntaktisk ulike.
+Grammatikkane som gir analysane er utvikla med tanke på at \emph{like syntaktiske fenomen på ulike språk skal få like analysar},
+frasesamanstillinga bør då kunne tene på at omsetjingar som har ein
+syntaktisk likskap vil få liknande analysar.
+
+Dei grammatiske analysane er gjort i leksikalsk-funksjonell
+grammatikk, LFG \citep{bresnan2001lfs}. Ei grammatisk analyse i LFG
+involverer både konstituentstruktur (c-struktur) og funksjonell
+struktur (f-struktur). Konstituentstrukturen liknar på
+frasestrukturtrea frå andre grammatiske tradisjonar. Dei funksjonelle
+strukturane er trekkstrukturar, som mellom anna representerer
+avhengnadsforhold mellom syntaktiske funksjonar som predikat, subjekt
+og objekt, i tillegg til å halde informasjon om grammatiske trekk som
+genus, tal eller kasus. Nodar i c-strukturen kan spesifisere
+informasjon på ulike stader i f-strukturen\footnote{Ved c-struktur-f-strukturavbildinga $\phi$, ein funksjon som
         tek ein c-strukturnode og returnerer ein (delvis) f-struktur. }.
 
 I XPar-prosjektet vil ein finne ut om metodar for frasesamanstilling
@@ -137,8 +140,8 @@ automatic word and phrase alignment with significantly higher
 precision and recall than hitherto achieved through other means.
 \end{quote}
 
-kor «parallel grammars» her krev parallellisme i både f-struktur og
-c-struktur.
+kor «parallel grammars» her tydar at grammatikkane har ein viss
+parallellisme i både f-struktur og c-struktur.
 
 Men i tillegg til at ein kanskje kan få betre skåre på desse
 kvantitative måla, vil lenkjer mellom f-strukturar gi informasjon som
@@ -333,8 +336,11 @@ rammeverk.
   lenkjer. Merk at ei enkeltlenkje treng ikkje å vere ein-til-ein.
   Lenkjer og samanstillingar er ekvivalensforhold som me kan finne
   mellom lingvistiske \emph{representasjonar} (f-struktur, c-struktur)
-  eller \emph{uttrykk} (ord, setningar); lenkjing mellom dei siste altså er
-  meir ateoretisk / datanært.
+  eller \emph{uttrykk} (ord, setningar). Lenkjing mellom dei siste er meir
+  ateoretisk / datanært -- grunnlaget for å opprette ei lenkje mellom
+  to c-strukturnodar er at uttrykka i kontekst som dei representerer
+  er omsetjingar, og har lik nok syntaks (i følgje dei to grammatiske
+  analysane) til at me kan lenkje nodane.
 \end{description}
 \chapter{Krav til frasesamanstilling}
 \label{sec-3}
@@ -584,30 +590,35 @@ som ikkje kan «delast opp». Dette gjeld au nodane i c-strukturen.
 
 Me utelukker lenkjing av ikkje-konstituentar som \emph{there is} på
 c-strukturnivå sidan ei lenkje mellom to c-strukturnodar impliserer at
-heile frasen under er lenkja. Det finst ingen c-strukturnoda som
+heile frasen under er lenkja. Det finst ingen c-strukturnodar som
 dominerer berre \emph{there}, \emph{is} og ingen andre ord (heller ikkje \emph{es},
 \emph{gibt}), så dette er ikkje lenkjekandidatar.  \emph{There is} og \emph{Es gibt}
 i figur \ref{fig:ikkjenode} kan då ikkje samanstillast åleine, men
-berre som del av ei ytre frasesamanstilling.
+berre som del av ei ytre frasesamanstilling\footnote{Slike forhold kan me sjølvsagt finne igjen etter lenkjinga,
+        men då vil me au kunne generalisere til andre ordformer. Eg
+        kjem tilbake til dette i kapittel \ref{SEC:diskusjon}. }.
 
 Når det gjeld f-strukturane er det ganske mange element me teoretisk
 sett kunne ha lenkja, t.d. enkelttrekk som kasus eller dei uordna
-mengdene med adjunkt, men det som er mest \emph{nyttig} er nok å berre
-lenkje der det er ei nær kopling til orda i setninga. Sidan alle
-PRED-element i ein f-struktur unikt står for predikerande ord, kan me
--- gitt to samanstilte setningar -- la \emph{kandidatane for
-samanstilling på f-strukturnivå} inkludere alle desse PRED-elementa i
-f-strukturane til setningane\footnote{I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
+mengdene med adjunkt, men det som er mest \emph{nyttig} og \emph{meiningsfullt}
+er nok å berre lenkje der det er ei nær kopling til orda i
+setninga. Sidan alle PRED-element i ein f-struktur unikt står for
+predikerande ord, kan me -- gitt to samanstilte setningar -- la
+\emph{kandidatane for samanstilling på f-strukturnivå} inkludere alle
+desse PRED-elementa i f-strukturane til
+setningane\footnote{I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
         inkludere visse f-strukturar utan PRED-element i kandidatane
-        for samanstilling. }. PRED-element representerer
-semantiske bidrag som oftast er påkrevde på begge språk i omsetjingar,
-medan andre f-strukturtrekk gjerne er valfrie på det eine av språka;
-det er ikkje alle språk som har t.d. obligatorisk kasusmarkering, og
-ein vil kanskje nytte trebanken til å oppdage nettopp slik variasjon.
-\fxnote[inline,nomargin]{Diskutabelt, TODO:} PRED-elementa er i tillegg
-gjerne enklare å knyte direkte opp mot den konkrete, observerte
-tekststrengen, medan t.d. aspekt kanskje er umogleg å skilje frå
-tempus i affikset.
+        for samanstilling. }. PRED-element representerer semantiske bidrag som
+oftast er påkrevde på begge språk i omsetjingar, medan andre
+f-strukturtrekk gjerne er valfrie på det eine av språka; det er ikkje
+alle språk som har t.d. obligatorisk kasusmarkering, og ein vil
+kanskje nytte trebanken til å oppdage nettopp slik variasjon.
+PRED-elementa er i tillegg gjerne enklare å knyte direkte opp mot den
+konkrete, observerte tekststrengen (eventuelt testast mot korpora,
+eller talarintuisjonar), medan t.d. eit trekk som aspekt kanskje er
+umogleg å skilje frå tempus i affikset (det vil vere vanskelegare å
+teste om ei lenkje mellom aspekt-trekk er empirisk motivert utan å dra
+inn ein heil del teori).
 
 Samtidig er det au eit omsetjingsforhold mellom trekka i same
 f-struktur som dei lenkja PRED-elementa, og me ville kanskje ikkje ha
@@ -627,9 +638,9 @@ figur \ref{fig:viss-PRED-så-f-og-c}:
 \b. \label{f-links-words} orda i setningane som projiserer
      PRED-elementa tek del i ei lenkje (kor andre
      ord kan vere involvert), og at
-\c. \label{f-links-domain} iallfall dei øvste nodane i $\phi^{-1}(f)$
+\c. \label{f-links-domain} nodar innanfor $\phi^{-1}(f)$
      og $\phi^{-1}(g)$, dei funksjonelle domena til f-strukturane $f$
-     og $g$, er lenkja 
+     og $g$, kan lenkjast
 
  \begin{figure}[htp]
     \centering
@@ -674,16 +685,18 @@ figur \ref{fig:viss-PRED-så-f-og-c}:
  \end{figure}
 
 Punkt \ref{f-links-substr} og \ref{f-links-domain} over seier at viss
-PRED-elementa projisert av t.d. to verb i verbfrasar er lenkja, vil
-VP-ane som heilskap vere lenkja (både VP-nodane som dominerer dei
-lenkja funksjonelle domena, og f-strukturane frå ytre PRED til verba),
-det er dette at heile VP-ane er lenkja som gjer det til ei fraselenkje
-og ikkje berre ei ordlenkje. Punkt \ref{f-links-substr} er forsvart
-over, medan punkt \ref{f-links-domain} kjem som ein konsekvens av at
-øvste node dominerer alle nodar i det funksjonelle domenet; det er det
+PRED-elementa projisert av t.d. to verb i verbfrasar er lenkja, kan
+VP-ane som heilskap lenkjast (både VP-nodane som dominerer dei lenkja
+funksjonelle domena, og f-strukturane frå ytre PRED til verba), i
+tilfellet i figur \ref{fig:viss-PRED-så-f-og-c} kan iallfall dei øvste
+nodane i VP-ane lenkjast.  Det er dette at heile VP-ane (kanskje
+inkludert objekt) er lenkja som gjer det til ei fraselenkje og ikkje
+berre ei ordlenkje. Punkt \ref{f-links-substr} er forsvart over, medan
+punkt \ref{f-links-domain} kjem som ein konsekvens av at det er det
 funksjonelle domenet som spesifiserer informasjonen i f-strukturane,
-toppnodane dominerer heile dette domenet og bør difor lenkjast viss og
-berre viss f-strukturane er lenkja.  
+nodane her bør difor lenkjast berre viss f-strukturane er lenkja. Men
+som punkt \ref{f-links-domain} indikerer finst det au situasjonar der
+nodar innanfor domena skal stå ulenkja.
 
 Alle nodar i c-strukturen (alle syntaktiske \emph{frasar/konstituentar} i
 setninga) som kan koplast til PRED-haldande f-strukturar, vil vere
@@ -742,16 +755,19 @@ lenkja ord (og deira predikat) er «lik nok» til at me kan sjå på dei
 som omsetjingar\footnote{Eigentleg burde slike setningar ikkje vere lenkja på
         setningsnivå ein gong, men som me skal sjå i del
         \ref{SEC:lik-argstr} treng me kravet om lik tyding 
-        sjølv innanfor setninga. }. \citet[s.~74]{dyvik2009lmp} krev dei at orda
+        sjølv innanfor setninga. }. \citet[s.~74]{dyvik2009lmp} krev at orda
 generelt, utan kontekst, må vere semantisk plausible omsetjingar,
-eller at målordet er eit medlem av mengda av \emph{linguistically predictable translations} av kjeldeordet. Målordet har då
-\emph{LPT-korrespondanse} med kjeldeordet. Informasjon om slik
-LPT-korrespondanse kan komme frå ei djup semantisk dekomponering av
-kvart ord, då blir det eit krav på f-strukturnivå (eller på ein
-semantisk struktur), eller han kan komme bottom-up, typisk frå
-automatisk ordsamanstilling. Bottom-up-informasjonen viser då om orda
-generelt (i ulike kontekstar) blir nytta som omsetjingar av kvarandre.
-Nedanfor reknar eg LPT-kravet som eit krav på ordnivå.
+dvs. at målordet er eit medlem av mengda av \emph{linguistically predictable translations} av kjeldeordet. Målordet har då
+\emph{LPT-korrespondanse} med kjeldeordet.  Nedanfor reknar eg
+LPT-kravet som eit krav på ordnivå, og eg føreset at LPT-informasjonen
+er ein type bottom-up-informasjon, som viser om to ord generelt (i
+ulike kontekstar) blir nytta som omsetjingar av kvarandre. Denne
+informasjonen kan reint praktisk komme frå automatisk
+ordsamanstilling, eller ei god tospråkleg ordbok, det bør ikkje spele
+nokon rolle for resten av krava\footnote{Ein kan au tenkje seg at ei djup semantisk dekomponering av
+        kvart ord sto som grunnlag for LPT-informasjon -- men då vil
+        LPT-korrespondanse mellom to ord implisere at orda er
+        synonyme, heller enn generelt plausible omsetjingar. }.
 
 \fxnote{TODO: Er det mogleg å presisere LPT-kravet meir? Skal det
 berre vere eit rangeringskrav??}
@@ -848,11 +864,11 @@ same rekkjefølgje i argumentstrukturen, vil det gjere den praktiske
 oppgåva med å lenkje predikata, og argument med argument, mykje
 enklare. Men kan me stille så sterke krav?
 
-Sett at ein setning på språk 1 har ei \emph{at}-setning som adjunkt, medan
+Sett at ei setning på språk 1 har ei \emph{at}-setning som adjunkt, medan
 denne setninga på språk 2 er eit argument, og at desse setningane
 ville vore lenkja om dei opptredde åleine. Om dei uttrykkjer same
-proposisjon og \emph{speler same rolle i verbsituasjonen},
-synest det naturleg å lenkje desse.  
+proposisjon og \emph{speler same rolle i verbsituasjonen}, synest det
+naturleg å lenkje desse.
 
 Slike omsetjingsrelasjonar gir data for verbsituasjonen, på eit meir
 generelt grunnlag enn det me kan få frå einspråklege analysar
@@ -862,7 +878,7 @@ gjelde for omsetjingsmessig korresponderande verb på andre språk. Ein
 kan då nytte unionen over alle argument til korresponderande verb til
 å karakterisere kva ein meiner med \emph{deltakarane i verbsituasjonen}. Syntaktiske forhold i språket kan sjølvsagt gi
 grunnar til å \emph{ikkje} kalle dette eit argument.
- 
+
 For å gjere dette konkret kan me sjå på setning 7 i test-suiten til
 XPar-prosjektet:
 
@@ -893,7 +909,7 @@ for å illustrere dette:
     adjunct &  \{ \rm sigarett \}\]\end{avm}\\$ 
 \c. Abrams hat mit Browne um eine Zigarette gewettet, \hfill{}(tysk)\\
     daß es regnet.\\
-    $\\\begin{avm}\[pred & `{\bf{}wetten}<Abrams, sigarett>' \\
+    $\\\begin{avm}\[pred & `{\bf{}wetten}<Abrams, regne>' \\
                   adjunct & \{ \rm Browne, sigarett \}\]\end{avm}\\$
 \d. Abrams bet a cigarette with Brown that it was raining. \hfill{}(engelsk)\\
     $\\\begin{avm}\[pred & `{\bf{}bet}<Abrams, sigarett, regne>'\\
@@ -909,27 +925,43 @@ korresponderande verb hadde tre argument, ville me lenkja det første
 med det første, det andre med det andre og det tredje med det
 tredje. Men om me har analysar som dei over, ser det ut til at me er
 avhengig av LPT-kravet frå del \ref{SEC:ordkrav} for å avgjere kva for
-adjunkt og argument som samsvarer.
+adjunkt og argument som samsvarer. 
 
-Det same gjeld forøvrig lenkjing av adjunkt til adjunkt. Adjunkt
-plukker ut si eiga rolle der argument får rolla tildelt frå verbet, og
-f-strukturane har ingen hierarkisk inndeling av desse slik me har for
-verb og argument, dei er i staden representert som uordna mengder.
+LPT-kravet blir forresten endå viktigare når det gjeld lenkjing av
+adjunkt til adjunkt. Adjunkt plukker ut si eiga rolle (argument får
+rolla tildelt frå verbet) og f-strukturane ordnar ikkje adjunkt etter
+nokon rekkjefølgje, dei er representert som uordna mengder, medan
+følgja mellom argument iallfall potensielt kan nyttast til å indikere
+semantisk likskap.
 
-\subsection{\textbf{SKRIV} Sitere eigen korpusundersøking av variasjon i arg-str?}
-\label{sec-3.6.2}
+Ein kan argumentere for at grammatikkane her \emph{burde} hatt like (eller
+likare) analysar, dette ville letta lenkjingsarbeidet, men sidan stoda
+no er slik, må krava ta høgd for lenkjer mellom argument og
+adjunkt. Om seinare utgåver av grammatikkane gir likare analysar, vil
+det iallfall ikkje gi verre lenkjingsresultat.
 
-Ei undersøking av den frasesamanstilte trebanken SMULTRON
-\citep{samuelsson2006pap} mot LFG-grammatikkane for engelsk og tysk
-fann at 2 av 15 korresponderande verbtoken\footnote{25 om ein inkluderer analysar kor minst eitt av argumenta
+Og ei enkel korpusundersøking tyder på at det er relativt sjeldan at
+ein får slike situasjonar som \Last illustrerer.  I
+\citep{unhammer2009aaa} analyserte eg setningane frå den manuelt
+frasesamanstilte trebanken SMULTRON \citep{samuelsson2006pap} med
+LFG-grammatikkane for engelsk og tysk i ParGram-prosjektet
+\citep{butt2002pgp}, for å teste følgjande hypotese:
+\begin{quote}
+participants in a verbal situation are
+expressed as arguments (rather than adjuncts) in the source language of a trans-
+lation if and only if they are expressed as arguments (rather than adjuncts) in the
+target language.
+\end{quote}
+
+For høgfrekvente innhaldsverb fann eg at berre 2 av 15
+korresponderande verbtoken fekk LFG-analysar kor argument
+korresponderte med adjunkt\footnote{25 om ein inkluderer analysar kor minst eitt av argumenta
         ikkje hadde korrekt analyse (t.d. eit \textsc{PRO} der
-        grammatikken burde funne eit substantiv). } for høgfrekvente
-innhaldsverb fekk analysar kor argument korresponderte med adjunkt
-\citep{unhammer2009aaa}.
+        grammatikken burde funne eit substantiv). }, men datagrunnlaget her var svært
+tynt.
 
-\fxnote{LCS, dorr}
-\subsection{\textbf{SKRIV} Ulik følgje i argumentstruktur}
-\label{sec-3.6.3}
+\subsection{Ulik følgje i argumentstruktur}
+\label{sec-3.6.2}
 
 I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
 argument ha ulik følgje i argumentstrukturen. Det er klart at me vil
@@ -941,6 +973,19 @@ subjekt vil ha opplevar nedanfor tema i argumentstrukturen, medan ei
 omsetjing av dette verbet kan ha tema nedanfor:
 
 {\avmoptions{}
+\ex. \a. der Tonfall gefällt mir nicht \\
+     $\begin{avm}\[pred & `{\bf{}gefallen}<Tonfall, ich$_i$>' ... \]\end{avm}$
+    $\\\\\leftrightarrow$\\
+     \b. jeg liker ikke tonen \\
+     $\begin{avm}\[pred & `{\bf{}like}<jeg$_i$, tonen>' ... \]\end{avm}$
+
+}
+
+Argumentstrukturane i \Last har omvendt intern følgje, igjen må me ha
+LPT-informasjon for å avgjere kva for lenkjing som er korrekt. Men i
+visse tilfelle vil ikkje ein gong LPT-informasjon vere nok:
+
+{\avmoptions{}
 \ex. \a. sie$_j$ gefallen ihnen$_i$ \\
      $\begin{avm}\[pred & `{\bf{}gefallen}<de$_j$, de$_i$>' \]\end{avm}$
     $\\\\\leftrightarrow$\\
@@ -949,15 +994,17 @@ omsetjing av dette verbet kan ha tema nedanfor:
 
 }
 
-Argumentstrukturane i \Last har omvendt intern følgje, og som vist ved
-dette dømet er det heller ikkje noko f-strukturinformasjon me kunne
-nytta til å sikre lenkjinga \emph{sie/dem} og \emph{ihnen/de}. Igjen ser det ut
-til at bottom-up-informasjon trengst.
-
-
+Det finst ingen f-strukturinformasjon eller LPT-informasjon me kunne
+nytta til å sikre den korrekte lenkjinga \emph{sie/dem} og \emph{ihnen/de}; og
+viss me rangerer lik argumentstruktur over ulik, vil me her få feil
+resultat. Det me \emph{kan} gjere (utanom å endre grammatikkane slik at
+argumentstruktur korresponderer med eit tematisk rollehierarki) er å
+sjå på mange lenkjingar av same verbpar, og på den måten oppdage
+moglege feil, men for slike enkelttilfelle vil krava i denne oppgåva
+ikkje vere nok til å gi korrekt lenkjing.
 
 \subsection{\textbf{SKRIV} Kan adjunkt lenkjast til nodar \underline{under} mor-lenkja?}
-\label{sec-3.6.4}
+\label{sec-3.6.3}
 
 \label{SEC:merge-daughters}
 
@@ -1016,7 +1063,7 @@ rekursivt for at F$_s$ og F$_t$ skal lenkjast, t.d. både \texttt{(1 . 4)} og \t
 
 
 \subsubsection{1. Kausativar og inkorporering}
-\label{sec-3.6.4.1}
+\label{sec-3.6.3.1}
 
 Om me har 
 
@@ -1085,7 +1132,7 @@ informasjon om LPT-korrespondanse, i staden for at det ikkje er lov om
 me har motstridande LPT-informasjon, det vil nok hjelpe, men det er
 vanskeleg å finne prinsipelle avgrensingar her. 
 \subsubsection{2. Adposisjonsobjekt}
-\label{sec-3.6.4.2}
+\label{sec-3.6.3.2}
 
 
 I følgjande setningspar har me eit objekt «sigarett» som svarer til
@@ -2077,6 +2124,7 @@ konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
 
 
 
