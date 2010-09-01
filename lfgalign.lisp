@@ -120,6 +120,12 @@ subtrees)."
 		    (Ltree (values Ltree (1+ Ldepth)))
 		    (Rtree (values Rtree (1+ Rdepth)))))))))
 
+(defun eq-phi (c-id1 c-id2 tab)
+    "`c-id1' and `c-id2' are two c-structure id-s in `tab'. 
+Return `nil' iff the phi of these are non-equal."
+  (intersection (get-equivs (phi c-id1 tab) tab)
+		(get-equivs (phi c-id2 tab) tab)))
+
 (defun phi (c-id tab)
   "Returns the f-var given by phi of `c-id', use (gethash f-var `tab')
 to find the content, but the f-var might have equivs..."
@@ -163,6 +169,12 @@ a number (pointing to where the trimmed tree was cut off)."
 (defun get-equivs (val tab)
   (dset3-findall val (gethash '|eq-sets| tab)))
 
+(defun eq-f (f-id1 f-id2 tab)
+  "`f-id1' and `f-id2' are two f-structure id-s in `tab'. 
+Return `nil' iff non-equal."
+  (intersection (get-equivs f-id1 tab)
+		(get-equivs f-id2 tab)))
+
 (defun unravel-helper (att stack seen tab)
   "Call with empty `seen' and a `stack' containing the variable you
 want to unravel the attribute `att' of. This function makes sure to
@@ -185,7 +197,7 @@ add all equivalent variables and their possible expansions."
 	    (loop for arg1 in args1
 		  for arg2 in args2
 		  always (or (and (null-pred? arg1) (null-pred? arg2))
-			     (member arg1 (get-equivs arg2 tab))))))
+			     (eq-f arg1 arg2 tab)))))
     (and (equal (first Pr1) (first Pr2))
 	 (eq (second Pr1) (second Pr2))
 	 (args-equal (third Pr1) (third Pr2))
@@ -736,12 +748,14 @@ phi's don't match anything in the files)."
 	with nodes_t = (get-val links_t splits_t)
 	when (and nodes_s nodes_t)
 	;; TODO: phi modulo eqvars... really need a predicate for that!!
-	do (list (remove-if (lambda (c-id)
-			      (not (eq mf_s (phi c-id tab_s))))
-			    nodes_s)
-		 (remove-if (lambda (c-id)
-			      (not (eq mf_t (phi c-id tab_t))))
-			    nodes_t))
+	do
+	(out "removing with ~A and ~A~%" nodes_s nodes_t)
+	(list (remove-if (lambda (c-id)
+			   (not (eq-f mf_s (phi c-id tab_s))))
+			 nodes_s)
+	      (remove-if (lambda (c-id)
+			   (not (eq-f mf_t (phi c-id tab_t))))
+			 nodes_t))
 	)
   )
 
@@ -753,6 +767,8 @@ phi's don't match anything in the files)."
 				 (or (not (member f-link mlinks_t :test #'equal))
 				     (equal f-link (cons mf_s mf_t))))
 			       mlinks_s)))
+    (out "~A~%" (cons mf_s mf_t))
+    (out "~A<->~A :: ~A<->~A :: ~A~%" mc-id_s mc-id_t mlinks_s mlinks_t removable)
     (c-link-remove removable
 	 mf_s mlinks_s tab_s splits_s
 	 mf_t mlinks_t tab_t splits_t)
@@ -780,10 +796,10 @@ phi's don't match anything in the files)."
 	  ;; (but only if they stay within the same functional domain as their mother)
 	  (when (and nodes_s nodes_t)
 	    (list (mapcar-true
-		   (lambda (c-id) (when (eq mf_s (phi c-id tab_s)) c-id))
+		   (lambda (c-id) (when (eq-f mf_s (phi c-id tab_s)) c-id))
 		   nodes_s)
 		  (mapcar-true
-		   (lambda (c-id) (when (eq mf_t (phi c-id tab_t)) c-id))
+		   (lambda (c-id) (when (eq-f mf_t (phi c-id tab_t)) c-id))
 		   nodes_t))))))
 
 (lisp-unit:define-test test-c-align-ranked ()
