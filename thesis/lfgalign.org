@@ -728,13 +728,13 @@ figur \ref{fig:viss-PRED-så-f-og-c}:
 
 Punkt \ref{f-links-substr} og \ref{f-links-domain} over seier at viss
 PRED-elementa projisert av t.d. to verb i verbfrasar er lenkja, kan
-VP-ane som heilskap lenkjast (både VP-nodane som dominerer dei lenkja
-funksjonelle domena, og f-strukturane frå ytre PRED til verba), i
-tilfellet i figur \ref{fig:viss-PRED-så-f-og-c} kan iallfall dei øvste
-nodane i VP-ane lenkjast.  Det er dette at heile VP-ane (kanskje
-inkludert objekt) er lenkja som gjer det til ei fraselenkje og ikkje
-berre ei ordlenkje. Punkt \ref{f-links-substr} er forsvart over, medan
-punkt \ref{f-links-domain} kjem som ein konsekvens av at det er det
+VP-ane som heilskap lenkjast, i tilfellet i figur
+\ref{fig:viss-PRED-så-f-og-c} kan iallfall dei øvste nodane i VP-ane
+lenkjast, i tillegg til f-strukturane frå ytre PRED til verba.  Det er
+dette at heile VP-ane (kanskje inkludert objekt) er lenkja som gjer
+det til ei fraselenkje og ikkje berre ei ordlenkje. Punkt
+\ref{f-links-substr} er forsvart over, medan punkt
+\ref{f-links-domain} kjem som ein konsekvens av at det er det
 funksjonelle domenet som spesifiserer informasjonen i f-strukturane,
 nodane her bør difor lenkjast berre viss f-strukturane er lenkja. Men
 som punkt \ref{f-links-domain} indikerer finst det au situasjonar der
@@ -744,10 +744,10 @@ Alle nodar i c-strukturen (alle syntaktiske /frasar/konstituentar/ i
 setninga) som kan koplast til PRED-haldande f-strukturar, vil vere
 kandidatar for samanstilling på c-strukturnivå (dette inkluderer
 diskontinuerlege konstituentar), men ikkje alle vil bli lenkja.  I del
-\ref{SEC:subnode} ser eg på kva som må til for å lenkje ikkje-øvste
-nodar i det funksjonelle domenet.
-I tillegg finst det nodar over ord som ikkje projiserer PRED-element,
-desse kjem eg tilbake til i del \ref{SEC:fnord}.
+\ref{SEC:subnode} ser eg på kva som må til for å lenkje nodar i det
+funksjonelle domenet.  I tillegg finst det nodar over ord som ikkje
+projiserer PRED-element, desse kjem eg tilbake til i del
+\ref{SEC:fnord}.
 
 I følgje punkt \ref{f-links-words} vil fraselenkja leie til at sjølve
 verba i to lenkja VP-ar au er lenkja, som tilseier at /ei PRED-lenkje
@@ -1066,7 +1066,7 @@ LPT-korrespondanse. \citet[s.~75]{dyvik2009lmp} gir følgjande krav på
 f-strukturnivå:
 
 \ex. \label{PRED-krav} Krav for lenkjing av to PRED-element $p$ og $q$:
-\a. ordformene til til $p$ og $q$ har LPT-korrespondanse
+\a. ordformene til $p$ og $q$ har LPT-korrespondanse
 \b. alle argument av $p$ har LPT-korrespondanse med eit argument eller adjunkt av $q$
 \c. alle argument av $q$ har LPT-korrespondanse med eit argument eller adjunkt av $p$
 \d. LPT-korrespondansane er ein-til-ein
@@ -1153,6 +1153,9 @@ vidare i oppgåva.
 Til no har me føresett at eit PRED-element anten er ulenkja, eller
 er lenkja til eitt og berre eitt anna PRED-element. Men i visse
 tilfelle kan det vere ønskeleg å lenkje til fleire PRED-element.
+\fxnote{Denne delen treng fleire ekte døme, og forsvar for kvifor me
+vil ha ein-mange-lenkjer for våre \emph{formål} (georgisk ser ut til å vere
+borte frå xle-web?)}
 
 I ein norsk /la/-konstruksjon, t.d. den me har i «å la noko fryse» (i
 tydinga å forårsake at noko frys til) har me semantiske bidrag frå
@@ -1181,7 +1184,8 @@ har eitt PRED-element, ikkje /la/ + /bli kald/).[fn:25]
 Den same situasjonen får me der eit argument eller adjunkt er
 inkorporert i verbet på det eine språket, men uttrykt som eit separat
 predikat på det andre språket, t.d. samisk /fierpmástallat/ som på
-norsk blir /å fiske med garn/.
+norsk blir /å fiske med garn/ -- to predikat på norsk tilsvarer eitt
+på samisk.
 
 I \Last har /la-fryse/ to argument, som ved krav \ref{PRED-krav} begge
 må finne korresponderande argument eller adjunkt for å lenkje /la-fryse/. 
@@ -1205,7 +1209,7 @@ Den einaste formelle forskjellen mellom dette og
 substantivinkorporering blir då at substantivet ikkje krev eigne
 argument. Det er au mogleg å tenkje seg ein kausativ med eit
 inkorporert objekt, omsett til /la + hovudverb + objekt/, altså ei
-lenkje frå eitt til tre PRED. Igjen vil me då sjå på dei resterande
+lenkje frå eitt PRED til tre PRED. Igjen vil me då sjå på dei resterande
 ulenkja argumenta på kvar side; kvar av desse må lenkjast med eit
 unikt argument eller adjunkt.
 
@@ -1213,30 +1217,84 @@ Men det bør kanskje vere grenser for kor langt slik samanføying kan
 gå, om ikkje anna fordi problemet fort blir komputasjonelt
 vanskeleg. Å opne for ein-mange-lenkjer mellom PRED-element (eller til
 og med mange-mange-lenkjer) gir ei mykje større mengd moglege
-løysingar lenkjingsproblemet; i alle situasjonar der me kan krevje
+løysingar på lenkjingsproblemet; i alle situasjonar der me krev
 LPT-korrespondanse mellom eit argument $a_p$ av $p$ og eit adjunkt
 $a_q$ av $q$ for å lenkje $p$ og $q$, vil me no au ha ei mogleg
 løysing der $a_q$ er ulenkja, medan $a_p$ er samanføyd med $p$ og
-difor ikkje treng LPT-korrespondanse med argument/adjunkt av $q$. I
-tillegg kan det jo hende at dette $a_p$ sjølv kan samanføyast med eit
-av sine argument/adjunkt.
+difor ikkje treng LPT-korrespondanse med argument/adjunkt av $q$. Så
+kan det au hende at $a_p$ sjølv kan samanføyast med eit av sine
+argument/adjunkt. Skal me sjå etter slike løysingar samtidig som me
+ser etter løysingar med ein-ein-lenkjer, vil me måtte leite gjennom
+mange ufruktbare stiar. Ein måte å unngå dette på er å nedprioritere
+samanføying, og berre prøve dette der det ikkje finst andre
+alternativ.
 
-I tillegg er det ønskeleg å først sjå etter samanstillingar som
-føreset syntaktisk likskap, før ein ser etter slike
-omsetjingsskifte. Viss det er mogleg å opprette ei samanstilling på
-bakgrunn av lik syntaks, vil me prioritere denne: den viktigaste
-informasjonen me har å gå på er at setningane er omsetjingar og difor
-har ein viss likskap -- Ockhams barberkniv gir oss då grunn til å
-velje ei løysing som føreset lik syntaks over ei løysing som føreset
-ulik syntaks.
+Men det er ikkje berre av omsyn til implementasjonen ein bør
+nedprioritere desse. Ei ein-mange-lenkje tyder på ein type
+omsetjingsskifte, og det er ønskeleg å først sjå etter samanstillingar
+som føreset syntaktisk likskap, før ein ser etter
+omsetjingsskifte. Den viktigaste informasjonen me har å gå på er at
+setningane er omsetjingar og difor har ein viss likskap -- Ockhams
+barberkniv gir oss då grunn til å velje ei løysing som føreset lik
+syntaks over ei løysing som føreset ulik syntaks. Viss det er mogleg å
+opprette ei samanstilling på bakgrunn av lik syntaks, vil me
+prioritere denne.
 
 I implementasjonen blir difor alle ein-til-ein-lenkjer prøvd
 først. \fxnote[inline,nomargin]{TODO:implementere:} Sidan kan ein
 prøve å føye saman eit ulenkja PRED-element $p$ med eit ulenkja
 PRED-element $a_p$ kor $a_p$ er argument eller adjunkt av $p$, og der
 $p$ og $a_p$ vil kunne lenkjast med eit ulenkja PRED-element $q$ ved
-føringane gitt over, og alle dei andre lenkjingskrava er dekkja.
-*** SKRIV (reinskriv) om global tyding, ikkje-komposisjonell..    :ROTETE:
+føringane gitt over, og alle dei andre lenkjingskrava er dekkja. Me
+får då eit modifisert krav \ref{PRED-krav}:
+
+\ex. \label{PRED-krav-ein-mange} Krav for samanføyd lenkjing frå PRED-elementa
+$p$ og $a_p$, kor $a_p$ er eit argument eller adjunkt av $p$, til PRED-elementet $q$:
+\a. ordformene til $p$ og $a_p$ har saman LPT-korrespondanse med ordformen til $q$
+\b. la $A$ vere unionen av argument til $p$ og argument til $a_p$,
+    utanom $a_p$ sjølv;
+    alle element av $A$ har LPT-korrespondanse med eit argument eller adjunkt av $q$
+\c. la $D$ vere unionen av argument eller adjunkt til $p$ og argument
+    eller adjunkt til $a_p$, utanom $a_p$ sjølv;
+    alle argument av $q$ har LPT-korrespondanse med eit element av $D$
+\d. LPT-korrespondansane er ein-til-ein
+\e. ingen adjunkt til $p$ eller $a_p$ er lenkja til f-strukturar utanfor $q$, og ingen
+    adjunkt til $q$ er lenkja til f-strukturar utanfor $p$
+
+Det er trivielt å utvide dette kravet til å fungere for
+mange-mange-lenkjer au.
+**** TOGROK kan me handtere zutiefst dankbar/deep appreciation?  :ROTETE:
+\citet[s.~40--41]{riezler2006gmt} tillet mange-til-mange-lenkjing
+mellom f-strukturar, så lenge alle f-strukturane som blir lenkja til
+slutt opptrer i same transfer-regel. Frå følgjande setningspar:
+
+\ex. Dafür bin ich zutiefst dankbar \\
+     I have a deep appreciation for that
+
+lenkjar dei \{/zutiefst/\} med \{ /a, deep, appreciation/ \}, men
+sidan \{/appreciation/\} er samanstilt med \{/dankbar/\}, må
+transfer-regelen inkludere \{ /zutiefst, dankbar/ \} på den eine sida
+og \{ /a, deep, appreciation/ \} på den andre.
+
+I vårt system vil bin<ich,dankbar> og have<I,appreciation> lenkjast,
+dankbar og appreciation har LPT-korrespondanse, men kan ikkje lenkjast
+på PRED-nivå sidan dankbar<ich,da> medan appreciation<>, /that/ er
+adjunkt til appreciation og ville kunne lenkjast til /da/, men /ich/
+får ingen lenkje...
+
+Dette bør kanskje få eit unntak, sidan /ich/ allereie /er/ lenkja? I
+såfall vil det jo gå greit. Sidan ein f-struktur kan stå som argument
+for fleire PRED, bør me tillate at dei står ulenkja så lenge dei er
+lenkja minst ein gong? 
+
+Her er det eit problem at me går top-down i f-align. For dette dømet
+går det greit, /ich-I/ blir lenkja ved /bin-have/, men om det var
+omvendt, at me hadde eit ytre predikat kor me hadde argument til
+overs, som blei dekkja ved indre argument, ville
+\ref{PRED-omgivnad-krav} og top-down-metoden til f-align hindra oss i
+å finne dei rette lenkjene.
+
+**** SKRIV om global tyding, ikkje-komposisjonell.. 		     :ROTETE:
 Same globale tyding krev i det minste at, i situasjonen verbet
 denoterer, speler deltakarane same rolle. Men dette er endå meir
 abstrakt/semantisk enn (semantisk) argumentstruktur...
@@ -1261,79 +1319,37 @@ Alternativt ein konstruksjonslenkjing...
 
 Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slag delmengd av
 argstr til $PRED_{L2}$. 
-*** SKRIV True Arguments vs True Adjuncts, Pustejovsky 		     :ROTETE:
-   - Treng døme først...
-   - Er «with Browne» eit Default Argument for «wager»?
-     - D-ARG: he built a house _out of bricks_
-   - Adjunkt plukker ut sine eigne roller, per definisjon, ved
-     vedde/4 og wager/3 har me ein slik situasjon:
-     : vedde <—————wager >———<———wetten
-     :        \____with_/     \__dass
-     Bottom-up-informasjon vil au vere naudsynt for dei 3 rollene
-     som /er/ argument, sidan me kan ha vedde<1,2,3,4> og
-     wager<a,b,c>with<d>, kor det er umogleg å seie om d skal på plass
-     1,2,3 eller 4 (dvs. me kan ha vedde<a,b,c,d>, vedde<a,b,d,c>,
-     vedde<a,d,b,c> og vedde<d,a,b,c> -- men sannsynlegvis er altså
-     a,b,c i same rekkjefølgje uansett...)
-
-*** TOGROK mange-til-mange-lenkjing i f-strukturane?		     :ROTETE:
-    Kva inneber ei mange-til-mange-lenkjing? 
-
-    Eg er litt usikker på om me skal ha slike
-    mange-til-mange-korrespondansar i f-strukturane; eg har rekna med
-    at ei f-strukturlenkje /impliserer/ ei slag lenkjing mellom det som
-    er innanfor f-strukturane; men i \citet{riezler2006gmt} er det i
-    staden berre eit krav om at desse f-strukturane er lenkja i same
-    transfer-regel.
-
-# Ikkje-komposisjonell mange-til-mange-lenkjing 
-
-\citet[s.~40--41]{riezler2006gmt} tillet mange-til-mange-lenkjing
-mellom f-strukturar, så lenge alle f-strukturane som blir lenkja til
-slutt opptrer i same transfer-regel. Frå følgjande setningspar:
-
-\ex. Dafür bin ich zutiefst dankbar \\
-     I have a deep appreciation for that
-
-lenkjar dei \{/zutiefst/\} med \{ /a, deep, appreciation/ \}, men
-sidan \{/appreciation/\} er samanstilt med \{/dankbar/\}, må
-transfer-regelen inkludere \{ /zutiefst, dankbar/ \} på den eine sida
-og \{ /a, deep, appreciation/ \} på den andre.
 
 ** Krav på c-strukturnivå
 \label{SEC:subnode}
 
 Toppnodane i to funksjonelle domene som er lenkja på f-strukturnivå
 vil ha ein informasjonsmessig korrespondanse, og kan, som nemnt i del
-\ref{SEC:kandidatar}, utan vidare lenkjast. Men det er mogleg å lenkje
-desse toppnodane, t.d. XP på kjeldespråket og ZP på målspråket, utan
-at nodane under (X', Z') er lenkja til noko. I denne delen går eg
-gjennom kva som må til for å lenkje slike underordna (ikkje-øvste)
-c-strukturnodar.
+\ref{SEC:kandidatar}, i dei fleste tilfella lenkjast. Men det er
+mogleg å lenkje desse toppnodane, t.d. XP på kjeldespråket og ZP på
+målspråket, utan at nodane under (X', Z') er lenkja til noko. Det er
+au mogleg at ikkje ein gong toppnodane blir lenkja.  I denne delen går
+eg gjennom kva som må til for å lenkje c-strukturnodar.
 
-Me kan byrje med eit par enkle krav, som me seinare utvidar:
+Me kan byrje med eit enkelt krav, som me seinare utvidar:
 
-\ex. Enkle krav for lenkjing av underordna c-strukturnodar:
-\a. \label{subnodekrav-innan-domene} c-strukturnodar som ligg under øvste node i to funksjonelle
-    domena kan berre samanstillast med nodar som ligg innanfor desse
-    domena,
-\b. \label{subnodekrav-f-lenkja} c-strukturnodar kan berre samanstillast om deira funksjonelle
-    domene er lenkja på f-strukturnivå
+\ex.\label{subnodekrav-f-lenkja} to c-strukturnodar kan berre lenkjast
+     om deira funksjonelle domene er lenkja på f-strukturnivå
 
-\Last[a] seier at om XP og ZP er lenkja, der XP og ZP er toppnodar,
-kan ikkje dotter til XP, X', lenkjast med t.d. mor eller søster til
-ZP. Og om ZP dominerer ein node WP, der $\phi(WP) \neq \phi(ZP)$, kan
-me heller ikkje ha ei c-strukturlenkje frå X' til WP. Grunnen er at
-f-strukturane er sett saman av informasjonsinnhaldet projisert av
-nodane, det vil aldri vere grunnlag for å ha ei c-strukturlenkje som
-står i konflikt med f-strukturlenkjer.
+Dette vil seie at om to toppnodar XP og ZP er lenkja, slik at me må ha
+ei lenkje mellom $\phi(XP)$ og $\phi(ZP)$, kan ikkje dotter til XP,
+X', lenkjast med t.d. mor eller søster til ZP. Og om ZP dominerer ein
+node WP, der $\phi(WP) \neq \phi(ZP)$, kan me heller ikkje ha ei
+c-strukturlenkje frå X' til WP. Grunnen er at f-strukturane er sett
+saman av informasjonsinnhaldet projisert av nodane, det vil aldri vere
+grunnlag for å ha ei c-strukturlenkje som står i konflikt med
+f-strukturlenkjer.
 
-Men sjølv der to underordna c-strukturnodar er i lenkja funksjonelle
-domene (altså, der dei respektive toppnodane er lenkja) er det ikkje
-alltid slik at me vil lenkje dei underordna nodane. I figur
-\ref{fig:subnode} er XP og ZP to lenkja toppnodar i som inkluderer
+Men sjølv der to c-strukturnodar er i lenkja funksjonelle domene er
+det ikkje alltid slik at me vil lenkje desse nodane. I figur
+\ref{fig:subnode} er XP og ZP to lenkja toppnodar som inkluderer
 høvesvis X' og Z' i dei funksjonelle domena. Her kan me ha gode
-grunnar for å ikkje lenkje X' og Z'. 
+grunnar for å ikkje lenkje X' og Z'.
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -1372,6 +1388,12 @@ må me tillate litt slingringsmonn her, X' og Z' skal ikkje trenge
 projisere heilt like f-strukturar. Det som er relevant er det som blir
 lenkja i f-strukturen, eller /kva for lenkjer som finst mellom
 f-strukturane til nodane under/.
+
+I enkle tilfelle vil nodane dominert av toppnoden XP i eit funksjonelt
+domene inkludere alt som står under $\phi(XP)$ i f-strukturen. Men i
+ei setning som «Kven sa du at du likte?» vil objektet til /like/
+stå utanfor det funksjonelle domenet til /like/, om me skal lenkje
+dette til «You said you liked who?»
 
 For å gjere dette meir konkret kan me sjå på dømet i figur
 \ref{fig:ikkjesub}. IP-nodane er her lenkja, men me kan ikkje lenkje
@@ -1528,7 +1550,7 @@ nodar[fn:22]:
 
 
 \Last[a og -b] seier til saman det same som
-\ref{subnodekrav-innan-domene} og \ref{subnodekrav-f-lenkja}. Det
+\ref{subnodekrav-f-lenkja}. Det
 \Last[c] seier er at me må ha same /informasjonstap/ når me går
 nedover i c-strukturtreet.
 
@@ -1671,7 +1693,7 @@ ikkje er reflektert i CPnom til Ssub.
 
 (Alle nodane under S vist i dei to trea er i same funksjonelle domene,
 så om dei funksjonelle domena er lenkja, vil
-krav~\ref{subnodekrav-innan-domene} og krav~\ref{subnodekrav-f-lenkja}
+krav \ref{subnodekrav-f-lenkja}
 vere oppfylt kva gjeld CP-komplementa -- lenkjinga går ikkje ut over
 dei funksjonelle domena, medan krav~\ref{subnodekrav-infotap} er
 dekkja for IP og Ssub med unntaket over.)
