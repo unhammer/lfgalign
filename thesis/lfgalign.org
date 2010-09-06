@@ -25,7 +25,9 @@
 #+LaTeX_HEADER: \newcommand{\fpairs}{\ensuremath{\operatorname{\emph{fpairs}}}}
 #+LaTeX_HEADER: \newcommand{\Bleu}{\textsc{Bleu}}
 #+LaTeX_HEADER: \usetikzlibrary{calc}
-
+#+LaTeX_HEADER: \newcommand{\proj}[2]{\begin{tabular}{c}\normalsize{#1}\\\footnotesize{#2}\end{tabular}}
+#+LaTeX_HEADER: \newcommand{\ua}{\ensuremath{\uparrow}}
+#+LaTeX_HEADER: \newcommand{\da}{\ensuremath{\downarrow}}
 
 
 * COMMENT Generell TODO
@@ -1351,26 +1353,20 @@ node på høgare nivå /dominerer/ mengder av nodar på lågare nivå.
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
-\fxnote{todo: korrekt f-domene-annotasjon}
 \centering
   \begin{tikzpicture}
-  \Tree  [.\node(IPs){IP};  [.\node(SUBJs){NP \^{ }SUBJ=v}; \edge[roof]; {det} ]
+  \Tree  [.\node(IPs){IP};  [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
                             [.\node(I's){I'};
 				    [.\node(Is){I}; {regner} ]
-				    [.\node(OBJs){NP \^{ }OBJ=v}; \edge[roof]; {kjøttbollar} ] ] ]
+				    [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttbollar} ] ] ]
       \begin{scope}[shift={(2in,0in)}]
-  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){NP \^{ }SUBJ=v}; \edge[roof]; {het} ] 
+  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
                             [.\node(I't){I'}; 
 				    [.\node(It){I}; {regent} ]
-				    [.\node(OBJt){NP \^{ }OBJ=v}; \edge[roof]; {gehaktballen} ] ]   ]
+				    [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
-%\draw[-] (IPs)..controls +(north east:1) and +(north:1) .. (IPt) ;
-%\draw[dashed,-] (I's)..controls +(south:1) and +(south:1) .. node[above,sloped]{?} (I't) ;
-%\draw[dashed,-] (SUBJs)..controls +(south:1) and +(south:1) .. node[below,sloped]{manglar} (SUBJt) ;
-%\draw[dashed,-] (OBJs)..controls +(south:1) and +(south:1) .. node[below,sloped]{manglar} (OBJt) ;
-
 \end{tikzpicture}
-   \caption{Lenkjing av underordna c-strukturnodar}
+   \caption{Enkel lenkjing av c-strukturnodar mellom norsk og nederlandsk}
    \label{fig:enkel-c-lenkje}
   \end{figure}
 #+END_LaTeX
@@ -1400,31 +1396,35 @@ målsida, men på målsida står ikkje subjektet under I', og omvendt for
 objektet. Ei lenkje mellom I'-nodane ville sagt at nodane dei
 dominerte projiserte korresponderande informasjon, det gjer dei ikkje
 i figur \ref{fig:ikkje-c-lenkje}, medan i \ref{fig:enkel-c-lenkje}
-står dei lenkja objekta under I' medan dei lenkja subjekta er utanfor.
+står dei lenkja objekta under I' medan dei lenkja subjekta er
+utanfor. Men merk at IP-nodane likevel kan lenkjast, dei dominerer
+begge både subjekt og objekt, sjølv om dei kjem i ulik følgje under;
+I-nodane berre dominerer verba, og au kan lenkjast.
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
-\fxnote{todo: korrekt f-domene-annotasjon}
 \centering
   \begin{tikzpicture}
-  \Tree  [.\node(IPs){IP};  [.\node(OBJs){NP \^{ }OBJ=v}; \edge[roof]; {kjøttboller} ]
+  \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttboller} ]
                             [.\node(I's){I'};
 				    [.\node(Is){I}; {regner} ]
-				    [.\node(SUBJs){NP \^{ }SUBJ=v}; \edge[roof]; {det} ]
+				    [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
 				     ] ]
       \begin{scope}[shift={(2in,0in)}]
-  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){NP \^{ }SUBJ=v}; \edge[roof]; {het} ] 
+  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
                             [.\node(I't){I'}; 
 				    [.\node(It){I}; {regent} ]
-				    [.\node(OBJt){NP \^{ }OBJ=v}; \edge[roof]; {gehaktballen} ] ]   ]
+				    [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
-\draw[-] (IPs)..controls +(north east:1) and +(north:1) .. (IPt) ;
-\draw[dashed,-] (I's)..controls +(north:1) and +(north:1) .. node[midway,sloped]{$\times$} (I't) ;
+\draw[-,very thick] (IPs)..controls +(north east:1) and +(north:1) .. (IPt) ;
+\draw[dashed,-] (I's)..controls +(north:1.1) and +(north:1.1) .. node[midway,sloped]{$\times$} (I't) ;
 \draw[-] (SUBJs)..controls +(south east:2) and +(east:2) ..  (SUBJt) ;
-\draw[-] (OBJs)..controls +(south east:1) and +(south west:1) ..  (OBJt) ;
+\draw[-] (OBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (OBJt) ;
+\draw[-,very thick] (Is)..controls +(south east:1) and +(south west:1) ..  (It) ;
 
 \end{tikzpicture}
-   \caption{Lenkjing av underordna c-strukturnodar}
+   \caption{C-strukturlenkjer kan ikkje gå på tvers av dominerte
+   lenkjer (norsk og nederlandsk)}
    \label{fig:ikkje-c-lenkje}
   \end{figure}
 #+END_LaTeX
@@ -1433,54 +1433,87 @@ Sjølv om subjektet sto ulenkja, t.d. ved lenkjing inn i eit
 pro-drop-språk, ville me fått same situasjon; I'-nodane i figur
 \ref{fig:ikkje-c-lenkje-pro-drop} kan ikkje lenkjast sidan I' på
 islandsk dominerer objektet, medan I' på norsk ikkje gjer dette, og
-objekta er lenkja med kvarandre. Ei lenkje mellom desse I'-nodane
-ville sagt at dei dominerer korresponderande materiale, men det gjer
-dei ikkje her. 
+objekta er lenkja med kvarandre (her både på c- og f-strukturnivå). Ei
+lenkje mellom desse I'-nodane ville sagt at dei dominerer
+korresponderande materiale, men det gjer dei ikkje. 
 
 #+BEGIN_LaTeX
-\begin{figure}[htp]
-\fxnote{todo: korrekt f-domene-annotasjon}
-\centering
-  \begin{tikzpicture}
-  \Tree  [.\node(IPs){IP};  [.\node(OBJs){NP \^{ }OBJ=v}; \edge[roof]; {kjøttboller} ]
-                            [.\node(I's){I'};
-				    [.\node(Is){I}; {regner} ]
-				    [.\node(SUBJs){NP \^{ }SUBJ=v}; \edge[roof]; {det} ]
-				     ] ]
-      \begin{scope}[shift={(2in,0in)}]
-  \Tree  [.\node(IPt){IP};  
-                            [.\node(I't){I'}; 
-				    [.\node(It){I}; {rignir} ]
-				    [.\node(OBJt){NP \^{ }OBJ=v}; \edge[roof]; {kjötbollum} ] ]   ]
-\end{scope}
-\draw[-] (IPs)..controls +(north east:1) and +(north:1) .. (IPt) ;
+  \begin{figure}[htp]
+  \fxnote{todo: korrekt f-domene-annotasjon}
+  \centering
+    \begin{tikzpicture}
+    \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttboller} ]
+                              [.\node(I's){I'};
+                                      [.\node(Is){I}; {regner} ]
+                                      [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
+                                       ] ]
+        \begin{scope}[shift={(2in,0in)}]
+    \Tree  [.\node(IPt){IP};  
+                              [.\node(I't){I'}; 
+                                      [.\node(It){I}; {rignir} ]
+                                      [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjötbollum} ] ]   ]
+  \end{scope}
+\draw[-,very thick] (IPs)..controls +(north east:1) and +(north:1) .. (IPt) ;
 \draw[dashed,-] (I's)..controls +(north:1) and +(north:1) .. node[midway,sloped]{$\times$} (I't) ;
-\draw[-] (OBJs)..controls +(south east:1) and +(south west:1) ..  (OBJt) ;
-
-\end{tikzpicture}
-   \caption{Lenkjing av underordna c-strukturnodar}
-   \label{fig:ikkje-c-lenkje-pro-drop}
-  \end{figure}
+\draw[-] (OBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (OBJt) ;
+\draw[-,very thick] (Is)..controls +(south east:1) and +(south west:1) ..  (It) ;
+  
+  \end{tikzpicture}
+     \caption{C-strukturlenkjer kan ikkje gå på tvers av dominerte
+     lenkjer (norsk og islandsk)}
+     \label{fig:ikkje-c-lenkje-pro-drop}
+    \end{figure}
 #+END_LaTeX
 
+
+\fxnote[inline,nomargin]{TODO til det med dominans nemndt tidlegare:}
 Som desse døma viser må me nyansere prinsippet om å ikkje lenkje
 c-strukturnodar som går på tvers av f-strukturlenkjer til å ta innover
-seg dominans: me vil ikkje lenkje c-strukturnodar viss det dei
-dominerer går på tvers av f-strukturlenkjer.
+seg dominans: me vil ikkje lenkje c-strukturnodar viss /det dei
+dominerer/ kjem i konflikt med f-strukturlenkjer.
 
-\fxnote[inline,nomargin]{CURRENT TODO (kople avsnittet over til det
-med dominans nemndt tidlegare)}
+Når treet deler seg i to som i desse figurane, får me ei mogleg
+oppdeling av kjeldene til f-strukturinformasjonen. Me vil ikkje lenkje
+nodar som ikkje gir same tilskot til f-strukturen, på same måte som me
+ikkje vil lenkje på tvers av f-strukturlenkjer.
 
-Når treet deler seg i to som i figur \ref{fig:subnode}, får me ei
-mogleg oppdeling av kjeldene til f-strukturinformasjonen. Me vil ikkje
-lenkje nodar som ikkje gir same tilskot til f-strukturen, på same måte
-som me ikkje vil lenkje på tvers av f-strukturlenkjer. I begge
-situasjonane nemnt i avsnittet ovanfor er det slik at X' og Z' gir
+I både figur \ref{fig:ikkje-c-lenkje} og figur
+\ref{fig:ikkje-c-lenkje-pro-drop} er det slik at det I'-nodane dominerer gir
 ulike tilskot til f-strukturen, dei kan difor ikkje lenkjast. Likevel
 må me tillate litt slingringsmonn her, X' og Z' skal ikkje trenge
 projisere heilt like f-strukturar. Det som er relevant er det som blir
-lenkja i f-strukturen, eller /kva for lenkjer som finst mellom
-f-strukturane til nodane under/.
+lenkja i f-strukturen.
+
+I visse tilfelle kan det hende at sjølv toppnodane i det funksjonelle
+domenet ikkje bør lenkjast.
+
+#+BEGIN_LaTeX
+  \begin{figure}[htp]
+  \centering
+    \begin{tikzpicture}
+     \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua TOPIC=\da}}; \edge[roof]; {kjøttboller} ]
+                               [.\node(I's){I'};
+                                       [.\node(Is){I}; {sa} ]
+                                       [.\node(Ss){S};
+                                               [.\node(SPKRs){\proj{NP}{\ua SUBJ=\da}}; {ho} ]
+                                               [.\node(VPs){\proj{VP}{\ua COMP=\da}}; [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
+                        					                      [.\node(Vs){V}; {regna} ] ] ] ] ]
+         \begin{scope}[shift={(3in,0in)}]
+    \Tree  [.\node(IPt){IP};  {TODO}   ]
+  \end{scope}
+  %\draw[-,very thick] (IPs)..controls +(north east:1) and +(north:1) .. (IPt) ;
+  %\draw[dashed,-] (I's)..controls +(north:1.1) and +(north:1.1) .. node[midway,sloped]{$\times$} (I't) ;
+  %\draw[-] (SUBJs)..controls +(south east:2) and +(east:2) ..  (SUBJt) ;
+  %\draw[-] (OBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (OBJt) ;
+  %\draw[-,very thick] (Is)..controls +(south east:1) and +(south west:1) ..  (It) ;
+  
+  \end{tikzpicture}
+     \caption{Sjølv toppnodane kan stå ulenkja}
+     \label{fig:ikkje-c-lenkje-toppnode}
+    \end{figure}
+#+END_LaTeX
+
+# CURRENT
 
 I enkle tilfelle vil nodane dominert av toppnoden XP i eit funksjonelt
 domene inkludere alt som står under $\phi(XP)$ i f-strukturen. Men i
