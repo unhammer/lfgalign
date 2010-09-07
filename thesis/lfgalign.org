@@ -674,14 +674,14 @@ c-struktur-f-strukturavbildinga $\phi$ (sjå del
 \ref{SEC:omgrepsavklaring}), får me følgjande samanheng, illustrert i
 figur \ref{fig:viss-PRED-så-f-og-c}:
 
-\ex. \label{f-links} Ei lenkje mellom to PRED-element $p$ og $q$, kor
+\ex. \label{krav:f-links} Ei lenkje mellom to PRED-element $p$ og $q$, kor
       $p$ er medlem av f-strukturen $f$, og $q$ er medlem av
       f-strukturen $g$, tilseier at:
-\a. \label{f-links-substr} me tolkar f-strukturane $f$ og $g$ som lenkja,
-\b. \label{f-links-words} orda i setningane som projiserer
+\a. \label{krav:f-links-substr} me tolkar f-strukturane $f$ og $g$ som lenkja,
+\b. \label{krav:f-links-words} orda i setningane som projiserer
      PRED-elementa tek del i ei lenkje (kor andre
      ord kan vere involvert), og at
-\c. \label{f-links-domain} nodar innanfor $\phi^{-1}(f)$
+\c. \label{krav:f-links-domain} nodar innanfor $\phi^{-1}(f)$
      og $\phi^{-1}(g)$, dei funksjonelle domena til f-strukturane $f$
      og $g$, kan lenkjast
 
@@ -729,18 +729,18 @@ figur \ref{fig:viss-PRED-så-f-og-c}:
  \end{figure}
 #+END_LaTeX
 
-Punkt \ref{f-links-substr} og \ref{f-links-domain} over seier at viss
+Punkt \ref{krav:f-links-substr} og \ref{krav:f-links-domain} over seier at viss
 PRED-elementa projisert av t.d. to verb i verbfrasar er lenkja, kan
 VP-ane som heilskap lenkjast, i tilfellet i figur
 \ref{fig:viss-PRED-så-f-og-c} kan iallfall dei øvste nodane i VP-ane
 lenkjast, i tillegg til f-strukturane frå ytre PRED til verba.  Det er
 dette at heile VP-ane (kanskje inkludert objekt) er lenkja som gjer
 det til ei fraselenkje og ikkje berre ei ordlenkje. Punkt
-\ref{f-links-substr} er forsvart over, medan punkt
-\ref{f-links-domain} kjem som ein konsekvens av at det er det
+\ref{krav:f-links-substr} er forsvart over, medan punkt
+\ref{krav:f-links-domain} kjem som ein konsekvens av at det er det
 funksjonelle domenet som spesifiserer informasjonen i f-strukturane,
 nodane her bør difor lenkjast berre viss f-strukturane er lenkja. Men
-som punkt \ref{f-links-domain} indikerer finst det au situasjonar der
+som punkt \ref{krav:f-links-domain} indikerer finst det au situasjonar der
 nodar innanfor domena skal stå ulenkja.
 
 Alle nodar i c-strukturen (alle syntaktiske /frasar/konstituentar/ i
@@ -752,7 +752,7 @@ funksjonelle domenet.  I tillegg finst det nodar over ord som ikkje
 projiserer PRED-element, desse kjem eg tilbake til i del
 \ref{SEC:fnord}.
 
-I følgje punkt \ref{f-links-words} vil fraselenkja leie til at sjølve
+I følgje punkt \ref{krav:f-links-words} vil fraselenkja leie til at sjølve
 verba i to lenkja VP-ar au er lenkja, som tilseier at /ei PRED-lenkje
 impliserer ei ordlenkje/. I visse tilfelle er dette heilt
 uproblematisk, t.d. viss /I slept down by the river/ skal lenkjast med
@@ -770,7 +770,7 @@ ingen konge...}, her au skal det vere uproblematisk å lenkje
 enkeltorda \emph{have} og \emph{har}.
 
 Men som nemnd treng ikkje ordsamanstillinga vere ein-til-ein, det
-punkt \ref{f-links-words} seier er at desse orda iallfall er ein del
+punkt \ref{krav:f-links-words} seier er at desse orda iallfall er ein del
 av ein samanstilling med kvarandre (i døme \Last altså
 VP-samanstillinga). Kanskje er dette ei mange-til-mange-lenkje som
 ikkje \emph{kan} reduserast til ein-til-ein-lenkjer; eller kanskje er
@@ -802,7 +802,7 @@ PRED, ord}
 Ord som skal lenkjast må i \cite{thunes2003eal} vere del av frasar som
 speler same rolle i det som er felles i interpretasjonane, her kan me
 omskrive det til at dei må vere del av /frasar som er lenkja på
-c-strukturnivå/; forholda i \ref{f-links} gir då koplinga til krav på
+c-strukturnivå/; forholda i \ref{krav:f-links} gir då koplinga til krav på
 andre nivå (t.d. vil krav om tildeling av like mange roller vere
 meir passande å spesifisere på f-strukturnivå).
 
@@ -947,7 +947,7 @@ for å illustrere dette:
 
 #+BEGIN_LaTeX
 {\avmoptions{}
-\ex. \label{vedde}
+\ex. \label{ex:vedde}
 \a. Adams veddet en sigarett med Browne \hfill{} (norsk bokmål)\\ på at det regnet.\\
     $\\\begin{avm}\[pred & `{\bf{}vedde}<Abrams, sigarett, Browne, regne>' \\
                  adjunct & \{\}\]\end{avm}\\$
@@ -1068,7 +1068,7 @@ tildeler same roller. På same måte må sjølvsagt lenkja predikat ha
 LPT-korrespondanse. \citet[s.~75]{dyvik2009lmp} gir følgjande krav på
 f-strukturnivå:
 
-\ex. \label{PRED-krav} Krav for lenkjing av to PRED-element $p$ og $q$:
+\ex. \label{krav:PRED} Krav for lenkjing av to PRED-element $p$ og $q$:
 \a. ordformene til $p$ og $q$ har LPT-korrespondanse
 \b. alle argument av $p$ har LPT-korrespondanse med eit argument eller adjunkt av $q$
 \c. alle argument av $q$ har LPT-korrespondanse med eit argument eller adjunkt av $p$
@@ -1109,7 +1109,7 @@ vanskeleg å finne ikkje-vilkårlege avgrensingar for når ein skal kunne
 lenkje f-strukturar som står i ulike omgivnader; i implementasjonen
 min har eg difor følgt eit strengare krav enn \Last[e]:
 
-\ex. \label{PRED-omgivnad-krav} PRED-elementa $p$ og $q$ kan berre
+\ex. \label{krav:PRED-omgivnad} PRED-elementa $p$ og $q$ kan berre
      lenkjast om dei er ytste f-strukturar i lenkja setningar, eller
      er argument/adjunkt til lenkja f-strukturar.
 
@@ -1117,7 +1117,7 @@ Dette er ei tentativ formulering. Til no har eg ikkje sett døme kor
 \Last ikkje bør gjelde, men om det finst slike døme bør sjølvsagt
 kravet modifiserast.
 
-Krav \ref{PRED-krav} og \ref{PRED-omgivnad-krav} bør i enkle
+Krav \ref{krav:PRED} og \ref{krav:PRED-omgivnad} bør i enkle
 situasjonar vere tilstrekkelege for lenkjing på f-strukturnivå, men
 det finst au meir komplekse korrespondansar mellom PRED-element. Desse
 ser eg på del \ref{SEC:f-mange-mange}.
@@ -1190,7 +1190,7 @@ predikat på det andre språket, t.d. samisk /fierpmástallat/ som på
 norsk blir /å fiske med garn/ -- to predikat på norsk tilsvarer eitt
 på samisk.
 
-I \Last har /la-fryse/ to argument, som ved krav \ref{PRED-krav} begge
+I \Last har /la-fryse/ to argument, som ved krav \ref{krav:PRED} begge
 må finne korresponderande argument eller adjunkt for å lenkje /la-fryse/. 
 Då går det ikkje an å lenkje /la-fryse/ til berre /fryse/,
 som har eitt argument; me får eit XCOMP til overs som manglar
@@ -1198,7 +1198,7 @@ lenkje. Me kan heller ikkje lenkje berre /la/ til /la-fryse/, sidan
 det då får ein XCOMP til overs.
 
 Men, ved å ha ei ein-mange-lenkje, frå /la-fryse/ til både /la/ og /fryse/,
-kan me oppfylle krav \ref{PRED-krav}. Då treng ikkje
+kan me oppfylle krav \ref{krav:PRED}. Då treng ikkje
 XCOMP-argumentet lenkjast til eit argument av /la-fryse/, det er
 allereie lenkja til PRED-elementet; det som står igjen er unionen av
 argumenta til /la/ og /fryse/, desse må alle ha LPT-korrespondanse med
@@ -1249,9 +1249,9 @@ prøve å føye saman eit ulenkja PRED-element $p$ med eit ulenkja
 PRED-element $a_p$ kor $a_p$ er argument eller adjunkt av $p$, og der
 $p$ og $a_p$ vil kunne lenkjast med eit ulenkja PRED-element $q$ ved
 føringane gitt over, og alle dei andre lenkjingskrava er dekkja. Me
-får då eit modifisert krav \ref{PRED-krav}:
+får då eit modifisert krav \ref{krav:PRED}:
 
-\ex. \label{PRED-krav-ein-mange} Krav for samanføyd lenkjing frå PRED-elementa
+\ex. \label{krav:f-ein-mange} Krav for samanføyd lenkjing frå PRED-elementa
 $p$ og $a_p$, kor $a_p$ er eit argument eller adjunkt av $p$, til PRED-elementet $q$:
 \a. ordformene til $p$ og $a_p$ har saman LPT-korrespondanse med ordformen til $q$
 \b. la $A$ vere unionen av argument til $p$ og argument til $a_p$,
@@ -1294,7 +1294,7 @@ Her er det eit problem at me går top-down i f-align. For dette dømet
 går det greit, /ich-I/ blir lenkja ved /bin-have/, men om det var
 omvendt, at me hadde eit ytre predikat kor me hadde argument til
 overs, som blei dekkja ved indre argument, ville
-\ref{PRED-omgivnad-krav} og top-down-metoden til f-align hindra oss i
+\ref{krav:PRED-omgivnad} og top-down-metoden til f-align hindra oss i
 å finne dei rette lenkjene.
 
 **** SKRIV om global tyding, ikkje-komposisjonell.. 		     :ROTETE:
@@ -1338,7 +1338,7 @@ dette andre). Det at to nodar er lenkja på c-strukturnivå må i det
 minste implisere at informasjonen dei projiserer korresponderer. I
 utgangspunktet bør krevje følgjande:
 
-\ex.\label{subnodekrav-f-lenkja} to c-strukturnodar $n_s$ og $n_t$ kan
+\ex.\label{krav:subnode-f-lenkja} to c-strukturnodar $n_s$ og $n_t$ kan
      berre lenkjast om $\phi(n_s)$ og $\phi(n_t)$ er lenkja på
      f-strukturnivå
 
@@ -1431,7 +1431,7 @@ I-nodane dominerer berre verba, og kan au lenkjast.
 
 \end{tikzpicture}
    \caption{C-strukturlenkjer kan ikkje gå på tvers av dominerte
-   lenkjer (norsk og nederlandsk)}
+   lenkjer (nynorsk og nederlandsk)}
    \label{fig:ikkje-c-lenkje}
   \end{figure}
 #+END_LaTeX
@@ -1464,7 +1464,7 @@ korresponderande materiale, men det gjer dei ikkje.
   
   \end{tikzpicture}
      \caption{C-strukturlenkjer kan ikkje gå på tvers av dominerte
-     lenkjer (norsk og islandsk)}
+     lenkjer (nynorsk og islandsk)}
      \label{fig:ikkje-c-lenkje-pro-drop}
     \end{figure}
 #+END_LaTeX
@@ -1530,10 +1530,13 @@ lenkja, men toppnodane i dei funksjonelle domena kan ikkje lenkjast.
     \end{figure}
 #+END_LaTeX
 
-Me vil altså lenkje ein node $n_s$ med $n_t$ berre viss $\phi(n_s)$ er
-lenkja på f-strukturnivå med $\phi(n_t)$, og det ikkje finst nodar
-under $n_s$ som er lenkja med nodar utanfor det funksjonelle domenet
-til $n_t$, og omvendt. 
+I det minste vil me altså krevje følgjande av lenkjer på c-strukturnivå:
+\ex.\label{krav:c-tentativt} Ein node $n_s$ kan lenkjast med ein node $n_t$ berre viss:
+\a. $\phi(n_s)$ er lenkja på f-strukturnivå med $\phi(n_t)$, og
+\b. det ikkje finst nodar under $n_s$ som er lenkja med nodar utanfor det funksjonelle domenet
+    til $n_t$, og 
+\c. det ikkje finst nodar under $n_t$ som er lenkja med nodar utanfor det funksjonelle domenet
+    til $n_t$.
 
 Men, kva om det finst nodar under $n_s$ som ikkje er lenkja på
 c-strukturnivå (kanskje fordi det ikkje finst tilsvarande nodar på
@@ -1543,172 +1546,183 @@ som eg ser på nedanfor.
 
 *** Ulenkja c-strukturnodar
 I figur \ref{fig:gaiGo} kan iallfall IP-nodane lenkjast, dei dominerer
-alle orda på begge setningane, og f-strukturane er lenkja
-
-\fxnote{CURRENT TODO (bilete av f-lenkjer? iallfall fjerne ein del i
-denne delen, og liste opp alternativ LL vs $LL_c$)}
-
-For å gjere dette meir konkret kan me sjå på dømet i figur
-\ref{fig:gaiGo}. IP-nodane er her lenkja, men me kan ikkje lenkje
-I'-nodane i same funksjonelle domene. PRONP-noden, spesifikator på den
-norske sida, er ikkje lenkja med nokon spesifikator på den georgiske
-sida. Den informasjonen (her reint syntaktisk) som ordet /det/
-tilfører IP, ligg under I' på georgisk. Me kunne lenkja I' om me hadde
-ein georgisk spesifikator som var lenkja til den norske PRONP. Me kan
-heller ikkje lenkje Vfin til V, her manglar endå meir informasjon
-(både frå /det/ og frå /seg/).
+alle orda på begge setningane, og f-strukturane er lenkja. Men 
+NP-subjektet på den norske sida, er ikkje lenkja med
+noko i det georgiske treet. Den informasjonen (her reint
+syntaktisk) som ordet /det/ tilfører IP, ligg under I' på georgisk; og
+ved I-nodane manglar det norske treet i tillegg den informasjonen som
+/seg/ tilfører. 
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
 \centering
 \begin{tikzpicture}
 \Tree [.\node(IPk){IP}; 
-  [.\node(Ibark){I'};  [. \node(Vk){V};  \node(gaiGo){gaiGo};  ]
+  [.\node(Ibark){I'};  [. \node(Ik){I};  \node(gaiGo){gaiGo};  ]
   ] ]
      \begin{scope}[shift={(2in,0in)}]
 \Tree [.\node(IPb){IP}; 
-  [.PRONP \edge[roof]; {det} ] 
-  [.\node(Ibarb){I'};  [.\node(Vfinb){Vfin};   \node(åpnet){åpnet};  ]
-       [.S \edge[roof]; {seg} ] ] ]
+  [.\proj{NP}{\ua SUBJ=\da} \edge[roof]; {det} ] 
+  [.\node(Ibarb){I'};  [.\node(Ib){I};   \node(åpnet){åpnet};  ]
+       [.\proj{NP}{\ua OBJ=\da} \edge[roof]; {seg} ] ] ]
 \end{scope}
- \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
-  \draw[dashed,-] (Ibark)..controls +(north east:1.3) and +(north west:1.3) .. node[midway,sloped]{$\times$}(Ibarb) ;
-  \draw[dashed,-] (Vk)..controls +(north east:1.3) and +(north west:1.3) .. node[midway,sloped]{$\times$}(Vfinb) ;
+ \draw[-,very thick] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
+  \draw[dashed,-] (Ibark)..controls +(north east:1.3) and +(north west:1.3) .. node[midway,sloped]{?}(Ibarb) ;
+  \draw[dashed,-] (Ik)..controls +(north east:1.3) and +(north west:1) .. node[midway,sloped]{?}(Ib) ;
 % \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
 
 \end{tikzpicture}
-
-\fxnote{TODO: teikne inn f-domene her òg}
-
-\caption{Umogleg lenkjing av underordna c-strukturnodar mellom georgisk og bokmål}
+\caption{Skal ulenkja søsternodar hindre lenkjing? (Georgisk og bokmål)}
  \label{fig:gaiGo}
 \end{figure}
 #+END_LaTeX
+\fxnote{TODO fotnote om at eg har forenkla trea litt, ikkje PRONP og
+PRONrfl og Vfin og slikt}
 
 Hadde det georgiske treet hatt spesifikator og komplement som kunne
-lenkjast til spesifikator og komplement på norsk, kunne me ha lenkja
-I' og Vfin. For å tillate desse lenkjene, men ikkje dei i figur
-\ref{fig:gaiGo}, ville det vore nok å krevje at søsternodane var
-lenkja. Hadde me hatt situasjon i figur \ref{fig:enkelsub} nedanfor
-ville dette stemt, Vfin-nodane kan lenkjast fordi S-nodane er lenkja,
-I'-nodane fordi PRONP-nodane er lenkja. 
+lenkjast til spesifikator og komplement på norsk, ville det ha vore
+uproblematisk å lenkje I' og I. Men om me berre har krav
+\ref{krav:c-tentativt} å halde oss til, er det uspesifisert kva me
+skal gjere i ein situasjon kor nodar lenkja på f-strukturnivå ikkje er
+lenkja på c-strukturnivå.
+
+Det finst (iallfall) to alternativ. Me kan seie at I- og I'-nodane
+ikkje skal lenkjast, sidan /det/ og /seg/ er lenkja på f-strukturnivå
+(til subjekt og objekt av gaiGo), då tolker me det slik at I' og IP
+dominerer ulikt lenkja materiale. Det at det /ikkje/ finst ei lenkje
+mellom I'-nodane, men mellom IP-nodane, vil då opplyse oss om at
+I'-nodane dominerer ulike f-strukturlenkja informasjonstilskot på dei
+ulike språka; likeins for I-nodane. Eg kjem tilbake til korleis ein
+kan formalisere dette kravet i del \ref{SEC:infotap}.
+
+Det andre alternativet er å ikkje gjere forskjell på IP, I' og I når det
+gjeld c-strukturlenkjinga. Grunnen til å gjere dette er at /gaiGo/
+både korresponderer med heile frasen /det åpnet seg/, men au med berre /åpnet seg/.
+I figur \ref{fig:PanJara-gaiGo} ser me t.d. at I'-nodane
+kan lenkjast (utan å sjå på anna enn krav \ref{krav:c-tentativt}), det vil altså
+vere mogleg å lenkje I'-nodane
+i andre omgivnader. Det finst ein slags dobbeltheit mellom
+korrespondansen /gaiGo-det åpnet seg/ og korrespondansen /gaiGo-åpnet seg/
+og me kan uttrykkje dette ved å ikkje gjere forskjell på IP og I' i figur
+\ref{fig:gaiGo} \citep{dyvik2010pc}.\fxnote[inline,nomargin]{har eg forstått dette
+rett? (korleis er dette ein korrespondanse på tokennivå?)}
 
 #+BEGIN_LaTeX
-    \begin{figure}[htp]
-    \centering
-    \begin{tikzpicture}
-      \Tree
-      [.\node(IPk){IPfoc};
-         [.\node(NPk){PRONP}; \edge[roof]; {...} ] 
-         [.\node(Ibark){I'};  [.\node(Vfink){Vfin}; {...}  ]
-                                     [.\node(Sk){S}; \edge[roof]; {...} ]
-         ]
-      ]
-  \begin{scope}[shift={(2in,0in)}]
-    \Tree [.\node(IPb){IP}; 
-      [.\node(PRONPb){PRONP}; \edge[roof]; {det} ] 
-      [.\node(Ibarb){I'};  [. \node(Vfinb){Vfin}; \node(åpnet){åpnet};  ]
-           [.\node(Sb){S}; \edge[roof]; {seg} ] ] ]
-  \end{scope}
-     \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
-      \draw[-,very thick] (Vfink)..controls +(north east:1.5) and +(north west:1.5) .. (Vfinb) ;
-      \draw[-,very thick] (Ibark)..controls +(north east:1.5) and +(north west:1.5) .. (Ibarb) ;
-    % \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
-     \draw[-] (NPk)..controls +(north east:1) and +(north west:1) .. (PRONPb) ;
-     \draw[-] (Sk)..controls +(north east:1) and +(north west:1) .. (Sb) ;    
-    \end{tikzpicture}
-    
-    \fxnote{TODO: teikne inn f-domene her òg}
-    
-    \caption{Ei enkel lenkjing av c-strukturnodar}
-     \label{fig:enkelsub}
-    \end{figure}
+\begin{figure}[htp]
+\centering
+\begin{tikzpicture}
+\Tree [.\node(IPs){IP}; 
+  [.\node(NPs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {PanJara} ] 
+  [.\node(I's){I'};  [.\node(Is){I};    \node(gaiGo){gaiGo};  ]
+  ] ]
+     \begin{scope}[shift={(2in,0in)}]
+\Tree [.\node(IPt){IP}; 
+  [.\node(NPt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {vinduet} ] 
+  [.\node(I't){I'};  [. \node(It){I}; \node(åpnet){åpnet};  ]
+       [.\proj{NP}{\ua OBJ=\da} \edge[roof]; {seg} ] ] ]
+\end{scope}
+ \draw[-] (IPs)..controls +(north:1) and +(north:1) .. (IPt) ;
+  \draw[-,very thick] (I's)..controls +(north east:1.5) and +(north west:1.5) .. (I't) ;
+%  \draw[dashed,-] (Is)..controls +(north east:1) and +(north west:1) .. node[midway,sloped]{$\times$}(It) ;
+ \draw[-] (NPs)..controls +(north east:2) and +(north west:2) .. (NPt) ;
+
+\end{tikzpicture}
+\caption{Delvis mogleg lenkjing av underordna c-strukturnodar mellom georgisk og bokmål}
+ \label{fig:PanJara-gaiGo}
+\end{figure}
 #+END_LaTeX
 
 
-Men det blir for strengt å krevje at søsternodar er lenkja; S-noden i
-den norske analysen er ein del av det funksjonelle domenet til IP,
-medan komplementet i andre språk kanskje går rett på eit nytt
-funksjonelt domene. Figur \ref{fig:enkelsub2} demonstrerer denne
-situasjonen. Her kan ikkje S lenkjast til PRONrfl sidan dei ikkje er i
-same funksjonelle domene, men me vil jo likevel lenkje Vfin-nodane. 
-
-#+BEGIN_LaTeX
-    \begin{figure}[htp]
-    \centering
-    \begin{tikzpicture}
-      \Tree
-      [.\node(IPk){IPfoc};
-         [.\node(NPk){PRONP}; \edge[roof]; {...} ] 
-         [.\node(Ibark){I'};  [.\node(Vfink){Vfin}; {...}  ]
-                                     [.\node(PRONrflk){PRONrfl}; \edge[roof]; {...} ]
-         ]
-      ]
-  \begin{scope}[shift={(2in,0in)}]
-    \Tree [.\node(IPb){IP}; 
-      [.\node(PRONPb){PRONP}; \edge[roof]; {det} ] 
-      [.\node(Ibarb){I'};  [. \node(Vfinb){Vfin}; \node(åpnet){åpnet};  ]
-           [.\node(Sb){S}; [.\node(PRONrflb){PRONrfl}; {seg} ] ] ] ]
-  \end{scope}
-     \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
-      \draw[-,very thick] (Vfink)..controls +(north east:1.5) and +(north west:1.5) .. (Vfinb) ;
-      \draw[-,very thick] (Ibark)..controls +(north east:1.5) and +(north west:1.5) .. (Ibarb) ;
-    % \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
-     \draw[-] (NPk)..controls +(north east:1) and +(north west:1) .. (PRONPb) ;
-     \draw[-] (PRONrflk)..controls +(north east:1) and +(north west:1) .. (PRONrflb) ;    
-    \end{tikzpicture}
-    
-    \fxnote{TODO: teikne inn f-domene her òg}
-    
-    \caption{Her vil me lenkje Vfin-nodane utan å lenkje søstrene deira.}
-     \label{fig:enkelsub2}
-    \end{figure}
-#+END_LaTeX
-
-Me treng altså eit litt meir nyansert
-krav. \citet[s.~77]{dyvik2009lmp} definerer i denne samanhengen
+\citet[s.~77]{dyvik2009lmp} definerer i denne samanhengen
 omgrepet /lenkja leksikalske nodar/, $LL$, kor $LL(n)$ er mengda av
 nodar dominert av $n$ som har ei ordlenkje. For å lenkje
 c-strukturnodane $n_s$ og $n_t$, som er i lenkja funksjonelle domene,
 må alle nodane i mengda $LL(n_s)$ vere lenkja til nodar i
 $LL(n_t)$. Ulenkja nodar under $n_s$ og $n_t$ står ikkje i vegen for
 lenkjing av $n_s$ og $n_t$, men dei to mengdene kan ikkje vere tomme.
-For at me skal unngå å lenkje I' og Vfin i figur \ref{fig:gaiGo} må
-altså /det/ og /seg/ òg vere ordlenkja til /gaiGo/. Dette blir ei
-ein-til-mange-lenkje på ordnivå, som må representerast som fleire
-lenkjer som alle byrjar i /gaiGo/. Viss georgisk er kjeldespråket
-($n_s$, norsk: $n_t$) blir
-$LL(IP_s)=LL(I'_s)=LL(V_s)=\{(\text{det},\text{gaiGo}),(\text{åpnet},\text{gaiGo}),(\text{seg},\text{gaiGo})\}=LL(IP_t)$.
-Mengdene
-$LL(I'_t)=\{(\text{åpnet},\text{gaiGo}),(\text{det},\text{gaiGo})\}$
-og $LL(Vfin_t)=\{(\text{åpnet},\text{gaiGo})\}$ på den norske sida har
-ikkje korresponderande mengder på georgisk og blir ikkje lenkja[fn:4].
+
+Dette kravet gjer at ein ikkje treng krav \ref{krav:c-tentativt}, og
+vil gi ei mange-mange-lenkje mellom alle nodane i dei to funksjonelle
+domena til /gaiGo-åpnet/ i figur \ref{fig:gaiGo}, sidan
+$LL(IP_s)=LL(I'_s)=LL(I_s)=\{(\text{gaiGo},\text{åpnet})\}=LL(IP_t)=LL(I'_t)=LL(I_t)$,
+kor georgisk er kjeldespråket og har subskript $_s$, og norsk er
+målspråket med subskript $_t$, og /det/ og /seg/ er ulenkja på både
+c-strukturnivå og ordnivå[fn:26].
+
+\fxnote{TODO: diskutere litt meir forskjellane på desse alternativa}
+
+*** Informasjonstap som lenkjingskriterium
+\label{SEC:infotap}
+
+Sidan det er mogleg å ønskje seg å ikkje lenkje I'- og I-nodane i
+\ref{fig:gaiGo}, gir eg her ei alternativ løysing. 
+
+For å tillate lenkjene i figur \ref{fig:enkel-c-lenkje}, men ikkje dei
+stipla lenkjene i figur \ref{fig:gaiGo}, ville det vore nok å krevje
+at søsternodane var lenkja. I figur \ref{fig:enkel-c-lenkje} kan
+I-nodane lenkjast fordi objekta er lenkja, I'-nodane fordi subjekta er
+lenkja.
+Men dette blir for strengt. Det kan t.d. vere gode uavhengige grunnar
+til å ha ein mellomliggande S-node før objektet på norsk, kor S er i
+same funksjonelle domene som IP, medan det kanskje finst uavhengige grunnar
+for å /ikkje/ gjere dette på andre språk. Figur
+\ref{fig:enkel-c-lenkje-med-S} demonstrerer denne situasjonen. Her kan
+ikkje S lenkjast til objektet sidan dei ikkje er i same funksjonelle
+domene, men me vil jo likevel lenkje I-nodane; så eit krav om lenkja
+søsternodar blir for strengt.
+
+#+BEGIN_LaTeX
+\begin{figure}[htp]
+\centering
+  \begin{tikzpicture}
+  \Tree  [.\node(IPs){IP};  [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
+                            [.\node(I's){I'};
+				    [.\node(Is){I}; {regnar} ]
+				    [.S [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttbollar} ] ] ] ]
+      \begin{scope}[shift={(2in,0in)}]
+  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
+                            [.\node(I't){I'}; 
+				    [.\node(It){I}; {regent} ]
+				    [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
+\end{scope}
+  \draw[-,very thick] (I's)..controls +(north east:1.5) and +(north west:1.5) .. (I't) ;
+  \draw[-] (OBJs)..controls +(north east:2) and +(west:1) .. (OBJt) ;
+\end{tikzpicture}
+   \caption{Enkel lenkjing av c-strukturnodar mellom norsk og
+   nederlandsk; IP til IP, I' til I' og I til I.}
+   \label{fig:enkel-c-lenkje-med-S}
+  \end{figure}
+#+END_LaTeX
+
+Me treng altså eit litt meir nyansert krav. Som nemnte i fotnote
+\ref{fn:LL-ordlenkje} går det an å få til dette ved ein kombinasjon av
+konseptet om lenkja leksikalske nodar og å krevje at orda /det/,
+ /åpnet/ og /seg/ i figur \ref{fig:gaiGo} er mange-mange-lenkja på
+ordnivå til /gaiGo/, sidan dei er lenkja til subjekt, predikat og
+objekt av /gaiGo/ på f-strukturnivå. 
 
 Men viss me vil unngå å referere til ordlenkjer, går det au an å
 definere kravet i form av f-strukturlenkjer på preterminale
 nodar[fn:22]:
 
-\ex. \label{subnodekrav-infotap} For å lenkje dei underordna
-     c-strukturnodane $n_s$ og $n_t$ (kor toppnodane i dei
-     funksjonelle domena er lenkja ved
-     krav \ref{f-links-domain}):\\
+\ex. \label{krav:c-infotap} For å lenkje c-strukturnodane $n_s$ og $n_t$:\\
      La $L_c(n_s)$ vere alle
      f-strukturlenkjer frå $\phi(n'_s)$ for alle preterminale $n'_s$
-     som er dominert av $n_s$. Ulenkja nodar $n'_s$ er ikkje med i $L_c$.
-     Nodane $n_s$ og $n_t$ kan då lenkjast viss
-\a.  mor av $n_s$, $m_s$, har same funksjonelle domene som $n_s$,
-     og mor av $n_t$, $m_t$, har same funksjonelle domene som $n_t$, 
-\b.  $m_s$ og $m_t$ er lenkja, 
-\c.  og $L_c(m_s)-L_c(n_s)=L_c(m_t)-L_c(n_t)$.
+     som er dominert av $n_s$. Nodar utan f-strukturlenkjer er ikkje med i $L_c$.
+     Nodane $n_s$ og $n_t$ kan då lenkjast viss $L_c(m_s)-L_c(n_s)=L_c(m_t)-L_c(n_t)$.
+
+# \a.  mor av $n_s$, $m_s$, har same funksjonelle domene som $n_s$,
+#      og mor av $n_t$, $m_t$, har same funksjonelle domene som $n_t$, 
+# \b.  $m_s$ og $m_t$ er lenkja, 
 
 
 \Last[a og -b] seier til saman det same som
-\ref{subnodekrav-f-lenkja}. Det
+\ref{krav:subnode-f-lenkja}. Det
 \Last[c] seier er at me må ha same /informasjonstap/ når me går
 nedover i c-strukturtreet.
 
 Figur \ref{fig:enkelsub2} illusterer dette kravet. IPfoc og IP er
-toppnodar, lenkja ved krav \ref{f-links-domain}. I'-nodane er i lenkja
+toppnodar, lenkja ved krav \ref{krav:f-links-domain}. I'-nodane er i lenkja
 funksjonelle domene og har lenkja mødre. I tillegg har dei same
 informasjonstap:\\
 #+BEGIN_LaTeX
@@ -1729,7 +1743,7 @@ $L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$
   ] ]
      \begin{scope}[shift={(2in,0in)}]
 \Tree [.\node(IPb){IP}; 
-  [.\node(PRONPb){PRONP}; \edge[roof]; {det} ] 
+  [.\node(NPb){NP}; \edge[roof]; {det} ] 
   [.\node(Ibarb){I'};  [. \node(Vfinb){Vfin}; \node(åpnet){åpnet};  ]
        [.S \edge[roof]; {seg} ] ] ]
 \end{scope}
@@ -1737,7 +1751,7 @@ $L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$
   \draw[dashed,-] (Vfink)..controls +(north east:1) and +(north west:1) .. node[midway,sloped]{$\times$}(Vfinb) ;
   \draw[-,very thick] (Ibark)..controls +(north east:1.5) and +(north west:1.5) .. (Ibarb) ;
 % \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
- \draw[-] (NPk)..controls +(north east:1) and +(north west:1) .. (PRONPb) ;
+ \draw[-] (NPk)..controls +(north east:1) and +(north west:1) .. (NPb) ;
 
 \end{tikzpicture}
 
@@ -1776,7 +1790,7 @@ at $n_s$ og $n_t$ skal lenkjast (dvs. ein treng ikkje sjekke
 forskjellen til mornodane). Men skal ein formulere eit slikt krav må
 ein passe på å spesifisere kor djupt ned i f-strukturen ein skal
 kikke, og avgjere om adjunkt-lenkjer skal med, osb. I implementasjonen
-min har eg valt å følgje krav \ref{subnodekrav-infotap} for å unngå å
+min har eg valt å følgje krav \ref{krav:c-infotap} for å unngå å
 måtte kode denne typen informasjon inn i systemet.
 
 *** Funksjonelle c-strukturnodar
@@ -1846,9 +1860,9 @@ ikkje er reflektert i CPnom til Ssub.
 
 (Alle nodane under S vist i dei to trea er i same funksjonelle domene,
 så om dei funksjonelle domena er lenkja, vil
-krav \ref{subnodekrav-f-lenkja}
+krav \ref{krav:subnode-f-lenkja}
 vere oppfylt kva gjeld CP-komplementa -- lenkjinga går ikkje ut over
-dei funksjonelle domena, medan krav~\ref{subnodekrav-infotap} er
+dei funksjonelle domena, medan krav~\ref{krav:c-infotap} er
 dekkja for IP og Ssub med unntaket over.)
 
 #+BEGIN_LaTeX
@@ -2371,7 +2385,7 @@ Rangering foregår etter ulike kriterium. Her er eit par forslag:
 *** argument-argument > argument-adjunkt
     Plusspoeng for argument-argument-lenkjer, burde vere eit bra
     kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
-    i døme \ref{vedde} med \\
+    i døme \ref{ex:vedde} med \\
     =da-najleveba<Abrams,Browne,regne>= adjunkt: =sigarett=\\
     =bet<Abrams,sigarett,regne>= adjunkt: =Browne=
     
@@ -2422,7 +2436,7 @@ ikkje med i $f-alignment$;\\
 som er med i $f-alignment$ men ikkje $aligntable$ (ikkje er rekursivt
 lenkja).}
 
-Programmet =lfgalign= følgjer krav \ref{subnodekrav-infotap} og
+Programmet =lfgalign= følgjer krav \ref{krav:c-infotap} og
 lenkjer øvste nodar i funksjonelle domene, og subordinate nodar som
 har same informasjonstap. Prosedyren =c-align= i kodefigur
 \ref{algo:c-align} implementerer dette kravet. 
@@ -2700,10 +2714,6 @@ språket.»
         \citet{butt1998merger} foreslår ved å la kombinasjonen av to
         ord endre argumentstrukturen til eitt PRED-element.
 
-[fn:4] Eg har ikkje gjort noko forskjell på nodar som dominerer like
-       mengder på same språk, dette kan tolkast som at alle dei
-       ikkje-terminale nodane på georgisk er lenkja til IP på norsk.
-
 [fn:22] Då kan me au representere mange-til-mange-ordlenkjer som
         «udelelege», $(\{\text{gaiGo}\},\{\text{det,åpnet,seg}\})$
         blir den einaste ordlenkja i dømet over, sidan me ikkje må
@@ -2729,3 +2739,20 @@ språket.»
         kausativar som om dei har fleire PRED-element, men det bør i
         såfall skje på uavhengig grunnlag, ikkje for å gjere lenkjinga
         enklare.
+
+[fn:26] \label{fn:LL-ordlenkje} Merk at orda /det/ og /seg/ måtte definerast som ulenkja for
+        at denne definisjonen skulle fungere, noko som krev at ein nyanserer
+        krav \ref{krav:f-links-words} litt. Viss me hadde definert
+        /det/ og /seg/ som mange-ein-lenkja (med /åpnet/) inn i
+        /gaiGo/, ville me fått same resultat som det krav
+        \ref{krav:c-infotap} i del \ref{SEC:infotap} gir.
+	Viss georgisk er kjeldespråket
+	($n_s$, norsk: $n_t$) blir
+	$LL(IP_s)=LL(I'_s)=LL(I_s)=\{(\text{gaiGo},\text{det}),(\text{gaiGo},\text{åpnet}),(\text{gaiGo},\text{seg})\}=LL(IP_t)$.
+	Mengdene
+	$LL(I'_t)=\{(\text{gaiGo},\text{åpnet}),(\text{gaiGo},\text{det})\}$
+	og $LL(I_t)=\{(\text{gaiGo},\text{åpnet})\}$ på den norske
+        sida har då ikkje korresponderande mengder på georgisk og blir
+        ikkje lenkja.
+
+
