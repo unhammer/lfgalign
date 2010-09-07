@@ -1355,6 +1355,8 @@ inndelinga av frasestrukturen i setninga, der ein node på høgare nivå
 c-strukturnodar må altså implisere at det dominerte materialet
 korresponderer.
 
+\fxnote{TODO: fotnote om at opp=ned der anna ikkje er spesifisert}
+
 #+BEGIN_LaTeX
 \begin{figure}[htp]
 \centering
