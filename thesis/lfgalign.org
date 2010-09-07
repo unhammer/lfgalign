@@ -21,6 +21,7 @@
 #+LaTeX_HEADER: \newcommand{\SUBJ}{\F{subj}{}}
 #+LaTeX_HEADER: \newcommand{\SUBJs}{\F{subj~}{}}
 #+LaTeX_HEADER: \newcommand{\PRED}{\F{pred}{}}
+#+LaTeX_HEADER: \newcommand{\TOPIC}{\F{topic}{}}
 #+LaTeX_HEADER: \newcommand{\falign}{\ensuremath{\operatorname{\emph{falign}}}}
 #+LaTeX_HEADER: \newcommand{\fpairs}{\ensuremath{\operatorname{\emph{fpairs}}}}
 #+LaTeX_HEADER: \newcommand{\Bleu}{\textsc{Bleu}}
@@ -41,7 +42,7 @@ nyttig sparse tree: SKRIV
 [[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
 
 
-* Innleiing
+* Innleiing							     :ROTETE:
 \label{SEC:innleiing}
 
 \fxnote{TODO: abstract/samandrag}
@@ -268,7 +269,7 @@ likt, medan mangel på samsvar i samanstillinga til døtre kan føre til
 at mornodar ikkje skal samanstillast; ein formalisering dette steget,
 med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
-* Bakgrunn og omgrepsavklaring
+* Bakgrunn og omgrepsavklaring					     :ROTETE:
   \label{SEC:bakgrunn}
 
 ** SKRIV Relaterte metodar
@@ -1347,9 +1348,12 @@ lenkja vil ikkje gi oss meir informasjon enn at sjølve f-strukturane
 er lenkja; ei lenkje på c-strukturnivå bør kunne gi meir nyansert
 informasjon.
 
-Det viktige forholdet på c-strukturnivå er /dominans/; ein c-struktur
-gir ein hierarkisk inndeling av frasestrukturen i setninga, der ein
-node på høgare nivå /dominerer/ mengder av nodar på lågare nivå. 
+Det viktige forholdet på c-strukturnivå er /dominans/; hovudgrunnen
+til at me snakkar om c-struktur er at me vil skildre den hierarkiske
+inndelinga av frasestrukturen i setninga, der ein node på høgare nivå
+/dominerer/ mengder av nodar på lågare nivå. Ei lenkje mellom to
+c-strukturnodar må altså implisere at det dominerte materialet
+korresponderer.
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -1357,7 +1361,7 @@ node på høgare nivå /dominerer/ mengder av nodar på lågare nivå.
   \begin{tikzpicture}
   \Tree  [.\node(IPs){IP};  [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
                             [.\node(I's){I'};
-				    [.\node(Is){I}; {regner} ]
+				    [.\node(Is){I}; {regnar} ]
 				    [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttbollar} ] ] ]
       \begin{scope}[shift={(2in,0in)}]
   \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
@@ -1366,12 +1370,13 @@ node på høgare nivå /dominerer/ mengder av nodar på lågare nivå.
 				    [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
 \end{tikzpicture}
-   \caption{Enkel lenkjing av c-strukturnodar mellom norsk og nederlandsk}
+   \caption{Enkel lenkjing av c-strukturnodar mellom norsk og
+   nederlandsk; IP til IP, I' til I' og I til I.}
    \label{fig:enkel-c-lenkje}
   \end{figure}
 #+END_LaTeX
 
-I figur \ref{fig:enkel-c-lenkje} er dei funksjonelle domena til /regne/regent/ 
+I figur \ref{fig:enkel-c-lenkje} er dei funksjonelle domena til /regnar/regent/ 
 lenkja, og det same med /det/het/ og /kjøttbollar/gehaktballen/. 
 Viss me føreset at subjekt-NP-ane er lenkja med kvarandre, og at
 objekt-NP-ane er lenkja med kvarandre, på c-strukturnivå,
@@ -1391,15 +1396,15 @@ som står under desse korresponderer, men au at nodane står i liknande
 omgivnader. Det er lett å sjå føre seg eit døme der det ikkje ville
 vore ønskeleg med ei lenkje mellom I'-nodane. I figur
 \ref{fig:ikkje-c-lenkje} vil me t.d. ikkje lenkje desse nodane, på
-kjeldesida dominerer I' subjektet, som er lenkja til subjektet på
-målsida, men på målsida står ikkje subjektet under I', og omvendt for
+norsk dominerer I' subjektet, som er lenkja til subjektet på
+nederlandsk, men på nederlandsk står ikkje subjektet under I', og omvendt for
 objektet. Ei lenkje mellom I'-nodane ville sagt at nodane dei
 dominerte projiserte korresponderande informasjon, det gjer dei ikkje
-i figur \ref{fig:ikkje-c-lenkje}, medan i \ref{fig:enkel-c-lenkje}
-står dei lenkja objekta under I' medan dei lenkja subjekta er
-utanfor. Men merk at IP-nodane likevel kan lenkjast, dei dominerer
-begge både subjekt og objekt, sjølv om dei kjem i ulik følgje under;
-I-nodane berre dominerer verba, og au kan lenkjast.
+i figur \ref{fig:ikkje-c-lenkje}. (I \ref{fig:enkel-c-lenkje}, derimot,
+står dei lenkja objekta under I', medan dei lenkja subjekta er
+utanfor.) Men merk at IP-nodane likevel kan lenkjast, dei dominerer
+begge både subjekt og objekt, sjølv om dei kjem i ulik følgje under.
+I-nodane dominerer berre verba, og kan au lenkjast.
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -1407,10 +1412,10 @@ I-nodane berre dominerer verba, og au kan lenkjast.
   \begin{tikzpicture}
   \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttboller} ]
                             [.\node(I's){I'};
-				    [.\node(Is){I}; {regner} ]
+				    [.\node(Is){I}; {regnar} ]
 				    [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
 				     ] ]
-      \begin{scope}[shift={(2in,0in)}]
+      \begin{scope}[shift={(2.5in,0in)}]
   \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
                             [.\node(I't){I'}; 
 				    [.\node(It){I}; {regent} ]
@@ -1430,21 +1435,20 @@ I-nodane berre dominerer verba, og au kan lenkjast.
 #+END_LaTeX
 
 Sjølv om subjektet sto ulenkja, t.d. ved lenkjing inn i eit
-pro-drop-språk, ville me fått same situasjon; I'-nodane i figur
-\ref{fig:ikkje-c-lenkje-pro-drop} kan ikkje lenkjast sidan I' på
-islandsk dominerer objektet, medan I' på norsk ikkje gjer dette, og
+pro-drop-språk eller liknande, ville me fått same situasjon; I'-nodane
+i figur \ref{fig:ikkje-c-lenkje-pro-drop} kan ikkje lenkjast sidan I'
+på islandsk dominerer objektet, medan I' på norsk ikkje gjer dette, og
 objekta er lenkja med kvarandre (her både på c- og f-strukturnivå). Ei
 lenkje mellom desse I'-nodane ville sagt at dei dominerer
-korresponderande materiale, men det gjer dei ikkje. 
+korresponderande materiale, men det gjer dei ikkje.
 
 #+BEGIN_LaTeX
   \begin{figure}[htp]
-  \fxnote{todo: korrekt f-domene-annotasjon}
   \centering
     \begin{tikzpicture}
     \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttboller} ]
                               [.\node(I's){I'};
-                                      [.\node(Is){I}; {regner} ]
+                                      [.\node(Is){I}; {regnar} ]
                                       [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
                                        ] ]
         \begin{scope}[shift={(2in,0in)}]
@@ -1453,10 +1457,8 @@ korresponderande materiale, men det gjer dei ikkje.
                                       [.\node(It){I}; {rignir} ]
                                       [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjötbollum} ] ]   ]
   \end{scope}
-\draw[-,very thick] (IPs)..controls +(north east:1) and +(north:1) .. (IPt) ;
 \draw[dashed,-] (I's)..controls +(north:1) and +(north:1) .. node[midway,sloped]{$\times$} (I't) ;
 \draw[-] (OBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (OBJt) ;
-\draw[-,very thick] (Is)..controls +(south east:1) and +(south west:1) ..  (It) ;
   
   \end{tikzpicture}
      \caption{C-strukturlenkjer kan ikkje gå på tvers av dominerte
@@ -1466,12 +1468,6 @@ korresponderande materiale, men det gjer dei ikkje.
 #+END_LaTeX
 
 
-\fxnote[inline,nomargin]{TODO til det med dominans nemndt tidlegare:}
-Som desse døma viser må me nyansere prinsippet om å ikkje lenkje
-c-strukturnodar som går på tvers av f-strukturlenkjer til å ta innover
-seg dominans: me vil ikkje lenkje c-strukturnodar viss /det dei
-dominerer/ kjem i konflikt med f-strukturlenkjer.
-
 Når treet deler seg i to som i desse figurane, får me ei mogleg
 oppdeling av kjeldene til f-strukturinformasjonen. Me vil ikkje lenkje
 nodar som ikkje gir same tilskot til f-strukturen, på same måte som me
@@ -1480,12 +1476,24 @@ ikkje vil lenkje på tvers av f-strukturlenkjer.
 I både figur \ref{fig:ikkje-c-lenkje} og figur
 \ref{fig:ikkje-c-lenkje-pro-drop} er det slik at det I'-nodane dominerer gir
 ulike tilskot til f-strukturen, dei kan difor ikkje lenkjast. Likevel
-må me tillate litt slingringsmonn her, X' og Z' skal ikkje trenge
+må me tillate litt slingringsmonn her, nodane skal ikkje trenge
 projisere heilt like f-strukturar. Det som er relevant er det som blir
 lenkja i f-strukturen.
 
+Som desse døma viser må me nyansere prinsippet om å ikkje lenkje
+c-strukturnodar på tvers av f-strukturlenkjer, til å ta innover
+seg dominans: me vil ikkje lenkje c-strukturnodar viss /det dei
+dominerer/ kjem i konflikt med f-strukturlenkjer.
+
+
 I visse tilfelle kan det hende at sjølv toppnodane i det funksjonelle
-domenet ikkje bør lenkjast.
+domenet ikkje bør lenkjast. I døma over dominerer toppnoden i det
+funksjonelle domenet, IP, alt som står under $\phi(IP)$ i
+f-strukturen.  I figur \ref{fig:ikkje-c-lenkje-toppnode}, derimot, er
+objektet til /regna/ ikkje dominert av toppnoden i det funksjonelle
+domenet til /regna/, VP-en; men det er lenkja til objektet i
+funksjonelle domenet til /rained/. F-strukturane til dei to VP-ane er
+lenkja, men toppnodane i dei funksjonelle domena kan ikkje lenkjast.
 
 #+BEGIN_LaTeX
   \begin{figure}[htp]
@@ -1498,38 +1506,55 @@ domenet ikkje bør lenkjast.
                                                [.\node(SPKRs){\proj{NP}{\ua SUBJ=\da}}; {ho} ]
                                                [.\node(VPs){\proj{VP}{\ua COMP=\da}}; [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
                         					                      [.\node(Vs){V}; {regna} ] ] ] ] ]
-         \begin{scope}[shift={(3in,0in)}]
-    \Tree  [.\node(IPt){IP};  {TODO}   ]
+         \begin{scope}[shift={(0in,-2.5in)}]
+    \Tree  [.\node(IPs){IP};  [.\node(SPKRt){\proj{NP}{\ua SUBJ=\da}}; {she} ]
+                               [.\node(I's){I'};
+                                       [.\node(It){I}; {said} ]
+                                       [.\node(VPt){\proj{VP}{\ua COMP=\da}}; [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {it} ]
+                        				                      [.\node(V't){V'}; [.\node(Vt){V}; {rained} ]
+                                               					                [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {meatballs} ]
+ ] ] ] ]
   \end{scope}
-  %\draw[-,very thick] (IPs)..controls +(north east:1) and +(north:1) .. (IPt) ;
-  %\draw[dashed,-] (I's)..controls +(north:1.1) and +(north:1.1) .. node[midway,sloped]{$\times$} (I't) ;
-  %\draw[-] (SUBJs)..controls +(south east:2) and +(east:2) ..  (SUBJt) ;
-  %\draw[-] (OBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (OBJt) ;
-  %\draw[-,very thick] (Is)..controls +(south east:1) and +(south west:1) ..  (It) ;
+  %\draw[-] (SPKRs)..controls +(south west:3) and +(west:3) ..  (SPKRt) ;
+  \draw[dashed,-] (VPs)..controls +(north east:3) and +(east:4) ..  node[midway,sloped]{$\times$} (VPt) ;
+  \draw[-] (OBJs)..controls +(west:4) and +(north east:3) ..  (OBJt) ;
   
   \end{tikzpicture}
-     \caption{Sjølv toppnodane kan stå ulenkja}
+     \caption{Sjølv toppnodane i eit funksjonelt domene kan stå
+     ulenkja; her kan ikkje VP-nodane lenkjast sidan det norske
+     \TOPIC{} er objektet til \emph{regna}, lenkja til objektet under
+     VP på engelsk}
      \label{fig:ikkje-c-lenkje-toppnode}
     \end{figure}
 #+END_LaTeX
 
-# CURRENT
+Me vil altså lenkje ein node $n_s$ med $n_t$ berre viss $\phi(n_s)$ er
+lenkja på f-strukturnivå med $\phi(n_t)$, og det ikkje finst nodar
+under $n_s$ som er lenkja med nodar utanfor det funksjonelle domenet
+til $n_t$, og omvendt. 
 
-I enkle tilfelle vil nodane dominert av toppnoden XP i eit funksjonelt
-domene inkludere alt som står under $\phi(XP)$ i f-strukturen. Men i
-ei setning som «Kven sa du at du likte?» vil objektet til /like/
-stå utanfor det funksjonelle domenet til /like/, om me skal lenkje
-dette til «You said you liked who?»
+Men, kva om det finst nodar under $n_s$ som ikkje er lenkja på
+c-strukturnivå (kanskje fordi det ikkje finst tilsvarande nodar på
+målspråket, t.d. ved lenkjing inn i pro-drop-språk), men som har ei
+lenkje på f-strukturnivå?  Her finst det fleire alternative løysingar,
+som eg ser på nedanfor.
+
+*** Ulenkja c-strukturnodar
+I figur \ref{fig:gaiGo} kan iallfall IP-nodane lenkjast, dei dominerer
+alle orda på begge setningane, og f-strukturane er lenkja
+
+\fxnote{CURRENT TODO (bilete av f-lenkjer? iallfall fjerne ein del i
+denne delen, og liste opp alternativ LL vs $LL_c$)}
 
 For å gjere dette meir konkret kan me sjå på dømet i figur
-\ref{fig:ikkjesub}. IP-nodane er her lenkja, men me kan ikkje lenkje
+\ref{fig:gaiGo}. IP-nodane er her lenkja, men me kan ikkje lenkje
 I'-nodane i same funksjonelle domene. PRONP-noden, spesifikator på den
 norske sida, er ikkje lenkja med nokon spesifikator på den georgiske
 sida. Den informasjonen (her reint syntaktisk) som ordet /det/
 tilfører IP, ligg under I' på georgisk. Me kunne lenkja I' om me hadde
 ein georgisk spesifikator som var lenkja til den norske PRONP. Me kan
 heller ikkje lenkje Vfin til V, her manglar endå meir informasjon
-(både frå /det/ og frå /seg/). 
+(både frå /det/ og frå /seg/).
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -1554,14 +1579,14 @@ heller ikkje lenkje Vfin til V, her manglar endå meir informasjon
 \fxnote{TODO: teikne inn f-domene her òg}
 
 \caption{Umogleg lenkjing av underordna c-strukturnodar mellom georgisk og bokmål}
- \label{fig:ikkjesub}
+ \label{fig:gaiGo}
 \end{figure}
 #+END_LaTeX
 
 Hadde det georgiske treet hatt spesifikator og komplement som kunne
 lenkjast til spesifikator og komplement på norsk, kunne me ha lenkja
 I' og Vfin. For å tillate desse lenkjene, men ikkje dei i figur
-\ref{fig:ikkjesub}, ville det vore nok å krevje at søsternodane var
+\ref{fig:gaiGo}, ville det vore nok å krevje at søsternodane var
 lenkja. Hadde me hatt situasjon i figur \ref{fig:enkelsub} nedanfor
 ville dette stemt, Vfin-nodane kan lenkjast fordi S-nodane er lenkja,
 I'-nodane fordi PRONP-nodane er lenkja. 
@@ -1646,7 +1671,7 @@ c-strukturnodane $n_s$ og $n_t$, som er i lenkja funksjonelle domene,
 må alle nodane i mengda $LL(n_s)$ vere lenkja til nodar i
 $LL(n_t)$. Ulenkja nodar under $n_s$ og $n_t$ står ikkje i vegen for
 lenkjing av $n_s$ og $n_t$, men dei to mengdene kan ikkje vere tomme.
-For at me skal unngå å lenkje I' og Vfin i figur \ref{fig:ikkjesub} må
+For at me skal unngå å lenkje I' og Vfin i figur \ref{fig:gaiGo} må
 altså /det/ og /seg/ òg vere ordlenkja til /gaiGo/. Dette blir ei
 ein-til-mange-lenkje på ordnivå, som må representerast som fleire
 lenkjer som alle byrjar i /gaiGo/. Viss georgisk er kjeldespråket
@@ -2019,7 +2044,7 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
    \label{SEC:rangering}
 (meir om dette i del \ref{SEC:impl-f-rangering})
 
-* Implementasjonen av =lfgalign=
+* Implementasjonen av =lfgalign=				     :ROTETE:
 \label{SEC:implementasjon}
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
