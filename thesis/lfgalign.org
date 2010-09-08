@@ -1355,7 +1355,6 @@ inndelinga av frasestrukturen i setninga, der ein node på høgare nivå
 c-strukturnodar må altså implisere at det dominerte materialet
 korresponderer.
 
-\fxnote{TODO: fotnote om at opp=ned der anna ikkje er spesifisert}
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -1379,7 +1378,7 @@ korresponderer.
 #+END_LaTeX
 
 I figur \ref{fig:enkel-c-lenkje} er dei funksjonelle domena til /regnar/regent/ 
-lenkja, og det same med /det/het/ og /kjøttbollar/gehaktballen/. 
+lenkja[fn:4], og det same med /det/het/ og /kjøttbollar/gehaktballen/. 
 Viss me føreset at subjekt-NP-ane er lenkja med kvarandre, og at
 objekt-NP-ane er lenkja med kvarandre, på c-strukturnivå,
 vil det vere ønskeleg å ein-ein-lenkje IP-nodane, I'-nodane og
@@ -1495,7 +1494,14 @@ f-strukturen.  I figur \ref{fig:ikkje-c-lenkje-toppnode}, derimot, er
 objektet til /regna/ ikkje dominert av toppnoden i det funksjonelle
 domenet til /regna/, VP-en; men det er lenkja til objektet i
 funksjonelle domenet til /rained/. F-strukturane til dei to VP-ane er
-lenkja, men toppnodane i dei funksjonelle domena kan ikkje lenkjast.
+lenkja, men toppnodane i dei funksjonelle domena kan ikkje lenkjast
+sidan dei to toppnodane dominerer materiale som inneheld ulike lenkjer
+på f-strukturnivå -- ei slik c-strukturlenkje ville stått i konflikt
+med f-strukturlenkjene. Intuitivt synest det au feil med ei lenkje
+mellom konstituentane /det regner/ og /it rained meatballs/. Dei kan
+iallfall ikkje reknast som omsetjingar av kvarandre åleine; i ein
+større kontekst kan dei inngå i ein korrespondanse, men denne større
+konteksten har me jo lenkja allereie ved IP-nodane.
 
 #+BEGIN_LaTeX
   \begin{figure}[htp]
@@ -1530,7 +1536,7 @@ lenkja, men toppnodane i dei funksjonelle domena kan ikkje lenkjast.
     \end{figure}
 #+END_LaTeX
 
-I det minste vil me altså krevje følgjande av lenkjer på c-strukturnivå:
+I det minste bør me difor krevje følgjande av lenkjer på c-strukturnivå:
 \ex.\label{krav:c-tentativt} Ein node $n_s$ kan lenkjast med ein node $n_t$ berre viss:
 \a. $\phi(n_s)$ er lenkja på f-strukturnivå med $\phi(n_t)$, og
 \b. det ikkje finst nodar under $n_s$ som er lenkja med nodar utanfor det funksjonelle domenet
@@ -1544,15 +1550,16 @@ målspråket, t.d. ved lenkjing inn i pro-drop-språk), men som har ei
 lenkje på f-strukturnivå?  Her finst det fleire alternative løysingar,
 som eg ser på nedanfor.
 
-*** Ulenkja c-strukturnodar
-\label{SEC:ulenkja-c-nodar}
+*** Lenkja f-strukturar utan c-strukturnodar
+\label{SEC:f-lenkje-utan-c-node}
+
 I figur \ref{fig:gaiGo} kan iallfall IP-nodane lenkjast, dei dominerer
-alle orda på begge setningane, og f-strukturane er lenkja. Men 
-NP-subjektet på den norske sida, er ikkje lenkja med
-noko i det georgiske treet. Den informasjonen (her reint
-syntaktisk) som ordet /det/ tilfører IP, ligg under I' på georgisk; og
-ved I-nodane manglar det norske treet i tillegg den informasjonen som
-/seg/ tilfører. 
+alle orda på begge setningane, og f-strukturane er lenkja. Men
+NP-subjektet på den norske sida, er ikkje lenkja med noko i det
+georgiske treet; dette subjektet er lenkja med eit pro-element på
+f-strukturnivå. Den informasjonen (her reint syntaktisk) som ordet
+/det/ tilfører IP, ligg under I' på georgisk. Ved I-nodane manglar
+det norske treet i tillegg den informasjonen som /seg/ tilfører.
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -1577,8 +1584,6 @@ ved I-nodane manglar det norske treet i tillegg den informasjonen som
  \label{fig:gaiGo}
 \end{figure}
 #+END_LaTeX
-\fxnote{TODO fotnote om at eg har forenkla trea litt, ikkje PRONP og
-PRONrfl og Vfin og slikt}
 
 Hadde det georgiske treet hatt spesifikator og komplement som kunne
 lenkjast til spesifikator og komplement på norsk, ville det ha vore
@@ -1718,11 +1723,6 @@ nodar[fn:22]:
      f-strukturlenkja preterminale $n'$ som er dominert av $n$.
      $n_s$ og $n_t$ kan lenkjast om $L_c(n_s)=L_c(n_t)$.
 
-F-strukturen til /gaiGo/ i dømet over har eit pro-element (lenkja til
-/seg/) som argument, difor kan me finne
-f-strukturlenkja til dette argumentet når me finn $L_c(I'_s)$. 
-
-
 I figur \ref{fig:PanJara-gaiGo} har me då følgjande situasjon:\\
 #+BEGIN_LaTeX
 \\$L_c(IP_s)=\{(\textbf{PanJara},\textbf{vindu}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}=L_c(IP_t)$
@@ -1736,8 +1736,9 @@ IP-nodane og I'-nodane, men ikkje mellom I-nodane. I figur
 \ref{fig:gaiGo} vil ikkje ein gong I'-nodane få ei lenkje, sidan den
 norske I'-node dominerer 
 $\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}$
-medan den georgiske I'-node dominerer det same som IP-nodane, 
-$\{(\textbf{pro},\textbf{det}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}$.
+medan den georgiske I'-node dominerer
+$\{(\textbf{pro},\textbf{det}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}$,
+det same som IP-nodane.
 
 
 *** Funksjonelle c-strukturnodar
@@ -2456,7 +2457,7 @@ returnert av =c-align=. Om brukarvariabelen
 =*pro-args-affect-c-links*= er sann, vil me leggje til lenkja
 pro-argument i lenkjemengdene; denne variabelen styrer forskjellen
 mellom dei to alternative løysingane på ulenkja c-strukturnodar
-diskutert i del \ref{SEC:ulenkja-c-nodar}.
+diskutert i del \ref{SEC:f-lenkje-utan-c-node}.
 
 Prosessen er no ferdig, mange-til-mange-lenkjene mellom
 c-strukturnodar definerer frasesamanstillinga
@@ -2691,5 +2692,13 @@ språket.»
 	og $LL(I_t)=\{(\text{gaiGo},\text{åpnet})\}$ på den norske
         sida har då ikkje korresponderande mengder på georgisk og blir
         ikkje lenkja.
+
+[fn:4] I desse trea har eg annotert f-strukturforhold på visse nodar;
+       der eg ikkje har teikna inn dette gjeld $\ua=\da$, altså at
+       noden er i same funksjonelle domene som mornoden. Eg har i
+       tillegg forenkla kategorinamna ein del frå dei som kjem direkte
+       frå ParGram/XPar-analysane, det bør ikkje ha noko å seie for
+       framstillinga her.
+
 
 
