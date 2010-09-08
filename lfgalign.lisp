@@ -10,6 +10,7 @@
 
 (defvar *no-warnings* t)
 (defvar *debug* nil)
+(defvar *pro-affects-c-linking* t)
 
 ;;;;;;;; C-STRUCTURE TREE:
 ;;;;;;;; -----------------
@@ -112,6 +113,7 @@ subtrees)."
 	    (multiple-value-bind (Rtree Rdepth) (topnodes c-ids (fourth tree))
 	      (cond ((and Ltree Rtree) ; exists in both, choose shallowest
 		     (error "Yay, found a discontinuous constituent! Boo, have work to do...")
+		     ;; unreachable code due to above error ;-)
 		     (when (= Ldepth Rdepth) (warn "Equal depth, arbitrarily going right"))
 		     (if (< Ldepth Rdepth)
 			 (values Ltree (1+ Ldepth))
@@ -166,8 +168,12 @@ a number (pointing to where the trimmed tree was cut off)."
 (defun null-pred? (Pr)
   (equal Pr "NULL"))
 
-(defun get-equivs (val tab)
-  (dset3-findall val (gethash '|eq-sets| tab)))
+(defun get-equivs (val tab &optional include-this)
+  (let ((equivs
+	 (dset3-findall val (gethash '|eq-sets| tab))))
+    (if include-this
+	(adjoin val equivs)
+      equivs)))
 
 (defun eq-f (f-id1 f-id2 tab)
   "`f-id1' and `f-id2' are two f-structure id-s in `tab'. 
@@ -658,7 +664,7 @@ defined by `f-alignment', which must have been through `flatten';
 				#'rassoc
 				#'assoc))
 		    (links (mapcar-true (lambda (var) (funcall getter var f-alignment))
-				       (adjoin src (get-equivs src tab)))))
+				        (get-equivs src tab 'include-this))))
 	       (when (cdr links) (error "More than one link: ~A for f-var: ~A" links src))
 	       (car links))))
     (let* ((prets (preterms (treefind c-id tree)))
@@ -697,6 +703,13 @@ defined by `f-alignment', which must have been through `flatten';
 	     (when (member c-id v) (return-from get-links k)))
 	   (LL-tab splits)))
 
+(defun nodeless-args (f-id tab)
+  "Return arguments of PRED with `f-id' that have no c-structure nodes.
+TODO: could pro-arguments ever have pro-arguments of their own? 
+Seems unlikely, but worth a footnote..."
+   (remove-if (lambda (arg) (phi^-1 arg tab))
+	      (get-args (get-pred f-id tab) 'no-nulls)))
+
 (defmethod add-links (f-alignment tree tab (splits LL-splits) from)
   "Return links of all pre-terminals under the subtree `tree' as a
 list. As a side-effect, if any of the preterminals under this node
@@ -711,19 +724,23 @@ the MRS suite, Abrams is a different f-domain from its mother, while
 in dev/TEST_simple_t.pl, qePa is a different f-domain; I don't know why, but their
 phi's don't match anything in the files)."
   (when (trim? tree) (error "Trimmed tree sent to add-links, don't do that."))
-  (labels ((get-link (f-id)
+  (labels ((get-links (f-id)
 	     (let* ((getter (if (eq from 'trg)
 				#'rassoc
 			      #'assoc))
+		    (f-ids (union
+			    (get-equivs f-id tab 'include-this)
+			    (when *pro-affects-c-linking*
+			      (nodeless-args f-id tab))))
 		    (links (mapcar-true (lambda (var) (funcall getter var f-alignment))
-					(adjoin f-id (get-equivs f-id tab)))))
-	       (when (cdr links) (error "More than one link: ~A for f-var: ~A" links f-id))
-	       (car links))))
+					f-ids)))
+	       links)))
     (when tree
       (awhen (if (or (terminal? (third tree)) (terminal? (fourth tree)))
 		 (if (and (third tree) (fourth tree))
 		     (error "Unexpected branching in preterminal, TODO")
-		   (awhen (get-link (phi (car tree) tab)) (list it)))
+		   (awhen (get-links (phi (car tree) tab))
+			  it))
 		 (union (add-links f-alignment (third tree) tab splits from)
 			(add-links f-alignment (fourth tree) tab splits from)))
 	(add it (car tree) splits)
@@ -738,69 +755,7 @@ phi's don't match anything in the files)."
 	      (c-align-ranked f-alignment tree_s tab_s tree_t tab_t))
 	    flat-alignments)))
 
-(defun c-link-remove (removable
-	    mf_s mlinks_s tab_s splits_s
-	    mf_t mlinks_t tab_t splits_t)
-  (loop for f-link in removable
-	with links_s = (remove f-link mlinks_s :test #'equal)
-	with links_t = (remove f-link mlinks_t :test #'equal)
-	with nodes_s = (get-val links_s splits_s)
-	with nodes_t = (get-val links_t splits_t)
-	when (and nodes_s nodes_t)
-	;; TODO: phi modulo eqvars... really need a predicate for that!!
-	do
-	(out "removing with ~A and ~A~%" nodes_s nodes_t)
-	(list (remove-if (lambda (c-id)
-			   (not (eq-f mf_s (phi c-id tab_s))))
-			 nodes_s)
-	      (remove-if (lambda (c-id)
-			   (not (eq-f mf_t (phi c-id tab_t))))
-			 nodes_t))
-	)
-  )
 
-(defun c-link-until-neq-infoloss (mc-id_s mlinks_s tab_s splits_s
-				  mc-id_t mlinks_t tab_t splits_t)
-  (let* ((mf_s (phi mc-id_s tab_s))
-	 (mf_t (phi mc-id_t tab_t))
-	 (removable (remove-if (lambda (f-link)
-				 (or (not (member f-link mlinks_t :test #'equal))
-				     (equal f-link (cons mf_s mf_t))))
-			       mlinks_s)))
-    (out "~A~%" (cons mf_s mf_t))
-    (out "~A<->~A :: ~A<->~A :: ~A~%" mc-id_s mc-id_t mlinks_s mlinks_t removable)
-    (c-link-remove removable
-	 mf_s mlinks_s tab_s splits_s
-	 mf_t mlinks_t tab_t splits_t)
-    )
-  )
-(defun c-link-until-neq-infoloss-old () ; ...
-  (loop for f-link in mlinks_s
-	with mf_s = (phi mc-id_s tab_s) and mf_t = (phi mc-id_t tab_t)
-	when (and
-	      ;; Only try removing links that exist on both sides:
-	      (member f-link mlinks_t :test #'equal)
-	      ;; Only try removing _subordinate_ links, we don't want
-	      ;; to remove the link connecting these f-domains
-	      ;; (that would let us move into domains below this one):
-	      (not (equal f-link (cons mf_s mf_t)))
-	      ;; Since we never add links, we won't move into surrounding f-domains.
-	      )
-	collect
-	(let* ((mlinks_s/f-link (remove f-link mlinks_s :test #'equal))
-	       (mlinks_t/f-link (remove f-link mlinks_t :test #'equal))
-	       (nodes_s (get-val mlinks_s/f-link splits_s))
-	       (nodes_t (get-val mlinks_t/f-link splits_t)))
-	  ;; Are there any nodes in the splits that result from having f-link removed?
-	  ;; In that case, they have equal information loss, and we add them
-	  ;; (but only if they stay within the same functional domain as their mother)
-	  (when (and nodes_s nodes_t)
-	    (list (mapcar-true
-		   (lambda (c-id) (when (eq-f mf_s (phi c-id tab_s)) c-id))
-		   nodes_s)
-		  (mapcar-true
-		   (lambda (c-id) (when (eq-f mf_t (phi c-id tab_t)) c-id))
-		   nodes_t))))))
 
 (lisp-unit:define-test test-c-align-ranked ()
   (let* 
@@ -816,7 +771,8 @@ phi's don't match anything in the files)."
 	   (c-align-ranked f-alignment tree_s tab_s tree_t tab_t)
 	   (c-align-ranked-old f-alignment tree_s tab_s tree_t tab_t)))
     ;; det åpnet seg --- gaiGo
-    (lisp-unit:assert-equal
+    (lisp-unit:assert-equality
+     #'set-of-set-equal
      '(((1236 1262 1338)		; just IP
 	(186 42 183 180 178 161 157 2 156 4 155 6 154 8 153 10 152 12 150 16)))
      (c-align-ranked f-alignment tree_s tab_s tree_t tab_t)))
@@ -827,7 +783,8 @@ phi's don't match anything in the files)."
        (tree_t (maketree tab_t))
        (f-alignment '((0 . 0)(7 . 12)(8 . 3))))
     ;; det åpnet seg --- PanJara gaiGo
-    (lisp-unit:assert-equal
+    (lisp-unit:assert-equality
+     #'set-of-set-equal
      '(((1236 1262 1338)		; IP
 	(662 659 595))
        ((1461)				; Ibar
@@ -835,40 +792,12 @@ phi's don't match anything in the files)."
        ((1353 1477 25)			; det/PanJara
 	(331 321 318 6 168 9 166 10 164 12)))
      (c-align-ranked f-alignment tree_s tab_s tree_t tab_t))))
-   
-(defun c-align-ranked (f-alignment tree_s tab_s tree_t tab_t)
-  "New c-structure alignment: align first topnodes, then align
-subordinate nodes only if they lose the same members of splits."
-  (let* ((tree_s (maketree tab_s))
-	 (splits_s (make-instance 'LL-splits))
-	 (tree_t (maketree tab_t))
-	 (splits_t (make-instance 'LL-splits)))
-    (add-links f-alignment tree_s tab_s splits_s 'src)
-    (add-links f-alignment tree_t tab_t splits_t 'trg)
-    (let ((top-c-links (mapcar-true
-			(lambda (f-link)
-			  (let ((subtree_s (topnodes (phi^-1 (car f-link) tab_s) tree_s))
-				(subtree_t (topnodes (phi^-1 (cdr f-link) tab_t) tree_t)))
-			    (when (and subtree_s subtree_t)
-			      (cons (car subtree_s)
-				    (car subtree_t)))))
-			f-alignment)))
-      (mapcan-true
-       (lambda (c-link)
-	 (let ((links_s (get-links (car c-link) splits_s))
-	       (links_t (get-links (cdr c-link) splits_t)))
-	   (cons (list			; topnodes in f-domain are always linked
-		  (get-val links_s splits_s)
-		  (get-val links_t splits_t))
-		 (c-link-until-neq-infoloss ; possible list of subordinate links
-		  (car c-link) links_s tab_s splits_s
-		  (cdr c-link) links_t tab_t splits_t))))
-       top-c-links))))
 
 (defun hash-key-intersect (tab1 tab2)
   (loop for k being the hash-keys of tab1
 	when (gethash k tab2) collect k))
-(defun c-align-ranked-old (f-alignment tree_s tab_s tree_t tab_t)
+
+(defun c-align-ranked (f-alignment tree_s tab_s tree_t tab_t)
   "Align trees for a single, flat `f-alignment'."
   (let ((splits_s (make-instance 'LL-splits))
 	(splits_t (make-instance 'LL-splits)))
@@ -1484,3 +1413,99 @@ nor (member new seq :key #'cdr)."
      when (unseen link old)
        append (mapcar (lambda (new) (append new old)) news)))
 
+;;;;;;;; DEPRECATED INFOLOSS-METHOD
+;;;;;;;; --------------------------
+
+(defun c-link-remove (removable
+	    mf_s mlinks_s tab_s splits_s
+	    mf_t mlinks_t tab_t splits_t)
+  (loop for f-link in removable
+	with links_s = (remove f-link mlinks_s :test #'equal)
+	with links_t = (remove f-link mlinks_t :test #'equal)
+	with nodes_s = (get-val links_s splits_s)
+	with nodes_t = (get-val links_t splits_t)
+	when (and nodes_s nodes_t)
+	;; TODO: phi modulo eqvars... really need a predicate for that!!
+	do
+	(out "removing with ~A and ~A~%" nodes_s nodes_t)
+	(list (remove-if (lambda (c-id)
+			   (not (eq-f mf_s (phi c-id tab_s) tab_s)))
+			 nodes_s)
+	      (remove-if (lambda (c-id)
+			   (not (eq-f mf_t (phi c-id tab_t) tab_s)))
+			 nodes_t))
+	)
+  )
+
+(defun c-link-until-neq-infoloss (mc-id_s mlinks_s tab_s splits_s
+				  mc-id_t mlinks_t tab_t splits_t)
+  (let* ((mf_s (phi mc-id_s tab_s))
+	 (mf_t (phi mc-id_t tab_t))
+	 (removable (remove-if (lambda (f-link)
+				 (or (not (member f-link mlinks_t :test #'equal))
+				     (equal f-link (cons mf_s mf_t))))
+			       mlinks_s)))
+    (out "~A~%" (cons mf_s mf_t))
+    (out "~A<->~A :: ~A<->~A :: ~A~%" mc-id_s mc-id_t mlinks_s mlinks_t removable)
+    (c-link-remove removable
+	 mf_s mlinks_s tab_s splits_s
+	 mf_t mlinks_t tab_t splits_t)
+    )
+  )
+(defun c-link-until-neq-infoloss-old () ; ...
+  (loop for f-link in mlinks_s
+	with mf_s = (phi mc-id_s tab_s) and mf_t = (phi mc-id_t tab_t)
+	when (and
+	      ;; Only try removing links that exist on both sides:
+	      (member f-link mlinks_t :test #'equal)
+	      ;; Only try removing _subordinate_ links, we don't want
+	      ;; to remove the link connecting these f-domains
+	      ;; (that would let us move into domains below this one):
+	      (not (equal f-link (cons mf_s mf_t)))
+	      ;; Since we never add links, we won't move into surrounding f-domains.
+	      )
+	collect
+	(let* ((mlinks_s/f-link (remove f-link mlinks_s :test #'equal))
+	       (mlinks_t/f-link (remove f-link mlinks_t :test #'equal))
+	       (nodes_s (get-val mlinks_s/f-link splits_s))
+	       (nodes_t (get-val mlinks_t/f-link splits_t)))
+	  ;; Are there any nodes in the splits that result from having f-link removed?
+	  ;; In that case, they have equal information loss, and we add them
+	  ;; (but only if they stay within the same functional domain as their mother)
+	  (when (and nodes_s nodes_t)
+	    (list (mapcar-true
+		   (lambda (c-id) (when (eq-f mf_s (phi c-id tab_s) tab_s) c-id))
+		   nodes_s)
+		  (mapcar-true
+		   (lambda (c-id) (when (eq-f mf_t (phi c-id tab_t) tab_s) c-id))
+		   nodes_t))))))
+
+   
+(defun c-align-ranked-infoloss (f-alignment tree_s tab_s tree_t tab_t)
+  "New c-structure alignment: align first topnodes, then align
+subordinate nodes only if they lose the same members of splits."
+  (let* ((tree_s (maketree tab_s))
+	 (splits_s (make-instance 'LL-splits))
+	 (tree_t (maketree tab_t))
+	 (splits_t (make-instance 'LL-splits)))
+    (add-links f-alignment tree_s tab_s splits_s 'src)
+    (add-links f-alignment tree_t tab_t splits_t 'trg)
+    (let ((top-c-links (mapcar-true
+			(lambda (f-link)
+			  (let ((subtree_s (topnodes (phi^-1 (car f-link) tab_s) tree_s))
+				(subtree_t (topnodes (phi^-1 (cdr f-link) tab_t) tree_t)))
+			    (when (and subtree_s subtree_t)
+			      (cons (car subtree_s)
+				    (car subtree_t)))))
+			f-alignment)))
+      (mapcan-true
+       (lambda (c-link)
+	 (let ((links_s (get-links (car c-link) splits_s))
+	       (links_t (get-links (cdr c-link) splits_t)))
+	   (cons (list			; topnodes in f-domain are always linked
+		  (get-val links_s splits_s)
+		  (get-val links_t splits_t))
+		 (c-link-until-neq-infoloss ; possible list of subordinate links
+		  (car c-link) links_s tab_s splits_s
+		  (cdr c-link) links_t tab_t splits_t))))
+       top-c-links))))
