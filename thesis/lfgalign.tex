@@ -1,8 +1,7 @@
-% Created 2010-09-07 ty. 19:50
+% Created 2010-09-08 on. 15:54
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{xcolor}                 % needs to be before hyperref when using fixme
 \usepackage[draft=false]{hyperref}
 \usepackage[english,nynorsk]{babel} % or whatever language
 \usepackage{apacite} % after babel
@@ -52,7 +51,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{07/09, 2010}
+\date{08/09, 2010}
 
 \begin{document}
 
@@ -1172,6 +1171,7 @@ som eg ser på nedanfor.
 \subsection{Ulenkja c-strukturnodar}
 \label{sec-1.7.1}
 
+\label{SEC:ulenkja-c-nodar}
 I figur \ref{fig:gaiGo} kan iallfall IP-nodane lenkjast, dei dominerer
 alle orda på begge setningane, og f-strukturane er lenkja. Men 
 NP-subjektet på den norske sida, er ikkje lenkja med
@@ -1211,14 +1211,16 @@ uproblematisk å lenkje I' og I. Men om me berre har krav
 skal gjere i ein situasjon kor nodar lenkja på f-strukturnivå ikkje er
 lenkja på c-strukturnivå.
 
-Det finst (iallfall) to alternativ. Me kan seie at I- og I'-nodane
-ikkje skal lenkjast, sidan \emph{det} og \emph{seg} er lenkja på f-strukturnivå
-(til subjekt og objekt av gaiGo), då tolker me det slik at I' og IP
+Det finst (iallfall) to alternativ. 
+
+Det eine alternativet er å seie seie at I- og I'-nodane ikkje skal
+lenkjast, sidan \emph{det} og \emph{seg} er lenkja på f-strukturnivå (til
+subjekt og objekt av gaiGo), då tolker me det slik at I' og IP
 dominerer ulikt lenkja materiale. Det at det \emph{ikkje} finst ei lenkje
 mellom I'-nodane, men mellom IP-nodane, vil då opplyse oss om at
 I'-nodane dominerer ulike f-strukturlenkja informasjonstilskot på dei
 ulike språka; likeins for I-nodane. Eg kjem tilbake til korleis ein
-kan formalisere dette kravet i del \ref{SEC:infotap}.
+kan formalisere dette kravet i del \ref{SEC:c-strengare}.
 
 Det andre alternativet er å ikkje gjere forskjell på IP, I' og I når det
 gjeld c-strukturlenkjinga. Grunnen til å gjere dette er at \emph{gaiGo}
@@ -1275,7 +1277,7 @@ c-strukturnivå og ordnivå\footnote{\label{fn:LL-ordlenkje} Merk at orda \emph{
         krav \ref{krav:f-links-words} litt. Viss me hadde definert
         \emph{det} og \emph{seg} som mange-ein-lenkja (med \emph{åpnet}) inn i
         \emph{gaiGo}, ville me fått same resultat som det krav
-        \ref{krav:c-infotap} i del \ref{SEC:infotap} gir.
+        \ref{krav:c-pro} i del \ref{SEC:c-strengare} gir.
         Viss georgisk er kjeldespråket
         ($n_s$, norsk: $n_t$) blir
         $LL(IP_s)=LL(I'_s)=LL(I_s)=\{(\text{gaiGo},\text{det}),(\text{gaiGo},\text{åpnet}),(\text{gaiGo},\text{seg})\}=LL(IP_t)$.
@@ -1287,13 +1289,13 @@ c-strukturnivå og ordnivå\footnote{\label{fn:LL-ordlenkje} Merk at orda \emph{
 
 \fxnote{TODO: diskutere litt meir forskjellane på desse alternativa}
 
-\subsection{Informasjonstap som lenkjingskriterium}
+\subsection{Eit strengare lenkjingskriterium}
 \label{sec-1.7.2}
 
-\label{SEC:infotap}
+\label{SEC:c-strengare}
 
 Sidan det er mogleg å ønskje seg å ikkje lenkje I'- og I-nodane i
-\ref{fig:gaiGo}, gir eg her ei alternativ løysing. 
+\ref{fig:gaiGo}, gir eg her ein måte å formalisere dette på.
 
 For å tillate lenkjene i figur \ref{fig:enkel-c-lenkje}, men ikkje dei
 stipla lenkjene i figur \ref{fig:gaiGo}, ville det vore nok å krevje
@@ -1330,7 +1332,7 @@ søsternodar blir for strengt.
    \label{fig:enkel-c-lenkje-med-S}
   \end{figure}
 
-Me treng altså eit litt meir nyansert krav. Som nemnte i fotnote
+Me treng altså eit litt meir nyansert krav. Som nemnt i fotnote
 \ref{fn:LL-ordlenkje} går det an å få til dette ved ein kombinasjon av
 konseptet om lenkja leksikalske nodar og å krevje at orda \emph{det},
  \emph{åpnet} og \emph{seg} i figur \ref{fig:gaiGo} er mange-mange-lenkja på
@@ -1344,89 +1346,38 @@ nodar\footnote{Då kan me au representere mange-til-mange-ordlenkjer som
         blir den einaste ordlenkja i dømet over, sidan me ikkje må
         samanlikne ordlenkjene frå $IP_t$, $I'_t$ og $Vfin_t$. }:
 
-\ex. \label{krav:c-infotap} For å lenkje c-strukturnodane $n_s$ og $n_t$:\\
-     La $L_c(n_s)$ vere alle
-     f-strukturlenkjer frå $\phi(n'_s)$ for alle preterminale $n'_s$
-     som er dominert av $n_s$. Nodar utan f-strukturlenkjer er ikkje med i $L_c$.
-     Nodane $n_s$ og $n_t$ kan då lenkjast viss $L_c(m_s)-L_c(n_s)=L_c(m_t)-L_c(n_t)$.
+\ex. \label{krav:c-pro} For å lenkje c-strukturnodane $n_s$ og
+     $n_t$:\\
+     La $l_c(f)$ vere mengda som inneheld
+     f-strukturlenkja til $f$, \emph{og} f-strukturlenkjene til alle
+     argument $a$ av $f$ som ikkje har c-strukturnodar, dvs. kor
+     $\phi^{-1}(a)=\emptyset$.
+     La $L_c(n)$ vere mengda av $l_c(\phi(n'))$ for alle
+     f-strukturlenkja preterminale $n'$ som er dominert av $n$.
+     $n_s$ og $n_t$ kan lenkjast om $L_c(n_s)=L_c(n_t)$.
+
+F-strukturen til \emph{gaiGo} i dømet over har eit pro-element (lenkja til
+\emph{seg}) som argument, difor kan me finne
+f-strukturlenkja til dette argumentet når me finn $L_c(I'_s)$. 
 
 
+I figur \ref{fig:PanJara-gaiGo} har me då følgjande situasjon:\\
+\\$L_c(IP_s)=\{(\textbf{PanJara},\textbf{vindu}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}=L_c(IP_t)$
+\\$L_c(I'_s)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}=L_c(I'_t)$
+\\$L_c(I_s)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}
+\neq \{(\textbf{ga-Geba},\textbf{åpne})\}=L_c(I_t)$\\
 
-\Last[a og -b] seier til saman det same som
-\ref{krav:subnode-f-lenkja}. Det
-\Last[c] seier er at me må ha same \emph{informasjonstap} når me går
-nedover i c-strukturtreet.
+Dette vil seie at krav \ref{krav:c-pro} gir lenkjer mellom
+IP-nodane og I'-nodane, men ikkje mellom I-nodane. I figur
+\ref{fig:gaiGo} vil ikkje ein gong I'-nodane få ei lenkje, sidan den
+norske I'-node dominerer 
+$\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}$
+medan den georgiske I'-node dominerer det same som IP-nodane, 
+$\{(\textbf{pro},\textbf{det}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}$.
 
-Figur \ref{fig:enkelsub2} illusterer dette kravet. IPfoc og IP er
-toppnodar, lenkja ved krav \ref{krav:f-links-domain}. I'-nodane er i lenkja
-funksjonelle domene og har lenkja mødre. I tillegg har dei same
-informasjonstap:\\
-\\$L_c(IPfoc_s)=\{(\textbf{PanJara},\textbf{den}),(\textbf{ga-Geba},\textbf{åpne})\}$,
-$L_c(I'_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
-\\$L_c(IP_t)=\{(\textbf{PanJara},\textbf{den}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$,
-$L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$
-\\$L_c(IPfoc_s)-L_c(I'_s)=\{(\textbf{PanJara},\textbf{den})\}=L_c(IP_t)-L_c(I'_t)$\\
-
-\begin{figure}[htp]
-\centering
-\begin{tikzpicture}
-\Tree [.\node(IPk){IPfoc}; 
-  [.\node(NPk){NP}; \edge[roof]; {PanJara} ] 
-  [.\node(Ibark){I'};  [.\node(Vfink){Vfin};    \node(gaiGo){gaiGo};  ]
-  ] ]
-     \begin{scope}[shift={(2in,0in)}]
-\Tree [.\node(IPb){IP}; 
-  [.\node(NPb){NP}; \edge[roof]; {det} ] 
-  [.\node(Ibarb){I'};  [. \node(Vfinb){Vfin}; \node(åpnet){åpnet};  ]
-       [.S \edge[roof]; {seg} ] ] ]
-\end{scope}
- \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
-  \draw[dashed,-] (Vfink)..controls +(north east:1) and +(north west:1) .. node[midway,sloped]{$\times$}(Vfinb) ;
-  \draw[-,very thick] (Ibark)..controls +(north east:1.5) and +(north west:1.5) .. (Ibarb) ;
-% \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
- \draw[-] (NPk)..controls +(north east:1) and +(north west:1) .. (NPb) ;
-
-\end{tikzpicture}
-
-\fxnote{TODO: teikne inn f-domene her òg}
-
-\caption{Delvis mogleg lenkjing av underordna c-strukturnodar mellom georgisk og bokmål}
- \label{fig:ikkjesub2}
-\end{figure}
- 
-Vfin-nodane er au i same funksjonelle domene, og har lenkja mødre, men
-her har dei ulikt informasjonstap:\\
-\\$L_c(I'_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$,
-$L_c(Vfin_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
-\\$L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$,
-$L_c(Vfin_t)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
-\\$L_c(I'_s)-L_c(Vfin_s)=\{\}$
-\\$L_c(I'_t)-L_c(Vfin_t)=\{(\textbf{pro},\textbf{pro})\}$\\
-
-Me ikkje har altså ein c-strukturnode som direkte projiserer
-f-strukturen til \emph{pro} på georgisk, lenkja til \emph{seg} på norsk;
-f-strukturen til \emph{pro} er spesifisert via verbet. Men sjølv om me
-ikkje kan sjå ein slik node, kan me sjå at det er \emph{noko} som er
-spesifisert via dette fragmentet av den georgiske c-strukturen, og at
-det er lenkja til \emph{seg}, difor mister me informasjon når me går frå I'
-til Vfin.
-
-\subsection{Alternativ formulering, utan å sjekke informasjonstap}
-\label{sec-1.7.3}
-
-F-strukturen til \emph{gaiGo} i dømet over har pro-elementet (lenkja til
-\emph{seg}) som argument, difor burde det au vere mogleg å finne
-f-strukturlenkja til dette argumentet når ein finn $L_c(I'_s)$. Om ein
-legg til denne lenkja i $L_c$, er det nok at $L_c(n_s)=L_c(n_t)$ for
-at $n_s$ og $n_t$ skal lenkjast (dvs. ein treng ikkje sjekke
-forskjellen til mornodane). Men skal ein formulere eit slikt krav må
-ein passe på å spesifisere kor djupt ned i f-strukturen ein skal
-kikke, og avgjere om adjunkt-lenkjer skal med, osb. I implementasjonen
-min har eg valt å følgje krav \ref{krav:c-infotap} for å unngå å
-måtte kode denne typen informasjon inn i systemet.
 
 \subsection{Funksjonelle c-strukturnodar}
-\label{sec-1.7.4}
+\label{sec-1.7.3}
 
 \label{SEC:fnord}
 
@@ -1496,7 +1447,7 @@ ikkje er reflektert i CPnom til Ssub.
 så om dei funksjonelle domena er lenkja, vil
 krav \ref{krav:subnode-f-lenkja}
 vere oppfylt kva gjeld CP-komplementa -- lenkjinga går ikkje ut over
-dei funksjonelle domena, medan krav\~{}\ref{krav:c-infotap} er
+dei funksjonelle domena, medan krav\~{}\ref{krav:c-pro} er
 dekkja for IP og Ssub med unntaket over.)
 
   \begin{figure}[htp]
@@ -1544,36 +1495,69 @@ funksjonelle kategoriar.
    \label{SEC:rangering}
 (meir om dette i del \ref{SEC:impl-f-rangering})
 
-\chapter{Avslutning}
+\chapter{Implementasjonen av \texttt{lfgalign}}
 \label{sec-2}
 
+\label{SEC:implementasjon}
 
-\bibliographystyle{apacite}
-\bibliography{master}
+For å finne ut av kor godt krava i forrige kapittel fungerer til å
+avgrense kva for lenkjer som er moglege, har eg implementert dei etter
+beste evne i eit Lisp\footnote{Dette språkvalet kan gjere eventuell integrering med andre
+        LFG-system lettare (Common Lisp er m.a. nytta i LFG
+        Parsebanker \citep{rosen2009lpt}). }-program.
 
+\fxnote{intro TODO, kanskje noko om kva eg faktisk har fått ut av
+implementasjonen} Ei implementering gjer det svært synleg om det finst
+manglar i eit formelt krav, eller om noko ikkje er godt nok
+spesifisert.
 
-
-[fn:2] Tilgjengeleg frå \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign} som fri og
-       open programvare under GNU General Public License.
-
-[fn:5] Formatet er dokumentert på
+Programmet \texttt{lfgalign}\footnote{Tilgjengeleg frå \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign} som fri og
+       open programvare under GNU General Public License. } tek inn LFG-analysane av to
+setningar som me av uavhengige grunnar trur er omsetjingar av
+kvarandre. LFG-analysane må vere disambiguerte og i Prolog-formatet
+frå XLE\footnote{Formatet er dokumentert på
        \href{http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html}{http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html}. Importeringa
        til Lisp-strukturar handterer «pakka representasjonar» og
        kjenner igjen ekvivalensforhold (t.d. der fleire
        $\phi$-variablar refererer til same f-struktur, eller fleire
        Prolog-variabler refererer til same analyseval); men filene eg
        har testa utnyttar ikkje det fulle spennet til formatet, så det
-       finst ganske sikkert feil.
+       finst ganske sikkert feil. }. Programmet les inn dei to filene og opprettar ein
+intern representasjon av LFG-analysen.  \fxnote{treng eg ein eigen del
+om LPT i dette kapittelet? Implementasjonen er jo veldig enkel
+iallfall.}
 
-[fn:16] Dette språkvalet kan gjere eventuell integrering med andre
-        LFG-system lettare (Common Lisp er m.a. nytta i LFG
-        Parsebanker \citep{rosen2009lpt}).
+Me kan i tillegg gi programmet informasjon om kva for ord-omsetjingar
+me ser på som lingvistisk prediktable. Intensjonen er at dette kan
+vere informert av omsetjingstabellen frå eit automatisk
+ordsamanstillingsprogram, eller av handskrivne omsetjingsordbøker.
 
-[fn:17] Når eg her skriv at to f-strukturar har LPT-korrespondanse,
-        meiner eg sjølvsagt at ordformene til PRED-verdien til kvar
-        f-struktur har LPT-korrespondanse.
+Programmet byrjar lenkjinga med f-strukturane. Ei
+f-struktur\emph{samanstilling} er ei mengd med \emph{lenkjer} mellom
+individuelle f-strukturar. Resultatet av lenkjinga på dette nivået kan
+vere tvitydig: sidan det ofte finst fleire måtar å lenkje argument og
+adjunkt på, får me i første omgang mange samanstillingar mellom
+kjelde- og mål-f-strukturar.
 
-[fn:18] Eigentleg eit slag avgjerdstre; kvart element er eit par, kor
+Difor rangerer me f-struktursamanstillingane, og den beste sender me
+vidare til c-struktursamanstillinga. Denne delen av programmet gir ut
+éi, utvitydig mengd med mange-til-mange-lenkjer mellom c-strukturane
+(her treng me ingen rangering). Nodane i kvar av desse
+mange-til-mange-lenkjene definerer no den endelege
+frasesamanstillinga.
+
+Nedanfor går eg gjennom detaljane rundt dei relevante delene av
+programmet.
+
+\section{Lenkjer mellom f-strukturar}
+\label{sec-2.1}
+
+\label{SEC:impl-f-lenkjing}
+
+Hovudalgoritmen for lenkjing mellom f-strukturar er vist i kodefigur
+\ref{algo:f-align}. Funksjonen \texttt{f-align} returnerer ei mengd med
+moglege samanstillingar. Kvar samanstilling er ei mengd med par av
+f-strukturar\footnote{Eigentleg eit slag avgjerdstre; kvart element er eit par, kor
         første element er lenkja mellom dei yttarste f-strukturane, og
         andre element er dei moglege samanstillingane for dei indre
         strukturane. Denne strukturen kan vere nyttig for å rangere
@@ -1581,22 +1565,480 @@ funksjonelle kategoriar.
         jobbe med eit slikt tre. Ein funksjon \texttt{flatten} omformar det
         ferdige treet til ei enkel liste med samanstillingar, kor kvar
         samanstilling er ei flat liste med lenkjer mellom
-        f-strukturar.
+        f-strukturar. }. Eit par $(F_s,F_t)$ representerer ei lenkje frå
+ein f-struktur på kjeldespråket, til ein f-struktur på målspråket. Me
+går ut frå at dette paret har LPT-korrespondanse\footnote{Når eg her skriv at to f-strukturar har LPT-korrespondanse,
+        meiner eg sjølvsagt at ordformene til PRED-verdien til kvar
+        f-struktur har LPT-korrespondanse. }, dette blir
+sjekka før alle kall på \texttt{f-align}. Der me ikkje har informasjon om
+LPT-korrespondanse mellom to ord (orda er ukjende), er lenkjing
+lov. Pro-element og substantiv kan alltid lenkjast med kvarandre.
+\fxnote{TOGROK: kan me i tillegg sjekke om funksjonelle nodar i same
+f-domene som PRED-ordformen har LPT-korrespondanse?}
 
-[fn:19] Ved c-struktur-f-strukturavbildinga $\phi$, ein funksjon som
-        tek ein c-strukturnode og returnerer ein (delvis) f-struktur.
+Hjelpefunksjonen \texttt{argalign} (som igjen kallar \texttt{argalign-p}, vist i
+kodefigur \ref{algo:argalign-p}) gir alle moglege
+«argumentpermutasjonar», dvs. moglege kombinasjonar av lenkjer mellom
+argumenta til $F_s$ og $F_t$ som tilfredsstiller kravet om
+LPT-korrespondanse, men utan å sjekke at desse argumenta igjen kan
+samanstillast. Funksjonen prøver å lenkje kvart argument til eit
+argument eller eit adjunkt, men gir ingen lenkjer mellom to adjunkt
+(sjå del \ref{SEC:impl-adjalign} nedanfor om dette). Funksjonen gir
+heller ikkje kombinasjonar der minst eitt argument ikkje er lenkja --
+alle kombinasjonane må inkludere alle argument frå $F_s$ og $F_t$,
+jf. krav (iii) og (iv) i \citet[s.~75]{dyvik2009lmp}. Elles er krav
+(i) er tautologisk oppfylt, medan me som nemnt føreset at krav (ii) er
+oppfylt før alle kall på \texttt{f-align}.
 
-[fn:20] Dette er ein litt enklare måte å definere kravet på; ei
-        \emph{lenkje} refererer til både kjelde og mål, dimed blir det
-        mogleg å seie at ein node på kjeldespråket kan dominere same
-        mengd som ein node på målspråket.
+Eit døme: viss $F_s$ har argumenta \SUBJs og \OBJs og ingen adjunkt,
+og $F_t$ har argumentet \SUBJs og eitt adjunkt \ADJ, der alle
+ord-omsetjingar er moglege, vil \texttt{argalign} gi dei to samanstillingane
+$\{(\SUBJ,\SUBJ), (\OBJ,\ADJ)\}$ og $\{(\SUBJ,\ADJ),
+(\OBJ,\SUBJ)\}$. Viss adjunktet til $F_t$ ikkje fantest, eller ikkje
+hadde LPT-korrespondanse med nokon av argumenta til $F_s$, ville me
+ikkje fått nokon samanstillingar; medan viss paret $(\SUBJ,\SUBJ)$
+ikkje hadde LPT-korrespondanse og alt anna var likt, ville me berre
+fått den siste samanstillinga.
 
-[fn:8] Som nemnt i del \ref{SEC:fnord} kan funksjonsord gjere
+Funksjonen \texttt{f-align} går så gjennom kvar lenkje i kvar
+argumentpermutasjon, og prøver å kalle \texttt{f-align} på alle
+lenkjene. Sidan lenkjene som \texttt{argalign} gir har LPT-korrespondanse,
+vil alle f-strukturane i dei rekursive kalla i \texttt{f-align} ha
+LPT-korrespondanse. Eit rekursivt kall kan gi nye samanstillingar i
+dei indre f-strukturane, viss dei relevante krava er oppfylte.
+
+Det er mogleg at ei lenkje frå éi samanstilling kan finnast i andre
+samanstillingar, me unngår dobbeltarbeid ved å lagre alle delvise
+samanstillingar i tabellen $aligntable$. Dette føreset at
+\texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt; t.d. må
+mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
+mot subjektet til $F_t$ vere uavhengig av om objektet til $F_s$ er
+lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. \fxnote{TODO:
+nemne føresetnaden om uavhengnad i kapittel 3}
+
+      \SetKwComment{Comment}{ // }{}
+     \SetKwInOut{Input}{usage}
+  
+     \begin{algorithm}[]
+      \caption{f-align($F_s$, $F_t$)}
+      \label{algo:f-align}
+      
+      $alignments \gets \emptyset$  \;
+      \ForAll{argperm in argalign($F_s$, $F_t$)} {
+        $p \gets \emptyset$ \;
+         \ForAll{$A_s$, $A_t$ in argperm} {
+           \uIf{not(aligntable[$A_s$,$A_t$])} {
+           aligntable[$A_s$,$A_t$] $\gets$ f-align($A_s$, $A_t$)\;
+           }
+          \uIf{aligntable[$A_s$,$A_t$]}{add aligntable[$A_s$,$A_t$] to $p$\;}
+          \uElse{add $(A_s, A_t)$ to $p$}
+        }
+        add $p$ to $alignments$ \;
+        \ForAll{adjperm in adjalign(argperm, $F_s$, $F_t$)} {
+          $a \gets$ copy-of($p$) \Comment*[r]{optional adjunct links}
+          \ForAll{$A_s$, $A_t$ in adjperm}{
+            \uIf{not(aligntable[$A_s$,$A_t$])} {
+              aligntable[$A_s$,$A_t$] $\gets$ f-align($A_s$, $A_t$)\;
+            }
+            \uIf{aligntable[$A_s$,$A_t$]}{add aligntable[$A_s$,$A_t$] to $a$\;}
+            \uElse{add $(A_s, A_t)$ to $a$}
+          }
+          add $a$ to $alignments$ \;
+        } % adjperm in adjalign
+       } % argperm in argalign
+       \Comment{loop through adjalign if no arguments exist}
+       \lIf {$alignments=\emptyset$}{ \Return $\emptyset$ \Comment*[l]{Fail} }
+       \lElse{ \Return $((F_s, F_t), alignments)$ \; }
+       \end{algorithm}    
+    
+    
+      \begin{algorithm}[]
+      \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
+      \label{algo:argalign-p}
+    
+      \Input{Kalt av argalign slik: \\ argalign-p(arguments($F_s$),
+      adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))}
+      \BlankLine
+      
+     $a \gets \emptyset$\;
+     \uIf{$args_s$} {
+           $s \in args_s$\;
+           \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
+               \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t-\{t\}$,$adjs_t$)}{
+  add $\{(s,t)\} \bigcup p$ to $a$\;
+             }
+            }
+           \ForAll{$t \in adjs_t$ \textbf{where} LPT($s$,$t$)} {
+               \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t$,$adjs_t-\{t\}$)}{
+  add $\{(s,t)\} \bigcup p$ to $a$\;
+                }
+           }
+             \Return $a$\;
+         }
+          \uElseIf{$args_t$} {
+            \uIf{$adjs_s$}{
+                $s \in adjs_s$\;
+           \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
+               \lForAll{$p \in$ argalign-p($args_s$, $adjs_s-\{s\}$, $args_t-\{t\}$,$adjs_t$)}{
+  add $\{(s,t)\} \bigcup p$ to $a$\;
+             }
+            }
+             \Return $a$\;
+        }\uElse{
+              \Return $\emptyset$  \Comment*[l]{Fail}
+            }
+          }
+        \uElse {
+          \Return \{$\emptyset$\} \Comment*[l]{End}
+        }     
+      \end{algorithm}
+
+Sjølv om det er krav om LPT-korrespondanse mellom kvart argument og
+eit argument/adjunkt for å lenkje $F_s$ og $F_t$, er det ikkje noko
+krav om at alle para i ein argumentpermutasjon tilfredsstiller alle
+lenkjingskrava. Viss \texttt{f-align}$(\OBJ,\ADJ)$ frå dømet over gir
+null, og ikkje kan lenkjast (t.d. fordi \ADJs hadde eitt argument, og
+\OBJs ingen argument/adjunkt), medan \texttt{f-align}$(\SUBJ,\SUBJ)$
+kan lenkjast, vil \texttt{f-align} likevel returnere samanstillinga som
+inneheld $(\OBJ,\ADJ)$ og $(\SUBJ,\SUBJ)$. Me kan sjå i $aligntable$
+for å finne ut av om kvar av f-strukturane kunne lenkjast; i dette
+tilfellet vil $aligntable[\OBJ,\ADJ]$ vere tom.
+
+\fxnote{TODO: forskjellen mellom LPT-krav og rekursjonskrav på argument må
+inn i kapittel 3}
+
+Om me i tillegg krev at substrukturar kan samanstillast kan me
+utelukke lenkjing av f-strukturane $F_s$ og $F_t$ i \Next under:
+
+{\avmoptions{}
+
+\ex. \a.  \begin{avm}  \sort{$F_s$}{\[ {\sc pred} `{\bf planlegge}<{\it eg},[1:{\it gi}]>'\\
+  {\sc xcomp} \sort{$^{1}$}{\[ {\sc pred} `{\it gi (opp)}'\]} \]}  \end{avm}
+  \b.\begin{avm} \sort{$F_t$}{\[ {\sc pred} `{\bf plan}<{\it I},[2:{\it give}]>'\\
+  {\sc xcomp} \sort{$^{2}$}{\[ {\sc pred} {\bf give}<{\it I},{\it him},{\it it}>' \]} \]} \end{avm}
+
+}
+
+Men det kan vere at me ikkje \emph{vil} krevje dette i alle moglege
+tilfelle. Ei tryggare løysing er å rangere ulike løysingar i
+etterkant, ved å spørje etter dei argumentsamanstillingane som har
+flest medlem i $aligntable$, dette kjem eg tilbake til i
+\ref{SEC:impl-f-rangering} nedanfor.
+\subsection{Overflødige adverbial}
+\label{sec-2.1.1}
+
+   \label{SEC:impl-adjalign}
+
+Argumentpermutasjonane frå \texttt{argalign} prøver som nemnt ikkje reine
+adjunkt-adjunkt-lenkjer, sidan me ikkje vil forkaste lenkjing av $F_s$
+og $F_t$ berre på grunn av at ikkje alle adjunkt kunne lenkjast. Men
+når me har prøvd ein argumentpermutasjon, kan me lage ein kopi av
+denne som i tillegg inneheld lenkjer mellom «overflødige» adverbial,
+altså dei adjunkt-adjunkt-lenkjene som \texttt{argalign} ikkje
+prøver. Hjelpefunksjonen \texttt{adjalign} (ikkje vist her
+\fxnote[inline,nomargin]{TODO: implementere :->}) konstruerer moglege
+permutasjonar av lenkjer mellom adjunkt som ikkje er inkludert i
+$argperm$, og \texttt{f-align} prøver desse rekursivt på same måte som med
+argumentlenkjene. \fxnote{og så er det spørsmålet om me kan lenkje
+adjunkt på ulike nivå i f-strukturane} Lenkjene blir lagt til ein
+\emph{kopi} av argumentpermutasjonane, sidan det ikkje er sikkert at me
+ønskjer å lenkje alle adjunktdøtre. Viss me har to overflødige adjunkt
+på kvar side, og kravet om LPT-korrespondanse er dekkja for alle fire
+moglege par, får me seks moglege permutasjonar, sidan me inkluderer
+dei fire permutasjonane der eitt adjunktpar er ulenkja.
+
+Viss $F_s$ og $F_t$ ikkje hadde argument i det heile teke, går me au
+gjennom moglege permutasjonar av adjunktdøtre, på same måte (ikkje
+vist i kodefigur \ref{algo:f-align}).
+
+\subsection{\textbf{SKRIV} Funksjonsord utan LPT-korrespondanse bør eigentleg hindre f-strukturlenkjing}
+\label{sec-2.1.2}
+
+\subsection{\textbf{SKRIV} Når f-lenkjene ikkje er 1-1}
+\label{sec-2.1.3}
+
+\fxnote{Dette må 1. spesifiserast (kap.3), og 2. implementerast...}
+\subsubsection{kausativ}
+\label{sec-2.1.3.1}
+
+\subsubsection{preposisjonsobjekt}
+\label{sec-2.1.3.2}
+
+``sigaretten'' og ``sigaretze'' er ikkje på same nivå i dei respektive
+f-strukturane nedanfor:
+\begin{verbatim}
+ 0[ PRED vedde<28,29,27,30>
+    29[ PRED sigarett<> ] ]
+\end{verbatim}
+
+
+\begin{verbatim}
+ 0[ PRED da-najleveba<37,10,46>
+    ADJUNCT { 2 }
+    2[ ze<5>
+       OBJ 5[ sigareti ] ] ]
+\end{verbatim}
+
+
+Men dette er fordi sigaretze er \underline{adjunkt}, og i følgje fotnote 3 i
+\citet{dyvik2009lmp} er P(ADJ) lik den semantiske formen til
+\underline{preposisjonsobjektet} til ADJ. (Er dette heilt enkelt? Kan me ha
+adjunkt med fleire «preposisjonsargument»?)
+
+I motsetning til å endre på P(ADJ) slik at pred-verdien til eit
+adjunkt hoppar over preposisjonar og inn i preposisjonsobjekt, har eg
+i implementasjonen min gjort det slik at funksjonen som henter ut \emph{f-strukturen} til adjunkt-døtre av ein f-struktur hoppar over
+preposisjonsobjekt (m.a. fordi ved eit kall P(X) kan ikkje P vite om X
+er eit adjunkt eller argument).
+
+Sjå au del \ref{SEC:merge-daughters}.
+
+\subsection{Kan me gjere f-struktursamanstillinga bottom-up?}
+\label{sec-2.1.4}
+
+  %     \begin{quotation}
+  %    Any sufficiently complex problem needs to be coded three times.\\
+  % \begin{minipage}{0.8\textwidth}
+  % \begin{flushright}
+  %        (ukjend, via Steve Gibson)
+  % \end{flushright}
+  % \end{minipage}
+  %    \end{quotation}
+Ein alternativ metode for lenkjing av f-strukturane er å byrje med
+alle logisk moglege permutasjonar av LPT-korrespondansar, og så sile
+ut dei som ikkje svarer til krava. Prosessen ville nok blitt mykje
+meir oversiktleg på denne måten, sidan det då berre er snakk om å
+sjekke krav for kvar enkelt lenkje.  Men ein slik metode er vanskeleg
+i praksis; når avskjeringa skjer så seint, blir det alt for mange
+moglege kombinasjonar for lengre setningar med mange ukjende ord til
+at ein vanleg datamaskin kan halde styr på dei.
+
+Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
+(me har ingen informasjon om LPT-korrespondanse), slik at kvart
+kjeldeord kan lenkjast til kvart målord. Viss begge setningane er 4 ord,
+får me 16 moglege samanstillingar der alle ord er med i nøyaktig éi
+lenkje ($2^l$, kor $l$ er setningslengd). Men ofte har me
+null-lenkjer, me må altså i tillegg tillate samanstillingar der minst
+eitt ord er ulenkja, utan at me treng å vite kva for ord det er; med
+desse kortare listene inkludert får me endå fleire moglege
+samanstillingar per setning (4 ord gir 26, 8 ord gir 2186 moglege
+samanstillingar). Sjølv om me heile tida vel dei samanstillingane som
+lenkjar flest ord, ville maskinen raskt fått problem. I tillegg har me
+problemet med 1-mange-lenkjer, som skaper endå fleire moglege
+samanstillingar.
+
+Ein sideverknad av å byrje med ytre lenkjer og gå innover (prosessen
+skildra i del \ref{SEC:impl-f-lenkjing}) er at me automatisk unngår å
+prøve «kryssande» lenkjer, t.d. å lenkje $F_s$ med \XCOMPs av $F_t$, og
+\XCOMPs av $F_s$ med $F_t$ (denne kombinasjonen av lenkjer vil jo vere
+ein del av alle logisk moglege permutasjonar). Me får au prioritert å
+lenkje ytre element, som jo er sikrare lenkjer: gitt to f-strukturar
+for setningar der alt me veit om lenkjinga er at \emph{setningane} er
+omsetjingar av kvarandre, vil dei to ytre f-strukturane ha størst
+sjanse for å korrespondere med kvarandre. For kvart steg du går
+innover må du multiplisere inn sjansen for å trå feil i
+argumentpermutasjonane.
+
+\section{\textbf{SKRIV} Rangering}
+\label{sec-2.2}
+
+\label{SEC:impl-f-rangering}
+
+\fxnote[inline,nomargin]{Rangering er ikkje implementert enno (akkurat no gir
+rank(f-alignments) berre ut første samanstilling.)}
+Rangering foregår etter ulike kriterium. Her er eit par forslag:
+\subsection{rekursivt lenkja > ulenkja, men LPT}
+\label{sec-2.2.1}
+
+    $aligntable$ seier om noko er rekursivt lenkja eller ikkje,
+    plusspoeng viss me har klart å lenkje rekursivt.
+\subsection{argument-argument > argument-adjunkt}
+\label{sec-2.2.2}
+
+    Plusspoeng for argument-argument-lenkjer, burde vere eit bra
+    kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
+    i døme \ref{ex:vedde} med \\
+    \texttt{da-najleveba<Abrams,Browne,regne>} adjunkt: \texttt{sigarett}\\
+    \texttt{bet<Abrams,sigarett,regne>} adjunkt: \texttt{Browne}
+    
+\subsection{arg1-arg1 arg2-arg2 > arg1-arg2 arg2-arg1 (følgje)}
+\label{sec-2.2.3}
+
+    Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
+    viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
+    i leksikon ikkje er basert på semantikk, men syntaks). Men elles
+    er det vel OK.
+
+    Enklaste implementasjon: Levenshtein-avstand. Men burde visse
+    argument vektast? (T.d. vekte subjekt om alt anna er likt.)
+
+    Andre forslag: \href{http://en.wikipedia.org/wiki/Edit_distance}{http://en.wikipedia.org/wiki/Edit\_distance})
+\subsection{flest lenkja adjunkt}
+\label{sec-2.2.4}
+
+    Usikker på dette\ldots{} avheng av om me tillèt lenkjer på tvers av
+    f-strukturar.
+\subsection{Prioritet på rangeringskriterium}
+\label{sec-2.2.5}
+
+    Dette bør sjølvsagt testast empirisk, blir kanskje utanfor denne
+    oppgåva (diskusjonsdel?), men kan jo prøve meg litt rundt.
+\section{Lenkjing av c-strukturnodar}
+\label{sec-2.3}
+
+Samanstilling mellom f-strukturar treng i \texttt{lfgalign} ikkje informasjon
+om c-strukturen, medan lenkjing av c-strukturnodar skjer på grunnlag
+av f-struktursamanstillinga. Programmet utfører difor samanstilling av
+c-strukturar sist\footnote{Som nemnt i del \ref{SEC:fnord} kan funksjonsord gjere
        f-strukturlenkjinga avhengig av forhold i c-strukturen,
        evt. krevje meir nyansert f-strukturlenkjing. Dette har eg
        ikkje teke høgd for i implementasjonen, så der eit funksjonsord
        burde blokkert ei f-strukturlenkje vil \texttt{lfgalign} gi feil
-       samanstilling.
+       samanstilling. }.
+
+Funksjonen \texttt{c-align} har som inndata c-strukturanalysane av kjelde- og
+målsetninga, og éi f-struktursamanstilling; utdata er ei mengd med
+lenkjer. Ei lenkje er eit par der første element er ei mengd
+c-strukturnodar på kjeldespråket, og andre element ei mengd nodar på
+målspråket. Det er ingen overlapp mellom medlem av lenkjer (ein node
+er aldri med i meir enn eitt par).
+
+I \citet[s.~77]{dyvik2009lmp} er kravet for å lenkje to
+c-strukturnodar er at dei dominerer same mengd med
+ordlenkjer\footnote{Dette er ein litt enklare måte å definere kravet på; ei
+        \emph{lenkje} refererer til både kjelde og mål, dimed blir det
+        mogleg å seie at ein node på kjeldespråket kan dominere same
+        mengd som ein node på målspråket. }. Ein node \emph{n} dominerer ei mengd lenkjer \emph{l} viss
+unionen av lenkjene dominert av døtrene til \emph{n} er lik \emph{l}. I
+\texttt{lfgalign} opererer eg ikkje med \emph{ordlenkjer} i seg sjølv;
+f-struktursamanstillinga er basert på LPT-korrespondansar, som
+definerer moglege ordlenkjer utan å sjå på kontekst, og
+f-struktursamanstillinga avgrenser vidare moglege ordlenkjer gitt
+f-strukturinformasjon. Preterminale nodar er dei mest ordnære nodane
+som kan ha ei f-strukturlenkje (ved $\phi$); når formålet er å lenkje
+c-strukturnodar kan me nytte f-strukturlenkja til den preterminale
+noden i staden for ordlenkjer.\fxnote[inline,nomargin]{To problem (kva vil me ha med?)\\
+1. me får \emph{ikkje} med LPT-korrespondansar som er OK, men
+ikkje med i $f-alignment$;\\
+2. me \emph{får} med LPT-korrespondansar
+som er med i $f-alignment$ men ikkje $aligntable$ (ikkje er rekursivt
+lenkja).}
+
+Programmet \texttt{lfgalign} følgjer krav \ref{krav:c-pro} og
+lenkjer øvste nodar i funksjonelle domene, og subordinate nodar som
+har same informasjonstap. Prosedyren \texttt{c-align} i kodefigur
+\ref{algo:c-align} implementerer dette kravet. 
+
+\fxnote{TODO: gammal implementasjon, er ganske annleis no.}
+ \begin{algorithm}[]
+   \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
+   \label{algo:c-align}
+    
+   c-alignments $\gets \emptyset$ \;
+   $splits_s \gets$ new table \;
+   add-links(f-alignment, $tree_s, splits_s)$  \;
+   $splits_t \gets$ new table \;
+   add-links(f-alignment, $tree_t, splits_t)$  \;
+   \ForAll{$links$ being the keys in $splits_s$} {
+       \uIf{($links$ in $splits_t$)} {
+             add $(splits_s[links],splits_t[links])$ to c-alignments \;
+        }
+    }
+    \Return c-alignments \;
+    \end{algorithm}    
+
+Hjelpeprosedyren \texttt{add-links} (kodefigur \ref{algo:add-links}) utfører
+hovudjobben. Inndata er rotnoden til c-strukturtreet for eitt av
+språka, og f-samanstillinga. Prosedyren kappar opp treet i
+nodemengder, kor kvar nodemengd dominerer same lenkjemengd (som
+definert over).  Nodemengdene blir lagra i ein tabell, indeksert på
+lenkjemengdene. Prosedyren går rekursivt gjennom treet frå rot til
+lauv; lenkjemengden for kvar node er unionen av lenkjemengdene
+returnert av \texttt{add-links} kalt på kvar av døtrene. Viss ein node
+dominerer ei lenkjemengd $links$, legg me til denne noden i tabellen
+$splits[links]$. Merk at kvar c-strukturnode berre opptrer éin gong i
+tabellen.
+
+   \begin{algorithm}[]
+   \caption{add-links(f-alignment, $node, splits$)}
+   \label{algo:add-links}
+      
+        $links \gets \emptyset$\;
+   \uIf{$node$} {
+       \uIf{preterminal?($node$)} {
+          let $link \in$ f-alignment s.t. $\phi(node) \in link$ \;
+          \lIf{$link$} {$links \gets \{link\}$} \;
+          \uIf{*pro-args-affect-c-links*} {
+            \ForAll{$a \in args(\phi(node))$ s.t. $\phi^{-1}(a)=\emptyset$}{
+                let $link_a \in$ f-alignment s.t. $a \in link_a$ \;
+                \lIf{$link_a$} {$links \gets \{link_a\}$} \;
+            }
+          }
+        }
+        \uElse {
+          $links \gets $add-links(f-alignment, left-branch($node$)) $\bigcup$ add-links(f-alignment, right-branch($node$)) \;
+        }
+        add $node$ to $splits[links]$ \;
+       }
+        \Return $links$ \;
+  \end{algorithm}
+
+Sidan \texttt{c-align} kallar \texttt{add-links} for kvar av sidene, får me to
+tabellar $splits_s$ og $splits_t$.  Me hentar så ut alle dei
+lenkjemengdene som er i begge tabellane (dvs. snittet av
+oppslagsnøklene til tabellen); nodane som er lagra med same mengd med
+f-strukturlenkjer (same nøkkel i tabellen) skal lenkjast på
+c-strukturnivå. Alle desse mange-til-mange-lenkjene blir til slutt
+returnert av \texttt{c-align}. Om brukarvariabelen
+\texttt{*pro-args-affect-c-links*} er sann, vil me leggje til lenkja
+pro-argument i lenkjemengdene; denne variabelen styrer forskjellen
+mellom dei to alternative løysingane på ulenkja c-strukturnodar
+diskutert i del \ref{SEC:ulenkja-c-nodar}.
+
+Prosessen er no ferdig, mange-til-mange-lenkjene mellom
+c-strukturnodar definerer frasesamanstillinga
+
+\fxnote[inline,nomargin]{til
+diskusjonsdel:\emph{Det er ikkje berre ei N-gramsamanstilling; sidan
+lenkjene er mellom c-strukturnodar kor kvar node dominerer ein
+konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
+
+
+\subsection{\textbf{SKRIV} viss me har LPT, men ikkje rekursiv f-lenkje}
+\label{sec-2.3.1}
+
+    Dette bør kanskje vere valfritt i programmet, for å sjå kva det
+    fører til: vil du ta med LPT-korrespondansar som ikkje har
+    f-lenkjer i \texttt{add-links}?
+
+    Og omvendt, finst det LPT-korrespondansar som ikkje kjem med i
+    f-alignment i det heile teke, men som likevel burde ha noko å seie
+    for c-strukturlenkjinga? (Men burde dei ikkje då vere med i
+    f-alignment au?)
+
+\fxnote{Kan me \textbf{fjerne} visse f-samanstillingar pga. c-strukturinfo?
+    dvs. disambiguere...
+    (dette er vel heller stoff for diskusjonsdelen?)}
+
+
+\chapter{Avslutning}
+\label{sec-3}
+
+
+\bibliographystyle{apacite}
+\bibliography{master}
+
+
+
+[fn:19] Ved c-struktur-f-strukturavbildinga $\phi$, ein funksjon som
+        tek ein c-strukturnode og returnerer ein (delvis) f-struktur.
+
+
+
+
+
+
+
 
 
 

@@ -1545,6 +1545,7 @@ lenkje på f-strukturnivå?  Her finst det fleire alternative løysingar,
 som eg ser på nedanfor.
 
 *** Ulenkja c-strukturnodar
+\label{SEC:ulenkja-c-nodar}
 I figur \ref{fig:gaiGo} kan iallfall IP-nodane lenkjast, dei dominerer
 alle orda på begge setningane, og f-strukturane er lenkja. Men 
 NP-subjektet på den norske sida, er ikkje lenkja med
@@ -1586,14 +1587,16 @@ uproblematisk å lenkje I' og I. Men om me berre har krav
 skal gjere i ein situasjon kor nodar lenkja på f-strukturnivå ikkje er
 lenkja på c-strukturnivå.
 
-Det finst (iallfall) to alternativ. Me kan seie at I- og I'-nodane
-ikkje skal lenkjast, sidan /det/ og /seg/ er lenkja på f-strukturnivå
-(til subjekt og objekt av gaiGo), då tolker me det slik at I' og IP
+Det finst (iallfall) to alternativ. 
+
+Det eine alternativet er å seie seie at I- og I'-nodane ikkje skal
+lenkjast, sidan /det/ og /seg/ er lenkja på f-strukturnivå (til
+subjekt og objekt av gaiGo), då tolker me det slik at I' og IP
 dominerer ulikt lenkja materiale. Det at det /ikkje/ finst ei lenkje
 mellom I'-nodane, men mellom IP-nodane, vil då opplyse oss om at
 I'-nodane dominerer ulike f-strukturlenkja informasjonstilskot på dei
 ulike språka; likeins for I-nodane. Eg kjem tilbake til korleis ein
-kan formalisere dette kravet i del \ref{SEC:infotap}.
+kan formalisere dette kravet i del \ref{SEC:c-strengare}.
 
 Det andre alternativet er å ikkje gjere forskjell på IP, I' og I når det
 gjeld c-strukturlenkjinga. Grunnen til å gjere dette er at /gaiGo/
@@ -1651,11 +1654,11 @@ c-strukturnivå og ordnivå[fn:26].
 
 \fxnote{TODO: diskutere litt meir forskjellane på desse alternativa}
 
-*** Informasjonstap som lenkjingskriterium
-\label{SEC:infotap}
+*** Eit strengare lenkjingskriterium
+\label{SEC:c-strengare}
 
 Sidan det er mogleg å ønskje seg å ikkje lenkje I'- og I-nodane i
-\ref{fig:gaiGo}, gir eg her ei alternativ løysing. 
+\ref{fig:gaiGo}, gir eg her ein måte å formalisere dette på.
 
 For å tillate lenkjene i figur \ref{fig:enkel-c-lenkje}, men ikkje dei
 stipla lenkjene i figur \ref{fig:gaiGo}, ville det vore nok å krevje
@@ -1694,7 +1697,7 @@ søsternodar blir for strengt.
   \end{figure}
 #+END_LaTeX
 
-Me treng altså eit litt meir nyansert krav. Som nemnte i fotnote
+Me treng altså eit litt meir nyansert krav. Som nemnt i fotnote
 \ref{fn:LL-ordlenkje} går det an å få til dette ved ein kombinasjon av
 konseptet om lenkja leksikalske nodar og å krevje at orda /det/,
  /åpnet/ og /seg/ i figur \ref{fig:gaiGo} er mange-mange-lenkja på
@@ -1705,93 +1708,37 @@ Men viss me vil unngå å referere til ordlenkjer, går det au an å
 definere kravet i form av f-strukturlenkjer på preterminale
 nodar[fn:22]:
 
-\ex. \label{krav:c-infotap} For å lenkje c-strukturnodane $n_s$ og $n_t$:\\
-     La $L_c(n_s)$ vere alle
-     f-strukturlenkjer frå $\phi(n'_s)$ for alle preterminale $n'_s$
-     som er dominert av $n_s$. Nodar utan f-strukturlenkjer er ikkje med i $L_c$.
-     Nodane $n_s$ og $n_t$ kan då lenkjast viss $L_c(m_s)-L_c(n_s)=L_c(m_t)-L_c(n_t)$.
+\ex. \label{krav:c-pro} For å lenkje c-strukturnodane $n_s$ og
+     $n_t$:\\
+     La $l_c(f)$ vere mengda som inneheld
+     f-strukturlenkja til $f$, /og/ f-strukturlenkjene til alle
+     argument $a$ av $f$ som ikkje har c-strukturnodar, dvs. kor
+     $\phi^{-1}(a)=\emptyset$.
+     La $L_c(n)$ vere mengda av $l_c(\phi(n'))$ for alle
+     f-strukturlenkja preterminale $n'$ som er dominert av $n$.
+     $n_s$ og $n_t$ kan lenkjast om $L_c(n_s)=L_c(n_t)$.
 
-# \a.  mor av $n_s$, $m_s$, har same funksjonelle domene som $n_s$,
-#      og mor av $n_t$, $m_t$, har same funksjonelle domene som $n_t$, 
-# \b.  $m_s$ og $m_t$ er lenkja, 
+F-strukturen til /gaiGo/ i dømet over har eit pro-element (lenkja til
+/seg/) som argument, difor kan me finne
+f-strukturlenkja til dette argumentet når me finn $L_c(I'_s)$. 
 
 
-\Last[a og -b] seier til saman det same som
-\ref{krav:subnode-f-lenkja}. Det
-\Last[c] seier er at me må ha same /informasjonstap/ når me går
-nedover i c-strukturtreet.
-
-Figur \ref{fig:enkelsub2} illusterer dette kravet. IPfoc og IP er
-toppnodar, lenkja ved krav \ref{krav:f-links-domain}. I'-nodane er i lenkja
-funksjonelle domene og har lenkja mødre. I tillegg har dei same
-informasjonstap:\\
+I figur \ref{fig:PanJara-gaiGo} har me då følgjande situasjon:\\
 #+BEGIN_LaTeX
-\\$L_c(IPfoc_s)=\{(\textbf{PanJara},\textbf{den}),(\textbf{ga-Geba},\textbf{åpne})\}$,
-$L_c(I'_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
-\\$L_c(IP_t)=\{(\textbf{PanJara},\textbf{den}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$,
-$L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$
-\\$L_c(IPfoc_s)-L_c(I'_s)=\{(\textbf{PanJara},\textbf{den})\}=L_c(IP_t)-L_c(I'_t)$\\
+\\$L_c(IP_s)=\{(\textbf{PanJara},\textbf{vindu}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}=L_c(IP_t)$
+\\$L_c(I'_s)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}=L_c(I'_t)$
+\\$L_c(I_s)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}
+\neq \{(\textbf{ga-Geba},\textbf{åpne})\}=L_c(I_t)$\\
 #+END_LaTeX
 
-#+BEGIN_LaTeX
-\begin{figure}[htp]
-\centering
-\begin{tikzpicture}
-\Tree [.\node(IPk){IPfoc}; 
-  [.\node(NPk){NP}; \edge[roof]; {PanJara} ] 
-  [.\node(Ibark){I'};  [.\node(Vfink){Vfin};    \node(gaiGo){gaiGo};  ]
-  ] ]
-     \begin{scope}[shift={(2in,0in)}]
-\Tree [.\node(IPb){IP}; 
-  [.\node(NPb){NP}; \edge[roof]; {det} ] 
-  [.\node(Ibarb){I'};  [. \node(Vfinb){Vfin}; \node(åpnet){åpnet};  ]
-       [.S \edge[roof]; {seg} ] ] ]
-\end{scope}
- \draw[-] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
-  \draw[dashed,-] (Vfink)..controls +(north east:1) and +(north west:1) .. node[midway,sloped]{$\times$}(Vfinb) ;
-  \draw[-,very thick] (Ibark)..controls +(north east:1.5) and +(north west:1.5) .. (Ibarb) ;
-% \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
- \draw[-] (NPk)..controls +(north east:1) and +(north west:1) .. (NPb) ;
+Dette vil seie at krav \ref{krav:c-pro} gir lenkjer mellom
+IP-nodane og I'-nodane, men ikkje mellom I-nodane. I figur
+\ref{fig:gaiGo} vil ikkje ein gong I'-nodane få ei lenkje, sidan den
+norske I'-node dominerer 
+$\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}$
+medan den georgiske I'-node dominerer det same som IP-nodane, 
+$\{(\textbf{pro},\textbf{det}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}$.
 
-\end{tikzpicture}
-
-\fxnote{TODO: teikne inn f-domene her òg}
-
-\caption{Delvis mogleg lenkjing av underordna c-strukturnodar mellom georgisk og bokmål}
- \label{fig:ikkjesub2}
-\end{figure}
-#+END_LaTeX
- 
-Vfin-nodane er au i same funksjonelle domene, og har lenkja mødre, men
-her har dei ulikt informasjonstap:\\
-#+BEGIN_LaTeX
-\\$L_c(I'_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$,
-$L_c(Vfin_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
-\\$L_c(I'_t)=\{(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{pro})\}$,
-$L_c(Vfin_t)=\{(\textbf{ga-Geba},\textbf{åpne})\}$
-\\$L_c(I'_s)-L_c(Vfin_s)=\{\}$
-\\$L_c(I'_t)-L_c(Vfin_t)=\{(\textbf{pro},\textbf{pro})\}$\\
-#+END_LaTeX
-
-Me ikkje har altså ein c-strukturnode som direkte projiserer
-f-strukturen til /pro/ på georgisk, lenkja til /seg/ på norsk;
-f-strukturen til /pro/ er spesifisert via verbet. Men sjølv om me
-ikkje kan sjå ein slik node, kan me sjå at det er /noko/ som er
-spesifisert via dette fragmentet av den georgiske c-strukturen, og at
-det er lenkja til /seg/, difor mister me informasjon når me går frå I'
-til Vfin.
-
-*** Alternativ formulering, utan å sjekke informasjonstap
-F-strukturen til /gaiGo/ i dømet over har pro-elementet (lenkja til
-/seg/) som argument, difor burde det au vere mogleg å finne
-f-strukturlenkja til dette argumentet når ein finn $L_c(I'_s)$. Om ein
-legg til denne lenkja i $L_c$, er det nok at $L_c(n_s)=L_c(n_t)$ for
-at $n_s$ og $n_t$ skal lenkjast (dvs. ein treng ikkje sjekke
-forskjellen til mornodane). Men skal ein formulere eit slikt krav må
-ein passe på å spesifisere kor djupt ned i f-strukturen ein skal
-kikke, og avgjere om adjunkt-lenkjer skal med, osb. I implementasjonen
-min har eg valt å følgje krav \ref{krav:c-infotap} for å unngå å
-måtte kode denne typen informasjon inn i systemet.
 
 *** Funksjonelle c-strukturnodar
 \label{SEC:fnord}
@@ -1862,7 +1809,7 @@ ikkje er reflektert i CPnom til Ssub.
 så om dei funksjonelle domena er lenkja, vil
 krav \ref{krav:subnode-f-lenkja}
 vere oppfylt kva gjeld CP-komplementa -- lenkjinga går ikkje ut over
-dei funksjonelle domena, medan krav~\ref{krav:c-infotap} er
+dei funksjonelle domena, medan krav~\ref{krav:c-pro} er
 dekkja for IP og Ssub med unntaket over.)
 
 #+BEGIN_LaTeX
@@ -2060,7 +2007,7 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
    \label{SEC:rangering}
 (meir om dette i del \ref{SEC:impl-f-rangering})
 
-* Implementasjonen av =lfgalign=				     :ROTETE:
+* Implementasjonen av =lfgalign=
 \label{SEC:implementasjon}
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
@@ -2436,43 +2383,29 @@ ikkje med i $f-alignment$;\\
 som er med i $f-alignment$ men ikkje $aligntable$ (ikkje er rekursivt
 lenkja).}
 
-Programmet =lfgalign= følgjer krav \ref{krav:c-infotap} og
+Programmet =lfgalign= følgjer krav \ref{krav:c-pro} og
 lenkjer øvste nodar i funksjonelle domene, og subordinate nodar som
 har same informasjonstap. Prosedyren =c-align= i kodefigur
 \ref{algo:c-align} implementerer dette kravet. 
 
 #+BEGIN_LaTeX
-   \begin{algorithm}[]
-   \fxnote{TODO: fjerning av nodar skjer rekursivt, oppdatere dette...}
-     \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
-     \label{algo:c-align}
-      
-     c-alignments $\gets \emptyset$ \;
-     $splits_s \gets$ new table \;
-     add-links(f-alignment, $tree_s, splits_s)$  \;
-     $splits_t \gets$ new table \;
-     add-links(f-alignment, $tree_t, splits_t)$  \;
-     \ForAll{$src$, $trg$ in f-alignment} {
-       $top_s \gets$ topnode($src$) \;
-       $top_t \gets$ topnode($trg$) \;
-       \uIf{$top_s = \emptyset$ or $top_t = \emptyset$} { continue\; }
-       add $(top_s,top_t)$ to c-alignments \;
-       \ForAll{$link$ being the keys of $splits_s$} {
-         \uIf{$link$ in keys of $splits_t$ and $link \neq (src,trg)$} {
-         \Comment{We try to remove $link$ from $splits_s$ and $splits_t$}
-           $links_s \gets keys(src, splits_s) - link$ \;
-           $links_t \gets keys(trg, splits_t) - link$ \;
-           $nodes_s \gets splits_s[links_s]$ \;
-           $nodes_t \gets splits_t[links_t]$ \;
-           \uIf{$nodes_s$ and $nodes_t$ are non-empty} {
-	   \Comment{$nodes_s$ and $nodes_t$ have the same infoloss}
-             add $(nodes_s,nodes_t)$ to c-alignments \;
-           }
-         }
+\fxnote{TODO: gammal implementasjon, er ganske annleis no.}
+ \begin{algorithm}[]
+   \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
+   \label{algo:c-align}
+    
+   c-alignments $\gets \emptyset$ \;
+   $splits_s \gets$ new table \;
+   add-links(f-alignment, $tree_s, splits_s)$  \;
+   $splits_t \gets$ new table \;
+   add-links(f-alignment, $tree_t, splits_t)$  \;
+   \ForAll{$links$ being the keys in $splits_s$} {
+       \uIf{($links$ in $splits_t$)} {
+             add $(splits_s[links],splits_t[links])$ to c-alignments \;
         }
-      }
-      \Return c-alignments \;
-      \end{algorithm}    
+    }
+    \Return c-alignments \;
+    \end{algorithm}    
 #+END_LaTeX      
 
 Hjelpeprosedyren =add-links= (kodefigur \ref{algo:add-links}) utfører
@@ -2496,7 +2429,13 @@ tabellen.
    \uIf{$node$} {
        \uIf{preterminal?($node$)} {
           let $link \in$ f-alignment s.t. $\phi(node) \in link$ \;
-          \lIf{$link$} {$links \gets \{link\}$}
+          \lIf{$link$} {$links \gets \{link\}$} \;
+	  \uIf{*pro-args-affect-c-links*} {
+  	    \ForAll{$a \in args(\phi(node))$ s.t. $\phi^{-1}(a)=\emptyset$}{
+                let $link_a \in$ f-alignment s.t. $a \in link_a$ \;
+                \lIf{$link_a$} {$links \gets \{link_a\}$} \;
+	    }
+	  }
         }
         \uElse {
           $links \gets $add-links(f-alignment, left-branch($node$)) $\bigcup$ add-links(f-alignment, right-branch($node$)) \;
@@ -2508,18 +2447,16 @@ tabellen.
 #+END_LaTeX
 
 Sidan =c-align= kallar =add-links= for kvar av sidene, får me to
-tabellar $splits_s$ og $splits_t$. Me går så gjennom kvar
-f-strukturlenkje; viss denne korresponderer med c-strukturnodar, blir
-toppnodane lenkja. Me prøver så å rekursivt fjerne ei og ei av dei subordinate
-f-strukturlenkjene som finst i både $splits_s$ og $splits_t$, og sjå
-om både $splits_s$ og $splits_t$ har nodemengdar med same
-informasjonstap.
-
-## TODO CURRENT!!
-# Me hentar så ut alle dei lenkjemengdene som er i begge tabellane
-# (dvs. snittet av oppslagsnøklene til tabellen); nodane som er lagra
-# med mengd med f-strukturlenkjer skal lenkjast på c-strukturnivå. Alle
-# desse mange-til-mange-lenkjene blir til slutt returnert av =c-align=.
+tabellar $splits_s$ og $splits_t$.  Me hentar så ut alle dei
+lenkjemengdene som er i begge tabellane (dvs. snittet av
+oppslagsnøklene til tabellen); nodane som er lagra med same mengd med
+f-strukturlenkjer (same nøkkel i tabellen) skal lenkjast på
+c-strukturnivå. Alle desse mange-til-mange-lenkjene blir til slutt
+returnert av =c-align=. Om brukarvariabelen
+=*pro-args-affect-c-links*= er sann, vil me leggje til lenkja
+pro-argument i lenkjemengdene; denne variabelen styrer forskjellen
+mellom dei to alternative løysingane på ulenkja c-strukturnodar
+diskutert i del \ref{SEC:ulenkja-c-nodar}.
 
 Prosessen er no ferdig, mange-til-mange-lenkjene mellom
 c-strukturnodar definerer frasesamanstillinga
@@ -2745,7 +2682,7 @@ språket.»
         krav \ref{krav:f-links-words} litt. Viss me hadde definert
         /det/ og /seg/ som mange-ein-lenkja (med /åpnet/) inn i
         /gaiGo/, ville me fått same resultat som det krav
-        \ref{krav:c-infotap} i del \ref{SEC:infotap} gir.
+        \ref{krav:c-pro} i del \ref{SEC:c-strengare} gir.
 	Viss georgisk er kjeldespråket
 	($n_s$, norsk: $n_t$) blir
 	$LL(IP_s)=LL(I'_s)=LL(I_s)=\{(\text{gaiGo},\text{det}),(\text{gaiGo},\text{åpnet}),(\text{gaiGo},\text{seg})\}=LL(IP_t)$.
