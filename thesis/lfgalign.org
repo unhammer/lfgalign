@@ -1669,7 +1669,8 @@ For å tillate lenkjene i figur \ref{fig:enkel-c-lenkje}, men ikkje dei
 stipla lenkjene i figur \ref{fig:gaiGo}, ville det vore nok å krevje
 at søsternodane var lenkja. I figur \ref{fig:enkel-c-lenkje} kan
 I-nodane lenkjast fordi objekta er lenkja, I'-nodane fordi subjekta er
-lenkja.
+lenkja. I figur \ref{fig:gaiGo} kan dei norske I'- og I-nodane ikkje
+lenkjast med noko fordi søstrene deira ikkje er lenkja.
 Men dette blir for strengt. Det kan t.d. vere gode uavhengige grunnar
 til å ha ein mellomliggande S-node før objektet på norsk, kor S er i
 same funksjonelle domene som IP, medan det kanskje finst uavhengige grunnar
@@ -1693,11 +1694,11 @@ søsternodar blir for strengt.
 				    [.\node(It){I}; {regent} ]
 				    [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
-  \draw[-,very thick] (I's)..controls +(north east:1.5) and +(north west:1.5) .. (I't) ;
-  \draw[-] (OBJs)..controls +(north east:2) and +(west:1) .. (OBJt) ;
+  \draw[-,very thick] (Is)..controls +(north east:1.5) and +(west:1.5) .. (It) ;
+  \draw[-] (OBJs)..controls +(east:3) and +(south east:4) .. (OBJt) ;
 \end{tikzpicture}
-   \caption{Enkel lenkjing av c-strukturnodar mellom norsk og
-   nederlandsk; IP til IP, I' til I' og I til I.}
+   \caption{Lenkjing av c-strukturnodar mellom norsk og
+   nederlandsk, I-nodane bør lenkjast sjølv om søsternodane ikkje er lenkja}
    \label{fig:enkel-c-lenkje-med-S}
   \end{figure}
 #+END_LaTeX
@@ -2008,7 +2009,7 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
    \label{SEC:rangering}
 (meir om dette i del \ref{SEC:impl-f-rangering})
 
-* Implementasjonen av =lfgalign=
+* Implementasjonen av =lfgalign=				     :ROTETE:
 \label{SEC:implementasjon}
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
@@ -2655,7 +2656,7 @@ språket.»
 [fn:22] Då kan me au representere mange-til-mange-ordlenkjer som
         «udelelege», $(\{\text{gaiGo}\},\{\text{det,åpnet,seg}\})$
         blir den einaste ordlenkja i dømet over, sidan me ikkje må
-        samanlikne ordlenkjene frå $IP_t$, $I'_t$ og $Vfin_t$.
+        samanlikne ordlenkjene frå $IP_t$, $I'_t$ og $I_t$.
 
 [fn:8] Som nemnt i del \ref{SEC:fnord} kan funksjonsord gjere
        f-strukturlenkjinga avhengig av forhold i c-strukturen,
