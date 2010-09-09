@@ -42,7 +42,7 @@ nyttig sparse tree: SKRIV
 [[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
 
 
-* Innleiing							     :ROTETE:
+* Innleiing
 \label{SEC:innleiing}
 
 \fxnote{TODO: abstract/samandrag}
@@ -269,7 +269,7 @@ likt, medan mangel på samsvar i samanstillinga til døtre kan føre til
 at mornodar ikkje skal samanstillast; ein formalisering dette steget,
 med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
-* Bakgrunn og omgrepsavklaring					     :ROTETE:
+* Bakgrunn og omgrepsavklaring
   \label{SEC:bakgrunn}
 
 ** SKRIV Relaterte metodar
@@ -1006,8 +1006,8 @@ LFG-analysar kor argument korresponderte med adjunkt[fn:15]. Her
 utgjorde altså dei grammatiske analysane (ein del av) data, og
 undersøkinga seier nok meir om analysane enn om språklege forhold. På
 et så tynt datagrunnlag kan me vel berre konstatere at me må kunne
-handtere argument-adjunkt-lenkjer, men argument-argument-lenkjer bør
-prioriterast viss alt anna er likt.
+handtere argument-adjunkt-lenkjer når me prøver å lenkje, men
+argument-argument-lenkjer bør prioriterast viss alt anna er likt.
 
 *** Ulik følgje i argumentstruktur
 I tillegg til at argument kan lenkjast til adjunkt, kan koreferente
@@ -1651,11 +1651,12 @@ lenkjing av $n_s$ og $n_t$, men dei to mengdene kan ikkje vere tomme.
 
 Dette kravet gjer at ein ikkje treng krav \ref{krav:c-tentativt}, og
 vil gi ei mange-mange-lenkje mellom alle nodane i dei to funksjonelle
-domena til /gaiGo-åpnet/ i figur \ref{fig:gaiGo}, sidan
-$LL(IP_s)=LL(I'_s)=LL(I_s)=\{(\text{gaiGo},\text{åpnet})\}=LL(IP_t)=LL(I'_t)=LL(I_t)$,
-kor georgisk er kjeldespråket og har subskript $_s$, og norsk er
-målspråket med subskript $_t$, og /det/ og /seg/ er ulenkja på både
-c-strukturnivå og ordnivå[fn:26].
+domena til /gaiGo-åpnet/ i figur \ref{fig:gaiGo}. Viss me skriv ei
+f-strukturlenkje som eit ordna par mellom PRED-verdien på kjeldesida
+(georgisk, med subskript $_s$) og PRED-verdien på målsida (norsk, med
+subskript $_t$) får me
+$LL(IP_s)=LL(I'_s)=LL(I_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}=LL(IP_t)=LL(I'_t)=LL(I_t)$
+kor /det/ og /seg/ er ulenkja på både c-strukturnivå og ordnivå[fn:26].
 
 \fxnote{TODO: diskutere litt meir forskjellane på desse alternativa}
 
@@ -1697,8 +1698,8 @@ søsternodar blir for strengt.
   \draw[-,very thick] (Is)..controls +(north east:1.5) and +(west:1.5) .. (It) ;
   \draw[-] (OBJs)..controls +(east:3) and +(south east:4) .. (OBJt) ;
 \end{tikzpicture}
-   \caption{Lenkjing av c-strukturnodar mellom norsk og
-   nederlandsk, I-nodane bør lenkjast sjølv om søsternodane ikkje er lenkja}
+   \caption{I-nodane bør lenkjast sjølv om søsternodane ikkje er
+   lenkja (norsk og nederlandsk)}
    \label{fig:enkel-c-lenkje-med-S}
   \end{figure}
 #+END_LaTeX
@@ -1741,22 +1742,27 @@ medan den georgiske I'-node dominerer
 $\{(\textbf{pro},\textbf{det}),(\textbf{ga-Geba},\textbf{åpne}),(\textbf{pro},\textbf{seg})\}$,
 det same som IP-nodane.
 
-
+Merk at om me omdefinerer $l_c(f)$ til å ikkje innehalde
+f-strukturlenkjer til argument av $a$, vil krav \ref{krav:c-pro} gi
+same c-strukturlenkjer som kravet frå \cite{dyvik2009lmp}, men
+definert i form av f-strukturlenkjer på preterminale nodar.
 *** Funksjonelle c-strukturnodar
 \label{SEC:fnord}
 
 Ikkje alle ord tilsvarer PRED-element i f-strukturen, dette gjeld
-typisk funksjonsord (t.d. /som/, /at/). Ved endosentrisitetsprinsippa
+typisk funksjonsord (t.d. /som/, /at/). \fxnote[inline,nomargin]{...og
+desse vil me lenkje kvifor? i kva situasjonar? TODO diskuter.}
+Ved endosentrisitetsprinsippa
 til \citet{bresnan2001lfs} er komplementet til funksjonelle kategoriar
 (C, I, P) ein funksjonell ko-kjerne, det er altså komplementet som gir
 PRED-elementet i dette funksjonelle domenet.
 
-Problemet med å nytte metoden frå del \ref{SEC:subnode} i dette
-tilfellet er at nodar over funksjonsord er i det same funksjonelle
-domenet som komplementet, og nodane over funksjonsorda tilføyer ikkje
-ei ny PRED-lenkje som kan dele opp treet slik me gjorde tidlegare. Så
-me må utvide prinsippa for å dele opp c-strukturtreet i buntar med
-likt informasjonstap.
+Problemet med å nytte krava nemnt over i dette tilfellet er at nodar
+over funksjonsord er i det same funksjonelle domenet som komplementet,
+og nodane over funksjonsorda tilføyer ikkje ei ny PRED-lenkje som kan
+dele opp treet slik me gjorde tidlegare. Så me må utvide prinsippa for
+å dele opp c-strukturtreet i buntar som dominerer same mengd med
+lenkjer.
 
 Ord som ikkje projiserer PRED-lenkjer kan likevel ha
 LPT-korrespondanse og bestå krava på ordnivå, men når me skal lenkje
@@ -1766,53 +1772,46 @@ lenkjing.
 
 Viss begge språk har funksjonsord, men funksjonsord som ikkje kan
 sjåast på som moglege omsetjingar (t.d. /fordi/ og /whether/), bør me
-ikkje ein gong lenkje komplementa[fn:10]. Samtidig vil me ikkje at eit
-manglande funksjonsord på det eine språket skal hindre lenkjing av
-komplementa, sidan det kan hende at funksjonsordet ikkje er krevd på
-det språket (eventuelt kjem dette fram som korrespondansar i
-f-strukturtrekk, eg har ikkje teke høgd for korrespondansar mellom
-element som ikkje er PRED i denne oppgåva).
+nok ikkje ein gong lenkje komplementa, sidan funksjonsorda då gjer at
+komplementa speler ulike roller i omgivnadene[fn:10]. Samtidig vil me
+ikkje at eit manglande funksjonsord på det eine språket skal hindre
+lenkjing av komplementa, sidan det kan hende at funksjonsordet ikkje
+er krevd på det språket (eventuelt kjem dette fram som korrespondansar
+i f-strukturtrekk, eg har ikkje teke høgd for korrespondansar mellom
+andre f-strukturelement enn PRED i denne oppgåva).
 
-Me krev at komplementa er lenkja for å sikre at me ikkje lenkjer nodar
-som står i ulike konstekstar (me vil ikkje lenkje /at/ i «han såg at
-det gjekk bra» med /that/ i «he saw that she drew a picture»), jamfør
-kravet om lenkja argument for lenkja predikat i del
+Me kan krevje at komplementa er lenkja for å sikre at me ikkje lenkjer
+nodar som står i ulike konstekstar (me vil ikkje lenkje /at/ i «han
+såg at det gjekk bra» med /that/ i «he saw that she drew a picture»),
+jamfør kravet om lenkja argument for lenkja predikat i del
 \ref{SEC:lik-argstr}.
 
-Då får me følgjande:
+Desse ønskene kan me formalisere slik:
 
 \ex. \label{fnordkrav} Krav for lenkjing av funksjonelle kategoriar i c-strukturen:
 \a. Gitt ei mogleg lenkjing av FP og GP, kor F og G er funksjonelle
-    kategoriar der komplementa elles kan lenkjast, introduserer me eit
-    «falskt informasjonstap» mellom FP og F' og mellom GP og G'; orda
-    under F' og G' må ha LPT-korrespondanse for at FP og GP skal kunne
-    lenkjast, då kan me au lenkje F' og G'.  
+    kategoriar der komplementa elles kan lenkjast,
+    tolk LPT-korrespondansen mellom orda under F' og G' som eit
+    medlem av lenkjemengda $L_c$ (evt. $LL$), kor denne må vere lik
+    for at FP og GP skal kunne lenkjast, då kan me au lenkje F' og G'.
 \b. Gitt ei mogleg lenkjing av FP og XP, der F er ein funksjonell
     kategori, medan X er ein ikkje-funksjonell kategori, ignorerer me
     den funksjonelle kategorien i c-strukturlenkjinga. Sidan det ikkje
-    er noko forskjell i informasjonstap mellom FP og F', er F' medlem
+    er nokon forskjell i $L_c$ (evt. $LL$) mellom FP og F', er F' medlem
     av nodemengden som blir lenkja til XP.
 
-# \ex. \label{fnordkrav} Skal nodar over ord som ikkje projiserer
-#      PRED-element lenkjast, må følgjande krav vere oppfylt:
-# \a. dei funksjonelle domena (gitt ved komplementa) må vere
-#   lenkja, og
-# \b. nodane er begge c-strukturhovud.
-
 Om \Last[a] er oppfylt, kan me få samanstillinga vist i figur
-\ref{fig:fnord}. Her vil dei funksjonelle domena til CPsub og CPnom
+\ref{fig:fnord}. Her vil dei funksjonelle domena til CP og CP
 kvar kunne delast opp i to deler, kor den funksjonelle delen har
-LPT-korrespondanse medan komplementa er lenkja på f-strukturnivå. Det
-er ingen informasjonstap frå CPsub til Csub som ikkje er reflektert i
-CPnom til Cnom, og det er ingen informasjonstap frå CPsub til IP som
-ikkje er reflektert i CPnom til Ssub.
+LPT-korrespondanse medan komplementa er lenkja på
+f-strukturnivå. Lenkjemengdene under CP-nodane er like, og dei under
+C-nodane er like.
 
 (Alle nodane under S vist i dei to trea er i same funksjonelle domene,
-så om dei funksjonelle domena er lenkja, vil
-krav \ref{krav:subnode-f-lenkja}
-vere oppfylt kva gjeld CP-komplementa -- lenkjinga går ikkje ut over
-dei funksjonelle domena, medan krav~\ref{krav:c-pro} er
-dekkja for IP og Ssub med unntaket over.)
+så om dei funksjonelle domena er lenkja, vil krav
+\ref{krav:subnode-f-lenkja} vere oppfylt kva gjeld CP-komplementa --
+lenkjinga går ikkje ut over dei funksjonelle domena, medan
+krav \ref{krav:c-pro} er dekkja for S-nodane med unntaket over.)
 
 #+BEGIN_LaTeX
   \begin{figure}[htp]
@@ -1820,24 +1819,24 @@ dekkja for IP og Ssub med unntaket over.)
   
   \begin{tikzpicture}
   \Tree
-  [.IPfoc
-    [.PROPP [.PROP abramsma ] ] 
+  [.IP
+    [.NP [.PROP abramsma ] ] 
     [.I' [.I \edge[roof]; {iCoda} ]
-             [.S [.\node(CPsub){CPsub};
-                  [.\node(Csub){Csub};  rom ]
-                  [.\node(IP){IP}; \edge[roof]; {cvimda} ]]]]]
+             [.S [.\node(CPs){CP};
+                  [.\node(Cs){C};  rom ]
+                  [.\node(IPs){IP}; \edge[roof]; {cvimda} ]]]]]
       \begin{scope}[shift={(2in,0in)}]
   \Tree
   [.IP
-    [.PROPP [.PROP Abrams ] ]
-     [.I' [.Vfin visste ]
-              [.S [.VPmain [.\node(CPnom){CPnom};
-                           [.\node(Cnom){Cnom};  at ] 
-                            [.\node(Ssub){Ssub}; \edge[roof]; {det regnet} ]]]]] ]
+    [.NP [.PROP Abrams ] ]
+     [.I' [.I visste ]
+              [.S  [.\node(CPt){CP};
+                   [.\node(Ct){C};  at ] 
+                   [.\node(St){S}; \edge[roof]; {det regnet} ]]]] ]
   \end{scope}                      
-  \draw[-] (CPsub)..controls +(1,6) and +(north east:6) .. (CPnom) ;
-  \draw[-] (IP)..controls +(north east:1.5) and +(west:0.5) .. (Ssub) ;
-  \draw[-,very thick] (Csub)..controls +(south west:3) and +(south west:1) .. (Cnom) ;
+  \draw[-] (CPs)..controls +(1,6) and +(north east:5) .. (CPt) ;
+  \draw[-] (IPs)..controls +(north east:1.5) and +(west:0.5) .. (St) ;
+  \draw[-,very thick] (Cs)..controls +(south west:4) and +(south west:1) .. (Ct) ;
   \end{tikzpicture}
   \caption{Mogleg samanstilling av funksjonelle c-strukturnodar mellom georgisk og norsk (bokmål)}
    \label{fig:fnord}
@@ -2009,7 +2008,8 @@ seie noko /a priori/ om kva for vanskar ein kan finne).
    \label{SEC:rangering}
 (meir om dette i del \ref{SEC:impl-f-rangering})
 
-* Implementasjonen av =lfgalign=				     :ROTETE:
+** SKRIV Oppsummering av krava
+* Implementasjonen av =lfgalign=
 \label{SEC:implementasjon}
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
@@ -2582,8 +2582,8 @@ språket.»
         PRED)? Viss krava elles er oppfylt, kan det kanskje vere
         informativt med ein type «defekt» lenkje, sjølv om berre det
         eine ordet blir rekna for å vere eit innhaldsord. Frasane til
-        deira funksjonelle domene vil uansett vere samanstilt via
-        toppnodane (t.d. CP).
+        deira funksjonelle domene vil uansett kunne lenkjast viss dei andre
+        krava er oppfylte.
 
 [fn:12] I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
         inkludere visse f-strukturar utan PRED-element i kandidatane
