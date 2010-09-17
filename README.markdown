@@ -34,6 +34,10 @@ lfgalign.lisp currently does the following:
   where the index of the list is the set of alignments of pre-terminal
   nodes dominated by node `n` (so several nodes may have the same
   index).
+
+- `c-align` turns takes a flat f-alignment and finds the `LL-splits`
+  of source and target trees, intersecting that on the keys to find
+  which nodes can be aligned.
   
 prolog-import
 ----------
@@ -117,7 +121,7 @@ TODO
   - is there any merging or other funny business going on? (Well,
     merging is still todo...)
    
-- Currently`get-links` in `add-links` also adds those links for which
+- Currently `get-links` in `add-links` also adds those links for which
   there is no actual f-structure alignment, only
   LPT-correspondence. But what should we do about these? Not add them
   at all? (Make it an option for now!)
