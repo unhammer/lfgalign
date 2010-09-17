@@ -2484,14 +2484,24 @@ konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
     (dette er vel heller stoff for diskusjonsdelen?)}
 
 
-* Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar :ROTETE:
+* Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar
 \label{SEC:diskusjon}
 
-   - om kjeldematerialet
-   - manglar med implementasjonen
-   - samanlikning av lenkjing basert på f-struktur og lenkjing basert
-     på N-gram
-   - bruksområde for samanstillingar
+I denne delen gir eg ei evaluering av resultata frå å køyre =lfgalign=
+på LFG-analysar av norske og georgiske parallelle setningar. Eg ser på
+manglar ved implementasjonen i forhold til dei ideelle krava frå
+kapittel \ref{SEC:ideell}, og samanliknar dei resultata som er moglege
+å få frå =lfgalign= med dei som er mogleg å få med andre metodar, då
+spesielt reint N-gram-baserte metodar. I tillegg diskuterer eg kort
+bruksområde for desse samanstillingane.
+
+Kjeldematerialet mitt er ei mengd med omtrent hundre
+\fxnote[inline,nomargin]{med mindre det finst fleire?} LFG-analyserte
+testsetningar på norsk og georgisk, frå eit testsett kor setningane er
+valt for å illustrere ei vid rekkje ulike syntaktiske
+situasjonar. Analysane er manuelt disambiguerte.
+
+
 
 ** Oppdage argumentstrukturalternasjon
 \fixme{ref} I døme TODO i kapittel TODO viste eg at f-strukturar og
