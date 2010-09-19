@@ -815,12 +815,25 @@ phi's don't match anything in the files)."
   (let* ((aligntab (make-aligntab))
 	 (f-alignments (f-align '(0 . 0) tab_s tab_t LPT aligntab))
 	 (best-f-alignment (rank f-alignments aligntab))
+	 (tree_s (maketree tab_s))
+	 (tree_t (maketree tab_t))
 	 (c-alignments (c-align-ranked best-f-alignment 
-				       (maketree tab_s) tab_s
-				       (maketree tab_t) tab_t)))
-	 ;; TODO: pretty-print
-    c-alignments))
+				       tree_s tab_s
+				       tree_t tab_t)))
+    ;; TODO: pretty-print
+    (out "f: ~A~%" best-f-alignment)
+    (mapcar (lambda (pair)
+	      (out "c_s: ~A~%c_t: ~A~%"
+		   (skip-suff_base (trimtree (car pair) (topnodes (car pair) tree_s)))
+		   (skip-suff_base (trimtree (cadr pair) (topnodes (cadr pair) tree_t)))))
+	    c-alignments)
+    (list best-f-alignment c-alignments)))
 
+(defun foo ()
+  (let ((tab_s (open-and-import "eval/ka/0.pl"))
+	(tab_t (open-and-import "eval/nb/0.pl"))
+	(LPT (make-LPT)))
+    (align tab_s tab_t LPT)))
 
 (defun f-align-naive (var1 tab1 var2 tab2)
   "Just to show the difference between naive alignment, and the complete alignment.
