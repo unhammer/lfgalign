@@ -2493,7 +2493,7 @@ manglar ved implementasjonen i forhold til dei ideelle krava frå
 kapittel \ref{SEC:ideell}, og samanliknar dei resultata som er moglege
 å få frå =lfgalign= med dei som er mogleg å få med andre metodar, då
 spesielt reint N-gram-baserte metodar. I tillegg diskuterer eg kort
-bruksområde for desse samanstillingane.
+ulike bruksområde for desse samanstillingane.
 
 Kjeldematerialet mitt er ei mengd med omtrent hundre
 \fxnote[inline,nomargin]{med mindre det finst fleire?} LFG-analyserte
@@ -2502,20 +2502,8 @@ valt for å illustrere ei vid rekkje ulike syntaktiske
 situasjonar. Analysane er manuelt disambiguerte.
 
 
+** Evaluering av =lfgalign=
 
-** Oppdage argumentstrukturalternasjon
-\fixme{ref} I døme TODO i kapittel TODO viste eg at f-strukturar og
-LPT-korrespondanse kanskje ikkje har nok informasjon til å kunne
-handtere ulik følgje i argumentstruktur. Programmet mitt vil her gi
-begge løysingar, ei rangering basert på lik argumentfølgje vil gi feil
-løysing på topp.
-
-Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
-objekt til å lære slike argumentstrukturalternasjonar.  Om me
-observerer /sie gefällt mir/jeg liker henne/ vil me jo ha
-f-strukturinformasjon som kan nyttast til å informere
-argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.), om det var
-substantiv der ville LPT-korrespondanse kunne informere dette.
 ** Samanlikning med tremetodar og n-grammetodar
 I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
 som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
@@ -2545,6 +2533,20 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
 «Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
 (/There/ never /is/) som opptrer utanfor N-grammet på det andre
 språket.»
+** Bruksområde
+*** Oppdage argumentstrukturalternasjon
+\fixme{ref} I døme TODO i kapittel TODO viste eg at f-strukturar og
+LPT-korrespondanse kanskje ikkje har nok informasjon til å kunne
+handtere ulik følgje i argumentstruktur. Programmet mitt vil her gi
+begge løysingar, ei rangering basert på lik argumentfølgje vil gi feil
+løysing på topp.
+
+Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
+objekt til å lære slike argumentstrukturalternasjonar.  Om me
+observerer /sie gefällt mir/jeg liker henne/ vil me jo ha
+f-strukturinformasjon som kan nyttast til å informere
+argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.), om det var
+substantiv der ville LPT-korrespondanse kunne informere dette.
 
 
 
