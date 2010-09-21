@@ -1,4 +1,4 @@
-% Created 2010-09-21 ty. 13:12
+% Created 2010-09-21 ty. 14:33
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -46,7 +46,7 @@
 \newcommand{\fpairs}{\ensuremath{\operatorname{\emph{fpairs}}}}
 \newcommand{\Bleu}{\textsc{Bleu}}
 \usetikzlibrary{calc}
-\newcommand{\proj}[2]{\begin{tabular}{c}\normalsize{#1}\\\footnotesize{#2}\end{tabular}}
+\newcommand{\proj}[2]{\begin{tabular}{c}\footnotesize{#1}\\\normalsize{#2}\end{tabular}}
 \newcommand{\ua}{\ensuremath{\uparrow}}
 \newcommand{\da}{\ensuremath{\downarrow}}
 
@@ -296,58 +296,65 @@ i den første publiseringa i XPar-prosjektet, \citet{dyvik2009lmp}.
 \section{\textbf{SKRIV} Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi}
 \label{sec-2.2}
 
-\label{SEC:omgrepsavklaring}
+ \label{SEC:omgrepsavklaring}
 
-I dei følgjande kapitla nyttar eg ein del terminologi frå LFG,
-Leksikalsk-Funksjonell Grammatikk (i tillegg til eit par eigne
-termar). Difor gir eg her eit kort oversyn over det som kan vere nytt
-for dei som er meir vand med andre grammatiske rammeverk.
+ I dei følgjande kapitla nyttar eg ein del terminologi frå LFG,
+ Leksikalsk-Funksjonell Grammatikk. Difor gir eg her eit kort oversyn
+ over det som kan vere nytt for dei som er meir vand med andre
+ grammatiske rammeverk, i tillegg til å avklare eit par eigne termar
+ eg nyttar i teksta.
 
-LFG er eit \textbf{modellteoretisk}, ikkje-derivasjonelt, rammeverk for
-grammatikk.  \citet{pullum2001dbm} gir ein god gjennomgang av
-forskjellen mellom derivasjonelle (au kalla enumerative) grammatikkar
-og modellteoretiske grammatikkar. Derivasjonelle grammatikkar, som
-transformasjonsgrammatikkane til Chomsky, definerer eit språk som \emph{ei mengd av uttrykk} ved avleiing frå eit startsymbol. Ein
-modellteoretisk grammatikk, derimot, gir skildringar av
-\emph{enkeltuttrykk}, kor eitt uttrykk kan ha fleire moglege skildringar
-(språket er ikkje definert som ei mengd).
+ LFG er eit \textbf{modellteoretisk}, ikkje-derivasjonelt, rammeverk for
+ grammatikk.  \citet{pullum2001dbm} gir ein god gjennomgang av
+ forskjellen mellom derivasjonelle (au kalla enumerative) grammatikkar
+ og modellteoretiske grammatikkar. Derivasjonelle grammatikkar, som
+ transformasjonsgrammatikkane til Chomsky, definerer eit språk som \emph{ei  mengd av uttrykk} ved avleiing frå eit startsymbol. Ein
+ modellteoretisk grammatikk, derimot, gir skildringar av
+ \emph{enkeltuttrykk}, kor eitt uttrykk kan ha fleire moglege skildringar
+ (språket er ikkje definert som ei mengd).
 
-Ein modellteoretisk grammatikk kan i tillegg skildre strukturen (eller
-dei moglege strukturane) til \emph{fragment} av setningar, og denne
-strukturen er lik det bidraget som fragmentet tilfører analysen av
-heile setninga. Det tilsvarande er ikkje mogleg å gjere
-derivasjonelt. \citet[s.~32--33]{pullum2001dbm} gir t.d. eit fragment
-som kjem midt i eit høgreforgreina tre; ei derivasjonell skildring
-ville måtte skildre treet over eller under, men utan informasjon om
-kva som kjem til høgre eller venstre kan me ikkje (på ein
-ikkje-vilkårleg måte) skildre subtreet utanfor fragmentet heilt fram
-til terminal- eller startsymbol.
+ Ein modellteoretisk grammatikk kan i tillegg skildre strukturen
+ (eller dei moglege strukturane) til \emph{fragment} av setningar, og denne
+ strukturen er lik det bidraget som fragmentet tilfører analysen av
+ heile setninga. Det tilsvarande er ikkje mogleg å gjere
+ derivasjonelt. \citet[s.~32--33]{pullum2001dbm} gir t.d. eit fragment
+ som kjem midt i eit høgreforgreina tre; ei derivasjonell skildring
+ ville måtte skildre treet over eller under, men utan informasjon om
+ kva som kjem til høgre eller venstre kan me ikkje (på ein
+ ikkje-vilkårleg måte) skildre subtreet utanfor fragmentet heilt fram
+ til terminal- eller startsymbol.
 
  I LFG har analysane ulike \emph{nivå}, \emph{strukturar}. Konstituentforhold er
  skildra i \textbf{c-strukturen} («constituent structure»), medan forhold
  mellom syntaktiske funksjonar og grammatiske trekk kjem til syne i
- \textbf{f-strukturen} («functional structure»). Figur
+ \textbf{f-strukturen} («functional structure»), ein trekkstruktur. Ein
+ trekkstruktur er ei mengd attributt og verdiar, kor ein verdi kan
+ vere atomær eller peike på ein ny trekkstruktur.  Figur
  \ref{fig:f-og-c-struktur} illusterer eit enkelt døme for eit
  fragment.
 
  \begin{figure}[htp]
     \centering
     \begin{tikzpicture}
+  \tikzset{level distance=1.5cm}
     {\avmoptions{}
      \node(f){
         \begin{avm}
-          $f$ \[pred  & `{\bf{}hund}' \\
+          $f$ \[ subj & \[pred  & `{\bf{}hund}' \\
+                num & sg \\
                 gend & masc \\
                 def & + \\
+                ... \] \\
                 ... \]
         \end{avm}
       };
       }
 
-      \begin{scope}[shift={(-3cm,0)}]
-     \Tree  [.\node(VP){VP}; [.\proj{NP}{\ua SUBJ=\da} [.\node(N){N};
-                                                       \node(hunden){hunden};  ] ] 
-                                                       \proj{...}{}
+      \begin{scope}[shift={(-5cm,2cm)}]
+     \Tree  [.\node(VP){VP}; [.\proj{\ua SUBJ=\da}{NP}
+                                       [.\node(N){\proj{\ua = \da}{N}};
+                                           \node(hunden){hunden};  ] ] 
+                             \proj{}{...}
                                                        ]
       \end{scope}
    \end{tikzpicture}
@@ -356,15 +363,31 @@ til terminal- eller startsymbol.
    \label{fig:f-og-c-struktur}
  \end{figure}
 
-Konstituentstrukturen liknar på tradisjonelle frasetre, kor dominans
-mellom nodane viser frasehierarkiet i analysen av setninga. Men i
-tillegg har kvar node ei kopling til f-strukturen, via
-c-struktur-f-strukturavbildinga $\phi$. I dette tilfellet går $\phi$
-av alle nodane her til f-strukturen $f$
+ Konstituentstrukturen liknar på tradisjonelle frasetre, kor dominans
+ mellom nodane viser frasehierarkiet i analysen av setninga. Men i
+ tillegg har kvar node ei kopling til f-strukturen, via
+ c-struktur-f-strukturavbildinga $\phi{}$. Nodar i c-strukturen kan
+ spesifisere informasjon på ulike stader i f-strukturen (me seier at
+ nodane \textbf{projiserer} f-strukturar, eller deler av dei).  I dette
+ tilfellet går $\phi$ av VP her til f-strukturen $f$, VP projiserer
+ $f$. NP-noden er annotert med \ua{}SUBJ=\da{}, dette les me som at
+ «denne noden projiserer subjektet til $\phi$ av mornoden», altså
+ projiserer NP-en \SUBJ{} av $f$. NP er ikkje åleine om å gjere dette,
+ N-noden har \ua{}=\da{} som vil seie at N projiserer same f-struktur
+ som NP. Dette subjektet har fleire trekk i f-strukturen,
+ t.d. \F{num}\{\} og \F{gend}\{\} som har atomære verdiar og seier at
+ dette er i eintal og maskulinum. Viss eit anna ord i setninga må
+ samsvare med dette for å vere grammatisk, kan me krevje i
+ grammatikken at me kan \textbf{unifisere} visse trekk; for atomære trekk som
+ dette kan me alltid unifisere dei viss atomet er formmessig likt. Me kan au
+ unifisere heile trekkstrukturar så lenge dei ikkje har trekk som
+ ikkje kan unifiserast; dei unifiserte strukturane er då blitt \emph{ein}
+ struktur, og alle referansar til dei to peiker no på same struktur. 
+
+ \PRED{} er eit spesielt trekk, verdien her er ein \emph{semantisk  form}. Desse er alltid \emph{unike}, og kan ikkje unifiserast sjølv om dei
+ har lik form.
 
 \begin{description}
-\item [f-struktur] \ldots{}
-\item [c-struktur] \ldots{}
 \item [endosentrisitetsprinsippa] \ldots{}
 \item [\xbar] \ldots{}
 \item [diskontinuerlege konstituentar] \ldots{}
@@ -1320,15 +1343,15 @@ korresponderer.
 \centering
   \begin{tikzpicture}
   \tikzset{level distance=1.5cm}
-  \Tree  [.\node(IPs){IP};  [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
-                            [.\node(I's){\proj{I'}{}};
-                                    [.\node(Is){\proj{I}{}}; {regnar} ]
-                                    [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttbollar} ] ] ]
+  \Tree  [.\node(IPs){IP};  [.\node(SUBJs){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {det} ]
+                            [.\node(I's){\proj{}{I'}};
+                                    [.\node(Is){\proj{}{I}}; {regnar} ]
+                                    [.\node(OBJs){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {kjøttbollar} ] ] ]
       \begin{scope}[shift={(2in,0in)}]
-  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
-                            [.\node(I't){\proj{I'}{}}; 
-                                    [.\node(It){\proj{I}{}}; {regent} ]
-                                    [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
+  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {het} ] 
+                            [.\node(I't){\proj{}{I'}}; 
+                                    [.\node(It){\proj{}{I}}; {regent} ]
+                                    [.\node(OBJt){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
 \end{tikzpicture}
    \caption{Enkel lenkjing av c-strukturnodar mellom norsk og
@@ -1375,16 +1398,16 @@ I-nodane dominerer berre verba, og kan au lenkjast.
 \centering
   \begin{tikzpicture}
   \tikzset{level distance=1.5cm}
-  \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttboller} ]
-                            [.\node(I's){\proj{I'}{}};
-                                    [.\node(Is){\proj{I}{}}; {regnar} ]
-                                    [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
+  \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {kjøttboller} ]
+                            [.\node(I's){\proj{}{I'}};
+                                    [.\node(Is){\proj{}{I}}; {regnar} ]
+                                    [.\node(SUBJs){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {det} ]
                                      ] ]
       \begin{scope}[shift={(2.5in,0in)}]
-  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
-                            [.\node(I't){\proj{I'}{}}; 
-                                    [.\node(It){\proj{I}{}}; {regent} ]
-                                    [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
+  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {het} ] 
+                            [.\node(I't){\proj{}{I'}}; 
+                                    [.\node(It){\proj{}{I}}; {regent} ]
+                                    [.\node(OBJt){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
 \draw[-,very thick] (IPs)..controls +(north east:1) and +(north:1) .. (IPt) ;
 \draw[dashed,-] (I's)..controls +(north:1.1) and +(north:1.1) .. node[midway,sloped]{$\times$} (I't) ;
@@ -1410,16 +1433,16 @@ korresponderande materiale, men det gjer dei ikkje.
   \centering
     \begin{tikzpicture}
     \tikzset{level distance=1.5cm}
-    \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttboller} ]
-                              [.\node(I's){\proj{I'}{}};
-                                      [.\node(Is){\proj{I}{}}; {regnar} ]
-                                      [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
+    \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {kjøttboller} ]
+                              [.\node(I's){\proj{}{I'}};
+                                      [.\node(Is){\proj{}{I}}; {regnar} ]
+                                      [.\node(SUBJs){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {det} ]
                                        ] ]
         \begin{scope}[shift={(2in,0in)}]
     \Tree  [.\node(IPt){IP};  
                               [.\node(I't){I'}; 
-                                      [.\node(It){\proj{I}{}}; {rignir} ]
-                                      [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjötbollum} ] ]   ]
+                                      [.\node(It){\proj{}{I}}; {rignir} ]
+                                      [.\node(OBJt){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {kjötbollum} ] ]   ]
   \end{scope}
 \draw[dashed,-] (I's)..controls +(north:1) and +(north:1) .. node[midway,sloped]{$\times$} (I't) ;
 \draw[-] (OBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (OBJt) ;
@@ -1468,20 +1491,20 @@ konteksten har me jo lenkja allereie ved IP-nodane.
   \centering
     \begin{tikzpicture}
     \tikzset{level distance=1.5cm}
-     \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua TOPIC=\da}}; \edge[roof]; {kjøttboller} ]
-                               [.\node(I's){\proj{I'}{}};
+     \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{\ua TOPIC=\da}{NP}}; \edge[roof]; {kjøttboller} ]
+                               [.\node(I's){\proj{}{I'}};
                                        [.\node(Is){I}; {sa} ]
                                        [.\node(Ss){S};
-                                               [.\node(SPKRs){\proj{NP}{\ua SUBJ=\da}}; {ho} ]
-                                               [.\node(VPs){\proj{VP}{\ua COMP=\da}}; [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
-                                                                                      [.\node(Vs){\proj{V}{}}; {regna} ] ] ] ] ]
+                                               [.\node(SPKRs){\proj{\ua SUBJ=\da}{NP}}; {ho} ]
+                                               [.\node(VPs){\proj{\ua COMP=\da}{VP}}; [.\node(SUBJs){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {det} ]
+                                                                                      [.\node(Vs){\proj{}{V}}; {regna} ] ] ] ] ]
          \begin{scope}[shift={(0in,-2.5in)}]
-    \Tree  [.\node(IPs){IP};  [.\node(SPKRt){\proj{NP}{\ua SUBJ=\da}}; {she} ]
+    \Tree  [.\node(IPs){IP};  [.\node(SPKRt){\proj{\ua SUBJ=\da}{NP}}; {she} ]
                                [.\node(I's){I'};
-                                       [.\node(It){\proj{I}{}}; {said} ]
-                                       [.\node(VPt){\proj{VP}{\ua COMP=\da}}; [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {it} ]
-                                                                              [.\node(V't){\proj{V'}{}}; [.\node(Vt){\proj{V}{}}; {rained} ]
-                                                                                                [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {meatballs} ]
+                                       [.\node(It){\proj{}{I}}; {said} ]
+                                       [.\node(VPt){\proj{\ua COMP=\da}{VP}}; [.\node(SUBJt){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {it} ]
+                                                                              [.\node(V't){\proj{}{V'}}; [.\node(Vt){\proj{}{V}}; {rained} ]
+                                                                                                [.\node(OBJt){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {meatballs} ]
  ] ] ] ]
   \end{scope}
   %\draw[-] (SPKRs)..controls +(south west:3) and +(west:3) ..  (SPKRt) ;
@@ -1532,9 +1555,9 @@ det norske treet i tillegg den informasjonen som \emph{seg} tilfører.
   ] ]
      \begin{scope}[shift={(2in,0in)}]
 \Tree [.\node(IPb){IP}; 
-  [.\proj{NP}{\ua SUBJ=\da} \edge[roof]; {det} ] 
-  [.\node(Ibarb){\proj{I'}{}};  [.\node(Ib){\proj{I}{}};   \node(åpnet){åpnet};  ]
-       [.\proj{NP}{\ua OBJ=\da} \edge[roof]; {seg} ] ] ]
+  [.\proj{\ua SUBJ=\da}{NP} \edge[roof]; {det} ] 
+  [.\node(Ibarb){\proj{}{I'}};  [.\node(Ib){\proj{}{I}};   \node(åpnet){åpnet};  ]
+       [.\proj{\ua OBJ=\da}{NP} \edge[roof]; {seg} ] ] ]
 \end{scope}
  \draw[-,very thick] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
   \draw[dashed,-] (Ibark)..controls +(north east:1.3) and +(north west:1.3) .. node[midway,sloped]{?}(Ibarb) ;
@@ -1581,14 +1604,14 @@ rett? (korleis er dette ein korrespondanse på tokennivå?)}
 \begin{tikzpicture}
     \tikzset{level distance=1.5cm}
 \Tree [.\node(IPs){IP}; 
-  [.\node(NPs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {PanJara} ] 
+  [.\node(NPs){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {PanJara} ] 
   [.\node(I's){I'};  [.\node(Is){I};    \node(gaiGo){gaiGo};  ]
   ] ]
      \begin{scope}[shift={(2in,0in)}]
 \Tree [.\node(IPt){IP}; 
-  [.\node(NPt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {vinduet} ] 
-  [.\node(I't){\proj{I'}{}};  [. \node(It){\proj{I}{}}; \node(åpnet){åpnet};  ]
-       [.\proj{NP}{\ua OBJ=\da} \edge[roof]; {seg} ] ] ]
+  [.\node(NPt){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {vinduet} ] 
+  [.\node(I't){\proj{}{I'}};  [. \node(It){\proj{}{I}}; \node(åpnet){åpnet};  ]
+       [.\proj{\ua OBJ=\da}{NP} \edge[roof]; {seg} ] ] ]
 \end{scope}
  \draw[-] (IPs)..controls +(north:1) and +(north:1) .. (IPt) ;
   \draw[-,very thick] (I's)..controls +(north east:1.5) and +(north west:1.5) .. (I't) ;
@@ -1660,15 +1683,15 @@ søsternodar blir for strengt.
 \centering
   \begin{tikzpicture}
   \tikzset{level distance=1.5cm}
-  \Tree  [.\node(IPs){IP};  [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
-                            [.\node(I's){\proj{I'}{}};
+  \Tree  [.\node(IPs){IP};  [.\node(SUBJs){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {det} ]
+                            [.\node(I's){\proj{}{I'}};
                                     [.\node(Is){I}; {regnar} ]
-                                    [.S [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttbollar} ] ] ] ]
+                                    [.S [.\node(OBJs){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {kjøttbollar} ] ] ] ]
       \begin{scope}[shift={(2in,0in)}]
-  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
-                            [.\node(I't){\proj{I'}{}}; 
-                                    [.\node(It){\proj{I}{}}; {regent} ]
-                                    [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
+  \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {het} ] 
+                            [.\node(I't){\proj{}{I'}}; 
+                                    [.\node(It){\proj{}{I}}; {regent} ]
+                                    [.\node(OBJt){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
   \draw[-,very thick] (Is)..controls +(north east:1.5) and +(west:1.5) .. (It) ;
   \draw[-] (OBJs)..controls +(east:3) and +(south east:4) .. (OBJt) ;
