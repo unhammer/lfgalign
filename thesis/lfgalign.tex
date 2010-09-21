@@ -1,7 +1,8 @@
-% Created 2010-09-09 to. 13:27
+% Created 2010-09-21 ty. 13:12
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{xcolor}                 % needs to be before hyperref when using fixme
 \usepackage[draft=false]{hyperref}
 \usepackage[english,nynorsk]{babel} % or whatever language
 \usepackage{apacite} % after babel
@@ -51,7 +52,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{09/09, 2010}
+\date{21/09, 2010}
 
 \begin{document}
 
@@ -297,28 +298,71 @@ i den første publiseringa i XPar-prosjektet, \citet{dyvik2009lmp}.
 
 \label{SEC:omgrepsavklaring}
 
-I dei følgjande kapitla nyttar eg ein del LFG-terminologi (i tillegg
-til eit par eigne termar). Difor gir eg her eit kort oversyn over det
-som kan vere nytt for dei som er meir vand med andre grammatiske
-rammeverk.
+I dei følgjande kapitla nyttar eg ein del terminologi frå LFG,
+Leksikalsk-Funksjonell Grammatikk (i tillegg til eit par eigne
+termar). Difor gir eg her eit kort oversyn over det som kan vere nytt
+for dei som er meir vand med andre grammatiske rammeverk.
+
+LFG er eit \textbf{modellteoretisk}, ikkje-derivasjonelt, rammeverk for
+grammatikk.  \citet{pullum2001dbm} gir ein god gjennomgang av
+forskjellen mellom derivasjonelle (au kalla enumerative) grammatikkar
+og modellteoretiske grammatikkar. Derivasjonelle grammatikkar, som
+transformasjonsgrammatikkane til Chomsky, definerer eit språk som \emph{ei mengd av uttrykk} ved avleiing frå eit startsymbol. Ein
+modellteoretisk grammatikk, derimot, gir skildringar av
+\emph{enkeltuttrykk}, kor eitt uttrykk kan ha fleire moglege skildringar
+(språket er ikkje definert som ei mengd).
+
+Ein modellteoretisk grammatikk kan i tillegg skildre strukturen (eller
+dei moglege strukturane) til \emph{fragment} av setningar, og denne
+strukturen er lik det bidraget som fragmentet tilfører analysen av
+heile setninga. Det tilsvarande er ikkje mogleg å gjere
+derivasjonelt. \citet[s.~32--33]{pullum2001dbm} gir t.d. eit fragment
+som kjem midt i eit høgreforgreina tre; ei derivasjonell skildring
+ville måtte skildre treet over eller under, men utan informasjon om
+kva som kjem til høgre eller venstre kan me ikkje (på ein
+ikkje-vilkårleg måte) skildre subtreet utanfor fragmentet heilt fram
+til terminal- eller startsymbol.
+
+ I LFG har analysane ulike \emph{nivå}, \emph{strukturar}. Konstituentforhold er
+ skildra i \textbf{c-strukturen} («constituent structure»), medan forhold
+ mellom syntaktiske funksjonar og grammatiske trekk kjem til syne i
+ \textbf{f-strukturen} («functional structure»). Figur
+ \ref{fig:f-og-c-struktur} illusterer eit enkelt døme for eit
+ fragment.
+
+ \begin{figure}[htp]
+    \centering
+    \begin{tikzpicture}
+    {\avmoptions{}
+     \node(f){
+        \begin{avm}
+          $f$ \[pred  & `{\bf{}hund}' \\
+                gend & masc \\
+                def & + \\
+                ... \]
+        \end{avm}
+      };
+      }
+
+      \begin{scope}[shift={(-3cm,0)}]
+     \Tree  [.\node(VP){VP}; [.\proj{NP}{\ua SUBJ=\da} [.\node(N){N};
+                                                       \node(hunden){hunden};  ] ] 
+                                                       \proj{...}{}
+                                                       ]
+      \end{scope}
+   \end{tikzpicture}
+
+    \caption{Konstituentstruktur og funksjonell struktur}
+   \label{fig:f-og-c-struktur}
+ \end{figure}
+
+Konstituentstrukturen liknar på tradisjonelle frasetre, kor dominans
+mellom nodane viser frasehierarkiet i analysen av setninga. Men i
+tillegg har kvar node ei kopling til f-strukturen, via
+c-struktur-f-strukturavbildinga $\phi$. I dette tilfellet går $\phi$
+av alle nodane her til f-strukturen $f$
 
 \begin{description}
-\item [modellteoretisk (vs derivasjonelt)] LFG er eit modellteoretisk,
-  ikkje-derivasjonelt, rammeverk for grammatikk.
-  \citet{pullum2001dbm} gir ein god gjennomgang av forskjellen mellom
-  derivasjonelle (enumerative) grammatikkar og modellteoretiske
-  grammatikkar, kor førstnemnde definerer \emph{mengder av uttrykk} ved
-  avleiing frå startsymbol, medan sistnemnde gir skildringar av
-  \emph{enkeltuttrykk}. Ein modellteoretisk grammatikk kan i tillegg
-  skildre strukturen (eller dei moglege strukturane) til \emph{fragment} av
-  setningar, og denne strukturen er lik det bidraget som fragmentet
-  tilfører skildringa av heile setninga. Det tilsvarande er ikkje
-  mogleg å gjere derivasjonelt. \citet[s.~32--33]{pullum2001dbm} gir
-  t.d. eit fragment som kjem midt i eit høgreforgreina tre; ein
-  derivasjonell skildring ville måtte skildre treet over eller under,
-  men utan informasjon om kva som kjem til høgre eller venstre kan me
-  ikkje (på ein ikkje-vilkårleg måte) skildre subtreet utanfor
-  fragmentet heilt fram til terminal- eller startsymbol.
 \item [f-struktur] \ldots{}
 \item [c-struktur] \ldots{}
 \item [endosentrisitetsprinsippa] \ldots{}
@@ -1275,14 +1319,15 @@ korresponderer.
 \begin{figure}[htp]
 \centering
   \begin{tikzpicture}
+  \tikzset{level distance=1.5cm}
   \Tree  [.\node(IPs){IP};  [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
-                            [.\node(I's){I'};
-                                    [.\node(Is){I}; {regnar} ]
+                            [.\node(I's){\proj{I'}{}};
+                                    [.\node(Is){\proj{I}{}}; {regnar} ]
                                     [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttbollar} ] ] ]
       \begin{scope}[shift={(2in,0in)}]
   \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
-                            [.\node(I't){I'}; 
-                                    [.\node(It){I}; {regent} ]
+                            [.\node(I't){\proj{I'}{}}; 
+                                    [.\node(It){\proj{I}{}}; {regent} ]
                                     [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
 \end{tikzpicture}
@@ -1329,15 +1374,16 @@ I-nodane dominerer berre verba, og kan au lenkjast.
 \begin{figure}[htp]
 \centering
   \begin{tikzpicture}
+  \tikzset{level distance=1.5cm}
   \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttboller} ]
-                            [.\node(I's){I'};
-                                    [.\node(Is){I}; {regnar} ]
+                            [.\node(I's){\proj{I'}{}};
+                                    [.\node(Is){\proj{I}{}}; {regnar} ]
                                     [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
                                      ] ]
       \begin{scope}[shift={(2.5in,0in)}]
   \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
-                            [.\node(I't){I'}; 
-                                    [.\node(It){I}; {regent} ]
+                            [.\node(I't){\proj{I'}{}}; 
+                                    [.\node(It){\proj{I}{}}; {regent} ]
                                     [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
 \draw[-,very thick] (IPs)..controls +(north east:1) and +(north:1) .. (IPt) ;
@@ -1363,15 +1409,16 @@ korresponderande materiale, men det gjer dei ikkje.
   \begin{figure}[htp]
   \centering
     \begin{tikzpicture}
+    \tikzset{level distance=1.5cm}
     \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttboller} ]
-                              [.\node(I's){I'};
-                                      [.\node(Is){I}; {regnar} ]
+                              [.\node(I's){\proj{I'}{}};
+                                      [.\node(Is){\proj{I}{}}; {regnar} ]
                                       [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
                                        ] ]
         \begin{scope}[shift={(2in,0in)}]
     \Tree  [.\node(IPt){IP};  
                               [.\node(I't){I'}; 
-                                      [.\node(It){I}; {rignir} ]
+                                      [.\node(It){\proj{I}{}}; {rignir} ]
                                       [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjötbollum} ] ]   ]
   \end{scope}
 \draw[dashed,-] (I's)..controls +(north:1) and +(north:1) .. node[midway,sloped]{$\times$} (I't) ;
@@ -1420,19 +1467,20 @@ konteksten har me jo lenkja allereie ved IP-nodane.
   \begin{figure}[htp]
   \centering
     \begin{tikzpicture}
+    \tikzset{level distance=1.5cm}
      \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{NP}{\ua TOPIC=\da}}; \edge[roof]; {kjøttboller} ]
-                               [.\node(I's){I'};
+                               [.\node(I's){\proj{I'}{}};
                                        [.\node(Is){I}; {sa} ]
                                        [.\node(Ss){S};
                                                [.\node(SPKRs){\proj{NP}{\ua SUBJ=\da}}; {ho} ]
                                                [.\node(VPs){\proj{VP}{\ua COMP=\da}}; [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
-                                                                                      [.\node(Vs){V}; {regna} ] ] ] ] ]
+                                                                                      [.\node(Vs){\proj{V}{}}; {regna} ] ] ] ] ]
          \begin{scope}[shift={(0in,-2.5in)}]
     \Tree  [.\node(IPs){IP};  [.\node(SPKRt){\proj{NP}{\ua SUBJ=\da}}; {she} ]
                                [.\node(I's){I'};
-                                       [.\node(It){I}; {said} ]
+                                       [.\node(It){\proj{I}{}}; {said} ]
                                        [.\node(VPt){\proj{VP}{\ua COMP=\da}}; [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {it} ]
-                                                                              [.\node(V't){V'}; [.\node(Vt){V}; {rained} ]
+                                                                              [.\node(V't){\proj{V'}{}}; [.\node(Vt){\proj{V}{}}; {rained} ]
                                                                                                 [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {meatballs} ]
  ] ] ] ]
   \end{scope}
@@ -1478,13 +1526,14 @@ det norske treet i tillegg den informasjonen som \emph{seg} tilfører.
 \begin{figure}[htp]
 \centering
 \begin{tikzpicture}
+    \tikzset{level distance=1.5cm}
 \Tree [.\node(IPk){IP}; 
   [.\node(Ibark){I'};  [. \node(Ik){I};  \node(gaiGo){gaiGo};  ]
   ] ]
      \begin{scope}[shift={(2in,0in)}]
 \Tree [.\node(IPb){IP}; 
   [.\proj{NP}{\ua SUBJ=\da} \edge[roof]; {det} ] 
-  [.\node(Ibarb){I'};  [.\node(Ib){I};   \node(åpnet){åpnet};  ]
+  [.\node(Ibarb){\proj{I'}{}};  [.\node(Ib){\proj{I}{}};   \node(åpnet){åpnet};  ]
        [.\proj{NP}{\ua OBJ=\da} \edge[roof]; {seg} ] ] ]
 \end{scope}
  \draw[-,very thick] (IPk)..controls +(north:1) and +(north:1) .. (IPb) ;
@@ -1530,6 +1579,7 @@ rett? (korleis er dette ein korrespondanse på tokennivå?)}
 \begin{figure}[htp]
 \centering
 \begin{tikzpicture}
+    \tikzset{level distance=1.5cm}
 \Tree [.\node(IPs){IP}; 
   [.\node(NPs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {PanJara} ] 
   [.\node(I's){I'};  [.\node(Is){I};    \node(gaiGo){gaiGo};  ]
@@ -1537,7 +1587,7 @@ rett? (korleis er dette ein korrespondanse på tokennivå?)}
      \begin{scope}[shift={(2in,0in)}]
 \Tree [.\node(IPt){IP}; 
   [.\node(NPt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {vinduet} ] 
-  [.\node(I't){I'};  [. \node(It){I}; \node(åpnet){åpnet};  ]
+  [.\node(I't){\proj{I'}{}};  [. \node(It){\proj{I}{}}; \node(åpnet){åpnet};  ]
        [.\proj{NP}{\ua OBJ=\da} \edge[roof]; {seg} ] ] ]
 \end{scope}
  \draw[-] (IPs)..controls +(north:1) and +(north:1) .. (IPt) ;
@@ -1609,14 +1659,15 @@ søsternodar blir for strengt.
 \begin{figure}[htp]
 \centering
   \begin{tikzpicture}
+  \tikzset{level distance=1.5cm}
   \Tree  [.\node(IPs){IP};  [.\node(SUBJs){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {det} ]
-                            [.\node(I's){I'};
+                            [.\node(I's){\proj{I'}{}};
                                     [.\node(Is){I}; {regnar} ]
                                     [.S [.\node(OBJs){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {kjøttbollar} ] ] ] ]
       \begin{scope}[shift={(2in,0in)}]
   \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{NP}{\ua SUBJ=\da}}; \edge[roof]; {het} ] 
-                            [.\node(I't){I'}; 
-                                    [.\node(It){I}; {regent} ]
+                            [.\node(I't){\proj{I'}{}}; 
+                                    [.\node(It){\proj{I}{}}; {regent} ]
                                     [.\node(OBJt){\proj{NP}{\ua OBJ=\da}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
   \draw[-,very thick] (Is)..controls +(north east:1.5) and +(west:1.5) .. (It) ;
@@ -2318,8 +2369,72 @@ konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
     (dette er vel heller stoff for diskusjonsdelen?)}
 
 
-\chapter{Avslutning}
+\chapter{Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar}
 \label{sec-5}
+
+\label{SEC:diskusjon}
+
+I denne delen gir eg ei evaluering av resultata frå å køyre \texttt{lfgalign}
+på LFG-analysar av norske og georgiske parallelle setningar. Eg ser på
+manglar ved implementasjonen i forhold til dei ideelle krava frå
+kapittel \ref{SEC:ideell}, og samanliknar dei resultata som er moglege
+å få frå \texttt{lfgalign} med dei som er mogleg å få med andre metodar, då
+spesielt reint N-gram-baserte metodar. I tillegg diskuterer eg kort
+ulike bruksområde for desse samanstillingane.
+
+Kjeldematerialet mitt er ei mengd med omtrent hundre
+\fxnote[inline,nomargin]{med mindre det finst fleire?} LFG-analyserte
+testsetningar på norsk og georgisk, frå eit testsett kor setningane er
+valt for å illustrere ei vid rekkje ulike syntaktiske
+situasjonar. Analysane er manuelt disambiguerte.
+
+
+\section{Evaluering av \texttt{lfgalign}}
+\label{sec-5.1}
+
+
+\section{Samanlikning med tremetodar og n-grammetodar}
+\label{sec-5.2}
+
+I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
+som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
+informasjon som er kvalitativt forskjellig frå det ein kan få med å
+berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
+
+\subsection{c->f er mange-til-ein}
+\label{sec-5.2.1}
+
+Avbildinga frå c-strukturnodar til f-struktur er mange-til-ein, kan me
+t.d. innanfor eitt tre ha fleire N-gram per f-strukturhovud; ein
+metode som berre ser på enkle N-gramlenkjer vil ikkje registrere desse
+relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
+ 
+
+
+\section{Bruksområde}
+\label{sec-5.3}
+
+\subsection{Oppdage argumentstrukturalternasjon}
+\label{sec-5.3.1}
+
+\fixme{ref} I døme TODO i kapittel TODO viste eg at f-strukturar og
+LPT-korrespondanse kanskje ikkje har nok informasjon til å kunne
+handtere ulik følgje i argumentstruktur. Programmet mitt vil her gi
+begge løysingar, ei rangering basert på lik argumentfølgje vil gi feil
+løysing på topp.
+
+Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
+objekt til å lære slike argumentstrukturalternasjonar.  Om me
+observerer \emph{sie gefällt mir/jeg liker henne} vil me jo ha
+f-strukturinformasjon som kan nyttast til å informere
+argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.), om det var
+substantiv der ville LPT-korrespondanse kunne informere dette.
+
+
+
+
+\chapter{Avslutning}
+\label{sec-6}
 
 
 \bibliographystyle{apacite}
