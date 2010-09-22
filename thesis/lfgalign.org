@@ -2591,28 +2591,31 @@ eller fleire målord, og omvendt.
 I praksis vil spesifikke modellar prøve å avgrense dette, t.d. ved å
 krevje maksimalt eitt målord per kjeldeord, kor ein nyttar «det tomme
 ordet» for kjeldeord som ikkje er lenkja med noko målord. I
-litteraturen om statistiske metodar er dette ei ordsamanstilling;
-når mange-mange-lenkjer er med har me ei frasesamanstilling.
+litteraturen om statistiske metodar er dette ei /ordsamanstilling/;
+når mange-mange-lenkjer er med har me ei /frasesamanstilling/.
 
-Ei N-grambasert samanstilling er altså ei mengd par av
-ordposisjonar. Det finst mange ulike måtar å komme fram til
-samanstillinga på. Dei vanlege metodane er basert på statistiske
-modellar, kor den beste samanstillinga $a$ er den som får høgast skåre
-på $p(f_1^J,a|e_1^I)$ (dvs. sannsynet for samanstillinga $a$ og
-kjeldesetninga gitt målsetninga) gitt parametrane i modellen. Verdien
-til parametrane finn ein ved å trene modellen på eit parallellkorpus,
-kor ein god treningsmetode aukar den totale $p$ for heile korpuset
-(dvs. produktet av $p$ for alle setningane). For å finne $p$ er det
-vanleg å nytte ein skjult Markov-modell, dvs. at $p$ for heile
-setninga blir dekomponert til $p$ for eitt enkelt kjeldeord, kor det
-siste er basert på $p$ av orda som kjem før. I tillegg vil ein ofte
-vekte på sannsynet for ei viss setningslengd gitt målsetninga (sidan
-lange setningar ofte blir omsett til like lange setningar, modulo
-språkforskjellar). Sidan ord som er nær kvarandre i setninga ofte har
-semantisk nærskap er det mogleg å forenkle Markov-modellen til at $p$
-for eit enkeltord berre er avhengig av ordet som kjem rett før, noko
-som gjer utrekningane enklare (og lèt ein generalisere på bakgrunn av
-mindre data), men gir ein mindre nyansert modell.
+Ei samanstilling er her altså ei mengd par av ordposisjonar. Det finst
+mange ulike måtar å komme fram til samanstillinga på. Dei vanlege
+metodane er basert på statistiske modellar, kor den beste
+samanstillinga $a$ er den som får høgast skåre på $p(f_1^J,a|e_1^I)$,
+dvs. sannsynet for samanstillinga $a$ og kjeldesetninga gitt
+målsetninga og parametrane i modellen. Verdien til parametrane finn
+ein ved å trene modellen på eit parallellkorpus, kor ein god
+treningsmetode aukar den totale $p$ for heile korpuset (dvs. produktet
+av $p$ for alle setningane). For å finne $p$ er det vanleg å nytte ein
+skjult Markov-modell, dvs. at $p$ for heile setninga blir dekomponert
+til $p$ for eitt enkelt kjeldeord, kor det siste er basert på $p$ av
+orda som kjem før. I tillegg vil ein ofte vekte på sannsynet for ei
+viss setningslengd gitt målsetninga (sidan lange setningar ofte blir
+omsett til like lange setningar, modulo språkforskjellar). Det er
+mogleg å forenkle Markov-modellen til at $p$ for eit enkeltord berre
+er avhengig av ordet som kjem rett før, noko som gjer utrekningane
+enklare (og lèt ein generalisere på bakgrunn av mindre data), men
+sjølvsagt gir ein mindre nyansert modell. Om me har forenkla modellen
+slik at $p$ berre er avhengig av dei N orda som kjem før, har me ein
+N-grambasert modell.
+
+
 ** Evaluering av =lfgalign=
 
 ** Samanlikning med tremetodar og n-grammetodar
@@ -2825,6 +2828,8 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
        framstillinga her.
 
 [fn:27] $e$ for engelsk og $f$ for fransk, sjølvsagt.
+
+
 
 
 
