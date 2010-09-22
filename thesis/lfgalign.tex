@@ -1,4 +1,4 @@
-% Created 2010-09-21 ty. 14:33
+% Created 2010-09-22 on. 13:58
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -52,7 +52,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{21/09, 2010}
+\date{22/09, 2010}
 
 \begin{document}
 
@@ -2402,8 +2402,10 @@ på LFG-analysar av norske og georgiske parallelle setningar. Eg ser på
 manglar ved implementasjonen i forhold til dei ideelle krava frå
 kapittel \ref{SEC:ideell}, og samanliknar dei resultata som er moglege
 å få frå \texttt{lfgalign} med dei som er mogleg å få med andre metodar, då
-spesielt reint N-gram-baserte metodar. I tillegg diskuterer eg kort
+spesielt reint N-grambaserte metodar. I tillegg diskuterer eg kort
 ulike bruksområde for desse samanstillingane.
+\section{Ressursar}
+\label{sec-5.1}
 
 Kjeldematerialet mitt er ei mengd med omtrent hundre
 \fxnote[inline,nomargin]{med mindre det finst fleire?} LFG-analyserte
@@ -2411,13 +2413,52 @@ testsetningar på norsk og georgisk, frå eit testsett kor setningane er
 valt for å illustrere ei vid rekkje ulike syntaktiske
 situasjonar. Analysane er manuelt disambiguerte.
 
+Dette materialet er sjølvsagt alt for lite for statistisk
+samanstilling, så når eg samanliknar med N-grambaserte metodar gir eg
+desse «perfekte» lenkjer (så gode som det vil vere mogleg å få). 
+\section{N-grambaserte metodar}
+\label{sec-5.2}
 
+\citet[s.~20--21]{och2003scv} definerer ei samanstilling på det mest
+generelle som ei delmengd av det kartesiske produktet av
+ordposisjonane i to setningar. Viss $f_{1}^{J}=f_1,...,f_j,...,f_J$ er
+orda i setninga på kjeldespråket og $e_{1}^{I}=e_1,...,e_i,...,e_I$ er
+orda i setninga på målspråket\footnote{$e$ for engelsk og $f$ for fransk, sjølvsagt. }, er ei N-gramsamanstilling
+$\mathcal{A}$ gitt ved $\mathcal{A}\subseteq \{(j,i):
+j=1,...,J;i=1,...,I\}$. Eitt kjeldeord kan altså vere lenkja til eitt
+eller fleire målord, og omvendt. 
+
+I praksis vil spesifikke modellar prøve å avgrense dette, t.d. ved å
+krevje maksimalt eitt målord per kjeldeord, kor ein nyttar «det tomme
+ordet» for kjeldeord som ikkje er lenkja med noko målord. I
+litteraturen om statistiske metodar er dette ei ordsamanstilling;
+når mange-mange-lenkjer er med har me ei frasesamanstilling.
+
+Ei N-grambasert samanstilling er altså ei mengd par av
+ordposisjonar. Det finst mange ulike måtar å komme fram til
+samanstillinga på. Dei vanlege metodane er basert på statistiske
+modellar, kor den beste samanstillinga $a$ er den som får høgast skåre
+på $p(f_1^J,a|e_1^I)$ (dvs. sannsynet for samanstillinga $a$ og
+kjeldesetninga gitt målsetninga) gitt parametrane i modellen. Verdien
+til parametrane finn ein ved å trene modellen på eit parallellkorpus,
+kor ein god treningsmetode aukar den totale $p$ for heile korpuset
+(dvs. produktet av $p$ for alle setningane). For å finne $p$ er det
+vanleg å nytte ein skjult Markov-modell, dvs. at $p$ for heile
+setninga blir dekomponert til $p$ for eitt enkelt kjeldeord, kor det
+siste er basert på $p$ av orda som kjem før. I tillegg vil ein ofte
+vekte på sannsynet for ei viss setningslengd gitt målsetninga (sidan
+lange setningar ofte blir omsett til like lange setningar, modulo
+språkforskjellar). Sidan ord som er nær kvarandre i setninga ofte har
+semantisk nærskap er det mogleg å forenkle Markov-modellen til at $p$
+for eit enkeltord berre er avhengig av ordet som kjem rett før, noko
+som gjer utrekningane enklare (og lèt ein generalisere på bakgrunn av
+mindre data), men gir ein mindre nyansert modell.
 \section{Evaluering av \texttt{lfgalign}}
-\label{sec-5.1}
+\label{sec-5.3}
 
 
 \section{Samanlikning med tremetodar og n-grammetodar}
-\label{sec-5.2}
+\label{sec-5.4}
 
 I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
 som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
@@ -2425,7 +2466,7 @@ informasjon som er kvalitativt forskjellig frå det ein kan få med å
 berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
 
 \subsection{c->f er mange-til-ein}
-\label{sec-5.2.1}
+\label{sec-5.4.1}
 
 Avbildinga frå c-strukturnodar til f-struktur er mange-til-ein, kan me
 t.d. innanfor eitt tre ha fleire N-gram per f-strukturhovud; ein
@@ -2435,10 +2476,10 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
 
 
 \section{Bruksområde}
-\label{sec-5.3}
+\label{sec-5.5}
 
 \subsection{Oppdage argumentstrukturalternasjon}
-\label{sec-5.3.1}
+\label{sec-5.5.1}
 
 \fixme{ref} I døme TODO i kapittel TODO viste eg at f-strukturar og
 LPT-korrespondanse kanskje ikkje har nok informasjon til å kunne
@@ -2462,6 +2503,7 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
 
 
 
