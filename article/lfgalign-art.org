@@ -88,33 +88,56 @@ Our method is instead based on the fact that similar grammatical
 
 The principles and constraints for alignment are discussed in the next
  section, section \ref{SEC:implementation} describes the
- implementation, while in section \ref{SEC:discussion} we discuss the
+ implementation, while section \ref{SEC:discussion} discusses the
  strengths and weaknesses of the method.
 
 * Principles for Phrase Alignment
 \label{SEC:principles}
 
-An outline of the principles for phrase alignment used in the
- XPar-project are formulated in \cite[pp.~75--77]{dyvik2009lmp}, this
- section recounts the major points. We want the alignment links to be
- useful for treebank studies, thus the principles for alignment have
- to reflect this.
+We want our alignment links to be useful for treebank studies, in the
+ XPar-project this includes studying the relationship between
+ syntactic function and semantic roles across languages, thus the
+ principles for alignment (or, constraints on possible alignments)
+ have to take this goal into account.  An outline of the principles
+ for phrase alignment used in the XPar-project are formulated in
+ \cite[pp.~75--77]{dyvik2009lmp}, this section recounts the major
+ points, and explains some relevant LFG-terminology and concepts.
 
-# similar surroundings required.
+# similar surroundings required, more?
+
+To introduce the relevant LFG-terminology, consider figure
+ \ref{fig:simple-links}. This shows two simplified LFG f-structures
+ and c-structures, ready for alignment. The English word /slept/ is a
+ verb phrase, and its nodes /project/ the f-structure $g$ (as seen by
+ the \PRED{} value being the `semantic form' of /slept/,
+ `\textbf{sleep}'). The projection from c-structure to f-structure,
+ $\phi$, is a many-to-one mapping, and all the nodes S, VP and V
+ together project $g$. Since the nodes project the same f-structure,
+ they constitute a /functional domain/. We can see that they project
+ the same f-structure by the $\ua{}=\da$ annotations, which are read
+ as "my f-structure is the same as that of my mother node". The NP
+ node has $\ua{}\SUBJ{}=\da$ instead, read as "my f-structure is the
+ \SUBJ{} of my mother's f-structure"; the NP thus projects the value
+ of the \SUBJ{} f-structure inside $g$.
+
+The argument structures of the Norwegian and English verbs are shown
+ in their \PRED{} values; both verbs take one argument, in the figure
+ this is represented by an index. By looking up this index, we find
+ that the one argument of `\textbf{sove}' is the subject of $f$, with
+ `\textbf{eg}' as its \PRED{}; similarly `\textbf{I}', subject of $g$,
+ is the only argument of `\textbf{sleep}'. Neither of these subjects
+ take any arguments themselves.
+
 
 The candidates we consider for alignment are c-structure phrases,
- individual words, and f-structures that contain \PRED{} elements. The
- value of a \PRED{} elements is the `semantic form' of the predicate
- which projected it, and embeds the argument structure of that
- predicate. To begin with, consider the simple links in figure
- \ref{fig:simple-links}. Here the \PRED{} elements of $f$ and $g$ are
- linked, $l_p$, we thus consider their f-structures linked
- ($l_f$). The argument structures of these verbs is shown in the
- \PRED{} values, both verbs take one argument, here shown by an
- index. By looking up this index, we find that the one argument
- `\textbf{sove}' is the subject of $f$, with \PRED{} `\textbf{eg}';
- similarly `\textbf{I}', subject of $g$, is the only argument of
- `\textbf{sleep}'. 
+ individual words, and f-structures that contain \PRED{}
+ elements[fn:1].  In figure \ref{fig:simple-links}, we can link the
+ \PRED{} elements of $f$ and $g$; by doing this we consider their
+ f-structures linked.  The \PRED{} values of their arguments
+ are also candidates for alignment, and in this case there would be no
+ reason not to link them.
+
+
 
 #+BEGIN_LaTeX
  \begin{figure}[htp]
@@ -139,21 +162,21 @@ The candidates we consider for alignment are c-structure phrases,
         \end{avm}
       };
       }
-      \draw[dashed,-] (src.west) .. controls +(-1,3) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
-      \draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
+%      \draw[dashed,-] (src.west) .. controls +(-1,3) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
+%      \draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
 
-      \begin{scope}[shift={(0,-3cm)}]
-        \Tree  [.\node(VPs){IP}; [.NP \edge[roof]; {eg} ] [.I' [.V \node(sov){sov};  ] ] ]
+      \begin{scope}[shift={(0,-2cm)}]
+        \Tree  [.\node(VPs){IP}; [.\proj{\ua{}\SUBJ{}=\da}{NP} \edge[roof]; {eg} ] [.\proj{\ua{}=\da}{I'} [.\proj{\ua{}=\da}{V} \node(sov){sov};  ] ] ]
       \begin{scope}[shift={(5cm,0)}]
-        \Tree  [.\node(VPt){S}; [.NP \edge[roof]; {I} ] [.VP [.V \node(slept){slept};  ] ] ]
+        \Tree  [.\node(VPt){S}; [.\proj{\ua{}\SUBJ{}=\da}{NP} \edge[roof]; {I} ] [.\proj{\ua{}=\da}{VP} [.\proj{\ua{}=\da}{V} \node(slept){slept};  ] ] ]
       \end{scope}
       \end{scope}
-      \draw[-] (VPs)..controls +(north:1.5) and +(north:1.5) .. node[above,sloped]{$l_c$} (VPt) ;
-      \draw[dashed,-] (sov)..controls +(north east:1.5) and +(north west:1.5) .. node[above,sloped]{$l_o$} (slept) ;
+%      \draw[-] (VPs)..controls +(north:1.5) and +(north:1.5) .. node[above,sloped]{$l_c$} (VPt) ;
+%      \draw[dashed,-] (sov)..controls +(north east:1.5) and +(north west:1.5) .. node[above,sloped]{$l_o$} (slept) ;
    \end{tikzpicture}
     
     \caption{Example of simple links between constituents,
-   f-structures and words}
+   f-structures and words (Norwegian and English)}
    \label{fig:simple-links}
  \end{figure}
 #+END_LaTeX
@@ -171,3 +194,13 @@ The candidates we consider for alignment are c-structure phrases,
 \bibliography{master}
 
 
+
+
+
+
+* Footnotes
+
+[fn:1] We could consider aligning other f-structure elements, but only
+ \PRED{} elements are sure to exist in both languages, while
+ grammatical features such as \F{ASPECT}{} might not exist in both
+ languages, or be possible to link in a one-to-one-manner.
