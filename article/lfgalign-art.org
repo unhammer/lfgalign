@@ -1,0 +1,173 @@
+#+TITLE: Automatic Constituent and Function Alignment for Parallel Treebanking
+#+STARTUP: hidestars
+#+AUTHOR: 
+#Kevin Brubeck Unhammer
+#+EMAIL: 
+#Kevin.Unhammer hos student uib no
+#+LANGUAGE: en
+#+OPTIONS: H:4 toc:nil f:t skip:nil num:t
+#+LaTeX_CLASS: TLT
+#+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
+#+LaTeX_HEADER: \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
+#+LaTeX_HEADER: \newcommand{\OBLben}{\F{obl}{ben}}
+#+LaTeX_HEADER: \newcommand{\OBJben}{\F{obj}{ben}}
+#+LaTeX_HEADER: \newcommand{\OBJ}{\F{obj}{}}
+#+LaTeX_HEADER: \newcommand{\OBJs}{\F{obj~}{}}
+#+LaTeX_HEADER: \newcommand{\ADJ}{\F{adj}{}}
+#+LaTeX_HEADER: \newcommand{\ADJs}{\F{adj~}{}}
+#+LaTeX_HEADER: \newcommand{\XCOMP}{\F{xcomp}{}}
+#+LaTeX_HEADER: \newcommand{\XCOMPs}{\F{xcomp~}{}}
+#+LaTeX_HEADER: \newcommand{\SUBJ}{\F{subj}{}}
+#+LaTeX_HEADER: \newcommand{\SUBJs}{\F{subj~}{}}
+#+LaTeX_HEADER: \newcommand{\PRED}{\F{pred}{}}
+#+LaTeX_HEADER: \newcommand{\TOPIC}{\F{topic}{}}
+#+LaTeX_HEADER: \newcommand{\falign}{\ensuremath{\operatorname{\emph{falign}}}}
+#+LaTeX_HEADER: \newcommand{\fpairs}{\ensuremath{\operatorname{\emph{fpairs}}}}
+#+LaTeX_HEADER: \newcommand{\Bleu}{\textsc{Bleu}}
+#+LaTeX_HEADER: \usetikzlibrary{calc}
+#+LaTeX_HEADER: \newcommand{\proj}[2]{\begin{tabular}{c}\footnotesize{#1}\\\normalsize{#2}\end{tabular}}
+#+LaTeX_HEADER: \newcommand{\ua}{\ensuremath{\uparrow}}
+#+LaTeX_HEADER: \newcommand{\da}{\ensuremath{\downarrow}}
+
+\begin{abstract}
+\noindent
+This paper describes the development of an automatic phrase alignment
+ method using parallel sentences parsed in Lexical-Functional Grammar
+ as input, where similarity in analyses is used as evidence that
+ constituents or functional elements \fxnote[inline,nomargin]{vil seie
+ «f-struktur-element», men slik at ikkje-LFG-folk forstår det} may be
+ linked. A set of principles for phrase alignment are formulated,
+ based on the goals of the XPar-project \cite{dyvik2009lmp}, and an
+ implementation is given.
+\end{abstract}
+
+\thispagestyle{empty}
+
+
+* Introduction
+Lexical-Functional Grammar (LFG) is a grammatical framework where a
+ sentence is analysed as having both a constituent structure
+ (c-structure) and functional structure (f-structure). The former is
+ similar to traditional phrase structure trees, while the latter is an
+ attribute-value matrix/graph which represents dependency relations
+ between syntactic functions (subject, object, etc.), in addition to
+ the grammatical features of these. The argument structure of
+ predicates is embedded in the f-structure representation.
+
+As part of the XPar-project, we are developing a parallel treebank
+ which will include links between corresponding constituents, as well
+ as between corresponding syntactic functions. By utilising the
+ information available in each monolingual LFG-parse of two parallel
+ sentences, we are able to make precise alignments on both the
+ c-structure and f-structure level.
+
+Although there exists many methods for automatic phrase alignment,
+ e.g. \cite{och2003scv}, most of these have been based on aligning any
+ N-gram that is compatible with a word alignment, where none of these
+ take into account syntactic features, and alignments may cross
+ constituent borders. \cite{hearne2008ccd} describe a method for
+ using statistical word-alignments as seeds to two separate
+ constituent and dependency tree alignments; however, the goal here is
+ to create a set of N-gram pairs for statistical machine translation,
+ and the dependency and constituent alignments do not inform each
+ other.
+
+Our method is instead based on the fact that similar grammatical
+ phenomena in different languages will have similar grammatical
+ analyses, so structural similarity in the analyses should indicate
+ that those parts of the analyses may be linked. How much structural
+ similarity is required in order to link two elements is defined as a
+ set of general constraints. This allows for a more top-down method of
+ phrase alignment, which is more informative to the linguist since it
+ links not only true constituents, but functional elements (which in
+ LFG may even span discontiguous constituents). Word-alignments or
+ translational dictionaries may be needed to automatically
+ disambiguate in cases where the LFG parses do not give sufficient
+ information; but the method will perform a large part of the
+ alignment job even without /any/ parallel corpus available.
+
+The principles and constraints for alignment are discussed in the next
+ section, section \ref{SEC:implementation} describes the
+ implementation, while in section \ref{SEC:discussion} we discuss the
+ strengths and weaknesses of the method.
+
+* Principles for Phrase Alignment
+\label{SEC:principles}
+
+An outline of the principles for phrase alignment used in the
+ XPar-project are formulated in \cite[pp.~75--77]{dyvik2009lmp}, this
+ section recounts the major points. We want the alignment links to be
+ useful for treebank studies, thus the principles for alignment have
+ to reflect this.
+
+# similar surroundings required.
+
+The candidates we consider for alignment are c-structure phrases,
+ individual words, and f-structures that contain \PRED{} elements. The
+ value of a \PRED{} elements is the `semantic form' of the predicate
+ which projected it, and embeds the argument structure of that
+ predicate. To begin with, consider the simple links in figure
+ \ref{fig:simple-links}. Here the \PRED{} elements of $f$ and $g$ are
+ linked, $l_p$, we thus consider their f-structures linked
+ ($l_f$). The argument structures of these verbs is shown in the
+ \PRED{} values, both verbs take one argument, here shown by an
+ index. By looking up this index, we find that the one argument
+ `\textbf{sove}' is the subject of $f$, with \PRED{} `\textbf{eg}';
+ similarly `\textbf{I}', subject of $g$, is the only argument of
+ `\textbf{sleep}'. 
+
+#+BEGIN_LaTeX
+ \begin{figure}[htp]
+    \centering
+    \begin{tikzpicture}
+    {\avmoptions{}
+     \node(src){
+        \begin{avm}
+          $f$ \[pred   &  `{\bf{}sove}<\@{1}>'\\
+          tense  & pret  \\
+	  subj & \@{1} \[pred & `{\bf{eg}}' \] \\
+          ... \]
+        \end{avm}
+      };
+      \node[right of=src, node distance=5cm](trg){
+        \begin{avm}
+          $g$ \[pred   &  `{\bf{}sleep}<\@{2}>'\\
+          tense  & pret  \\
+          aspect & simple \\
+	  subj & \@{2} \[pred & `{\bf{I}}' \] \\
+          ... \]
+        \end{avm}
+      };
+      }
+      \draw[dashed,-] (src.west) .. controls +(-1,3) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
+      \draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
+
+      \begin{scope}[shift={(0,-3cm)}]
+        \Tree  [.\node(VPs){IP}; [.NP \edge[roof]; {eg} ] [.I' [.V \node(sov){sov};  ] ] ]
+      \begin{scope}[shift={(5cm,0)}]
+        \Tree  [.\node(VPt){S}; [.NP \edge[roof]; {I} ] [.VP [.V \node(slept){slept};  ] ] ]
+      \end{scope}
+      \end{scope}
+      \draw[-] (VPs)..controls +(north:1.5) and +(north:1.5) .. node[above,sloped]{$l_c$} (VPt) ;
+      \draw[dashed,-] (sov)..controls +(north east:1.5) and +(north west:1.5) .. node[above,sloped]{$l_o$} (slept) ;
+   \end{tikzpicture}
+    
+    \caption{Example of simple links between constituents,
+   f-structures and words}
+   \label{fig:simple-links}
+ \end{figure}
+#+END_LaTeX
+
+
+* Implementation
+\label{SEC:implementation}
+* Discussion
+\label{SEC:discussion}
+
+
+* Conclusion
+# tom inndeling for å halde bibliografien sist
+
+\bibliography{master}
+
+
