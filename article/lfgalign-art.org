@@ -201,6 +201,17 @@ Similarly, on the f-structure level we allow adjuncts (adverbials) to
  translations of $W_s$" \cite[p.~74]{dyvik2009lmp}. Nouns and
  pronominal forms are also considered LPT-correspondent.
 
+The argument structure of predicates in LFG is ordered, and this order
+ typically reflects the semantic role hierarchy (agents being before
+ themes, etc.). However, we do not require that linked arguments
+ occupy the same positions in the argument structure of their
+ predicates, since an English grammar may assign the first argument of
+ the verb /like/ to the agent, while a Spanish grammar may assign the
+ first argument of the translation, /gustar/, to the theme. As one of
+ the goals of the XPar-project is to study the relationship between
+ semantic role and syntactic function, the aligner cannot presume that
+ the relationship always is straightforward.
+
 If any of the arguments of two otherwise linkable predicates do not
  have LPT-correspondents among each other, we have evidence that the
  predicates themselves are used to express different propositions. But
@@ -219,7 +230,7 @@ If any of the arguments of two otherwise linkable predicates do not
 #+BEGIN_LaTeX
 {\avmoptions{}
 \ex. \label{ex:vedde}
-\a. Adams veddet en sigarett med Browne \hfill{} (Norwegian bokmål)\\ på at det regnet.\\
+\a. Adams veddet en sigarett med Browne \hfill{} (Norwegian Bokmål)\\ på at det regnet.\\
     $\\\begin{avm}\[pred & `{\bf{}vedde}<Abrams, cigarette, Browne, rain>' \\
                  adjunct & \{\}\]\end{avm}\\$
 \b. abramsi brouns daenajleva sigaretze, rom cvimda. \hfill{} (Georgian)\\
@@ -235,10 +246,9 @@ If any of the arguments of two otherwise linkable predicates do not
 
 }
 #+END_LaTeX
- 
 
 
-Formally, these are the requirements for linking two f-structure
+More formally, these are the requirements for linking two f-structure
 \PRED{} elements $p$ and $q$: 
 \ex. \a. the word-forms of $p$ and $q$ have LPT-correspondence
      \b. all arguments of $p$ have LPT-correspondence with an argument
@@ -255,7 +265,6 @@ The one-to-one requirement \Last[d] is there to avoid linking two
  arguments and adjuncts of $q$, but we do not require \Last to be true
  of each argument of $p$; that is, an argument of $p$ may remain
  unlinked on the f-structure level. 
-
 As mentioned, for adjuncts of $p$ we do not even require that they
  have LPT-correspondence with arguments/adjuncts of $q$, or vice
  versa, but \Last[e] ensures that they are not /linked/ outside of
@@ -263,16 +272,57 @@ As mentioned, for adjuncts of $p$ we do not even require that they
  corresponding linked material.
 
 In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
-defines the term /linked lexical nodes/, $LL$, where $LL(n)$ is the
-set of nodes dominated by $n$ which are word-linked. To link $n_s$ and
-$n_t$ (whose projected f-structures must be linked), all nodes in
-$LL(n_s)$ must be linked to nodes in $LL(n_t)$. Unlinked nodes
-dominated by $n_s$ or $n_t$ do not hinder linking of these nodes.
+ defines the term /linked lexical nodes/, $LL$, where $LL(n)$ is the
+ set of nodes dominated by $n$ which are word-linked. To link $n_s$
+ and $n_t$ (whose projected f-structures must be linked), all nodes in
+ $LL(n_s)$ must be linked to nodes in $LL(n_t)$. Unlinked nodes
+ dominated by $n_s$ or $n_t$ are not an obstacle to linking these
+ nodes. Thus in in figure \ref{fig:simple-links}, if the NP nodes are
+ linked, we may link IP and S, while in figure
+ \ref{fig:ikkje-c-lenkje-pro-drop}, the I' nodes may not be linked
+ since the Icelandic I' node dominates an NP which is linked to a node
+ /not/ dominated by the Norwegian I' node. Icelandic being a pro-drop
+ language, the argument expressed by /det/ in Norwegian does not have
+ to be overtly expressed in Icelandic[fn:5], but by the criterion
+ above can still link the IP nodes, as they dominate the same sets of
+ linked lexical nodes.
 
+#+BEGIN_LaTeX
+  \begin{figure}[htp]
+  \centering
+    \begin{tikzpicture}
+    \tikzset{level distance=1.5cm}
+    \Tree  [.\node(IPs){IP};  [.\node(OBJs){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {kjøttboller} ]
+                              [.\node(I's){\proj{}{I'}};
+                                      [.\node(Is){\proj{}{I}}; {regnar} ]
+                                      [.\node(SUBJs){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {det} ]
+                                       ] ]
+        \begin{scope}[shift={(2in,0in)}]
+    \Tree  [.\node(IPt){IP};  
+                              [.\node(I't){I'}; 
+                                      [.\node(It){\proj{}{I}}; {rignir} ]
+                                      [.\node(OBJt){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {kjötbollum} ] ]   ]
+  \end{scope}
+\draw[dashed,-] (I's)..controls +(north:1) and +(north:1) .. node[midway,sloped]{$\times$} (I't) ;
+\draw[-] (OBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (OBJt) ;
+  
+  \end{tikzpicture}
+     \caption{C-structure links may not cross dominated links
+     (Norwegian Nynorsk and Icelandic for ``it's raining meat balls'')}
+     \label{fig:ikkje-c-lenkje-pro-drop}
+    \end{figure}
+#+END_LaTeX
 
+We may want an alternative, stricter, criterion for linking
+c-strukture nodes, where we also add linked f-structure arguments that
+are not overtly expressed to $LL$. 
 
 * Implementation
 \label{SEC:implementation}
+
+This section discusses a work-in-progress implementation of the above
+alignment principles[fn:4]. 
+
 * Discussion
 \label{SEC:discussion}
 
@@ -298,3 +348,8 @@ dominated by $n_s$ or $n_t$ do not hinder linking of these nodes.
  and VP, as these dominate the same linked material.
 
 [fn:3] The f-structures here are highly simplified.
+
+[fn:4] All code and some examples of input parses available from
+       \fxnote[inline,nomargin]{http://example.com}.
+
+[fn:5] The pro-subjects will be linked in f-structure, however.
