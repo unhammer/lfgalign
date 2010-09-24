@@ -313,6 +313,12 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
     \end{figure}
 #+END_LaTeX
 
+\fxnote{TODO: betre døme enn kjöttbollum:
+gzaSi robotebze laparakobdnen
+på.vegen robot.om snakka.om.3PL.past
+
+de hadde snakket om roboter
+}
 We may want an alternative, stricter, criterion for linking
 c-strukture nodes, where we also add linked f-structure arguments that
 are not overtly expressed to $LL$. 
