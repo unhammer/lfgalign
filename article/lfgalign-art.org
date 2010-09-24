@@ -55,23 +55,23 @@ Lexical-Functional Grammar (LFG) is a grammatical framework where a
  the grammatical features of these. The argument structure of
  predicates is embedded in the f-structure representation.
 
-As part of the XPar-project, we are developing a parallel treebank
- which will include links between corresponding constituents, as well
- as between corresponding syntactic functions. By utilising the
- information available in each monolingual LFG-parse of two parallel
- sentences, we are able to make precise alignments on both the
- c-structure and f-structure level.
+This work is part of the XPar-project, which involves developing a
+ parallel treebank which will include links between corresponding
+ constituents, as well as between corresponding syntactic
+ functions. By utilising the information available in each monolingual
+ LFG-parse of two parallel sentences, we are able to make precise and
+ linguistically informative alignments on both the c-structure and
+ f-structure level.
 
-Although there exists many methods for automatic phrase alignment,
- e.g. \cite{och2003scv}, most of these have been based on aligning any
+Although there exists many methods for automatic phrase alignment
+ \cite{och2003scv}, most of these have been based on aligning any
  N-gram that is compatible with a word alignment, where none of these
  take into account syntactic features, and alignments may cross
- constituent borders. \cite{hearne2008ccd} describe a method for
- using statistical word-alignments as seeds to two separate
- constituent and dependency tree alignments; however, the goal here is
- to create a set of N-gram pairs for statistical machine translation,
- and the dependency and constituent alignments do not inform each
- other.
+ constituent borders. \cite{hearne2008ccd} describes a method for using
+ statistical word-alignments as seeds to two separate constituent and
+ dependency tree alignments; however, the goal here is to create a set
+ of N-gram pairs for statistical machine translation, and the
+ dependency and constituent alignments do not inform each other.
 
 Our method is instead based on the fact that similar grammatical
  phenomena in different languages will have similar grammatical
@@ -148,26 +148,6 @@ The candidates we consider for alignment are c-structure phrases,
  so an /unlinked/ subordinate node (e.g. an adverbial only expressed
  in one language) should not interfere with the linking of IP and S.
 
-Similarly, on the f-structure level we allow adverbials to remain
- unlinked; adverbials differ from arguments mainly in being
- non-obligatory, while arguments /are/ required in order to express a
- certain sense of a predicate. So to link two predicates, we require
- all their arguments to find `linguistically predictable translations'
- (LPT) in the translation, where a source word $W_s$ is
- LPT-correspondent with a target word $W_t$ if "$W_t$ can in general
- (out of context) be taken to be among the semantically plausible
- translations of $W_s$" \cite[p.~74]{dyvik2009lmp}. Nouns and
- pronominal forms are also considered LPT-correspondent.
-
-If not all arguments of two predicates have LPT-correspondents among
- each other, we have evidence that the predicates themselves are used
- to express different propositions. We do allow linking arguments to
- adverbials though; the monolingual evidence which informed the
- individual grammars may have suggested that a certain participant of
- a verbal situation should be analysed as an argument in one language,
- but as an adverbial in the other -- but in a particular translation,
- they may still correspond semantically.
-
 #+BEGIN_LaTeX
  \begin{figure}[htp]
     \centering
@@ -210,6 +190,54 @@ If not all arguments of two predicates have LPT-correspondents among
  \end{figure}
 #+END_LaTeX
 
+Similarly, on the f-structure level we allow adjuncts (adverbials) to
+ remain unlinked; adjuncts differ from arguments mainly in being
+ non-obligatory, while arguments /are/ required in order to express a
+ certain sense of a predicate. So to link two predicates, we require
+ all their arguments to find `linguistically predictable translations'
+ (LPT) in the translation, where a source word $W_s$ is
+ LPT-correspondent with a target word $W_t$ if "$W_t$ can in general
+ (out of context) be taken to be among the semantically plausible
+ translations of $W_s$" \cite[p.~74]{dyvik2009lmp}. Nouns and
+ pronominal forms are also considered LPT-correspondent.
+
+If any of the arguments of two otherwise linkable predicates do not
+ have LPT-correspondents among each other, we have evidence that the
+ predicates themselves are used to express different propositions. But
+ should we allow adjuncts as translations of arguments?  The examples
+ in \ref{ex:vedde} are all translations of the same sentence; for the
+ four different different languages, the grammar writers chose four
+ different ways of dividing the participants in the verbal situation
+ into arguments and adjuncts[fn:3]. but in this translation, the
+ predicates clearly express the same proposition.  Thus we have to
+ allow linking arguments to adjuncts; the monolingual evidence which
+ informed the individual grammars may have suggested that a certain
+ participant of a verbal situation should be analysed as an argument
+ in one language, but as an adjunct in the other -- in a particular
+ translation, however, they may still correspond semantically.
+
+#+BEGIN_LaTeX
+{\avmoptions{}
+\ex. \label{ex:vedde}
+\a. Adams veddet en sigarett med Browne \hfill{} (Norwegian bokmål)\\ på at det regnet.\\
+    $\\\begin{avm}\[pred & `{\bf{}vedde}<Abrams, cigarette, Browne, rain>' \\
+                 adjunct & \{\}\]\end{avm}\\$
+\b. abramsi brouns daenajleva sigaretze, rom cvimda. \hfill{} (Georgian)\\
+    $\\\begin{avm}\[pred &  `{\bf{}da-najleveba}<Abrams, Browne, regne>'\\
+    adjunct &  \{ \rm cigarette \}\]\end{avm}\\$ 
+\c. Abrams hat mit Browne um eine Zigarette gewettet, \hfill{}(German)\\
+    daß es regnet.\\
+    $\\\begin{avm}\[pred & `{\bf{}wetten}<Abrams, regne>' \\
+                  adjunct & \{ \rm Browne, cigarette \}\]\end{avm}\\$
+\d. Abrams bet a cigarette with Brown that it was raining. \hfill{}(English)\\
+    $\\\begin{avm}\[pred & `{\bf{}bet}<Abrams, sigarett, regne>'\\
+                  adjunct & \{ \rm Browne \}\]\end{avm}$
+
+}
+#+END_LaTeX
+ 
+
+
 Formally, these are the requirements for linking two f-structure
 \PRED{} elements $p$ and $q$: 
 \ex. \a. the word-forms of $p$ and $q$ have LPT-correspondence
@@ -222,36 +250,17 @@ Formally, these are the requirements for linking two f-structure
      vice versa
 
 The one-to-one requirement \Last[d] is there to avoid linking two
-near-synonyms in one language into one word in the other language. We
-require all arguments of $p$ to have possible translations among the
-arguments and adjuncts of $q$, but we do not require \Last to be true
-of each argument of $p$; that is, an argument of $p$ may remain
-unlinked on the f-structure level. As mentioned, for adjuncts of $p$
-we do not even require that they have LPT-correspondence with
-arguments/adjuncts of $q$, or vice versa, but \Last[e] ensures that
-they are not /linked/ outside of their predicates, which would imply
-that $p$ and $q$ did not contain corresponding linked material.
+ near-synonyms in one language into one word in the other language. We
+ require all arguments of $p$ to have possible translations among the
+ arguments and adjuncts of $q$, but we do not require \Last to be true
+ of each argument of $p$; that is, an argument of $p$ may remain
+ unlinked on the f-structure level. 
 
-#+BEGIN_LaTeX
-{\avmoptions{}
-\ex. \label{ex:vedde}
-\a. Adams veddet en sigarett med Browne \hfill{} (norsk bokmål)\\ på at det regnet.\\
-    $\\\begin{avm}\[pred & `{\bf{}vedde}<Abrams, sigarett, Browne, regne>' \\
-                 adjunct & \{\}\]\end{avm}\\$
-\b. abramsi brouns daenajleva sigaretze, rom cvimda. \hfill{} (georgisk)\\
-    $\\\begin{avm}\[pred &  `{\bf{}da-najleveba}<Abrams, Browne, regne>'\\
-    adjunct &  \{ \rm sigarett \}\]\end{avm}\\$ 
-\c. Abrams hat mit Browne um eine Zigarette gewettet, \hfill{}(tysk)\\
-    daß es regnet.\\
-    $\\\begin{avm}\[pred & `{\bf{}wetten}<Abrams, regne>' \\
-                  adjunct & \{ \rm Browne, sigarett \}\]\end{avm}\\$
-\d. Abrams bet a cigarette with Brown that it was raining. \hfill{}(engelsk)\\
-    $\\\begin{avm}\[pred & `{\bf{}bet}<Abrams, sigarett, regne>'\\
-                  adjunct & \{ \rm Browne \}\]\end{avm}$
-
-}
-#+END_LaTeX
-
+As mentioned, for adjuncts of $p$ we do not even require that they
+ have LPT-correspondence with arguments/adjuncts of $q$, or vice
+ versa, but \Last[e] ensures that they are not /linked/ outside of
+ their predicates, which would imply that $p$ and $q$ did not contain
+ corresponding linked material.
 
 In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
 defines the term /linked lexical nodes/, $LL$, where $LL(n)$ is the
@@ -287,3 +296,5 @@ dominated by $n_s$ or $n_t$ do not hinder linking of these nodes.
 
 [fn:2] Even if IP and S could not be linked, we could still link I'
  and VP, as these dominate the same linked material.
+
+[fn:3] The f-structures here are highly simplified.
