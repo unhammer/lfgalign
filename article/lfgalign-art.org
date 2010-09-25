@@ -326,14 +326,14 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
 #+END_LaTeX
 
 By the above criterion, we may also link the Norwegian VP and Georgian
-I' nodes, since they dominate the same linked lexical nodes. However,
-the word /laparakobdnen/ specifies a non-overt third person plural
-subject, while /snakket/ does not. On the f-structure level, this
-pro-subject is linked to the Norwegian subject (/de/ in the
-c-structure); a treebank user may want to exclude this link. Formally,
-we can exclude this kind of link by adding any linked f-structure
-arguments (of the f-structure of $n$) that are not overtly expressed
-to $LL(n)$.
+ I' nodes, since they dominate the same linked lexical nodes. However,
+ the word /laparakobdnen/ specifies a non-overt third person plural
+ subject, while /snakket/ does not. On the f-structure level, this
+ pro-subject is linked to the Norwegian subject (/de/ in the
+ c-structure); a treebank user may want to exclude this
+ link. Formally, we can exclude this kind of link by adding any linked
+ f-structure arguments (of the f-structure projected by $n$) that are
+ not overtly expressed, to $LL(n)$.
 
 
 
