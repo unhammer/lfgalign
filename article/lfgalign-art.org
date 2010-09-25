@@ -282,13 +282,14 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
  linked, we may link IP and S, while in figure \ref{fig:roboter}, the
  Norwegian I' and lower Georgian IP node may not be linked since the
  IP node dominates /robotebze/, linked to /roboter/, which is outside
- the nodes dominated by I'[fn:6].  Georgian being a pro-drop language, the
- argument expressed by /de/ in Norwegian does not have to be overtly
- expressed in Georgian[fn:5].  But by the criterion above we can still
- link the upper IP nodes, as they dominate the same sets of linked
- lexical nodes; the adjunct /gzaSi/ (``on the way'') is a translators
- addition only seen in the Georgian text, and remains unlinked both on
- c-structure and f-structure level.
+ the nodes dominated by I'[fn:6].  Georgian being a pro-drop language,
+ the argument expressed by /de/ in Norwegian does not have to be
+ overtly expressed in Georgian[fn:5].  But by the criterion above we
+ can still link the upper IP nodes, as they dominate the same sets of
+ linked lexical nodes; the adjunct /gzaSi/ (``on the way'') is a
+ translators addition only seen in the Georgian text, and remains
+ unlinked both on c-structure and f-structure level, it does not stop
+ linking the IP nodes.
 
 #+BEGIN_LaTeX
     \begin{figure}[htp]
@@ -322,6 +323,13 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
        \label{fig:roboter}
       \end{figure}
 #+END_LaTeX
+
+This example is worth a bit more attention.  For the main verbs of
+both sentences to align in f-structure, all arguments would have to
+find LPT-correspondences. 
+
+The theme of /snakket/ (talked), /roboter/ (robots) is topicalised,
+
 
 We may want an alternative, stricter, criterion for linking
 c-strukture nodes, where we also add linked f-structure arguments that
@@ -376,7 +384,7 @@ just to make the alignment easier.
        General Public License, version 2 or later, along with some
        examples of input parses.
 
-[fn:5] The pro-subjects will be linked in f-structure, however.
+[fn:5] The pro-subjects will be linked in f-structure, however. 
 
 [fn:6] The notation $\da\in\ua\ADJUNCT{}$ reads "my f-structure is a
  member of the set of adjuncts of my mother's f-structure" (a
