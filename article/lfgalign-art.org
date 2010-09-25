@@ -313,6 +313,45 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
     \end{figure}
 #+END_LaTeX
 
+#+BEGIN_LaTeX
+  \begin{figure}[htp]
+  \centering
+    \begin{tikzpicture}
+    \tikzset{level distance=1.5cm}
+    \Tree  [.\node(IPs){IP};  [.\node(SUBJs){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {de} ]
+                              [.\node(I's){\proj{}{I'}};
+                                      [.\node(Is){\proj{}{I}}; {hadde} ]
+                                      [.\node(Ss){\proj{\ua=\da}{S}};
+				         [.\node(){\proj{\ua SUBJ=\da}{VP}};  
+					   [.\node(Vs){\proj{}{V}}; {snakket} ]
+					   [.\node(Vs){\proj{}{PP}}; \edge[roof]; {om roboter} ]
+]
+				      ]
+                                      
+                                       ] ]
+        \begin{scope}[shift={(2in,0in)}]
+    \Tree  [.\node(IPt){IP};  [.\node(PPt){\proj{\ua SUBJ=\da}{PP}}; \edge[roof]; {gzaSi} ]
+                              [.\node(IP2t){\proj{}{IP}};
+                                      [.\node(PP2t){\proj{\ua=\da}{PP}}; \edge[roof]; {gzaSi} ]
+                                      [.\node(Ss){\proj{\ua=\da}{S}};
+				         [.\node(){\proj{\ua SUBJ=\da}{VP}};  
+					   [.\node(Vs){\proj{}{V}}; {snakket} ]
+					   [.\node(Vs){\proj{}{PP}}; \edge[roof]; {om roboter} ]
+]
+				      ]
+                                      
+                                       ] ]
+  \end{scope}
+\draw[dashed,-] (I's)..controls +(north:1) and +(north:1) .. node[midway,sloped]{$\times$} (I't) ;
+\draw[-] (OBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (OBJt) ;
+  
+  \end{tikzpicture}
+     \caption{C-structure links may not cross dominated links
+     (Norwegian Nynorsk and Icelandic for ``it's raining meat balls'')}
+     \label{fig:ikkje-c-lenkje-pro-drop}
+    \end{figure}
+#+END_LaTeX
+
 \fxnote{TODO: betre døme enn kjöttbollum:
 gzaSi robotebze laparakobdnen
 på.vegen robot.om snakka.om.3PL.past
