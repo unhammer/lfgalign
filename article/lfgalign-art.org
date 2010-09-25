@@ -284,12 +284,13 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
  IP node dominates /robotebze/, linked to /roboter/, which is outside
  the nodes dominated by I'[fn:6].  Georgian being a pro-drop language,
  the argument expressed by /de/ in Norwegian does not have to be
- overtly expressed in Georgian[fn:5].  But by the criterion above we
- can still link the upper IP nodes, as they dominate the same sets of
- linked lexical nodes; the adjunct /gzaSi/ (``on the way'') is a
- translators addition only seen in the Georgian text, and remains
- unlinked both on c-structure and f-structure level, it does not stop
- linking the IP nodes.
+ overtly expressed in Georgian, so there is no c-structure link for
+ this word[fn:5].  But by the criterion above we can still link the
+ upper IP nodes, as they dominate the same sets of linked lexical
+ nodes; the adjunct /gzaSi/ (``on the way'') is a translators addition
+ only seen in the Georgian text, and remains unlinked both on
+ c-structure and f-structure level, it does not stop linking the IP
+ nodes.
 
 #+BEGIN_LaTeX
     \begin{figure}[htp]
@@ -324,17 +325,15 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
       \end{figure}
 #+END_LaTeX
 
-This example is worth a bit more attention.  For the main verbs of
-both sentences to align in f-structure, all arguments would have to
-find LPT-correspondences. 
-
-The theme of /snakket/ (talked), /roboter/ (robots) is topicalised,
-
-
-We may want an alternative, stricter, criterion for linking
-c-strukture nodes, where we also add linked f-structure arguments that
-are not overtly expressed to $LL$. \fxnote{kople til figuren, I'-noden
-på Georgisk gir eit døme.}
+By the above criterion, we may also link the Norwegian VP and Georgian
+I' nodes, since they dominate the same linked lexical nodes. However,
+the word /laparakobdnen/ specifies a non-overt third person plural
+subject, while /snakket/ does not. On the f-structure level, this
+pro-subject is linked to the Norwegian subject (/de/ in the
+c-structure); a treebank user may want to exclude this link. Formally,
+we can exclude this kind of link by adding any linked f-structure
+arguments (of the f-structure of $n$) that are not overtly expressed
+to $LL(n)$.
 
 
 
@@ -389,4 +388,8 @@ just to make the alignment easier.
 [fn:6] The notation $\da\in\ua\ADJUNCT{}$ reads "my f-structure is a
  member of the set of adjuncts of my mother's f-structure" (a
  predicate may have only one subject, but an arbitrary number of
- adjuncts).
+ adjuncts). Figure \ref{fig:roboter} is another example of phrases
+ analysed as adjuncts in one language corresponding to phrases
+ analysed as arguments in another language.
+
+
