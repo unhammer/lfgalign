@@ -595,6 +595,7 @@ TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
        (atom (cdr x))))
 
 (defun rank (f-alignments aligntab)
+  "TODO: should at least select the one where argument order aligns fully."
   (unless *no-warnings* (warn "mock ranking, just selects first option"))
   (car (flatten f-alignments)))
 

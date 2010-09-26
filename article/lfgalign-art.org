@@ -58,12 +58,12 @@ Lexical-Functional Grammar (LFG) is a grammatical framework where a
  predicates is embedded in the f-structure representation.
 
 This work is part of the XPar-project, which involves developing a
- parallel treebank which will include links between corresponding
- constituents, as well as between corresponding syntactic
- functions. By utilising the information available in each monolingual
- LFG-parse of two parallel sentences, we are able to make precise and
- linguistically informative alignments on both the c-structure and
- f-structure level.
+ parallel treebank for Dutch, Tigrinya, Georgian and Norwegian, which
+ will include links between corresponding constituents, as well as
+ between corresponding syntactic functions. By utilising the
+ information available in each monolingual LFG-parse of two parallel
+ sentences, we are able to make precise and linguistically informative
+ alignments on both the c-structure and f-structure level.
 
 Although there exists many methods for automatic phrase alignment
  \cite{och2003scv}, most of these have been based on aligning any
@@ -476,21 +476,24 @@ After ranking, finding the c-structure alignment for a single
 \label{SEC:discussion}
 
 
-** Value over more corpus-based methods for lesser-resourced languages
-No huge parallel corpus needed, given some manual intervention, not
-even a translational dictionary is needed.
+This method may be quite useful for lesser-resourced languages, if
+ there exists an LFG grammar for the language. For a language pair
+ such as Norwegian-Georgian or Tigrinya-Dutch, it is difficult to
+ obtain a parallel corpus large enough to create high quality phrase
+ alignments by purely corpus-based methods, not only because of the
+ marginalisation of the languages, but also because of the productive
+ morphology of Georgian. But by taking advantage of structural
+ similarity in the LFG analyses of parallel sentences, the need for
+ huge corpora is lessened. Given some manual intervention in selecting
+ between ambiguous alignments, not even a translational dictionary is
+ needed.
 
-* Conclusion
+
+
+
 # tom inndeling for å halde bibliografien sist
 
- 
-
 \bibliography{master}
-
-
-
-
-
 
 * Footnotes
 
@@ -502,7 +505,8 @@ even a translational dictionary is needed.
 [fn:2] Even if IP and S could not be linked, we could still link I'
  and VP, as these dominate the same linked material.
 
-[fn:3] The f-structures here are highly simplified.
+[fn:3] The f-structures here are highly simplified, the analyses come
+ from the grammars of the ParGram-project \cite{butt2002pgp}.
 
 [fn:4] All code available from http://example.com under the GNU
        General Public License, version 2 or later, along with some
