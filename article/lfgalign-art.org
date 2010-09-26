@@ -8,6 +8,7 @@
 #+LANGUAGE: en
 #+OPTIONS: H:4 toc:nil f:t skip:nil num:t
 #+LaTeX_CLASS: TLT
+#+LaTeX_HEADER: \newcommand{\ind}[1]{{\avmoptions{}\begin{avm}\@{#1}\end{avm}}}
 #+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
 #+LaTeX_HEADER: \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
 #+LaTeX_HEADER: \newcommand{\OBLben}{\F{obl}{ben}}
@@ -75,18 +76,19 @@ Although there exists many methods for automatic phrase alignment
  dependency and constituent alignments do not inform each other.
 
 Our method is instead based on the fact that similar grammatical
- phenomena in different languages will have similar grammatical
- analyses, so structural similarity in the analyses should indicate
- that those parts of the analyses may be linked. How much structural
- similarity is required in order to link two elements is defined as a
- set of general constraints. This allows for a more top-down method of
- phrase alignment, which is more informative to the linguist since it
- links not only true constituents, but functional elements (which in
- LFG may even span discontiguous constituents). Word-alignments or
- translational dictionaries may be needed to automatically
- disambiguate in cases where the LFG parses do not give sufficient
- information; but the method will perform a large part of the
- alignment job even without /any/ parallel corpus available.
+ phenomena in different languages should have similar grammatical
+ analyses[fn:9], so structural similarity in the analyses should
+ indicate that those parts of the analyses may be linked. How much
+ structural similarity is required in order to link two elements is
+ defined as a set of general constraints. This allows for a more
+ top-down method of phrase alignment, which is more informative to the
+ linguist since it links not only true constituents, but functional
+ elements (which in LFG may even span discontiguous
+ constituents). Word-alignments or translational dictionaries may be
+ needed to automatically disambiguate in cases where the LFG parses do
+ not give sufficient information; but the method will perform a large
+ part of the alignment job even without /any/ parallel corpus
+ available.
 
 The principles and constraints for alignment are discussed in the next
  section, section \ref{SEC:implementation} describes the
@@ -253,7 +255,7 @@ If any of the arguments of two otherwise linkable predicates do not
 
 More formally, these are the requirements for linking two f-structure
 \PRED{} elements $p$ and $q$: 
-\ex. \a. the word-forms of $p$ and $q$ have LPT-correspondence
+\ex. \label{krav:pred} \a. the word-forms of $p$ and $q$ have LPT-correspondence
      \b. all arguments of $p$ have LPT-correspondence with an argument
      or adjunct of $q$
      \c. all arguments of $q$ have LPT-correspondence with an argument
@@ -261,6 +263,10 @@ More formally, these are the requirements for linking two f-structure
      \d. the LPT-correspondences are one-to-one
      \e. no adjuncts of $p$ are linked to f-structures outside $q$ or
      vice versa
+
+Additionally, when an argument/adjunct is selected by a preposition
+ we skip the \PRED{} of the preposition and consider its object as if
+ there were no preposition there.
 
 The one-to-one requirement \Last[d] is there to avoid linking two
  near-synonyms in one language into one word in the other language. We
@@ -281,7 +287,9 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
  $LL(n_s)$ must be linked to nodes in $LL(n_t)$. Unlinked nodes
  dominated by $n_s$ or $n_t$ are not an obstacle to linking these
  nodes. Thus in in figure \ref{fig:simple-links}, if the NP nodes are
- linked, we may link IP and S, while in figure \ref{fig:roboter}, the
+ linked, we may link IP and S.
+
+Figure \ref{fig:roboter} shows a much more complex situation, here the
  Norwegian I' and lower Georgian IP node may not be linked since the
  IP node dominates /robotebze/, linked to /roboter/, which is outside
  the nodes dominated by I'[fn:6].  Georgian being a pro-drop language,
@@ -338,12 +346,78 @@ By the above criterion, we may also link the Norwegian VP and Georgian
  linked f-structure arguments (of the f-structure projected by $n$)
  that are not overtly expressed, to $LL(n)$[fn:7].
 
-Note that several nodes may have equal $LL$, thus the c-structure
- links are often many-to-many.
+Several nodes may have equal $LL$, thus the c-structure links are
+ often /many-to-many/. In addition, the f-structure \PRED{} links are
+ not always one-to-one, but this is a slightly more complex situation.
 
-Section \ref{SEC:discussion} notes some outstanding challenges with
- the linking principles, while the next section discusses the current
- implementation.
+The f-structures of figure \ref{fig:roboter} need a many-to-many
+ \PRED{} link from /hadde/ and /snakket/ to /laparakobdnen/, since the
+ current XPar grammars analyse /laparakobdnen/ (they.had.talked) as a
+ single predicate, while treating /hadde/ (the perfective auxiliary)
+ and /snakket/ (talked) as two separate predicates. One might argue
+ that then such phenomena should be analysed similarly, but as it is
+ the goal of the aligner to help in discovering cross-language
+ differences, all the while assuming that similar grammatical
+ phenomena have similar grammatical analyses, grammars cannot be
+ changed just to make the alignment easier -- we have to treat this as
+ a many-to-one \PRED{} link[fn:10]. 
+
+In order to many-to-one-link $p$ with $q$ and $a_q$ on the f-structure
+ level, where $a_q$ is an argument of $q$, the same requirements as
+ \ref{krav:pred} need to be fulfilled, but with the following
+ difference: the argument lists of $q$ and $a_q$ are merged (as are
+ their adjunct lists), with $a_q$ not appearing in this list. 
+
+#+BEGIN_LaTeX
+\begin{figure}[htp]
+\centering
+\begin{tikzpicture}
+    {\avmoptions{}
+     \node(src){
+        \begin{avm}
+    $q$ \[pred    &       `{\bf{}perf}<\@{1}>\@{2}'\\
+	  subj    & \@{2} \\
+	  topic   & \@{3} \\
+	  xcomp   & \@{1} \[pred & `{\bf{snakke*om<\@{2},\@{3}>}}' \\
+	                    subj & \@{2} \[pred & `{\bf{de}}' \] \\
+                            obj  & \@{3} \[pred & `{\bf{robot}}' \]
+		 	  \]
+        \]
+       \end{avm}
+      };
+      \node[below of=src, node distance=4cm](trg){
+        \begin{avm}
+    $p$ \[pred    &       `{\bf{laparaki}}<\@{4}>'\\
+	  subj    & \@{4} \[pred & `{\bf{pro}}' \] \\
+	  adjunct & \{ \[pred & `{\bf{Si<\@{5}>}}' \\
+                         obj  & \@{5} \[pred & `{\bf{gza}}' \] \],
+		       \[pred & `{\bf{ze<\@{6}>}}' \\
+                         obj  & \@{6} \[pred & `{\bf{roboti}}' \] \] \}
+        \]
+        \end{avm}
+      };
+      }
+\end{tikzpicture}
+\caption{Example of many-to-one link in f-structure: \textbf{perf} and
+\textbf{snakke*om} together link to \textbf{laparaki}.}
+\label{fig:simple-links}
+\end{figure}
+#+END_LaTeX
+
+So when attempting to link /hadde/ ($q$) and /snakket/ ($a_q$) with
+ /laparakobdnen/ ($p$), we merge the argument lists of $q$ and its
+ \XCOMP{} argument, excluding the \XCOMP{} itself, i.e.
+ $\{\ind{1},\ind{2}\}\bigcup\{\ind{2},\ind{3}\}-\{\ind{1}\}=\{\ind{2},\ind{3}\}$
+ (there are no adjuncts on the Norwegian side). Now we can link
+ /laparakobdnen/ with /hadde/ and /snakket/ by matching /de/ (\ind{2})
+ with the pro-element (\ind{4}), and /robot/ (\ind{3}) with
+ /roboti/ (\ind{6}). 
+
+
+The next section discusses the current implementation of these
+principles, while section \ref{SEC:discussion} compares the possible
+merits of this method with other alignment methods.
+
 
 * Implementation
 \label{SEC:implementation}
@@ -375,33 +449,41 @@ A single f-structure alignment is sent to the c-structure aligner,
  calculating $LL$ noted above are considered a user-option). 
 
 The f-structure aligner starts with the two outermost f-structures
-projected by LPT-correspondent words, and finds all possible ways of
-matching all arguments of the source \PRED{} with arguments/adjuncts
-of the target \PRED{} and vice versa (additionally adding any
-superfluous LPT-correspondent adjuncts). For each of these
-possibilities, we recursively try to align the matched
-arguments/adjuncts.
-# TODO CURRENT
+ projected by LPT-correspondent words, and finds all possible ways of
+ matching all arguments of the source \PRED{} with LPT-correspondent
+ arguments/adjuncts of the target \PRED{} and vice versa (additionally
+ adding any pairs of LPT-correspondent adjuncts that were not matched
+ to arguments). For each of these possibilities, we recursively try to
+ align the matched arguments/adjuncts[fn:11], storing these possible
+ sub-alignments in a table since solutions may overlap.
 
-* Discussion
+If we find no possibility of f-structure alignment (no way of
+ fulfilling the requirements in \ref{krav:pred} for the given \PRED{}
+ elements), we may try many-to-one links by merging argument lists as
+ discussed in the previous section. Since this is not tried until
+ there are no other possibilities, solutions involving many-to-one
+ links of \PRED{} elements are implicitly ranked lower than those
+ where we can assume that translations corresponded better (a natural
+ assumption since the sentences were aligned in the first place).
+
+After ranking, finding the c-structure alignment for a single
+ f-structure alignment is a simple matter of finding the $LL$ for each
+ node (being the union of the $LL$ of each daughter node), and
+ creating many-to-many links between those nodes that have the same
+ $LL$. The many-to-many links here are the constituent alignment.
+
+* Discussion and outlook
 \label{SEC:discussion}
 
-** Challenges with the current implementation
-Currently, we have no simple way of dealing with many-to-one
-alignments of \PRED{}-elements. Figure \ref{fig:roboter} hides this
-problem; the current XPar grammars analyse /laparakobdnen/
-(they.had.talked) as a single predicate, while treating /hadde/ (the
-perfective auxiliary) and /snakket/ (talked) as two separate
-predicates. One might argue that then such phenomena should be
-analysed similarly, but as it is the goal of the aligner to help in
-discovering cross-language differences, grammars cannot be changed
-just to make the alignment easier.
+
 ** Value over more corpus-based methods for lesser-resourced languages
 No huge parallel corpus needed, given some manual intervention, not
 even a translational dictionary is needed.
 
 * Conclusion
 # tom inndeling for å halde bibliografien sist
+
+
 
 \bibliography{master}
 
@@ -439,4 +521,19 @@ even a translational dictionary is needed.
  that would let us link the Norwegian I' and the Georgian IP node.
 
 [fn:8] http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
+
+[fn:9] This is a basic tenet of the XPar-project.
+
+[fn:10] Although in this case we might be able to align only the
+ content verbs /hadde/ and /laparakobdnen/ by simply excluding
+ auxiliary verbs from f-structure alignment, as with prepositions,
+ there are other situations where we cannot avoid many-to-many links
+ in a non-arbitrary fashion, e.g. lexical causatives linking to
+ periphrastic causatives, argument incorporation, etc.
+
+[fn:11] We allow \PRED{} elements $p$ and $q$ to be linked even though
+ some of their arguments cannot be recursively \PRED{}-linked, as long
+ as the requirement for word-level LPT-correspondence is fulfilled.
+
+
 
