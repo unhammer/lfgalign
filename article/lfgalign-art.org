@@ -69,10 +69,10 @@ Although there exists many methods for automatic phrase alignment
  \cite{och2003scv}, most of these have been based on aligning any
  N-gram that is compatible with a word alignment, where none of these
  take into account syntactic features, and alignments may cross
- constituent borders. \cite{hearne2008ccd} describes a method for using
- statistical word-alignments as seeds to two separate constituent and
+ constituent borders. \cite{hearne2008ccd} describes a method for
+ using statistical word-alignments as seeds to both constituent and
  dependency tree alignments; however, the goal here is to create a set
- of N-gram pairs for statistical machine translation, and the
+ of N-gram pairs for statistical machine translation, and the separate
  dependency and constituent alignments do not inform each other.
 
 Our method is instead based on the fact that similar grammatical
@@ -83,12 +83,12 @@ Our method is instead based on the fact that similar grammatical
  defined as a set of general constraints. This allows for a more
  top-down method of phrase alignment, which is more informative to the
  linguist since it links not only true constituents, but functional
- elements (which in LFG may even span discontiguous
- constituents). Word-alignments or translational dictionaries may be
+ elements with dependency relations: predicates, arguments and
+ adjuncts[fn:12]. Word-alignments or translational dictionaries may be
  needed to automatically disambiguate in cases where the LFG parses do
  not give sufficient information; but the method will perform a large
  part of the alignment job even without /any/ parallel corpus
- available.
+ available apart from the sentences to be aligned.
 
 The principles and constraints for alignment are discussed in the next
  section, section \ref{SEC:implementation} describes the
@@ -538,6 +538,9 @@ This method may be quite useful for lesser-resourced languages, if
 [fn:11] We allow \PRED{} elements $p$ and $q$ to be linked even though
  some of their arguments cannot be recursively \PRED{}-linked, as long
  as the requirement for word-level LPT-correspondence is fulfilled.
+
+[fn:12] In LFG these functional elements may even span discontiguous
+ constituents.
 
 
 
