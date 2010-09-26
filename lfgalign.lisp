@@ -813,6 +813,8 @@ phi's don't match anything in the files)."
 
 (defun align (tab_s tab_t LPT)
   (let* ((aligntab (make-aligntab))
+	 ; TODO: instead of (0 . 0), the topmost LPT-correspondents;
+	 ; they may have to be merged too
 	 (f-alignments (f-align '(0 . 0) tab_s tab_t LPT aligntab))
 	 (best-f-alignment (rank f-alignments aligntab))
 	 (tree_s (maketree tab_s))
