@@ -1,4 +1,4 @@
-#+TITLE: Automatic Constituent and Function Alignment for Parallel Treebanking
+#+TITLE: Syntax-based Constituent and Function Alignment for Parallel Treebanking
 #+STARTUP: hidestars
 #+SEQ_TODO: ULEST SKRIV FERDIG
 #+AUTHOR: 
