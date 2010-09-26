@@ -483,7 +483,7 @@ even a translational dictionary is needed.
 * Conclusion
 # tom inndeling for å halde bibliografien sist
 
-
+ 
 
 \bibliography{master}
 
