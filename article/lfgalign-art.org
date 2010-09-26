@@ -211,7 +211,9 @@ The argument structure of predicates in LFG is ordered, and this order
  first argument of the translation, /gustar/, to the theme. As one of
  the goals of the XPar-project is to study the relationship between
  semantic role and syntactic function, the aligner cannot presume that
- the relationship always is straightforward.
+ the relationship always is straightforward. However, given
+ insufficient information, similarity in order may be used to /rank/
+ different possible f-structure alignments.
 
 If any of the arguments of two otherwise linkable predicates do not
  have LPT-correspondents among each other, we have evidence that the
@@ -310,12 +312,12 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
       \Tree  [.\node(IPt){IP};  [.\node(PPt){\proj{\da$\in$\ua{}\ADJUNCT{}}{PP}}; \edge[roof]; {gzaSi} ]
                                 [.\node(IP2t){\proj{\ua=\da}{IP}};
                                         [.\node(roboteb){\proj{\da$\in$\ua{}\ADJUNCT{}}{PP}}; \edge[roof]; {robotebze} ]
-                                        [.\node(I't){\proj{\ua=\da}{I'}};
-                                             [.\node(It){\proj{\ua=\da}{I}}; {laparakobdnen} ]
-  ] ] ]
+                                        [.\node(I't){\proj{\ua=\da}{I'}}; \edge[roof]; {laparakobdnen} ]
+  ] ]
     \end{scope}
   \draw[dashed,-] (I's)..controls +(north:2) and +(north:3) .. node[midway,sloped]{$\times$} (IP2t) ;
   \draw[-] (roboter)..controls +(north east:2.5) and +(west:2.0) ..  (roboteb) ;
+%  \draw[dashed,-] (VPs)..controls +(east:1) and +(west:1) .. node[above,sloped]{?} (I't) ;
     
     \end{tikzpicture}
        \caption{C-structure links must dominate the same set of links
@@ -326,23 +328,51 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
 #+END_LaTeX
 
 By the above criterion, we may also link the Norwegian VP and Georgian
- I' nodes, since they dominate the same linked lexical nodes. However,
- the word /laparakobdnen/ specifies a non-overt third person plural
- subject, while /snakket/ does not. On the f-structure level, this
- pro-subject is linked to the Norwegian subject (/de/ in the
- c-structure); a treebank user may want to exclude this
- link. Formally, we can exclude this kind of link by adding any linked
- f-structure arguments (of the f-structure projected by $n$) that are
- not overtly expressed, to $LL(n)$.
+ I' nodes, since they dominate the same linked lexical nodes,
+ /laparakobdnen/ and /snakket/. However, /laparakobdnen/ specifies a
+ non-overt third person plural subject, while /snakket/ does not. On
+ the f-structure level, this pro-subject is linked to the Norwegian
+ subject (/de/ in the c-structure); a treebank user may want to
+ exclude the link between the VP and I' nodes because of this
+ discrepancy. Formally, we can exclude this kind of link by adding any
+ linked f-structure arguments (of the f-structure projected by $n$)
+ that are not overtly expressed, to $LL(n)$[fn:7].
 
+Note that several nodes may have equal $LL$, thus the c-structure
+ links are often many-to-many.
 
+Section \ref{SEC:discussion} notes some outstanding challenges with
+ the linking principles, while the next section discusses the current
+ implementation.
 
 * Implementation
 \label{SEC:implementation}
 
-This section discusses a work-in-progress implementation of the above
-alignment principles[fn:4]. 
+This section covers a work-in-progress implementation of the above
+ alignment principles[fn:4]. The program takes as input LFG-analyses
+ of two sentences which we have for independent reasons consider as
+ translations of each other. The analyses must be disambiguated and in
+ the Prolog-format from XLE[fn:8]. One may in addition give the
+ program information about which word-translations are considered LPT,
+ perhaps from automatic word-alignments or simple translational
+ dictionaries.
 
+The program begins by linking f-structures, where an f-structure
+ /alignment/ is a set of /links/ between individual f-structures. The
+ result of linking on this level may be ambiguous; since there are
+ often several ways of linking arguments and adjuncts given
+ insufficient LPT-information, we may end up with several possible
+ f-structure alignments.
+
+Therefore we rank the f-structure alignments. There are several
+ possible ranking criteria, as mentioned above we use similarity in
+ order of arguments to rank different possible f-structure alignments,
+ when the LPT-information is not sufficient.
+
+A single f-structure alignment is sent to the c-structure aligner,
+which by following the principles above always finds a single,
+unambiguous c-structure alignment (the different possible ways of
+calculating $LL$ noted above are considered a user-option).
 * Discussion
 \label{SEC:discussion}
 
@@ -356,6 +386,9 @@ predicates. One might argue that then such phenomena should be
 analysed similarly, but as it is the goal of the aligner to help in
 discovering cross-language differences, grammars cannot be changed
 just to make the alignment easier.
+** Value over more corpus-based methods for lesser-resourced languages
+No huge parallel corpus needed, given some manual intervention, not
+even a translational dictionary is needed.
 
 * Conclusion
 # tom inndeling for å halde bibliografien sist
@@ -391,5 +424,10 @@ just to make the alignment easier.
  adjuncts). Figure \ref{fig:roboter} is another example of phrases
  analysed as adjuncts in one language corresponding to phrases
  analysed as arguments in another language.
+
+[fn:7] We cannot add just any /overtly/ expressed argument to $LL$, as
+ that would let us link the Norwegian I' and the Georgian IP node.
+
+[fn:8] http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
 
 
