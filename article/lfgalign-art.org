@@ -370,9 +370,19 @@ Therefore we rank the f-structure alignments. There are several
  when the LPT-information is not sufficient.
 
 A single f-structure alignment is sent to the c-structure aligner,
-which by following the principles above always finds a single,
-unambiguous c-structure alignment (the different possible ways of
-calculating $LL$ noted above are considered a user-option).
+ which by following the principles above always finds a single,
+ unambiguous c-structure alignment (the different possible ways of
+ calculating $LL$ noted above are considered a user-option). 
+
+The f-structure aligner starts with the two outermost f-structures
+projected by LPT-correspondent words, and finds all possible ways of
+matching all arguments of the source \PRED{} with arguments/adjuncts
+of the target \PRED{} and vice versa (additionally adding any
+superfluous LPT-correspondent adjuncts). For each of these
+possibilities, we recursively try to align the matched
+arguments/adjuncts.
+# TODO CURRENT
+
 * Discussion
 \label{SEC:discussion}
 
@@ -429,5 +439,4 @@ even a translational dictionary is needed.
  that would let us link the Norwegian I' and the Georgian IP node.
 
 [fn:8] http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
-
 
