@@ -464,7 +464,7 @@ If we find no possibility of f-structure alignment (no way of
  there are no other possibilities, solutions involving many-to-one
  links of \PRED{} elements are implicitly ranked lower than those
  where we can assume that translations corresponded better (a natural
- assumption since the sentences were aligned in the first place).
+ assumption since the sentences were aligned in the first place). 
 
 After ranking, finding the c-structure alignment for a single
  f-structure alignment is a simple matter of finding the $LL$ for each
@@ -475,6 +475,10 @@ After ranking, finding the c-structure alignment for a single
 * Discussion and outlook
 \label{SEC:discussion}
 
+The current implementation is, as mentioned, a work in progress (in
+ particular, it does not yet have full support for f-structure links
+ that are not one-to-one), which makes it hard to do a complete
+ evaluation at this point. However, the method seems promising. 
 
 This method may be quite useful for lesser-resourced languages, if
  there exists an LFG grammar for the language. For a language pair
