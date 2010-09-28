@@ -150,7 +150,7 @@ The candidates we consider for alignment are c-structure phrases,
  The \PRED{} values of their arguments are also candidates for
  alignment, and in this case there would be no reason not to link
  them. As noted, the S, VP and V nodes in English constitute the
- functional domain of $g$, similarly IP, I' and V are the functional
+ functional domain of $g$. Similarly IP, I' and V are the functional
  domain of $f$. Since their f-structures are linked, we have reason to
  link nodes from these functional domains. But we only want to link
  nodes if the material they dominate also corresponds: we would not
