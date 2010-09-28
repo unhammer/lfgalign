@@ -94,7 +94,7 @@ any non-terminal child under it."
 	  (or (treefind c-id (third tree))
 	      (treefind c-id (fourth tree))))))
 
-(defun topnodes (c-ids tree)
+(defun topnodes (c-ids tree &optional allow-several)
   "`c-ids' (given by `phi^-1') describes a functional domain, find the
 first/topmost of the nodes in the c-structure which project this
 domain (member of `c-ids').
@@ -112,7 +112,10 @@ subtrees)."
 	  (multiple-value-bind (Ltree Ldepth) (topnodes c-ids (third tree))
 	    (multiple-value-bind (Rtree Rdepth) (topnodes c-ids (fourth tree))
 	      (cond ((and Ltree Rtree) ; exists in both, choose shallowest
-		     (error "Yay, found a discontinuous constituent! Boo, have work to do...")
+		     (let ((msg (format nil "Found several topnodes (possible discontinuous constituent), TODO!~%~A~%~A" c-ids tree)))
+		       (if allow-several
+			   (when *debug* (out msg))
+			 (error msg)))
 		     ;; unreachable code due to above error ;-)
 		     (when (= Ldepth Rdepth) (warn "Equal depth, arbitrarily going right"))
 		     (if (< Ldepth Rdepth)
@@ -824,11 +827,12 @@ phi's don't match anything in the files)."
 				       tree_s tab_s
 				       tree_t tab_t)))
     ;; TODO: pretty-print
-    (out "f: ~A~%" best-f-alignment)
+    (out "ALIGN f: ~A~%" best-f-alignment)
     (mapcar (lambda (pair)
-	      (out "c_s: ~A~%c_t: ~A~%"
-		   (skip-suff_base (trimtree (car pair) (topnodes (car pair) tree_s)))
-		   (skip-suff_base (trimtree (cadr pair) (topnodes (cadr pair) tree_t)))))
+	      (out "ALIGN c_s: ~A~%      c_t: ~A~%"
+		   (skip-suff_base (trimtree (car pair) (topnodes (car pair) tree_s 'allow-several)))
+		   (skip-suff_base (trimtree (cadr pair) (topnodes (cadr pair) tree_t 'allow-several)))
+		   ))
 	    c-alignments)
     (list best-f-alignment c-alignments)))
 
