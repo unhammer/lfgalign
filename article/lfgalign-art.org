@@ -38,55 +38,61 @@
 This paper describes the development of an automatic phrase alignment
  method using as input parallel sentences parsed in Lexical-Functional
  Grammar, where similarity in analyses is used as evidence that
- constituents, or functional elements with dependency relations, may
- be linked. A set of principles for phrase alignment are formulated,
- based on the goals of the XPar-project \cite{dyvik2009lmp}, and an
- implementation is given.
+ constituents (syntactic phrases) or functional elements (predicates,
+ arguments, adjuncts) may be linked. A set of principles for phrase
+ alignment are formulated, with the goal of creating a parallel
+ treebank for linguistic research, and an implementation is given.
 \end{abstract}
 
 \thispagestyle{empty}
-
 
 * Introduction
 Lexical-Functional Grammar (LFG) is a grammatical framework where a
  sentence is analysed as having both a constituent structure
  (c-structure) and functional structure (f-structure). The former is
  similar to traditional phrase structure trees, while the latter is an
- attribute-value matrix/graph which represents dependency relations
- between syntactic functions (predicate, subject, object, etc.), in
- addition to the grammatical features of these. The argument structure
- of predicates is embedded in the f-structure representation.
+ attribute-value matrix/graph which represents functional relations
+ between constituents (predicates and their subjects, objects, etc.),
+ in addition to the grammatical features of these. The argument
+ structure of predicates is embedded in the f-structure
+ representation.
 
-This work is part of the XPar-project, which involves developing an
- LFG-parsed parallel treebank for Dutch, Tigrinya, Georgian and
+The work presented here is part of a master's thesis using resources
+ from the XPar-project \cite{dyvik2009lmp}, which involves developing
+ an LFG-parsed parallel treebank for Dutch, Tigrinya, Georgian and
  Norwegian, which will include links between corresponding
- constituents, as well as between corresponding syntactic functions
- (dependency elements). By utilising the information available in each
- monolingual LFG-parse of two parallel sentences, we are able to make
- precise and linguistically informative alignments on both the
- c-structure and f-structure level.
+ constituents, as well as between corresponding syntactic functions.
+ By utilising the information available in each
+ monolingual LFG-parse of two parallel sentences in this treebank, we
+ aim to create precise and linguistically informative alignments on
+ both the c-structure and f-structure level.
 
-Although there exists many methods for automatic phrase alignment,
- e.g.  \cite{och2003scv}, most of these have been based on aligning
- any N-gram that is compatible with a word alignment, where none of
- these take into account syntactic features, and alignments may cross
- constituent borders. \cite{hearne2008ccd} describes a method for
- using statistical word-alignments as seeds to both constituent and
- dependency tree alignments; however, the goal here is to create a set
- of N-gram pairs for statistical machine translation, and the separate
- dependency and constituent alignments do not inform each other.
+Although there exist many methods for automatic phrase alignment, e.g.
+ \cite{och2003scv}, most of these have been based on aligning any
+ N-gram that is compatible with a word alignment, where syntactic
+ features are not taken into account, and alignments may cross
+ constituent borders. Later work has used statistical word-alignments
+ as seeds to both constituent and dependency tree alignments,
+ e.g. \cite{hearne2008ccd}, but the separate dependency and
+ constituent alignments created here do not inform each other.
+ Additionally, the goal has often been to create a set of N-gram pairs
+ for statistical machine translation rather than a linguistically
+ informative treebank; however, there has been newer research
+ converting the output of these N-gram-based alignments into treebanks
+ suitable for linguistic research \cite{samuelsson2007apa}.
 
-Our method is instead based on the fact that similar grammatical
- phenomena in different languages should have similar grammatical
- analyses[fn:9], so structural similarity in the analyses should
- indicate that those parts of the analyses may be linked. How much
- structural similarity is required in order to link two elements is
- defined as a set of general, language-independent constraints. This
- allows for a more top-down method of phrase alignment, the results of
- which are highly informative to the treebank user since we get links
- not only between true constituents, but between functional elements
- with dependency relations: predicates, arguments and
- adjuncts[fn:12]. 
+
+Our method is instead based on the idea that similar grammatical
+ phenomena in different languages will, if the grammars are correct,
+ be given similar grammatical analyses[fn:9], so structural similarity
+ in the analyses indicates that those parts of the analyses may be
+ linked. How much structural similarity we require in order to link
+ two elements is defined as a set of general, language-independent
+ constraints. This allows for a more top-down method of phrase
+ alignment, the results of which are highly informative to the
+ treebank user since we get links not only between true constituents,
+ but between functional elements: predicates, arguments and
+ adjuncts[fn:12].
 
 Word-alignments or translational dictionaries may be needed to
  automatically disambiguate in cases where the LFG parses do not give
@@ -102,16 +108,16 @@ The principles and constraints for alignment are discussed in the next
 * Principles for Phrase Alignment
 \label{SEC:principles}
 
-We want our alignment links to be useful for treebank studies, in the
+We want our alignment links to be useful for treebank studies; in the
  XPar-project this includes studying the relationship between
  syntactic function and semantic roles across languages, thus the
  principles for alignment (or, constraints on possible alignments)
  have to take this goal into account.  An outline of the principles
- for phrase alignment used in the XPar-project are formulated in
- \cite[pp.~75--77]{dyvik2009lmp}, this section recounts the major
- points, and explains some relevant LFG-terminology and concepts.
+ for phrase alignment used in the XPar-project has already been
+ formulated \cite[pp.~75--77]{dyvik2009lmp}, this section recounts the
+ major points while also delving into some corner cases, and explains
+ the relevant LFG-terminology and concepts.
 
-# similar surroundings required, more?
 
 To introduce the relevant LFG-terminology, consider figure
  \ref{fig:simple-links}. This shows two simplified LFG f-structures
@@ -122,14 +128,14 @@ To introduce the relevant LFG-terminology, consider figure
  $\phi$, is a many-to-one mapping, and all the nodes S, VP and V
  together project $g$. Since the nodes project the same f-structure,
  they constitute a /functional domain/. We can see that they project
- the same f-structure by the $\ua{}=\da$ annotations, which are read
+ the same f-structure by the $\ua=\da$ annotations, which are read
  as "my f-structure is the same as that of my mother node". The NP
- node has $\ua{}\SUBJ{}=\da$ instead, read as "my f-structure is the
+ node has $\ua{}\SUBJ{}={}\da$ instead, read as "my f-structure is the
  \SUBJ{} of my mother's f-structure"; the NP thus projects the value
  of the \SUBJ{} f-structure inside $g$.
 
 The argument structures of the Norwegian and English verbs are shown
- in their \PRED{} values; both verbs take one argument, in the figure
+ in their \PRED{} values. Both verbs take one argument; in the figure
  this is represented by an index. By looking up this index, we find
  that the one argument of `\textbf{sove}' is the subject of $f$, with
  `\textbf{eg}' as its \PRED{}; similarly `\textbf{I}', subject of $g$,
@@ -482,19 +488,26 @@ After ranking, finding the c-structure alignment for a single
 The current implementation is, as mentioned, a work in progress (in
  particular, it does not yet have full support for f-structure links
  that are not one-to-one), which makes it difficult to do a complete
- evaluation at this point. However, the results seem promising for the
- test sets we have tried.
+ evaluation with any statistical weight at this point. However,
+ conducting tests on a set of example sentences chosen to illustrate a
+ wide variety of grammatical phenomena, the results do seem promising.
 
-A top-down method of alignment may be quite useful for
- lesser-resourced language pairs, if there exists LFG grammars for the
- languages. For a language pair such as Norwegian-Georgian or
+Of course, the alignments will only be as good as the grammatical
+ analyses that gave rise to them, so this is an important possible
+ source of errors. Building high-quality, wide-coverage LFG grammars
+ requires manual work that could be avoided if a large enough corpus
+ is available.
+
+However, a top-down method of alignment may be quite useful for
+ lesser-resourced language pairs, where there exist LFG grammars for
+ the languages. For a language pair such as Norwegian-Georgian or
  Tigrinya-Dutch, it is difficult to obtain a parallel corpus large
  enough to create high quality phrase alignments by purely
  corpus-based methods, not only because of the marginalisation of the
  languages, but also because of the productive morphology of
  Georgian. But by taking advantage of structural similarity in the LFG
  analyses of parallel sentences, the need for huge corpora is
- lessened. Given some manual intervention in selecting between
+ lessened[fn:14]. Given some manual intervention in selecting between
  ambiguous alignments, not even a translational dictionary is needed,
  although this requires a suitable interface for manual selection of
  possible alignments[fn:13].
@@ -540,7 +553,8 @@ A top-down method of alignment may be quite useful for
 
 [fn:8] http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
 
-[fn:9] This is a basic tenet of the XPar-project, as well as of the
+[fn:9] Analysing similar phenomena in similar ways is a central
+ guideline for grammar writers in the XPar-project, as well as of the
  overarching ParGram-project \cite{butt2002pgp}.
 
 [fn:10] Although in this case we might be able to align only the
@@ -559,6 +573,13 @@ A top-down method of alignment may be quite useful for
 
 [fn:13] The interface developed in \cite{rosen2009lpt} is in the
  process of being extended for alignment selection.
+
+[fn:14] Another issue is that using N-gram alignments created from
+ corpora outside the domain of the treebank text (e.g. in order to
+ increase recall) may hurt precision severely
+ \cite{samuelsson2007apa}.
+
+
 
 
 
