@@ -34,12 +34,12 @@
 
 \begin{abstract}
 \noindent
+
 This paper describes the development of an automatic phrase alignment
- method using parallel sentences parsed in Lexical-Functional Grammar
- as input, where similarity in analyses is used as evidence that
- constituents or functional elements \fxnote[inline,nomargin]{vil seie
- «f-struktur-element», men slik at ikkje-LFG-folk forstår det} may be
- linked. A set of principles for phrase alignment are formulated,
+ method using as input parallel sentences parsed in Lexical-Functional
+ Grammar, where similarity in analyses is used as evidence that
+ constituents, or functional elements with dependency relations, may
+ be linked. A set of principles for phrase alignment are formulated,
  based on the goals of the XPar-project \cite{dyvik2009lmp}, and an
  implementation is given.
 \end{abstract}
