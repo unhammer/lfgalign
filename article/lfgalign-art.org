@@ -53,22 +53,23 @@ Lexical-Functional Grammar (LFG) is a grammatical framework where a
  (c-structure) and functional structure (f-structure). The former is
  similar to traditional phrase structure trees, while the latter is an
  attribute-value matrix/graph which represents dependency relations
- between syntactic functions (subject, object, etc.), in addition to
- the grammatical features of these. The argument structure of
- predicates is embedded in the f-structure representation.
+ between syntactic functions (predicate, subject, object, etc.), in
+ addition to the grammatical features of these. The argument structure
+ of predicates is embedded in the f-structure representation.
 
-This work is part of the XPar-project, which involves developing a
- parallel treebank for Dutch, Tigrinya, Georgian and Norwegian, which
- will include links between corresponding constituents, as well as
- between corresponding syntactic functions. By utilising the
- information available in each monolingual LFG-parse of two parallel
- sentences, we are able to make precise and linguistically informative
- alignments on both the c-structure and f-structure level.
+This work is part of the XPar-project, which involves developing an
+ LFG-parsed parallel treebank for Dutch, Tigrinya, Georgian and
+ Norwegian, which will include links between corresponding
+ constituents, as well as between corresponding syntactic functions
+ (dependency elements). By utilising the information available in each
+ monolingual LFG-parse of two parallel sentences, we are able to make
+ precise and linguistically informative alignments on both the
+ c-structure and f-structure level.
 
-Although there exists many methods for automatic phrase alignment
- \cite{och2003scv}, most of these have been based on aligning any
- N-gram that is compatible with a word alignment, where none of these
- take into account syntactic features, and alignments may cross
+Although there exists many methods for automatic phrase alignment,
+ e.g.  \cite{och2003scv}, most of these have been based on aligning
+ any N-gram that is compatible with a word alignment, where none of
+ these take into account syntactic features, and alignments may cross
  constituent borders. \cite{hearne2008ccd} describes a method for
  using statistical word-alignments as seeds to both constituent and
  dependency tree alignments; however, the goal here is to create a set
@@ -80,15 +81,18 @@ Our method is instead based on the fact that similar grammatical
  analyses[fn:9], so structural similarity in the analyses should
  indicate that those parts of the analyses may be linked. How much
  structural similarity is required in order to link two elements is
- defined as a set of general constraints. This allows for a more
- top-down method of phrase alignment, which is more informative to the
- linguist since it links not only true constituents, but functional
- elements with dependency relations: predicates, arguments and
- adjuncts[fn:12]. Word-alignments or translational dictionaries may be
- needed to automatically disambiguate in cases where the LFG parses do
- not give sufficient information; but the method will perform a large
- part of the alignment job even without /any/ parallel corpus
- available apart from the sentences to be aligned.
+ defined as a set of general, language-independent constraints. This
+ allows for a more top-down method of phrase alignment, the results of
+ which are highly informative to the treebank user since we get links
+ not only between true constituents, but between functional elements
+ with dependency relations: predicates, arguments and
+ adjuncts[fn:12]. 
+
+Word-alignments or translational dictionaries may be needed to
+ automatically disambiguate in cases where the LFG parses do not give
+ sufficient information; but the method will perform a large part of
+ the alignment job even without /any/ parallel corpus available apart
+ from the sentences to be aligned.
 
 The principles and constraints for alignment are discussed in the next
  section, section \ref{SEC:implementation} describes the
@@ -477,20 +481,26 @@ After ranking, finding the c-structure alignment for a single
 
 The current implementation is, as mentioned, a work in progress (in
  particular, it does not yet have full support for f-structure links
- that are not one-to-one), which makes it hard to do a complete
- evaluation at this point. However, the method seems promising. 
+ that are not one-to-one), which makes it difficult to do a complete
+ evaluation at this point. However, the results seem promising for the
+ test sets we have tried.
 
-This method may be quite useful for lesser-resourced languages, if
- there exists an LFG grammar for the language. For a language pair
- such as Norwegian-Georgian or Tigrinya-Dutch, it is difficult to
- obtain a parallel corpus large enough to create high quality phrase
- alignments by purely corpus-based methods, not only because of the
- marginalisation of the languages, but also because of the productive
- morphology of Georgian. But by taking advantage of structural
- similarity in the LFG analyses of parallel sentences, the need for
- huge corpora is lessened. Given some manual intervention in selecting
- between ambiguous alignments, not even a translational dictionary is
- needed.
+A top-down method of alignment may be quite useful for
+ lesser-resourced language pairs, if there exists LFG grammars for the
+ languages. For a language pair such as Norwegian-Georgian or
+ Tigrinya-Dutch, it is difficult to obtain a parallel corpus large
+ enough to create high quality phrase alignments by purely
+ corpus-based methods, not only because of the marginalisation of the
+ languages, but also because of the productive morphology of
+ Georgian. But by taking advantage of structural similarity in the LFG
+ analyses of parallel sentences, the need for huge corpora is
+ lessened. Given some manual intervention in selecting between
+ ambiguous alignments, not even a translational dictionary is needed,
+ although this requires a suitable interface for manual selection of
+ possible alignments[fn:13].
+
+
+
 
 
 
@@ -530,7 +540,8 @@ This method may be quite useful for lesser-resourced languages, if
 
 [fn:8] http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
 
-[fn:9] This is a basic tenet of the XPar-project.
+[fn:9] This is a basic tenet of the XPar-project, as well as of the
+ overarching ParGram-project \cite{butt2002pgp}.
 
 [fn:10] Although in this case we might be able to align only the
  content verbs /hadde/ and /laparakobdnen/ by simply excluding
@@ -545,6 +556,9 @@ This method may be quite useful for lesser-resourced languages, if
 
 [fn:12] In LFG these functional elements may even span discontiguous
  constituents.
+
+[fn:13] The interface developed in \cite{rosen2009lpt} is in the
+ process of being extended for alignment selection.
 
 
 
