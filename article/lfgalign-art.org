@@ -33,6 +33,7 @@
 #+LaTeX_HEADER: \newcommand{\proj}[2]{\begin{tabular}{c}\footnotesize{#1}\\\normalsize{#2}\end{tabular}}
 #+LaTeX_HEADER: \newcommand{\ua}{\ensuremath{\uparrow}}
 #+LaTeX_HEADER: \newcommand{\da}{\ensuremath{\downarrow}}
+#+LaTeX_HEADER: \newcommand{\p}[1]{`\textbf{#1}'}
 
 #+LaTeX_HEADER: \usetikzlibrary{calc}
 
@@ -47,7 +48,7 @@ This paper describes the development of an automatic phrase alignment
  Grammar, where similarity in analyses is used as evidence that
  constituents (syntactic phrases) or functional elements (predicates,
  arguments, adjuncts) may be linked. A set of principles for phrase
- alignment are formulated, with the goal of creating a parallel
+ alignment are formulated, with the goal of annotating a parallel
  treebank for linguistic research, and an implementation is given.
 \end{abstract}
 
@@ -68,7 +69,7 @@ Lexical-Functional Grammar (LFG) is a grammatical framework where a
  sentence is analysed as having both a constituent structure
  (c-structure) and functional structure (f-structure). The former is
  similar to traditional phrase structure trees, while the latter is an
- attribute-value matrix/graph which represents functional relations
+ attribute-value matrix which represents functional relations
  between constituents (predicates and their subjects, objects, etc.),
  in addition to the grammatical features of these. The argument
  structure of predicates is embedded in the f-structure
@@ -84,19 +85,19 @@ The work presented here is part of a master's thesis using resources
  aim to create precise and linguistically informative alignments on
  both the c-structure and f-structure level.
 
-Although there exist many methods for automatic phrase alignment, e.g.
+Although there exist many methods for automatic phrase alignment
  \cite{och2003scv}, most of these have been based on aligning any
  N-gram that is compatible with a word alignment, where syntactic
  features are not taken into account, and alignments may cross
  constituent borders. Later work has used statistical word-alignments
- as seeds to both constituent and dependency tree alignments,
- e.g. \cite{hearne2008ccd}, but the separate dependency and
- constituent alignments created here do not inform each other.
- Additionally, the goal has often been to create a set of N-gram pairs
- for statistical machine translation rather than a linguistically
- informative treebank; however, there has been newer research
- converting the output of these N-gram-based alignments into treebanks
- suitable for linguistic research \cite{samuelsson2007apa}.
+ as seeds to both constituent and dependency tree alignments
+ \cite{hearne2008ccd}, but the separate dependency and constituent
+ alignments created here do not inform each other.  Additionally, the
+ goal has often been to create a set of N-gram pairs for statistical
+ machine translation rather than a linguistically informative
+ treebank. However, there has been newer research converting the
+ output of these N-gram-based alignments into treebanks suitable for
+ linguistic research \cite{samuelsson2007apa}.
 
 
 Our method is instead based on the idea that similar grammatical
@@ -109,7 +110,8 @@ Our method is instead based on the idea that similar grammatical
  alignment, the results of which are highly informative to the
  treebank user since we get links not only between true constituents,
  but between functional elements: predicates, arguments and
- adjuncts[fn:12].
+ adjuncts. In LFG these functional elements may even span discontiguous
+ constituents.
 
 Word-alignments or translational dictionaries may be needed to
  automatically disambiguate in cases where the LFG parses do not give
@@ -117,9 +119,9 @@ Word-alignments or translational dictionaries may be needed to
  the alignment job even without /any/ parallel corpus available apart
  from the sentences to be aligned.
 
-The principles and constraints for alignment are discussed in the next
- section, section \ref{SEC:implementation} describes the
- implementation, while section \ref{SEC:discussion} discusses the
+The principles and constraints for alignment are presented in the next
+ section, while section \ref{SEC:implementation} describes their
+ implementation. Finally, section \ref{SEC:discussion} discusses the
  strengths and weaknesses of the method.
 
 
@@ -132,26 +134,25 @@ We want our alignment links to be useful for treebank studies; in the
  principles for alignment (or, constraints on possible alignments)
  have to take this goal into account.  An outline of the principles
  for phrase alignment used in the XPar-project has already been
- formulated \cite[pp.~75--77]{dyvik2009lmp}, this section recounts the
- major points while also delving into some corner cases, and explains
- the relevant LFG-terminology and concepts.
+ formulated \cite[pp.~75--77]{dyvik2009lmp}; this paper recounts the
+ major points while also delving into some corner cases. 
 
-
-To introduce the relevant LFG-terminology, consider the Norwegian
-Nynorsk and English phrases in example \ref{ex:egsov} and their
-analyses in figure \ref{fig:simple-links}. This figure shows two
-simplified LFG f-structures and c-structures, ready for alignment. The
-English word /slept/ is a verb phrase, and its nodes /project/ the
-f-structure $g$ (as seen by the \PRED{} value being the `semantic
-form' of /slept/, `\textbf{sleep}'). The projection from c-structure
-to f-structure, $\phi$, is a many-to-one mapping, and all the nodes S,
-VP and V together project $g$. Since the nodes project the same
-f-structure, they constitute a /functional domain/. We can see that
-they project the same f-structure by the $\ua=\da$ annotations, which
-are read as "my f-structure is the same as that of my mother
-node". The NP node has $\ua{}\SUBJ{}={}\da$ instead, read as "my
-f-structure is the \SUBJ{} of my mother's f-structure"; the NP thus
-projects the value of the \SUBJ{} f-structure inside $g$.
+We begin by explaining the relevant LFG-terminology and concepts.
+Consider the Norwegian Nynorsk and English phrases in example
+\ref{ex:egsov} and their analyses in figure
+\ref{fig:simple-links}. This figure shows two simplified LFG
+f-structures, with their c-structure trees below, ready for
+alignment. The English word /slept/ is a verb phrase, and its nodes
+/project/ the f-structure $g$ (as seen by the \PRED{} value being the
+`semantic form' of /slept/, \p{sleep}). The projection from
+c-structure to f-structure, $\phi$, is a many-to-one mapping, and all
+the nodes S, VP and V together project $g$. Since the nodes project
+the same f-structure, they constitute a /functional domain/. We can
+see that they project the same f-structure by the $\ua=\da$
+annotations, which are read as "my f-structure is the same as that of
+my mother node". The NP node has $\ua\SUBJ={}\da$ instead, read as
+"my f-structure is the \SUBJ{} of my mother's f-structure"; the NP
+thus projects the value of the \SUBJ{} f-structure inside $g$.
 
 #+BEGIN_LaTeX
  \begin{figure}[htp]
@@ -184,7 +185,7 @@ projects the value of the \SUBJ{} f-structure inside $g$.
 %      \draw[dashed,-] (src.west) .. controls +(-1,3) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
 %      \draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
 
-      \begin{scope}[shift={(0,-2cm)}]
+      \begin{scope}[shift={(0,-1.7cm)}]
         \Tree  [.\node(VPs){IP}; [.\proj{\ua{}\SUBJ{}=\da}{NP} \edge[roof]; {eg} ] [.\proj{\ua{}=\da}{I'} [.\proj{\ua{}=\da}{V} \node(sov){sov};  ] ] ]
       \begin{scope}[shift={(5cm,0)}]
         \Tree  [.\node(VPt){S}; [.\proj{\ua{}\SUBJ{}=\da}{NP} \edge[roof]; {I} ] [.\proj{\ua{}=\da}{VP} [.\proj{\ua{}=\da}{V} \node(slept){slept};  ] ] ]
@@ -200,12 +201,12 @@ projects the value of the \SUBJ{} f-structure inside $g$.
  \end{figure}
 #+END_LaTeX
 
-The argument structures of the Norwegian and English verbs are shown
+The argument structures of the two verbs are shown
  in their \PRED{} values. Both verbs take one argument; in the figure
  this is represented by an index. By looking up this index, we find
- that the one argument of `\textbf{sove}' is the subject of $f$, with
- `\textbf{eg}' as its \PRED{}; similarly `\textbf{I}', subject of $g$,
- is the only argument of `\textbf{sleep}'. Neither of these subjects
+ that the one argument of \p{sove} is the subject of $f$, with
+ \p{eg} as its \PRED{}. Similarly \p{I}, the subject of $g$,
+ is the only argument of \p{sleep}. Neither of these subjects
  take any arguments themselves.
 
 
@@ -227,7 +228,7 @@ The candidates we consider for alignment are c-structure phrases,
  so an /unlinked/ subordinate node (e.g. an adverbial only expressed
  in one language) should not interfere with the linking of IP and S.
 
-Similarly, on the f-structure level we allow adjuncts (adverbials) to
+By the same logic, on the f-structure level we allow adjuncts (adverbials) to
  remain unlinked; adjuncts differ from arguments mainly in being
  non-obligatory, while arguments /are/ required in order to express a
  certain sense of a predicate. So to link two predicates, we require
@@ -244,30 +245,25 @@ The argument structure of predicates in LFG is ordered, and this order
  occupy the same positions in the argument structure of their
  predicates, since an English grammar may assign the first argument of
  the verb /like/ to the agent, while a Spanish grammar may assign the
- first argument of the translation, /gustar/, to the theme. As one of
- the goals of the XPar-project is to study the relationship between
- semantic role and syntactic function, the aligner cannot presume that
- the relationship always is straightforward. However, given
- insufficient information, similarity in order may be used to /rank/
- different possible f-structure alignments.
+ first argument of, /gustar/ (a possible translation of /like/), to
+ the theme. As one of the goals of the XPar-project is to study the
+ relationship between semantic role and syntactic function, the
+ aligner cannot presume that the relationship always is
+ straightforward. However, given insufficient information, similarity
+ in order may be used to /rank/ different possible f-structure
+ alignments.
 
 
 If any of the arguments of two otherwise linkable predicates do not
  have LPT-correspondents among each other, we have evidence that the
  predicates themselves are used to express different propositions. But
- should we allow adjuncts as translations of arguments?  The examples
- in \ref{ex:vedde} are all translations of the same sentence, in
- English, Norwegian Bokmål, Georgian and German. For the four
+ should we allow /adjuncts/ as translations of arguments?  The
+ examples in \ref{ex:vedde} are all translations of the same sentence,
+ in English, Norwegian Bokmål, Georgian and German. For the four
  different different languages, the grammar writers chose four
  different ways of dividing the participants in the verbal situation
  into arguments and adjuncts[fn:3]. But in this particular
  translation, the predicates clearly express the same proposition.
- Thus we have to allow linking arguments to adjuncts; the monolingual
- evidence which informed the individual grammars may have suggested
- that a certain participant of a verbal situation should be analysed
- as an argument in one language, but as an adjunct in the other -- in
- a particular translation, however, they may still correspond
- semantically.
 
 #+BEGIN_LaTeX
 {\avmoptions{}
@@ -292,24 +288,33 @@ If any of the arguments of two otherwise linkable predicates do not
 %\hfill{} (Norwegian Bokmål)\\
 #+END_LaTeX
 
+Thus we have to allow linking arguments to adjuncts; the monolingual
+ evidence which informed the individual grammars may have suggested
+ that a certain participant of a verbal situation should be analysed
+ as an argument in one language, but as an adjunct in the other -- in
+ a particular translation, however, they may still correspond
+ semantically.
+
+
 Note: in the f-structures above, some of the arguments/adjuncts are
 selected by prepositions, and their \PRED{} will be embedded in the
 preposition's f-structure. In this situation, we skip the \PRED{} of
 the preposition and consider its object as if there were no
-preposition there; this is necessary to align the f-structures in
+preposition there; this is necessary to align the participants in
 example \ref{ex:vedde}.
 
-The formal requirements for linking two f-structure \PRED{} elements
-$p$ and $q$ (also given in \cite{dyvik2009lmp}) are:
+Formally, to link two f-structure \PRED{} elements
+$p$ and $q$ we require that:
 \ex. \label{krav:pred} \a. the word-forms of $p$ and $q$ have LPT-correspondence
      \b. all arguments of $p$ have LPT-correspondence with an argument
-     or adjunct of $q$
+     or adjunct of $q$ (skipping selectional prepositions)
      \c. all arguments of $q$ have LPT-correspondence with an argument
-     or adjunct of $p$
+     or adjunct of $p$ (skipping selectional prepositions)
      \d. the LPT-correspondences are one-to-one
      \e. no adjuncts of $p$ are linked to f-structures outside $q$ or
      vice versa
 
+These requirements are also given in \cite{dyvik2009lmp}.
 The one-to-one requirement \Last[d] is there to avoid linking two
  near-synonyms in one language into one word in the other language. We
  require all arguments of $p$ to have possible translations among the
@@ -324,27 +329,32 @@ As mentioned, for adjuncts of $p$ we do not even require that they
 
 In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
  defines the term /linked lexical nodes/, $LL$, where $LL(n)$ is the
- set of nodes dominated by $n$ which are word-linked. To link $n_s$
- and $n_t$ (whose projected f-structures must be linked), all nodes in
- $LL(n_s)$ must be linked to nodes in $LL(n_t)$. Unlinked nodes
- dominated by $n_s$ or $n_t$ are not an obstacle to linking these
- nodes. Thus in in figure \ref{fig:simple-links}, if the NP nodes are
- linked, we may link IP and S.
+ set of \emph{word-linked} nodes[fn:12] dominated by $n$. So:
 
+\ex. \label{krav:LL} To link $n_s$ and $n_t$ (whose projected
+ f-structures must be linked), all nodes in $LL(n_s)$ must be linked
+ to nodes in $LL(n_t)$. 
 
-The sentences in \ref{ex:roboter}, with c-structures in figure
- \ref{fig:roboter}, illustrate a much more complex
- situation[fn:16]. Here the Norwegian I' and lower Georgian IP node
- may not be linked since the IP node dominates /robotebze/, linked to
- /roboter/, which is outside the nodes dominated by I'[fn:6].
- Georgian being a pro-drop language, the argument expressed by /de/ in
+Unlinked nodes dominated by $n_s$ or $n_t$ are not an obstacle to
+ linking these nodes. Thus in figure \ref{fig:simple-links}, if the NP
+ nodes are not linked to nodes outside these trees, we may link IP and
+ S.
+
+The Norwegian Bokmål and Georgian sentences in \ref{ex:roboter}, with
+ c-structures in figure \ref{fig:roboter}, illustrate a much more
+ complex situation[fn:16]. Here the Norwegian I' and lower Georgian IP
+ node may not be linked since the Georgian node dominates /robotebze/,
+ linked to /roboter/, which is outside the nodes dominated by the I'
+ node[fn:6].
+
+Georgian being a pro-drop language, the argument expressed by /de/ in
  Norwegian does not have to be overtly expressed in Georgian, so there
- is no c-structure link for this word[fn:5].  But by the criterion
- above we can still link the upper IP nodes, as they dominate the same
- sets of linked lexical nodes; the adjunct /gzaSi/ (``on the way'') is
- a translators addition only seen in the Georgian text, and remains
- unlinked both on c-structure and f-structure level, it does not stop
- linking the IP nodes.
+ is no c-structure link for this word[fn:5].  But by criterion
+ \ref{krav:LL} we can still link the upper IP nodes, as they dominate
+ the same sets of linked lexical nodes. The adjunct /gzaSi/ is a
+ translator's addition only seen in the Georgian text, and remains
+ unlinked both on c-structure and f-structure level; it does not stop
+ us from linking the IP nodes.
 
     \ex. \label{ex:roboter} \ag. \textbf{roboter} \textbf{hadde} \textbf{de} \textbf{snakket} \textbf{om} \\
      robots had they talked about  \\
@@ -384,8 +394,8 @@ The sentences in \ref{ex:roboter}, with c-structures in figure
       \end{figure}
 #+END_LaTeX
 
-By the above criterion, we may also link the Norwegian VP and Georgian
- I' nodes, since they dominate the same linked lexical nodes,
+By criterion \ref{krav:LL}, we may also link the Norwegian VP and
+ Georgian I' nodes, since they dominate the same linked lexical nodes,
  /laparakobdnen/ and /snakket/. However, /laparakobdnen/ specifies a
  non-overt third person plural subject, while /snakket/ does not. On
  the f-structure level, this pro-subject is linked to the Norwegian
@@ -396,26 +406,20 @@ By the above criterion, we may also link the Norwegian VP and Georgian
  projected by $n$) that are not overtly expressed[fn:7].
 
 Several nodes may have equal $LL$, thus the c-structure links are
- often /many-to-many/. In addition, the f-structure \PRED{} links are
- not always one-to-one, but this is a slightly more complex situation.
+ often /many-to-many/. 
 
-The f-structures of figure \ref{fig:f-roboter} need a many-to-many
- \PRED{} link from /hadde/ and /snakket/ to /laparakobdnen/, since the
- current XPar grammars analyse /laparakobdnen/ (they.talked) as a
- single predicate, while treating /hadde/ (the perfective auxiliary)
- and /snakket/ (talked) as two separate predicates. One might argue
- that then such phenomena should be analysed similarly, but as it is
- the goal of the aligner to help in discovering cross-language
- differences, all the while assuming that similar grammatical
- phenomena have similar grammatical analyses, grammars cannot be
- changed just to make the alignment easier --- we have to treat this as
- a many-to-one \PRED{} link[fn:10].
-
-In order to many-to-one-link $p$ with $q$ and $a_q$ on the f-structure
- level, where $a_q$ is an argument of $q$, the same requirements as
- \ref{krav:pred} need to be fulfilled, but with the following
- difference: the argument lists of $q$ and $a_q$ are merged (as are
- their adjunct lists), with $a_q$ not appearing in this list. 
+In addition, the f-structure \PRED{} links are not always one-to-one,
+ but this is a more involved problem.  The f-structures of figure
+ \ref{fig:f-roboter} need a many-to-one \PRED{} link from \p{perf} and
+ \p{snakke*om} to \p{laparaki}, since the grammars analyse
+ \p{laparaki} as a single predicate, while treating \p{perf} and
+ \p{snakke*om} as two separate predicates. One might argue that then such
+ phenomena should be analysed similarly, but as it is the goal of the
+ aligner to help in discovering cross-language differences, all the
+ while assuming that similar grammatical phenomena have similar
+ grammatical analyses, grammars cannot be changed just to make the
+ alignment easier --- we have to treat this as a many-to-one \PRED{}
+ link[fn:10].
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -424,7 +428,7 @@ In order to many-to-one-link $p$ with $q$ and $a_q$ on the f-structure
     {\avmoptions{}
      \node(src){
         \begin{avm}
-    $q$ \[pred    &       `{\bf{}perf}<\@{1}>\@{2}'\\
+    $p$ \[pred    &       `{\bf{}perf}<\@{1}>\@{2}'\\
 	  subj    & \@{2} \\
 	  topic   & \@{3} \\
 	  xcomp   & \@{1} \[pred & `{\bf{snakke*om<\@{2},\@{3}>}}' \\
@@ -436,7 +440,7 @@ In order to many-to-one-link $p$ with $q$ and $a_q$ on the f-structure
       };
       \node[right of=src, node distance=6.5cm](trg){
         \begin{avm}
-    $p$ \[pred    &       `{\bf{laparaki}}<\@{4}>'\\
+    $q$ \[pred    &       `{\bf{laparaki}}<\@{4}>'\\
 	  subj    & \@{4} \[pred & `{\bf{pro}}' \] \\
 	  adjunct & \{ \[pred & `{\bf{Si<\@{5}>}}' \\
                          obj  & \@{5} \[pred & `{\bf{gza}}' \] \],\\
@@ -451,21 +455,28 @@ In order to many-to-one-link $p$ with $q$ and $a_q$ on the f-structure
 \textbf{snakke*om} to \textbf{laparaki}.}
 \label{fig:f-roboter}
 \end{figure}
-#+END_LaTeX
 
-So when attempting to link /hadde/ ($q$) and /snakket/ ($a_q$) with
- /laparakobdnen/ ($p$), we merge the argument lists of $q$ and its
- \XCOMP{} argument, excluding the \XCOMP{} itself, i.e.
+In order to many-to-one-link from both $p$ and $a_p$ to $q$ on the
+ f-structure level, where $a_p$ is an argument of $p$, the same
+ requirements as in \ref{krav:pred} need to be fulfilled, but with the
+ following difference: the argument lists of $p$ and $a_p$ are merged
+ (as are their adjunct lists), with $a_p$ not appearing in this list.
+
+So when attempting to link \p{perf} ($p$) and
+ \p{snakket*om} ($a_p$) with \p{laparaki} ($q$), we
+ merge the argument lists of $p$ and its \XCOMP{} argument, excluding
+ the \XCOMP{} itself, i.e.
  $\{\ind{1},\ind{2}\}\bigcup\{\ind{2},\ind{3}\}-\{\ind{1}\}=\{\ind{2},\ind{3}\}$
  (there are no adjuncts on the Norwegian side). Now we can link
- /laparakobdnen/ with /hadde/ and /snakket/ by matching /de/ (\ind{2})
- with the pro-element (\ind{4}), and /robot/ (\ind{3}) with
- /roboti/ (\ind{6}). 
+ \p{laparaki} with \p{perf} and \p{snakke*om} by matching \p{de}
+ (\ind{2}) with the pro-element (\ind{4}), and \p{robot}
+ (\ind{3}) with \p{roboti} (\ind{6}).
+#+END_LaTeX
 
 
 The next section discusses the current implementation of these
-principles, while section \ref{SEC:discussion} compares the possible
-merits of this method with other alignment methods.
+principles, while section \ref{SEC:discussion} compares its possible
+merits with those of other alignment methods.
 
 
 * Implementation
@@ -498,13 +509,14 @@ The f-structure aligner, algorithm \ref{algo:f-align}, starts with the
 #+BEGIN_LaTeX
       \SetKwComment{Comment}{ // }{}
      \SetKwInOut{Input}{usage}
-  
      \begin{algorithm}[]
       \caption{f-align($F_s$, $F_t$)}
       \label{algo:f-align}
+\small
       
       $alignments \gets \emptyset$  \;
-      \ForAll{argperm in argalign($F_s$, $F_t$) with $p \gets \emptyset$} {
+      \ForAll{argperm in argalign($F_s$, $F_t$)} {
+        $p \gets \emptyset$ \;
          \ForAll{$A_s$, $A_t$ in argperm} {
            \lIf{not(atab[$A_s$,$A_t$])} {
            atab[$A_s$,$A_t$] $\gets$ f-align($A_s$, $A_t$)\;
@@ -514,9 +526,9 @@ The f-structure aligner, algorithm \ref{algo:f-align}, starts with the
         }
         add $p$ to $alignments$ \;
         \ForAll{adjperm in adjalign(argperm, $F_s$, $F_t$)} {
-          $a \gets$ copy-of($p$) \Comment*[r]{optional adjunct links}
-	  \Comment{loop as above, add aligned adj-pairs to $a$}
-          add $a$ to $alignments$ \;
+          $d \gets$ copy-of($p$) \Comment*[r]{optional adjunct links}
+	  \lForAll{$A_s$, $A_t$ in adjperm}{ as above, adding to $d$\;}
+          add $d$ to $alignments$ \;
         } % adjperm in adjalign
        } % argperm in argalign
        \Comment{loop through adjalign if no arguments exist}
@@ -548,20 +560,22 @@ A single f-structure alignment is sent to the c-structure aligner,
  different possible ways of calculating $LL$ noted above are
  considered a user-option). Finding the c-structure alignment for a
  single f-structure alignment involves first finding the $LL$ for each
- node, where $LL(n)$ is the union of $LL(m)$ for all $m$ dominatd by
- of $n$, and then creating many-to-many links between those nodes that
+ node, where $LL(n)$ is the union of $LL(m)$ for all $m$ dominated by
+ of $n$; and then creating many-to-many links between those nodes that
  have the same $LL$. The many-to-many links here are the constituent
  alignment.
 
 * Discussion and outlook
 \label{SEC:discussion}
 
-The current implementation is, as mentioned, a work in progress (in
- particular, it does not yet handle f-structure links that are not
- one-to-one), making it difficult to do a complete evaluation at this
- point[fn:15]. However, tests conducted on a set of example sentences,
- chosen to illustrate a wide variety of grammatical phenomena, seem
- promising.
+The current implementation is, as mentioned, a work in progress,
+ making it difficult to do a complete evaluation at this
+ point[fn:15]. In particular: the program does not yet handle
+ many-to-many f-structure links; discontiguous constituents have not
+ been fully tested; and the question of whether c-structure should
+ ever inform f-structure alignments is not settled. However, tests
+ conducted on a set of example sentences, chosen to illustrate a wide
+ variety of grammatical phenomena, seem promising.
 
 Of course, the alignments will only be as good as the grammatical
  analyses that gave rise to them, so this is an important possible
@@ -569,11 +583,11 @@ Of course, the alignments will only be as good as the grammatical
  requires manual work that could be avoided if a large enough corpus
  is available.
 
-However, a top-down method of alignment may be quite useful for
- language pairs with few parallel resources, where there exist LFG
- grammars for the languages. For a language pair such as
+However, a top-down method of alignment such as this may be quite
+ useful for language pairs with few parallel resources, where there
+ exist LFG grammars for the languages. For a language pair such as
  Norwegian-Georgian, it is difficult to obtain a parallel corpus large
- enough to create high quality phrase alignments by purely
+ enough to create high quality phrase alignments purely by
  corpus-based methods, not only because of the marginalisation of the
  languages, but also because of the productive morphology of Georgian.
  By taking advantage of structural similarity in the LFG analyses of
@@ -658,8 +672,8 @@ However, a top-down method of alignment may be quite useful for
 
 [fn:5] The pro-subjects will be linked in f-structure, however. 
 
-[fn:6] The notation $\da\in\ua\ADJUNCT{}$ reads "my f-structure is a
- member of the set of adjuncts of my mother's f-structure" (a
+[fn:6] The notation $\da{}\in{}\ua{}\ADJUNCT{}$ reads "my f-structure is a
+ member of the set of adjuncts in my mother's f-structure" (a
  predicate may have only one subject, but an arbitrary number of
  adjuncts). Figure \ref{fig:roboter} is another example of phrases
  analysed as adjuncts in one language corresponding to phrases
@@ -674,31 +688,35 @@ However, a top-down method of alignment may be quite useful for
  guideline for grammar writers in the XPar-project, as well as of the
  overarching ParGram-project \cite{butt2002pgp}.
 
-[fn:10] Although in this case we might be able to align only the
- content verbs /hadde/ and /laparakobdnen/ by simply excluding
- auxiliary verbs from f-structure alignment, as with prepositions,
- there are other situations where we cannot avoid many-to-many links
- in a non-arbitrary fashion, e.g. lexical causatives linking to
- periphrastic causatives, argument incorporation, etc.
+[fn:10] In this particular case we might be able to align only the
+ content verbs /snakket/ and /laparakobdnen/ by excluding auxiliary
+ verbs from f-structure alignment, as we do with
+ prepositions. However, there are other situations where we cannot
+ avoid non-one-to-one links in a non-arbitrary fashion, e.g. lexical
+ causatives linking to periphrastic causatives, argument
+ incorporation, etc.
 
 [fn:11] We allow \PRED{} elements $p$ and $q$ to be linked even though
  some of their arguments cannot be recursively \PRED{}-linked, as long
- as the requirement for word-level LPT-correspondence is fulfilled.
-
-[fn:12] In LFG these functional elements may even span discontiguous
- constituents.
+ as the requirement for word-level LPT-correspondence is
+ fulfilled. Adjuncts not linked to arguments are optionally link to
+ each other.
 
 [fn:13] The interface developed in \cite{rosen2009lpt} is in the
  process of being extended for alignment selection.
 
-[fn:14] Another issue is that using N-gram alignments created from
- corpora outside the domain of the treebank text (e.g. in order to
- increase recall) may hurt precision severely
- \cite{samuelsson2007apa}.
+[fn:14] Even where these are available, using N-gram alignments
+ created from corpora outside the domain of the treebank text (e.g. in
+ order to increase recall) may hurt precision severely
+ \cite[p.~149]{samuelsson2007apa}.
 
 [fn:15] Additionally, the program expects disambiguated analyses, and
  many sentences in the larger test sets have not seen manual
  disambiguation yet.
 
-[fn:16] Taken from a book translation, but the Norwegian sentence is
- topicalised for this example.
+[fn:16] The sentences are from a book translation, but the Norwegian
+ sentence has been topicalised to illustrate the c-structure
+ constraint.
+
+[fn:12] In the current implementation, word-links are defined by the
+ \PRED{} links of the f-structures they project.
