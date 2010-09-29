@@ -473,53 +473,85 @@ merits of this method with other alignment methods.
 
 This section covers a work-in-progress implementation of the above
  alignment principles[fn:4]. The program takes as input LFG-analyses
- of two sentences which we have for independent reasons consider as
+ of two sentence which we for independent reasons consider as
  translations of each other. The analyses must be disambiguated and in
- the Prolog-format from XLE[fn:8]. One may in addition give the
- program information about which word-translations are considered LPT,
- perhaps from automatic word-alignments or simple translational
- dictionaries.
+ the XLE-format[fn:8]. One may optionally supply
+ information about which word-translations are considered LPT (e.g.
+ from automatic word-alignments or translational dictionaries).
 
 The program begins by linking f-structures, where an f-structure
  /alignment/ is a set of /links/ between individual f-structures. The
- result of linking on this level may be ambiguous; since there are
+ result of linking on this level may be ambiguous. Since there are
  often several ways of linking arguments and adjuncts given
  insufficient LPT-information, we may end up with several possible
  f-structure alignments.
 
-Therefore we rank the f-structure alignments. There are several
- possible ranking criteria, as mentioned above we use similarity in
- order of arguments to rank different possible f-structure alignments,
- when the LPT-information is not sufficient.
+The f-structure aligner, algorithm \ref{algo:f-align}, starts with the
+ two outermost f-structures projected by LPT-correspondent words. The
+ helper $argalign$ returns all possible ways of matching all
+ arguments of the source \PRED{} with LPT-correspondent
+ arguments/adjuncts of the target \PRED{} and vice versa. For each of
+ these possibilities, we recursively try to align the matched
+ arguments/adjuncts[fn:11], storing these possible sub-alignments in a
+ table since solutions may overlap.
+
+#+BEGIN_LaTeX
+      \SetKwComment{Comment}{ // }{}
+     \SetKwInOut{Input}{usage}
+  
+     \begin{algorithm}[]
+      \caption{f-align($F_s$, $F_t$)}
+      \label{algo:f-align}
+      
+      $alignments \gets \emptyset$  \;
+      \ForAll{argperm in argalign($F_s$, $F_t$) with $p \gets \emptyset$} {
+         \ForAll{$A_s$, $A_t$ in argperm} {
+           \lIf{not(atab[$A_s$,$A_t$])} {
+           atab[$A_s$,$A_t$] $\gets$ f-align($A_s$, $A_t$)\;
+           }
+          \lIf{atab[$A_s$,$A_t$]}{add atab[$A_s$,$A_t$] to $p$\;}
+          \lElse{add $(A_s, A_t)$ to $p$} \Comment*[r]{only LPT-correspondence}
+        }
+        add $p$ to $alignments$ \;
+        \ForAll{adjperm in adjalign(argperm, $F_s$, $F_t$)} {
+          $a \gets$ copy-of($p$) \Comment*[r]{optional adjunct links}
+	  \Comment{loop as above, add aligned adj-pairs to $a$}
+          add $a$ to $alignments$ \;
+        } % adjperm in adjalign
+       } % argperm in argalign
+       \Comment{loop through adjalign if no arguments exist}
+       \lIf {$alignments=\emptyset$}{ call f-align for each
+      possible pred-arg merge \; }
+       \lElse{ \Return $((F_s, F_t), alignments)$ \; }
+       \end{algorithm}    
+    
+#+END_LaTeX
+
+If we find no way of fulfilling the requirements in \ref{krav:pred}
+ for $F_s$ and $F_t$, we may try many-to-one links by merging argument
+ lists as discussed in the previous section. Since this is not tried
+ until there are no other possibilities, solutions involving
+ many-to-one links of \PRED{} elements are implicitly ranked lower
+ than those where we can assume that translations corresponded better
+ (a natural assumption since the sentences were aligned in the first
+ place).
+
+Since f-align may give several solutions, we rank the
+ f-alignments. There are several possible ranking criteria; as
+ mentioned above we use similarity in order of arguments to rank
+ different possible f-structure alignments, when the LPT-information
+ is not sufficient.
 
 A single f-structure alignment is sent to the c-structure aligner,
- which by following the principles above always finds a single,
- unambiguous c-structure alignment (the different possible ways of
- calculating $LL$ noted above are considered a user-option). 
-
-The f-structure aligner starts with the two outermost f-structures
- projected by LPT-correspondent words, and finds all possible ways of
- matching all arguments of the source \PRED{} with LPT-correspondent
- arguments/adjuncts of the target \PRED{} and vice versa (additionally
- adding any pairs of LPT-correspondent adjuncts that were not matched
- to arguments). For each of these possibilities, we recursively try to
- align the matched arguments/adjuncts[fn:11], storing these possible
- sub-alignments in a table since solutions may overlap.
-
-If we find no possibility of f-structure alignment (no way of
- fulfilling the requirements in \ref{krav:pred} for the given \PRED{}
- elements), we may try many-to-one links by merging argument lists as
- discussed in the previous section. Since this is not tried until
- there are no other possibilities, solutions involving many-to-one
- links of \PRED{} elements are implicitly ranked lower than those
- where we can assume that translations corresponded better (a natural
- assumption since the sentences were aligned in the first place). 
-
-After ranking, finding the c-structure alignment for a single
- f-structure alignment is a simple matter of finding the $LL$ for each
- node (being the union of the $LL$ of each daughter node), and
- creating many-to-many links between those nodes that have the same
- $LL$. The many-to-many links here are the constituent alignment.
+ which by following the principles of section \ref{SEC:principles}
+ always finds a single, unambiguous c-structure alignment (the
+ different possible ways of calculating $LL$ noted above are
+ considered a user-option). Finding the c-structure alignment for a
+ single f-structure alignment involves first finding the $LL$ for each
+ node, where $LL(n)$ is the union of $LL(m)$ for all $m$ dominatd by
+ of $n$, and then creating many-to-many links between those nodes that
+ have the same $LL$. The many-to-many links here are the constituent
+ alignment.
 
 * Discussion and outlook
 \label{SEC:discussion}
@@ -559,6 +591,53 @@ However, a top-down method of alignment may be quite useful for
 
 \bibliography{master}
 
+
+
+
+
+* COMMENT foo
+    
+      \begin{algorithm}[]
+      \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
+      \label{algo:argalign-p}
+    
+      \Input{Kalt av argalign slik: \\ argalign-p(arguments($F_s$),
+      adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))}
+      \BlankLine
+      
+     $a \gets \emptyset$\;
+     \uIf{$args_s$} {
+           $s \in args_s$\;
+           \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
+               \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t-\{t\}$,$adjs_t$)}{
+  add $\{(s,t)\} \bigcup p$ to $a$\;
+             }
+            }
+           \ForAll{$t \in adjs_t$ \textbf{where} LPT($s$,$t$)} {
+               \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t$,$adjs_t-\{t\}$)}{
+  add $\{(s,t)\} \bigcup p$ to $a$\;
+                }
+           }
+             \Return $a$\;
+         }
+          \uElseIf{$args_t$} {
+            \uIf{$adjs_s$}{
+                $s \in adjs_s$\;
+           \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
+               \lForAll{$p \in$ argalign-p($args_s$, $adjs_s-\{s\}$, $args_t-\{t\}$,$adjs_t$)}{
+  add $\{(s,t)\} \bigcup p$ to $a$\;
+             }
+            }
+             \Return $a$\;
+        }\uElse{
+              \Return $\emptyset$  \Comment*[l]{Fail}
+            }
+          }
+        \uElse {
+          \Return \{$\emptyset$\} \Comment*[l]{End}
+        }     
+      \end{algorithm}
+
 * Footnotes
 
 [fn:1] We could consider aligning other f-structure elements, but only
@@ -575,7 +654,7 @@ However, a top-down method of alignment may be quite useful for
 
 [fn:4] All code available from http://example.com under the GNU
        General Public License, version 2 or later, along with some
-       examples of input parses.
+       example input parses.
 
 [fn:5] The pro-subjects will be linked in f-structure, however. 
 
@@ -623,8 +702,3 @@ However, a top-down method of alignment may be quite useful for
 
 [fn:16] Taken from a book translation, but the Norwegian sentence is
  topicalised for this example.
-
-
-
-
-
