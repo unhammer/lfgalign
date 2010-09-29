@@ -251,7 +251,7 @@ If any of the arguments of two otherwise linkable predicates do not
  have LPT-correspondents among each other, we have evidence that the
  predicates themselves are used to express different propositions. But
  should we allow adjuncts as translations of arguments?  The examples
- in \ref{ex:vedde-ex} are all translations of the same sentence, in
+ in \ref{ex:vedde} are all translations of the same sentence, in
  English, Norwegian Bokmål, Georgian and German. For the four
  different different languages, the grammar writers chose four
  different ways of dividing the participants in the verbal situation
@@ -384,9 +384,9 @@ By the above criterion, we may also link the Norwegian VP and Georgian
  the f-structure level, this pro-subject is linked to the Norwegian
  subject (/de/ in the c-structure); a treebank user may want to
  exclude the link between the VP and I' nodes because of this
- discrepancy. Formally, we can exclude this kind of link by adding any
- linked f-structure arguments (of the f-structure projected by $n$)
- that are not overtly expressed, to $LL(n)$[fn:7].
+ discrepancy. Formally, we can exclude this kind of link by adding to
+ $LL(n)$ any linked f-structure arguments (of the f-structure
+ projected by $n$) that are not overtly expressed[fn:7].
 
 Several nodes may have equal $LL$, thus the c-structure links are
  often /many-to-many/. In addition, the f-structure \PRED{} links are
@@ -401,7 +401,7 @@ The f-structures of figure \ref{fig:f-roboter} need a many-to-many
  the goal of the aligner to help in discovering cross-language
  differences, all the while assuming that similar grammatical
  phenomena have similar grammatical analyses, grammars cannot be
- changed just to make the alignment easier -- we have to treat this as
+ changed just to make the alignment easier --- we have to treat this as
  a many-to-one \PRED{} link[fn:10].
 
 In order to many-to-one-link $p$ with $q$ and $a_q$ on the f-structure
