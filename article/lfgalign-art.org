@@ -7,7 +7,9 @@
 #Kevin.Unhammer hos student uib no
 #+LANGUAGE: en
 #+OPTIONS: H:4 toc:nil f:t skip:nil num:t
+
 #+LaTeX_CLASS: TLT
+
 #+LaTeX_HEADER: \newcommand{\ind}[1]{{\avmoptions{}\begin{avm}\@{#1}\end{avm}}}
 #+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
 #+LaTeX_HEADER: \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
@@ -28,10 +30,13 @@
 #+LaTeX_HEADER: \newcommand{\falign}{\ensuremath{\operatorname{\emph{falign}}}}
 #+LaTeX_HEADER: \newcommand{\fpairs}{\ensuremath{\operatorname{\emph{fpairs}}}}
 #+LaTeX_HEADER: \newcommand{\Bleu}{\textsc{Bleu}}
-#+LaTeX_HEADER: \usetikzlibrary{calc}
 #+LaTeX_HEADER: \newcommand{\proj}[2]{\begin{tabular}{c}\footnotesize{#1}\\\normalsize{#2}\end{tabular}}
 #+LaTeX_HEADER: \newcommand{\ua}{\ensuremath{\uparrow}}
 #+LaTeX_HEADER: \newcommand{\da}{\ensuremath{\downarrow}}
+
+#+LaTeX_HEADER: \usetikzlibrary{calc}
+
+#+LaTeX_HEADER: \avmfont{\footnotesize\sc}
 
 #+BEGIN_LaTeX
 \begin{abstract}
@@ -326,31 +331,33 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
  nodes. Thus in in figure \ref{fig:simple-links}, if the NP nodes are
  linked, we may link IP and S.
 
-Figure \ref{fig:roboter} shows a much more complex situation, here the
- Norwegian I' and lower Georgian IP node may not be linked since the
- IP node dominates /robotebze/, linked to /roboter/, which is outside
- the nodes dominated by I'[fn:6].  Georgian being a pro-drop language,
- the argument expressed by /de/ in Norwegian does not have to be
- overtly expressed in Georgian, so there is no c-structure link for
- this word[fn:5].  But by the criterion above we can still link the
- upper IP nodes, as they dominate the same sets of linked lexical
- nodes; the adjunct /gzaSi/ (``on the way'') is a translators addition
- only seen in the Georgian text, and remains unlinked both on
- c-structure and f-structure level, it does not stop linking the IP
- nodes.
 
-#+BEGIN_LaTeX
-    \begin{figure}[htp]
-    \centering
+The sentences in \ref{ex:roboter}, with c-structures in figure
+ \ref{fig:roboter}, illustrate a much more complex
+ situation[fn:16]. Here the Norwegian I' and lower Georgian IP node
+ may not be linked since the IP node dominates /robotebze/, linked to
+ /roboter/, which is outside the nodes dominated by I'[fn:6].
+ Georgian being a pro-drop language, the argument expressed by /de/ in
+ Norwegian does not have to be overtly expressed in Georgian, so there
+ is no c-structure link for this word[fn:5].  But by the criterion
+ above we can still link the upper IP nodes, as they dominate the same
+ sets of linked lexical nodes; the adjunct /gzaSi/ (``on the way'') is
+ a translators addition only seen in the Georgian text, and remains
+ unlinked both on c-structure and f-structure level, it does not stop
+ linking the IP nodes.
+
     \ex. \label{ex:roboter} \ag. \textbf{roboter} \textbf{hadde} \textbf{de} \textbf{snakket} \textbf{om} \\
      robots had they talked about  \\
      `They had talked about \emph{robots}'
      \bg. \textbf{gza-Si} \textbf{roboteb-ze} \textbf{laparakobdnen} \\
      way.DAT-to robots.DAT-on talked.3PL \\
      `On the way, they had talked about robots'
-     
+
+#+BEGIN_LaTeX
+    \begin{figure}[htp]
+    \centering     
       \begin{tikzpicture}
-      \tikzset{level distance=1.5cm}
+      \tikzset{level distance=1.4cm,sibling distance=0.1pt}
       \Tree  [.\node(IPs){IP};  [.\node(roboter){\proj{\ua{}\TOPIC{}=\da}{NP}}; \edge[roof]; {roboter} ]
                                 [.\node(I's){\proj{\ua=\da}{I'}};
                                         [.\node(Is){\proj{\ua=\da}{I}}; {hadde} ]
@@ -427,12 +434,12 @@ In order to many-to-one-link $p$ with $q$ and $a_q$ on the f-structure
         \]
        \end{avm}
       };
-      \node[below of=src, node distance=4cm](trg){
+      \node[right of=src, node distance=6.5cm](trg){
         \begin{avm}
     $p$ \[pred    &       `{\bf{laparaki}}<\@{4}>'\\
 	  subj    & \@{4} \[pred & `{\bf{pro}}' \] \\
 	  adjunct & \{ \[pred & `{\bf{Si<\@{5}>}}' \\
-                         obj  & \@{5} \[pred & `{\bf{gza}}' \] \],
+                         obj  & \@{5} \[pred & `{\bf{gza}}' \] \],\\
 		       \[pred & `{\bf{ze<\@{6}>}}' \\
                          obj  & \@{6} \[pred & `{\bf{roboti}}' \] \] \}
         \]
@@ -440,8 +447,8 @@ In order to many-to-one-link $p$ with $q$ and $a_q$ on the f-structure
       };
       }
 \end{tikzpicture}
-\caption{Example of many-to-one link in f-structure: \textbf{perf} and
-\textbf{snakke*om} together link to \textbf{laparaki}.}
+\caption{F-structure many-to-one link from \textbf{perf} and
+\textbf{snakke*om} to \textbf{laparaki}.}
 \label{fig:f-roboter}
 \end{figure}
 #+END_LaTeX
@@ -518,11 +525,11 @@ After ranking, finding the c-structure alignment for a single
 \label{SEC:discussion}
 
 The current implementation is, as mentioned, a work in progress (in
- particular, it does not yet have full support for f-structure links
- that are not one-to-one), which makes it difficult to do a complete
- evaluation with any statistical weight at this point. However,
- conducting tests on a set of example sentences chosen to illustrate a
- wide variety of grammatical phenomena, the results do seem promising.
+ particular, it does not yet handle f-structure links that are not
+ one-to-one), making it difficult to do a complete evaluation at this
+ point[fn:15]. However, tests conducted on a set of example sentences,
+ chosen to illustrate a wide variety of grammatical phenomena, seem
+ promising.
 
 Of course, the alignments will only be as good as the grammatical
  analyses that gave rise to them, so this is an important possible
@@ -531,18 +538,17 @@ Of course, the alignments will only be as good as the grammatical
  is available.
 
 However, a top-down method of alignment may be quite useful for
- lesser-resourced language pairs, where there exist LFG grammars for
- the languages. For a language pair such as Norwegian-Georgian or
- Tigrinya-Dutch, it is difficult to obtain a parallel corpus large
+ language pairs with few parallel resources, where there exist LFG
+ grammars for the languages. For a language pair such as
+ Norwegian-Georgian, it is difficult to obtain a parallel corpus large
  enough to create high quality phrase alignments by purely
  corpus-based methods, not only because of the marginalisation of the
- languages, but also because of the productive morphology of
- Georgian. But by taking advantage of structural similarity in the LFG
- analyses of parallel sentences, the need for huge corpora is
+ languages, but also because of the productive morphology of Georgian.
+ By taking advantage of structural similarity in the LFG analyses of
+ parallel sentences, the need for huge corpora is
  lessened[fn:14]. Given some manual intervention in selecting between
- ambiguous alignments, not even a translational dictionary is needed,
- although this requires a suitable interface for manual selection of
- possible alignments[fn:13].
+ ambiguous alignments (and a suitable interface[fn:13]), not even a
+ translational dictionary is needed.
 
 
 
@@ -550,7 +556,6 @@ However, a top-down method of alignment may be quite useful for
 
 
 
-# tom inndeling for å halde bibliografien sist
 
 \bibliography{master}
 
@@ -611,6 +616,13 @@ However, a top-down method of alignment may be quite useful for
  corpora outside the domain of the treebank text (e.g. in order to
  increase recall) may hurt precision severely
  \cite{samuelsson2007apa}.
+
+[fn:15] Additionally, the program expects disambiguated analyses, and
+ many sentences in the larger test sets have not seen manual
+ disambiguation yet.
+
+[fn:16] Taken from a book translation, but the Norwegian sentence is
+ topicalised for this example.
 
 
 
