@@ -100,7 +100,7 @@ Although there exist many methods for automatic phrase alignment
  linguistic research \cite{samuelsson2007apa}.
 
 
-Our method is instead based on the idea that similar grammatical
+The XPar method is instead based on the idea that similar grammatical
  phenomena in different languages will, if the grammars are correct,
  be given similar grammatical analyses[fn:9], so structural similarity
  in the analyses indicates that those parts of the analyses may be
@@ -245,7 +245,7 @@ The argument structure of predicates in LFG is ordered, and this order
  occupy the same positions in the argument structure of their
  predicates, since an English grammar may assign the first argument of
  the verb /like/ to the agent, while a Spanish grammar may assign the
- first argument of, /gustar/ (a possible translation of /like/), to
+ first argument of /gustar/ (a possible translation of /like/) to
  the theme. As one of the goals of the XPar-project is to study the
  relationship between semantic role and syntactic function, the
  aligner cannot presume that the relationship always is
@@ -291,7 +291,7 @@ If any of the arguments of two otherwise linkable predicates do not
 Thus we have to allow linking arguments to adjuncts; the monolingual
  evidence which informed the individual grammars may have suggested
  that a certain participant of a verbal situation should be analysed
- as an argument in one language, but as an adjunct in the other -- in
+ as an argument in one language, but as an adjunct in the other --- in
  a particular translation, however, they may still correspond
  semantically.
 
@@ -303,8 +303,8 @@ the preposition and consider its object as if there were no
 preposition there; this is necessary to align the participants in
 example \ref{ex:vedde}.
 
-Formally, to link two f-structure \PRED{} elements
-$p$ and $q$ we require that:
+Formally, to link two f-structure \PRED{} elements $p$ and $q$ we
+require that all the following hold (see also \cite{dyvik2009lmp}):
 \ex. \label{krav:pred} \a. the word-forms of $p$ and $q$ have LPT-correspondence
      \b. all arguments of $p$ have LPT-correspondence with an argument
      or adjunct of $q$ (skipping selectional prepositions)
@@ -314,7 +314,6 @@ $p$ and $q$ we require that:
      \e. no adjuncts of $p$ are linked to f-structures outside $q$ or
      vice versa
 
-These requirements are also given in \cite{dyvik2009lmp}.
 The one-to-one requirement \Last[d] is there to avoid linking two
  near-synonyms in one language into one word in the other language. We
  require all arguments of $p$ to have possible translations among the
@@ -579,9 +578,9 @@ The current implementation is, as mentioned, a work in progress,
 
 Of course, the alignments will only be as good as the grammatical
  analyses that gave rise to them, so this is an important possible
- source of errors. Building high-quality, wide-coverage LFG grammars
- requires manual work that could be avoided if a large enough corpus
- is available.
+ source of errors. Building high-quality, wide-coverage grammars
+ requires manual work; however, without these, a large, informative
+ and consistent treebank may require even more manual work.
 
 However, a top-down method of alignment such as this may be quite
  useful for language pairs with few parallel resources, where there
