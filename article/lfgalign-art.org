@@ -76,7 +76,7 @@ Lexical-Functional Grammar (LFG) is a grammatical framework where a
  representation.
 
 The work presented here is part of a master's thesis using resources
- from the XPar-project \cite{dyvik2009lmp}, which involves developing
+ from the Xpar-project \cite{dyvik2009lmp}, which involves developing
  an LFG-parsed parallel treebank for Dutch, Tigrinya, Georgian and
  Norwegian, which will include links between corresponding
  constituents, as well as between corresponding syntactic functions.
@@ -100,7 +100,7 @@ Although there exist many methods for automatic phrase alignment
  linguistic research \cite{samuelsson2007apa}.
 
 
-The XPar method is instead based on the idea that similar grammatical
+The Xpar method is instead based on the idea that similar grammatical
  phenomena in different languages will, if the grammars are correct,
  be given similar grammatical analyses[fn:9], so structural similarity
  in the analyses indicates that those parts of the analyses may be
@@ -129,11 +129,11 @@ The principles and constraints for alignment are presented in the next
 \label{SEC:principles}
 
 We want our alignment links to be useful for treebank studies; in the
- XPar-project this includes studying the relationship between
+ Xpar-project this includes studying the relationship between
  syntactic function and semantic roles across languages, thus the
  principles for alignment (or, constraints on possible alignments)
  have to take this goal into account.  An outline of the principles
- for phrase alignment used in the XPar-project has already been
+ for phrase alignment used in the Xpar-project has already been
  formulated \cite[pp.~75--77]{dyvik2009lmp}; this paper recounts the
  major points while also delving into some corner cases. 
 
@@ -246,7 +246,7 @@ The argument structure of predicates in LFG is ordered, and this order
  predicates, since an English grammar may assign the first argument of
  the verb /like/ to the agent, while a Spanish grammar may assign the
  first argument of /gustar/ (a possible translation of /like/) to
- the theme. As one of the goals of the XPar-project is to study the
+ the theme. As one of the goals of the Xpar-project is to study the
  relationship between semantic role and syntactic function, the
  aligner cannot presume that the relationship always is
  straightforward. However, given insufficient information, similarity
@@ -684,7 +684,7 @@ However, a top-down method of alignment such as this may be quite
 [fn:8] http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html
 
 [fn:9] Analysing similar phenomena in similar ways is a central
- guideline for grammar writers in the XPar-project, as well as of the
+ guideline for grammar writers in the Xpar-project, as well as of the
  overarching ParGram-project \cite{butt2002pgp}.
 
 [fn:10] In this particular case we might be able to align only the
