@@ -526,7 +526,7 @@ The f-structure aligner, algorithm \ref{algo:f-align}, starts with the
         $p \gets \emptyset$ \;
          \ForAll{$A_s$, $A_t$ in argperm} {
 	 \lIf{unset(atab[$A_s,A_t$])} {atab[$A_s,A_t$] $\gets$ f-align($A_s$, $A_t$)\;}
-	  $subalignment$ $\gets$ atab[$A_s,A_t$] \;
+	 $subalignment$ $\gets$ atab[$A_s,A_t$] \;
           \lIf{$subalignment$}{add $subalignment$ to $p$\;}
           \lElse{add $(A_s, A_t)$ to $p$} \Comment*[r]{only LPT-correspondence}
         }
