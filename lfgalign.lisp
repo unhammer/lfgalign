@@ -529,8 +529,7 @@ to being LPT).
  (i) the number of arguments n and m may or may not differ
 is trivially true
  (ii), LPT, should be covered for `link' on all calls.
-TODO: (v) the LPT-correspondences can be aligned one-to-one
-TODO: adj-adj alignments?? (unaligned adjuncts are OK)."
+TODO: (v) the LPT-correspondences can be aligned one-to-one"
   (let* ((aligntab (or aligntab
 		       (make-hash-table :test #'equal)))
 	 (argperms (argalign link tab_s tab_t LPTs)) ; argalign covers (iii) and (iv)
