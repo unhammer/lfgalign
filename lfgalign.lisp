@@ -254,7 +254,7 @@ of others."
   "Is `Pr1' a predecessor of `Pr2' (outermore in the f-structure)?
 Note: we actually only look at the car of `Pr2', which has to be its
 variable (ie. what `get-pred' returns)."
-  (let ((args (get-args Pr1)))
+  (let ((args (get-args Pr1 tab)))
     (or (member (car Pr2) args)
 	(loop for c in args
 	   for Prc = (unravel "PRED" c tab)
@@ -263,30 +263,36 @@ variable (ie. what `get-pred' returns)."
 			(outer> Prc Pr2 tab))))))
 
 
-(defun get-args (Pr &optional no-nulls)
+(defun get-args (Pr tab &optional no-nulls)
   (if no-nulls
       (remove-if (lambda (p) (null-pred? p))
 		 (union (fourth Pr) (fifth Pr)))
-    (union (fourth Pr) (fifth Pr))))
+    (mapcar (lambda (var)
+	      (skip-prep var tab))
+	    (union (fourth Pr) (fifth Pr)))))
 
-(defun skip-adj-prep (var tab)
-  "Should skip prepositions of adjuncts, as defined in footnote 3 in
-dyvik2009lmp."
-  (out "TODO: skip adj prep for ~A~%" var)
-  var
-  )
+(defun skip-prep (var tab)
+  "Skip prepositions of adjuncts, as defined in footnote 3 in
+dyvik2009lmp. 
+
+TODO: do all prepositions have PFORM and OBJ, or are there other ways
+of representing them? This really ought to be user-configurable."
+  (if (and (assoc "PFORM" (gethash var tab) :test #'equal)
+	   (assoc "OBJ" (gethash var tab) :test #'equal))
+      (cdr (assoc "OBJ" (gethash var tab) :test #'equal))
+      var))
 
 (defun get-adjs (var tab &optional no-error)
   "Use `no-error' to return nil if no ADJUNCT was found.
 TODO: find example to test where we need `unravel' / eq-sets.
-TODO: Skip prepositions of adjuncts, as defined in footnote 3 in
-dyvik2009lmp, with `skip-adj-prep'."
+TODO: Skip prepositions, as defined in footnote 3 in
+dyvik2009lmp, with `skip-prep'."
   (let ((adjvar (assoc "ADJUNCT" (gethash var tab) :test #'equal)))
     (if adjvar
 	(if (get-equivs (cdr adjvar) tab)
 	    (error 'unexpected-input "eqvar of ADJUNCT, TODO")
 	    (mapcar-true (lambda (pair) (when (eq (cdr pair) (cdr adjvar))
-					  (skip-adj-prep (car pair) tab)))
+					  (skip-prep (car pair) tab)))
 			 (cdr (gethash '|in_set| tab))))
 	(unless no-error (error 'no-adjs-error-todo var)))))
 
@@ -437,8 +443,8 @@ cover (iii) and (iv). See `argalign-p'."
 	 (var_t (cdr link))
 	 (adjs_s (get-adjs var_s tab_s 'no-error))
 	 (adjs_t (get-adjs var_t tab_t 'no-error))
-	 (args_s (get-args (get-pred var_s tab_s t) 'no-nulls))
-	 (args_t (get-args (get-pred var_t tab_t t) 'no-nulls)))
+	 (args_s (get-args (get-pred var_s tab_s t) tab_s 'no-nulls))
+	 (args_t (get-args (get-pred var_t tab_t t) tab_t 'no-nulls)))
     (when *debug* (format t "args_s:~A adjs_s:~A args_t:~A adjs_t:~A~%" args_s adjs_s args_t adjs_t))
     (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
 
@@ -584,11 +590,10 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
  (let ((tab_s (open-and-import "dev/TEST_optadj_s.pl"))
        (tab_t (open-and-import "dev/TEST_optadj_t.pl"))
        (LPT (make-LPT)))
-   (out "~%~%TODO: skip prepositions when aligning adjs (id 30 below)~%~%")
    (lisp-unit:assert-equality
     #'set-of-set-equal
-    '(((0 . 0) (8 . 2) (30 . 8))	; adjuncts optionally align
-      ((0 . 0) (8 . 8) (30 . 2))
+    '(((0 . 0) (8 . 2) (31 . 8))	; adjuncts optionally align
+      ((0 . 0) (8 . 8) (31 . 2))
       ((0 . 0) (8 . 8)))
     (flatten (f-align '(0 . 0) tab_s tab_t LPT)))))
 
@@ -711,7 +716,7 @@ defined by `f-alignment', which must have been through `flatten';
 TODO: could pro-arguments ever have pro-arguments of their own? 
 Seems unlikely, but worth a footnote..."
    (remove-if (lambda (arg) (phi^-1 arg tab))
-	      (get-args (get-pred f-id tab) 'no-nulls)))
+	      (get-args (get-pred f-id tab) tab 'no-nulls)))
 
 (defmethod add-links (f-alignment tree tab (splits LL-splits) from)
   "Return links of all pre-terminals under the subtree `tree' as a
@@ -853,8 +858,8 @@ respectively.  TODO: cache/memoise maketree"
       (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
       (when (and pred1 pred2)
       (loop
-	 for arg1 in (get-args pred1)
-	 for arg2 in (get-args pred2)
+	 for arg1 in (get-args pred1 tab1)
+	 for arg2 in (get-args pred2 tab2)
 	 do (format t "...aligning ~A_~A and ~A_~A...~%"
 		    var1 (references var1 arg1 tab1)
 		    var2 (references var2 arg2 tab2))
@@ -1280,7 +1285,7 @@ starting at `var_s'."
       (if (LPT? Pr_s tab_s Pr_t tab_t LPTs)
 	  (list var_t)
 	  (loop 
-	     for c in (get-args Pr_t)
+	     for c in (get-args Pr_t tab_t)
 	     for outer = (outer>-LPT Pr_s tab_s c tab_t LPTs)
 	     when outer append it)))))
 
@@ -1369,8 +1374,8 @@ we already know is true because `perm' came from `LPT-permute'."
 	 (Pr_t (get-pred var_t tab_t))
 	 (adjuncts_t (get-adjs var_t tab_t 'no-error))
 	 (adjuncts_s (get-adjs var_s tab_s 'no-error))
-	 (args_t (get-args Pr_t 'no-nulls))
-	 (args_s (get-args Pr_s 'no-nulls)))
+	 (args_t (get-args Pr_t tab_t 'no-nulls))
+	 (args_s (get-args Pr_s tab_s 'no-nulls)))
     (when *debug* (out "~A ~A~%" Pr_s Pr_t))
     (when
 	(and
