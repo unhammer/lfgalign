@@ -540,7 +540,7 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
 		       (make-hash-table :test #'equal)))
 	 (argperms (argalign link tab_s tab_t LPTs)) ; argalign covers (iii) and (iv)
 	 alignments)
-    (when argperms		  ; don't do anything unless argperms are OK
+    (if argperms		  ; possible to f-align one-to-one, no merging
       (flet ((sub-f (perm)
 	       ;; Try to recursively align links in perm, but keep unaligned links
 	       (loop for link_a in perm
@@ -560,10 +560,13 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
 	       do (pushnew new alignments :test #'equal)
 	       ;; try to fill up adj alignments
 	       (loop for adjperm in (adjalign argperm link tab_s tab_t LPTs)
-		  do (pushnew (append (sub-f adjperm) new) alignments :test #'equal)))))
-      (if alignments
-	  (cons link alignments)
-	link))))
+		  do (pushnew (append (sub-f adjperm) new) alignments :test #'equal))))
+	(if alignments
+	    (cons link alignments)
+	    link))
+      ;; else: no argperms, we try merging:
+      (progn (out "TODO: one-to-one failed, should try merging")
+	     nil))))
 
 (lisp-unit:define-test test-f-align
  (let ((tab_s (open-and-import "dev/TEST_simple_s.pl"))
