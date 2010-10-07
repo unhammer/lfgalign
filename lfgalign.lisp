@@ -610,7 +610,7 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
 	    (cons link alignments)
 	    link))
       ;; else: no argperms, we try merging:
-      (progn (out "TODO: one-to-one failed, should try merging")
+      (progn (out "TODO: one-to-one failed, should try merging~%")
 	     (let ((srcargs (get-args (get-pred (car link) tab_s) tab_s 'no-nulls))
 		   (trgargs (get-args (get-pred (cdr link) tab_t) tab_t 'no-nulls)))
 	       (loop for a_s in srcargs
@@ -618,13 +618,16 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
 		     (or (not LPTs)
 			 (LPT? (get-pred   a_s      tab_s) tab_s
 			       (get-pred (cdr link) tab_t) tab_t LPTs))
-		     collect
+		     collect		; and then do stuff with it ;-) TODO
 		     (margalign link (cons a_s (cdr link)) tab_s tab_t LPTs)))))))
 
 (lisp-unit:define-test test-merge
  (let ((tab_s (open-and-import "dev/TEST_merge_s.pl"))
        (tab_t (open-and-import "dev/TEST_merge_t.pl"))
        (LPT (make-LPT)))
+   (lisp-unit:assert-equal
+    '(((9 . 3)))
+    (margalign '(0 . 0) '(10 . 0) tab_s tab_t LPT))
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((0 . 0) (10 . 0) (9 . 3))) ; perf-qePa, bjeffe-qePa, hund-jaGli
