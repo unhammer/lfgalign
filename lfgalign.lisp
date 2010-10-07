@@ -2,6 +2,9 @@
 ;;; but don't care about speed:
 (declaim (optimize (speed 0) (safety 3) (debug 3)))
 
+;;; quickstart:
+;(progn (swank:operate-on-system-for-emacs "lfgalign" (quote load-op)) (swank:set-package "LFGALIGN") (lisp-unit:run-tests))
+
 (in-package #:lfgalign)
 
 (define-condition several-topnodes (unexpected-input) ()
@@ -263,13 +266,26 @@ variable (ie. what `get-pred' returns)."
 			(outer> Prc Pr2 tab))))))
 
 
+(defun predp (Pr)
+  (and (listp Pr)
+       (numberp (first Pr))
+       (stringp (second Pr))
+       (numberp (third Pr))
+       (listp (fourth Pr))
+       (listp (fifth Pr))
+       (null (sixth Pr))
+       (eq 5 (length Pr))))
+
 (defun get-args (Pr tab &optional no-nulls)
-  (if no-nulls
-      (remove-if (lambda (p) (null-pred? p))
-		 (union (fourth Pr) (fifth Pr)))
-    (mapcar (lambda (var)
-	      (skip-prep var tab))
-	    (union (fourth Pr) (fifth Pr)))))
+  "The argument `Pr' is either a pred or a variable id that we can
+look up to get a pred."
+  (let ((Pr (if (predp Pr) Pr (get-pred Pr tab))))
+    (if no-nulls
+	(remove-if (lambda (p) (null-pred? p))
+		   (union (fourth Pr) (fifth Pr)))
+      (mapcar (lambda (var)
+		(skip-prep var tab))
+	      (union (fourth Pr) (fifth Pr))))))
 
 (defun skip-prep (var tab)
   "Skip prepositions of adjuncts, as defined in footnote 3 in
@@ -443,8 +459,8 @@ cover (iii) and (iv). See `argalign-p'."
 	 (var_t (cdr link))
 	 (adjs_s (get-adjs var_s tab_s 'no-error))
 	 (adjs_t (get-adjs var_t tab_t 'no-error))
-	 (args_s (get-args (get-pred var_s tab_s t) tab_s 'no-nulls))
-	 (args_t (get-args (get-pred var_t tab_t t) tab_t 'no-nulls)))
+	 (args_s (get-args var_s tab_s 'no-nulls))
+	 (args_t (get-args var_t tab_t 'no-nulls)))
     (when *debug* (format t "args_s:~A adjs_s:~A args_t:~A adjs_t:~A~%" args_s adjs_s args_t adjs_t))
     (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
 
@@ -481,6 +497,35 @@ the recursion loops through all possible `srcs'."
 		nil)
 	    ;; all args_s and args_t used up, make end-of-list:
 	    (list nil)))))
+
+(defun margalign (link1 link2 tab_s tab_t LPTs)
+  "Like argalign, but `link1' and `link2' describe a two-to-one link, 
+so we merge the adjunct/argument lists.
+
+Note: this should work even for a two-to-two link.
+
+Note: we assume here that this is never used to merge adjuncts, thus
+we don't set-difference from adjs"
+  (let* ((var_s1 (car link1))
+	 (var_s2 (car link2))
+	 (var_t1 (cdr link1))
+	 (var_t2 (cdr link2))
+	 (adjs_s (union (get-adjs var_s1 tab_s 'no-error)
+			(get-adjs var_s2 tab_s 'no-error)))
+	 (adjs_t (union (get-adjs var_t1 tab_t 'no-error)
+			(get-adjs var_t2 tab_t 'no-error)))
+	 (args_s (set-difference 
+		  (union (get-args var_s1 tab_s 'no-nulls)
+			 (get-args var_s2 tab_s 'no-nulls))
+		  (union (get-equivs var_s1 tab_s 'include-this)
+			 (get-equivs var_s2 tab_s 'include-this))))
+	 (args_t (set-difference 
+		  (union (get-args var_t1 tab_t 'no-nulls)
+			 (get-args var_t2 tab_t 'no-nulls))
+		  (union (get-equivs var_t1 tab_t 'include-this)
+			 (get-equivs var_t2 tab_t 'include-this)))))
+    (when *debug* (format t "args_s:~A adjs_s:~A args_t:~A adjs_t:~A~%" args_s adjs_s args_t adjs_t))
+    (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
 
 (defun adjalign (exclude link tab_s tab_t LPTs)
   "Return all possible combinations of links between adjuncts that use
@@ -566,18 +611,25 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
 	    link))
       ;; else: no argperms, we try merging:
       (progn (out "TODO: one-to-one failed, should try merging")
-	     (let ((srcargs (get-args (get-pred (car link) tab_s) tab_s))
-		   (trgargs (get-args (get-pred (cdr link) tab_t) tab_t)))
+	     (let ((srcargs (get-args (get-pred (car link) tab_s) tab_s 'no-nulls))
+		   (trgargs (get-args (get-pred (cdr link) tab_t) tab_t 'no-nulls)))
 	       (loop for a_s in srcargs
-		     do
-		     (out "~%~A merge with ~A" a_s (car link)))
-	       (out "~%~A ~% ~A~%" srcargs trgargs))
-	     nil))))
+		     when
+		     (or (not LPTs)
+			 (LPT? (get-pred   a_s      tab_s) tab_s
+			       (get-pred (cdr link) tab_t) tab_t LPTs))
+		     collect
+		     (margalign link (cons a_s (cdr link)) tab_s tab_t LPTs)))))))
 
 (lisp-unit:define-test test-merge
  (let ((tab_s (open-and-import "dev/TEST_merge_s.pl"))
        (tab_t (open-and-import "dev/TEST_merge_t.pl"))
        (LPT (make-LPT)))
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '(((0 . 0) (10 . 0) (9 . 3))) ; perf-qePa, bjeffe-qePa, hund-jaGli
+    (flatten (f-align '(0 . 0) tab_s tab_t LPT)))
+   (add-to-lpt "bjeffe" "qePa" LPT)
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((0 . 0) (10 . 0) (9 . 3))) ; perf-qePa, bjeffe-qePa, hund-jaGli
@@ -790,12 +842,6 @@ phi's don't match anything in the files)."
        (tab_t (open-and-import "dev/TEST_subord-c-align_t.pl"))
        (tree_t (maketree tab_t))
        (f-alignment '((0 . 0) (7 . 14) (8 . 9))))
-    (when *debug*
-      ;; compare old and new c-align-ranked:
-      (out "~A~%~A~%~A~%~A~%"
-	   (f-tag-tree tree_s tab_s) 	 (f-tag-tree tree_t tab_t)
-	   (c-align-ranked f-alignment tree_s tab_s tree_t tab_t)
-	   (c-align-ranked-old f-alignment tree_s tab_s tree_t tab_t)))
     ;; det åpnet seg --- gaiGo
     (lisp-unit:assert-equality
      #'set-of-set-equal
@@ -1399,14 +1445,14 @@ we already know is true because `perm' came from `LPT-permute'."
 	(and
 	 ;; these loops have overlapping responsibilities, TODO
 	 (or 
-	  (loop for c_s in args_s	      ; (iii)
+	  (loop for c_s in args_s	       ; (iii)
 		always (awhen (assoc c_s perm) ; this assumes <=1-1 PRED alignments
 			      (or (member (cdr it) args_t)
 				  (member (cdr it) adjuncts_t))))
 	  (when *debug*
 	    (out "iii, args_s: ~A, args_t: ~A, adjs_t: ~A~%" args_s args_t adjuncts_t)))	 
 	 (or
-	  (loop for c_t in args_t	       ; (iv)
+	  (loop for c_t in args_t		; (iv)
 		always (awhen (rassoc c_t perm) ; this assumes <=1-1 PRED alignments
 			      (or (member (car it) args_s)
 				  (member (car it) adjuncts_s))))
