@@ -566,7 +566,22 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
 	    link))
       ;; else: no argperms, we try merging:
       (progn (out "TODO: one-to-one failed, should try merging")
+	     (let ((srcargs (get-args (get-pred (car link) tab_s) tab_s))
+		   (trgargs (get-args (get-pred (cdr link) tab_t) tab_t)))
+	       (loop for a_s in srcargs
+		     do
+		     (out "~%~A merge with ~A" a_s (car link)))
+	       (out "~%~A ~% ~A~%" srcargs trgargs))
 	     nil))))
+
+(lisp-unit:define-test test-merge
+ (let ((tab_s (open-and-import "dev/TEST_merge_s.pl"))
+       (tab_t (open-and-import "dev/TEST_merge_t.pl"))
+       (LPT (make-LPT)))
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '(((0 . 0) (10 . 0) (9 . 3))) ; perf-qePa, bjeffe-qePa, hund-jaGli
+    (flatten (f-align '(0 . 0) tab_s tab_t LPT)))))
 
 (lisp-unit:define-test test-f-align
  (let ((tab_s (open-and-import "dev/TEST_simple_s.pl"))
