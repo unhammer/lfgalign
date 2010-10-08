@@ -464,6 +464,35 @@ cover (iii) and (iv). See `argalign-p'."
     (when *debug* (format t "args_s:~A adjs_s:~A args_t:~A adjs_t:~A~%" args_s adjs_s args_t adjs_t))
     (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
 
+(defun margalign (link1 link2 tab_s tab_t LPTs)
+  "Like argalign, but `link1' and `link2' describe a two-to-one link, 
+so we merge the adjunct/argument lists.
+
+Note: this should work even for a two-to-two link.
+
+Note: we assume here that this is never used to merge adjuncts, thus
+we don't set-difference from adjs"
+  (let* ((var_s1 (car link1))
+	 (var_s2 (car link2))
+	 (var_t1 (cdr link1))
+	 (var_t2 (cdr link2))
+	 (adjs_s (union (get-adjs var_s1 tab_s 'no-error)
+			(get-adjs var_s2 tab_s 'no-error)))
+	 (adjs_t (union (get-adjs var_t1 tab_t 'no-error)
+			(get-adjs var_t2 tab_t 'no-error)))
+	 (args_s (set-difference 
+		  (union (get-args var_s1 tab_s 'no-nulls)
+			 (get-args var_s2 tab_s 'no-nulls))
+		  (union (get-equivs var_s1 tab_s 'include-this)
+			 (get-equivs var_s2 tab_s 'include-this))))
+	 (args_t (set-difference 
+		  (union (get-args var_t1 tab_t 'no-nulls)
+			 (get-args var_t2 tab_t 'no-nulls))
+		  (union (get-equivs var_t1 tab_t 'include-this)
+			 (get-equivs var_t2 tab_t 'include-this)))))
+    (when *debug* (format t "args_s:~A adjs_s:~A args_t:~A adjs_t:~A~%" args_s adjs_s args_t adjs_t))
+    (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
+
 (defun argalign-p (args_s adjs_s args_t adjs_t &optional tab_s tab_t LPTs)
   "Helper for `argalign'. If `LPTs', `tab_s' and `tab_t' are supplied,
 only return those combinations where all pairs are LPT. "
@@ -498,35 +527,6 @@ the recursion loops through all possible `srcs'."
 	    ;; all args_s and args_t used up, make end-of-list:
 	    (list nil)))))
 
-(defun margalign (link1 link2 tab_s tab_t LPTs)
-  "Like argalign, but `link1' and `link2' describe a two-to-one link, 
-so we merge the adjunct/argument lists.
-
-Note: this should work even for a two-to-two link.
-
-Note: we assume here that this is never used to merge adjuncts, thus
-we don't set-difference from adjs"
-  (let* ((var_s1 (car link1))
-	 (var_s2 (car link2))
-	 (var_t1 (cdr link1))
-	 (var_t2 (cdr link2))
-	 (adjs_s (union (get-adjs var_s1 tab_s 'no-error)
-			(get-adjs var_s2 tab_s 'no-error)))
-	 (adjs_t (union (get-adjs var_t1 tab_t 'no-error)
-			(get-adjs var_t2 tab_t 'no-error)))
-	 (args_s (set-difference 
-		  (union (get-args var_s1 tab_s 'no-nulls)
-			 (get-args var_s2 tab_s 'no-nulls))
-		  (union (get-equivs var_s1 tab_s 'include-this)
-			 (get-equivs var_s2 tab_s 'include-this))))
-	 (args_t (set-difference 
-		  (union (get-args var_t1 tab_t 'no-nulls)
-			 (get-args var_t2 tab_t 'no-nulls))
-		  (union (get-equivs var_t1 tab_t 'include-this)
-			 (get-equivs var_t2 tab_t 'include-this)))))
-    (when *debug* (format t "args_s:~A adjs_s:~A args_t:~A adjs_t:~A~%" args_s adjs_s args_t adjs_t))
-    (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
-
 (defun adjalign (exclude link tab_s tab_t LPTs)
   "Return all possible combinations of links between adjuncts that use
 id's from `exclude' (a list of links).
@@ -539,6 +539,20 @@ Only returns pairs which are LPT, as defined by `LPTs'. See
 	 (var_t (cdr link))
 	 (adjs_s (get-adjs var_s tab_s 'no-error))
 	 (adjs_t (get-adjs var_t tab_t 'no-error)))
+    (when *debug* (out "~A~%~A~%" adjs_s adjs_t))
+    (adjalign-p exclude adjs_s adjs_t tab_s tab_t LPTs)))
+
+(defun madjalign (exclude link1 link2 tab_s tab_t LPTs)
+  "Like `adjalign', but `link1' and `link2' describe a two-to-one link, 
+so we merge their adjunct lists."
+  (let* ((var_s1 (car link1))
+	 (var_s2 (car link2))
+	 (var_t1 (cdr link1))
+	 (var_t2 (cdr link2))
+	 (adjs_s (union (get-adjs var_s1 tab_s 'no-error)
+			(get-adjs var_s2 tab_s 'no-error)))
+	 (adjs_t (union (get-adjs var_t1 tab_t 'no-error)
+			(get-adjs var_t2 tab_t 'no-error))))
     (when *debug* (out "~A~%~A~%" adjs_s adjs_t))
     (adjalign-p exclude adjs_s adjs_t tab_s tab_t LPTs)))
 
