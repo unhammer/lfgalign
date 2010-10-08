@@ -527,32 +527,24 @@ the recursion loops through all possible `srcs'."
 	    ;; all args_s and args_t used up, make end-of-list:
 	    (list nil)))))
 
-(defun adjalign (exclude link tab_s tab_t LPTs)
+(defun adjalign (exclude link mlink tab_s tab_t LPTs)
   "Return all possible combinations of links between adjuncts that use
 id's from `exclude' (a list of links).
 
 Return nil if no alignments are possible.
 
 Only returns pairs which are LPT, as defined by `LPTs'. See
-`adjalign-p'."
-  (let* ((var_s (car link))
-	 (var_t (cdr link))
-	 (adjs_s (get-adjs var_s tab_s 'no-error))
-	 (adjs_t (get-adjs var_t tab_t 'no-error)))
-    (when *debug* (out "~A~%~A~%" adjs_s adjs_t))
-    (adjalign-p exclude adjs_s adjs_t tab_s tab_t LPTs)))
+`adjalign-p'.
 
-(defun madjalign (exclude link1 link2 tab_s tab_t LPTs)
-  "Like `adjalign', but `link1' and `link2' describe a two-to-one link, 
-so we merge their adjunct lists."
-  (let* ((var_s1 (car link1))
-	 (var_s2 (car link2))
-	 (var_t1 (cdr link1))
-	 (var_t2 (cdr link2))
-	 (adjs_s (union (get-adjs var_s1 tab_s 'no-error)
-			(get-adjs var_s2 tab_s 'no-error)))
-	 (adjs_t (union (get-adjs var_t1 tab_t 'no-error)
-			(get-adjs var_t2 tab_t 'no-error))))
+Optional argument `mlink' is a merged link, which together with `link'
+describes a two-to-one link, so we merge their adjunct lists; there is
+no separate madjalign function."
+  (let ((adjs_s (if mlink (union (get-adjs (car link) tab_s 'no-error)
+				 (get-adjs (car mlink) tab_s 'no-error))
+		  (get-adjs (car link) tab_s 'no-error)))
+	(adjs_t (if mlink (union (get-adjs (cdr link) tab_t 'no-error)
+				 (get-adjs (cdr mlink) tab_t 'no-error))
+		  (get-adjs (cdr link) tab_t 'no-error))))
     (when *debug* (out "~A~%~A~%" adjs_s adjs_t))
     (adjalign-p exclude adjs_s adjs_t tab_s tab_t LPTs)))
 
@@ -594,12 +586,13 @@ to being LPT).
  (i) the number of arguments n and m may or may not differ
 is trivially true
  (ii), LPT, should be covered for `link' on all calls.
-TODO: (v) the LPT-correspondences can be aligned one-to-one"
+  argalign covers (iii) and (iv)
+TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covered by the way we handle links? Need example..."
   (let* ((aligntab (or aligntab (make-aligntab)))
-	 (argperms (argalign link tab_s tab_t LPTs)) ; argalign covers (iii) and (iv)
 	 alignments)
+    
     (flet ((sub-f (perm)
-		  ;; Try to recursively align links in perm, but keep unaligned links
+		  "Try to recursively align links in perm, but keep unaligned links"
 		  (loop for link_a in perm
 			do (unless (gethash link_a aligntab)
 			     (setf (gethash link_a aligntab)
@@ -607,59 +600,52 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
 			collect (or (gethash link_a aligntab)
 				    (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
 					link_a))))
+	   
 	   (store (subalignment) (pushnew subalignment alignments :test #'equal)))
-      (if argperms	  ; possible to f-align one-to-one, no merging
-	  (if (equal argperms '(nil))
-	      ;; no recursion on args needed, try adjs
-	      (loop for adjperm in (adjalign nil link tab_s tab_t LPTs)
-		    do (pushnew (sub-f adjperm) alignments :test #'equal))
-	    ;; possible with recursion on args
-	    (loop for argperm in argperms
-		  for new = (sub-f argperm)
-		  do (store new)
-		  ;; try to fill up adj alignments
-		  (loop for adjperm in (adjalign argperm link tab_s tab_t LPTs)
-			do (store (append (sub-f adjperm) new)))))
-	;; else: no argperms, we try merging:
-	(let ((srcargs (get-args (car link) tab_s 'no-nulls))
-	      (trgargs (get-args (cdr link) tab_t 'no-nulls)))
-	  (when *debug* (out "One-to-one f-align failed; merging pred with args...~%"))
-	  (loop for a_s in srcargs
-		for mlink = (cons a_s (cdr link))
-		when
-		(or (not LPTs)
-		    (LPT? (get-pred (car mlink) tab_s) tab_s
-			  (get-pred (cdr mlink) tab_t) tab_t LPTs))
-		do
-		(let ((argperms
-		       (margalign link mlink tab_s tab_t LPTs)))
-		  (when (and argperms (not (equal argperms '(nil)))) ; todo: madjalign
-		    (loop for argperm in argperms
-			  ;; We put the merged argument in with the sub-arguments, for now...
-			  for new = (cons mlink (sub-f argperm))
-			  do (store new)
-			  ;; todo: madjalign
-			  ))))
-	  ;; todo: merging both a_s AND a_t at once... should we?
-	  (loop for a_t in trgargs
-		for mlink = (cons (car link) a_t)
-		when
-		(or (not LPTs)
-		    (LPT? (get-pred (car mlink) tab_s) tab_s
-			  (get-pred (cdr mlink) tab_t) tab_t LPTs))
-		do
-		(let ((argperms
-		       (margalign link mlink tab_s tab_t LPTs)))
-		  (when (and argperms (not (equal argperms '(nil)))) ; todo: madjalign
-		    (loop for argperm in argperms
-			  ;; We put the merged argument in with the sub-arguments, for now...
-			  for new = (cons mlink (sub-f argperm))
-			  do (store new)
-			  ;; todo: madjalign
-			  ))))))
-      (if alignments
-	    (cons link alignments)
-	  link))))
+      
+      (flet
+	  ((argloop (argperms mlink)
+	    "For each permutation of arg/adj links, store link + sub-alignment in `alignments'."
+	    (if (equal argperms '(nil))
+		;; '(nil) means no recursion on args needed, try adjs
+		(loop for adjperm in (adjalign nil link mlink tab_s tab_t LPTs)
+		      do (store (sub-f adjperm)))
+	      ;; try recursion on argperms (if there are any)
+	      (loop for argperm in argperms
+		    for new = (if mlink
+				  (cons mlink (sub-f argperm))
+				(sub-f argperm))
+		    do (store new)
+		    ;; try to fill up adj alignments
+		    (loop for adjperm in (adjalign argperm link mlink tab_s tab_t LPTs)
+			  do (store (append (sub-f adjperm) new)))))
+	    ; The caller will want to know whether arg-matching was even possible:
+	    argperms))
+	
+	(when ; If there are no argperms/margperms, this `when' fails and nil is returned
+	    (or
+	     ;; Either one-to-one is possible, we don't try merging:
+	     (argloop (argalign link tab_s tab_t LPTs)
+		      nil)
+	     ;; One-to-one is not possible, we try merging:
+	     (let ((mlinks_s (loop for arg in (get-args (car link) tab_s 'no-nulls)
+				   collect (cons arg (cdr link))))
+		   ;; TODO: merging both a_s AND a_t at once... should we?
+		   (mlinks_t (loop for arg in (get-args (cdr link) tab_t 'no-nulls)
+				   collect (cons (car link) arg))))
+	       (when *debug* (out "One-to-one f-align failed; merging...~%"))
+	       ;; This will return nil if none of the margaligns succeed:
+	       (mapcar-true (lambda (mlink)
+			      (when (or (not LPTs)
+					(LPT? (get-pred (car mlink) tab_s) tab_s
+					      (get-pred (cdr mlink) tab_t) tab_t LPTs))
+				(argloop (margalign link mlink tab_s tab_t LPTs)
+					 mlink)))
+			    (append mlinks_s mlinks_t))))
+	  ;; Return either a full sub-alignment, or an end-point:
+	  (if alignments
+	      (cons link alignments)
+	    link))))))
 
 (lisp-unit:define-test test-merge
  (let ((tab_s (open-and-import "dev/TEST_merge_s.pl"))
