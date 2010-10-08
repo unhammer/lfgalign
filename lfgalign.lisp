@@ -581,8 +581,7 @@ to being LPT).
 is trivially true
  (ii), LPT, should be covered for `link' on all calls.
 TODO: (v) the LPT-correspondences can be aligned one-to-one"
-  (let* ((aligntab (or aligntab
-		       (make-hash-table :test #'equal)))
+  (let* ((aligntab (or aligntab (make-aligntab)))
 	 (argperms (argalign link tab_s tab_t LPTs)) ; argalign covers (iii) and (iv)
 	 alignments)
     (flet ((sub-f (perm)
@@ -593,7 +592,8 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
 				   (f-align link_a tab_s tab_t LPTs aligntab)))
 			collect (or (gethash link_a aligntab)
 				    (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
-					link_a)))))
+					link_a))))
+	   (store (subalignment) (pushnew subalignment alignments :test #'equal)))
       (if argperms	  ; possible to f-align one-to-one, no merging
 	  (if (equal argperms '(nil))
 	      ;; no recursion on args needed, try adjs
@@ -602,26 +602,45 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
 	    ;; possible with recursion on args
 	    (loop for argperm in argperms
 		  for new = (sub-f argperm)
-		  do (pushnew new alignments :test #'equal)
+		  do (store new)
 		  ;; try to fill up adj alignments
 		  (loop for adjperm in (adjalign argperm link tab_s tab_t LPTs)
-			do (pushnew (append (sub-f adjperm) new) alignments :test #'equal))))
+			do (store (append (sub-f adjperm) new)))))
 	;; else: no argperms, we try merging:
 	(let ((srcargs (get-args (car link) tab_s 'no-nulls))
 	      (trgargs (get-args (cdr link) tab_t 'no-nulls)))
 	  (when *debug* (out "One-to-one f-align failed; merging pred with args...~%"))
 	  (loop for a_s in srcargs
+		for mlink = (cons a_s (cdr link))
 		when
 		(or (not LPTs)
-		    (LPT? (get-pred   a_s      tab_s) tab_s
-			  (get-pred (cdr link) tab_t) tab_t LPTs))
+		    (LPT? (get-pred (car mlink) tab_s) tab_s
+			  (get-pred (cdr mlink) tab_t) tab_t LPTs))
 		do
 		(let ((argperms
-		       (margalign link (cons a_s (cdr link)) tab_s tab_t LPTs)))
+		       (margalign link mlink tab_s tab_t LPTs)))
 		  (when (and argperms (not (equal argperms '(nil)))) ; todo: madjalign
 		    (loop for argperm in argperms
-			  for new = (sub-f argperm)
-			  do (pushnew new alignments :test #'equal)
+			  ;; We put the merged argument in with the sub-arguments, for now...
+			  for new = (cons mlink (sub-f argperm))
+			  do (store new)
+			  ;; todo: madjalign
+			  ))))
+	  ;; todo: merging both a_s AND a_t at once... should we?
+	  (loop for a_t in trgargs
+		for mlink = (cons (car link) a_t)
+		when
+		(or (not LPTs)
+		    (LPT? (get-pred (car mlink) tab_s) tab_s
+			  (get-pred (cdr mlink) tab_t) tab_t LPTs))
+		do
+		(let ((argperms
+		       (margalign link mlink tab_s tab_t LPTs)))
+		  (when (and argperms (not (equal argperms '(nil)))) ; todo: madjalign
+		    (loop for argperm in argperms
+			  ;; We put the merged argument in with the sub-arguments, for now...
+			  for new = (cons mlink (sub-f argperm))
+			  do (store new)
 			  ;; todo: madjalign
 			  ))))))
       (if alignments
@@ -637,13 +656,25 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
     (margalign '(0 . 0) '(10 . 0) tab_s tab_t LPT))
    (lisp-unit:assert-equality
     #'set-of-set-equal
-    '(((0 . 0) (10 . 0) (9 . 3))) ; perf-qePa, bjeffe-qePa, hund-jaGli
+    '(((0 . 0) (10 . 0) (9 . 3))  ; perf-qePa, bjeffe-qePa, hund-jaGli (correct)
+      ((0 . 0) (10 . 3) (9 . 0))) ; perf-qePa, bjeffe-jaGli, hund-qePa (wrong)
     (flatten (f-align '(0 . 0) tab_s tab_t LPT)))
    (add-to-lpt "bjeffe" "qePa" LPT)
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((0 . 0) (10 . 0) (9 . 3))) ; perf-qePa, bjeffe-qePa, hund-jaGli
-    (flatten (f-align '(0 . 0) tab_s tab_t LPT)))))
+    (flatten (f-align '(0 . 0) tab_s tab_t LPT)))
+   ;; Letting the merge happen on the target side:
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '(((0 . 0) (0 . 10) (3 . 9))  ; qePa-perf, qePa-bjeffe, jaGli-hund (correct)
+      ((0 . 0) (3 . 10) (0 . 9))) ; qePa-perf, jaGli-bjeffe, qePa-hund (wrong)
+    (flatten (f-align '(0 . 0) tab_t tab_s LPT)))
+   (add-to-lpt "qePa" "bjeffe" LPT)	; LPT is not symmetric, so we add again:
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '(((0 . 0) (0 . 10) (3 . 9)))  ; qePa-perf, qePa-bjeffe, jaGli-hund (correct)
+    (flatten (f-align '(0 . 0) tab_t tab_s LPT)))))
 
 (lisp-unit:define-test test-f-align
  (let ((tab_s (open-and-import "dev/TEST_simple_s.pl"))
@@ -685,6 +716,16 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
   "TODO: should at least select the one where argument order aligns fully."
   (unless *no-warnings* (warn "mock ranking, just selects first option"))
   (car (flatten f-alignments)))
+
+(lisp-unit:define-test test-rank-sub-f
+ (let ((tab_s (open-and-import "dev/TEST_merge_s.pl"))
+       (tab_t (open-and-import "dev/TEST_merge_t.pl"))
+       (LPT (make-LPT))
+       (aligntab (make-aligntab)))
+   (lisp-unit:assert-equality
+    #'set-of-set-equal
+    '((0 . 0) (10 . 0) (9 . 3))	; perf-qePa, bjeffe-qePa, hund-jaGli (correct)
+    (rank (f-align '(0 . 0) tab_s tab_t LPT) aligntab))))
 
 (defun spread (flatperm)
   (when flatperm
