@@ -1,9 +1,9 @@
+;;; quickstart:
+; (swank:operate-on-system-for-emacs "lfgalign" (quote load-op)) (swank:set-package "LFGALIGN") (lisp-unit:run-tests)
+
 ;;; Tell SBCL we want full debugging info (eg. no function inlining),
 ;;; but don't care about speed:
 (declaim (optimize (speed 0) (safety 3) (debug 3)))
-
-;;; quickstart:
-;(progn (swank:operate-on-system-for-emacs "lfgalign" (quote load-op)) (swank:set-package "LFGALIGN") (lisp-unit:run-tests))
 
 (in-package #:lfgalign)
 
@@ -585,41 +585,48 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one"
 		       (make-hash-table :test #'equal)))
 	 (argperms (argalign link tab_s tab_t LPTs)) ; argalign covers (iii) and (iv)
 	 alignments)
-    (if argperms		  ; possible to f-align one-to-one, no merging
-      (flet ((sub-f (perm)
-	       ;; Try to recursively align links in perm, but keep unaligned links
-	       (loop for link_a in perm
-		  do (unless (gethash link_a aligntab)
-		       (setf (gethash link_a aligntab)
-			     (f-align link_a tab_s tab_t LPTs aligntab)))
-		  collect (or (gethash link_a aligntab)
-			      (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
-				  link_a)))))
-	(if (equal argperms '(nil))
-	    ;; no recursion on args needed, try adjs
-	    (loop for adjperm in (adjalign nil link tab_s tab_t LPTs)
-	       do (pushnew (sub-f adjperm) alignments :test #'equal))
+    (flet ((sub-f (perm)
+		  ;; Try to recursively align links in perm, but keep unaligned links
+		  (loop for link_a in perm
+			do (unless (gethash link_a aligntab)
+			     (setf (gethash link_a aligntab)
+				   (f-align link_a tab_s tab_t LPTs aligntab)))
+			collect (or (gethash link_a aligntab)
+				    (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
+					link_a)))))
+      (if argperms	  ; possible to f-align one-to-one, no merging
+	  (if (equal argperms '(nil))
+	      ;; no recursion on args needed, try adjs
+	      (loop for adjperm in (adjalign nil link tab_s tab_t LPTs)
+		    do (pushnew (sub-f adjperm) alignments :test #'equal))
 	    ;; possible with recursion on args
 	    (loop for argperm in argperms
-	       for new = (sub-f argperm)
-	       do (pushnew new alignments :test #'equal)
-	       ;; try to fill up adj alignments
-	       (loop for adjperm in (adjalign argperm link tab_s tab_t LPTs)
-		  do (pushnew (append (sub-f adjperm) new) alignments :test #'equal))))
-	(if alignments
+		  for new = (sub-f argperm)
+		  do (pushnew new alignments :test #'equal)
+		  ;; try to fill up adj alignments
+		  (loop for adjperm in (adjalign argperm link tab_s tab_t LPTs)
+			do (pushnew (append (sub-f adjperm) new) alignments :test #'equal))))
+	;; else: no argperms, we try merging:
+	(let ((srcargs (get-args (car link) tab_s 'no-nulls))
+	      (trgargs (get-args (cdr link) tab_t 'no-nulls)))
+	  (when *debug* (out "One-to-one f-align failed; merging pred with args...~%"))
+	  (loop for a_s in srcargs
+		when
+		(or (not LPTs)
+		    (LPT? (get-pred   a_s      tab_s) tab_s
+			  (get-pred (cdr link) tab_t) tab_t LPTs))
+		do
+		(let ((argperms
+		       (margalign link (cons a_s (cdr link)) tab_s tab_t LPTs)))
+		  (when (and argperms (not (equal argperms '(nil)))) ; todo: madjalign
+		    (loop for argperm in argperms
+			  for new = (sub-f argperm)
+			  do (pushnew new alignments :test #'equal)
+			  ;; todo: madjalign
+			  ))))))
+      (if alignments
 	    (cons link alignments)
-	    link))
-      ;; else: no argperms, we try merging:
-      (progn (out "TODO: one-to-one failed, should try merging~%")
-	     (let ((srcargs (get-args (get-pred (car link) tab_s) tab_s 'no-nulls))
-		   (trgargs (get-args (get-pred (cdr link) tab_t) tab_t 'no-nulls)))
-	       (loop for a_s in srcargs
-		     when
-		     (or (not LPTs)
-			 (LPT? (get-pred   a_s      tab_s) tab_s
-			       (get-pred (cdr link) tab_t) tab_t LPTs))
-		     collect		; and then do stuff with it ;-) TODO
-		     (margalign link (cons a_s (cdr link)) tab_s tab_t LPTs)))))))
+	  link))))
 
 (lisp-unit:define-test test-merge
  (let ((tab_s (open-and-import "dev/TEST_merge_s.pl"))
