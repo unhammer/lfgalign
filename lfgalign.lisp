@@ -588,7 +588,9 @@ is trivially true
  (ii), LPT, should be covered for `link' on all calls.
   argalign covers (iii) and (iv)
 TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covered by the way we handle links? Need example..."
-  (let* ((aligntab (or aligntab (make-aligntab)))
+  (let* ((F_s (car link))
+	 (F_t (cdr link))
+	 (aligntab (or aligntab (make-aligntab)))
 	 alignments)
     
     (flet ((sub-f (perm)
@@ -628,11 +630,11 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
 	     (argloop (argalign link tab_s tab_t LPTs)
 		      nil)
 	     ;; One-to-one is not possible, we try merging:
-	     (let ((mlinks_s (loop for arg in (get-args (car link) tab_s 'no-nulls)
-				   collect (cons arg (cdr link))))
+	     (let ((mlinks_s (loop for arg in (get-args F_s tab_s 'no-nulls)
+				   collect (cons arg F_t)))
 		   ;; TODO: merging both a_s AND a_t at once... should we?
-		   (mlinks_t (loop for arg in (get-args (cdr link) tab_t 'no-nulls)
-				   collect (cons (car link) arg))))
+		   (mlinks_t (loop for arg in (get-args F_t tab_t 'no-nulls)
+				   collect (cons F_s arg))))
 	       (when *debug* (out "One-to-one f-align failed; merging...~%"))
 	       ;; This will return nil if none of the margaligns succeed:
 	       (mapcar-true (lambda (mlink)
@@ -642,9 +644,11 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
 				(argloop (margalign link mlink tab_s tab_t LPTs)
 					 mlink)))
 			    (append mlinks_s mlinks_t))))
-	  ;; Return either a full sub-alignment, or an end-point:
 	  (if alignments
+	      ;; Return the full sub-alignment:
 	      (cons link alignments)
+	    ;; Either sub-f failed, or there were no args to align,
+	    ;; check get-args F_t/F_s to find out:
 	    link))))))
 
 (lisp-unit:define-test test-merge
@@ -726,15 +730,52 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '((0 . 0) (10 . 0) (9 . 3))	; perf-qePa, bjeffe-qePa, hund-jaGli (correct)
-    (rank f-alignments aligntab))))
+    (rank f-alignments aligntab tab_s tab_t))))
 
-(defun rank (f-alignments aligntab)
-  "TODO: should at least select the one where argument order aligns fully."
-  (out "~%~A~%" (prin1-to-string aligntab))
-  (loop for pair in f-alignments
-	do (out "~A~%" pair))
+(defun rank (f-alignments aligntab tab_s tab_t)
+  "This could be done in a million different ways. For now, this is the procedure:
+We start with input like
+
+ '((0 . 0) branch1 branch2 ...)
+
+and rank branch1 versus branch2 versus ... on a superficial level, and
+only then delve into each branch.
+
+branch1 is e.g. '((9 . 0) (10 . 3)), 
+or '((9 . 0) ((10 . 3) ((1 . 2) (7 . 8)) ((7 . 2) (1 . 8))))
+
+As of yet, this only ranks on whether we have sub-f-alignments.
+
+TODO: select the one where argument order aligns fully."
+  (out "~%~A~% ~%~A~%" (loop for k being the hash-keys in aligntab
+			     for v being the hash-values in aligntab
+			     collect (cons k v)) f-alignments)
+  (if (f-link? f-alignments)
+      f-alignments
+    (let* ((key (car f-alignments))
+	   (outer-links (list key)))
+      (out "key: ~A~% Now rank each of the branches:~%" key)
+      (if (cdr f-alignments)
+	  (loop for branch in (cdr f-alignments)
+		do (out "branch: ~A: ~A~%"
+			branch
+			(sub-fail-rate outer-links branch aligntab tab_s tab_t))
+		minimizing (sub-fail-rate outer-links branch aligntab tab_s tab_t))))))
+
+(defun sub-fail-rate (outer-links branch aligntab tab_s tab_t)
+  (flet ((failed-sub (f-alignment)
+	  (and (f-link? f-alignment)	; no sub-alignments
+	       (not (member-either f-alignment outer-links))  ; seen before, ie. non-one-to-one
+	       (or (get-args (car f-alignment) tab_s 'no-nulls)	; could have sub-aligned
+		   (get-args (cdr f-alignment) tab_t 'no-nulls)))))
+    (loop for pair in branch
+	  counting (failed-sub pair) into sub-f
+	  counting pair into total
+	  finally (return (/ sub-f total)))))
+
+(defun old-rank (f-alignments aligntab)
   (unless *no-warnings* (warn "mock ranking, just selects first option"))
-  (car (flatten f-alignments)))
+  (car (flatten f-alignments))) 
 
 (defun spread (flatperm)
   "See `test-spread'."
@@ -952,7 +993,7 @@ phi's don't match anything in the files)."
 	 ; TODO: instead of (0 . 0), the topmost LPT-correspondents;
 	 ; they may have to be merged too
 	 (f-alignments (f-align '(0 . 0) tab_s tab_t LPT aligntab))
-	 (best-f-alignment (rank f-alignments aligntab))
+	 (best-f-alignment (rank f-alignments aligntab tab_s tab_t))
 	 (tree_s (maketree tab_s))
 	 (tree_t (maketree tab_t))
 	 (c-alignments (c-align-ranked best-f-alignment 
