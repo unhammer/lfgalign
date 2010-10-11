@@ -747,29 +747,52 @@ or '((9 . 0) ((10 . 3) ((1 . 2) (7 . 8)) ((7 . 2) (1 . 8))))
 As of yet, this only ranks on whether we have sub-f-alignments.
 
 TODO: select the one where argument order aligns fully."
-  (out "~%~A~% ~%~A~%" (loop for k being the hash-keys in aligntab
-			     for v being the hash-values in aligntab
-			     collect (cons k v)) f-alignments)
-  (if (f-link? f-alignments)
-      f-alignments
-    (let* ((key (car f-alignments))
-	   (outer-links (list key)))
-      (out "key: ~A~% Now rank each of the branches:~%" key)
-      (if (cdr f-alignments)
-	  (loop for branch in (cdr f-alignments)
-		do (out "branch: ~A: ~A~%"
-			branch
-			(sub-fail-rate outer-links branch aligntab tab_s tab_t))
-		minimizing (sub-fail-rate outer-links branch aligntab tab_s tab_t))))))
+  (rank-helper nil f-alignments aligntab tab_s tab_t))
 
-(defun sub-fail-rate (outer-links branch aligntab tab_s tab_t)
+(defun rank-helper (seen f-alignments &optional aligntab tab_s tab_t)
+  (if (f-link? f-alignments)
+      (values f-alignments 1)
+    (let* ((outer-links (cons (car f-alignments) seen)))
+      (out "key: ~A~% Now rank each of the branches:~%" (car f-alignments))
+      (when (cdr f-alignments) ; if we got this far, will we ever see nil cdr?
+	(loop with best-rate = 0	; worst possible sub-f-score, all failed
+	      with best-branches = nil
+	      for branch in (cdr f-alignments)
+	      do (setf (values newbranch rate)
+		       (rank-branch outer-links branch aligntab tab_s tab_t))
+	      if (= rate best-rate)
+	      do (setq best-branches (cons newbranch best-branches))
+	      else if (> rate best-rate)
+	      do (setq best-rate rate
+		       best-branches (cons newbranch nil))
+	      finally
+	      ;; for now, just return the first..not sure what
+	      ;; else to do when there's nothing left to rank on:
+	      (return (values (car best-branches) best-rate)))))))
+
+(defun rank-branch (seen branch &optional aligntab tab_s tab_t)
+  (let ((this-rate (sub-succ-rate seen branch aligntab tab_s tab_t)))
+    (multiple-value-bind
+	(subs sub-rates)
+	(loop for f-alignment in branch
+	      do (setf (values newsub sub-rate)
+		       (rank-helper seen f-alignment aligntab tab_s tab_t))
+	      collecting newsub into subs
+	      summing sub-rate into sub-rates
+	      finally (return (values subs
+				      (/ sub-rates (length subs)))))
+      (values subs (* this-rate sub-rates)))))
+
+(defun sub-succ-rate (seen branch &optional aligntab tab_s tab_t)
   (flet ((failed-sub (f-alignment)
-	  (and (f-link? f-alignment)	; no sub-alignments
-	       (not (member-either f-alignment outer-links))  ; seen before, ie. non-one-to-one
-	       (or (get-args (car f-alignment) tab_s 'no-nulls)	; could have sub-aligned
+	  (and (f-link? f-alignment)	; there are no sub-alignments
+	       (not (member-either f-alignment seen)) ; not a merged link
+	       tab_s ; if tables given, 
+	       tab_t ; check if we could have sub-aligned but didn't:
+	       (or (get-args (car f-alignment) tab_s 'no-nulls)
 		   (get-args (cdr f-alignment) tab_t 'no-nulls)))))
     (loop for pair in branch
-	  counting (failed-sub pair) into sub-f
+	  counting (not (failed-sub pair)) into sub-f
 	  counting pair into total
 	  finally (return (/ sub-f total)))))
 
