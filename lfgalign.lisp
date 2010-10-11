@@ -771,7 +771,7 @@ TODO: select the one where argument order aligns fully."
 	      (return (values (car best-branches) best-rate)))))))
 
 (defun rank-branch (seen branch &optional aligntab tab_s tab_t)
-  (let ((this-rate (sub-succ-rate seen branch tab_s tab_t)))
+  (let ((this-rate (sub-f-rate seen branch tab_s tab_t)))
     (multiple-value-bind
 	(subs sub-rates)
 	(loop for f-alignment in branch
@@ -783,7 +783,7 @@ TODO: select the one where argument order aligns fully."
 				      (/ sub-rates (length subs)))))
       (values subs (* this-rate sub-rates)))))
 
-(defun sub-succ-rate (seen branch &optional tab_s tab_t)
+(defun sub-f-rate (seen branch &optional tab_s tab_t)
   "How many of the alignments in this branch have sub-alignments, if
 possible? If the links have no arguments, it's a trivial success;
 otherwise it's a success if there are any sub-alignments at all...
