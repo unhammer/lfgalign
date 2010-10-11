@@ -708,26 +708,36 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
       ((0 . 0) (8 . 8)))
     (flatten (f-align '(0 . 0) tab_s tab_t LPT)))))
 
+
 (defun f-link? (x)
   (and (atom (car x))
        (atom (cdr x))))
 
-(defun rank (f-alignments aligntab)
-  "TODO: should at least select the one where argument order aligns fully."
-  (unless *no-warnings* (warn "mock ranking, just selects first option"))
-  (car (flatten f-alignments)))
-
 (lisp-unit:define-test test-rank-sub-f
- (let ((tab_s (open-and-import "dev/TEST_merge_s.pl"))
-       (tab_t (open-and-import "dev/TEST_merge_t.pl"))
-       (LPT (make-LPT))
-       (aligntab (make-aligntab)))
+ ;; Should select the alignment where sub-f are really aligned
+ (let* ((tab_s (open-and-import "dev/TEST_merge_s.pl"))
+        (tab_t (open-and-import "dev/TEST_merge_t.pl"))
+	(LPT (make-LPT))
+	(aligntab (make-aligntab))
+	(f-alignments (f-align '(0 . 0) tab_s tab_t LPT aligntab)))
+   (lisp-unit:assert-equal ; make sure next test doesn't give false negative
+    '((0 . 0) ((9 . 0) (10 . 3)) ((10 . 0) (9 . 3)))
+    f-alignments)
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '((0 . 0) (10 . 0) (9 . 3))	; perf-qePa, bjeffe-qePa, hund-jaGli (correct)
-    (rank (f-align '(0 . 0) tab_s tab_t LPT) aligntab))))
+    (rank f-alignments aligntab))))
+
+(defun rank (f-alignments aligntab)
+  "TODO: should at least select the one where argument order aligns fully."
+  (out "~%~A~%" (prin1-to-string aligntab))
+  (loop for pair in f-alignments
+	do (out "~A~%" pair))
+  (unless *no-warnings* (warn "mock ranking, just selects first option"))
+  (car (flatten f-alignments)))
 
 (defun spread (flatperm)
+  "See `test-spread'."
   (when flatperm
     (if (cdr flatperm)
 	(if (f-link? (car flatperm))
@@ -744,21 +754,24 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
 	(car flatperm)))))
 
 (defun flatten (f-alignments)
-  "`f-alignments' is a _member_ of an assoc-list, where the car is an `f-link?'."
+  "`f-alignments' is a _member_ of an assoc-list, where the car is an `f-link?'.
+See `test-flatten' for possible inputs and outputs."
   (when f-alignments
-    (let ((elt (car f-alignments))
-	  (perms (cdr f-alignments)))
-      (if perms
-	  (let* ((flatperms (mapcan
-			     (lambda (links)
-			       (spread (mapcar (lambda (a)
-						 (if (f-link? a) a (flatten a)))
-					       links)))
-			     perms)))
-	    (mapcar (lambda (p)
-		      (cons elt p))
-		    flatperms))
-	  (list elt)))))
+    (if (f-link? f-alignments)
+	f-alignments
+      (let ((elt (car f-alignments))
+	    (perms (cdr f-alignments)))
+	(if perms
+	    (let* ((flatperms (mapcan
+			       (lambda (links)
+				 (spread (mapcar (lambda (a)
+						   (if (f-link? a) a (flatten a)))
+						 links)))
+			       perms)))
+	      (mapcar (lambda (p)
+			(cons elt p))
+		      flatperms))
+	  (list elt))))))
 
 (defun subnodes-list (tree)
   "Debug function, deprecated. Return id's of this node and all
@@ -1199,7 +1212,8 @@ respectively.  TODO: cache/memoise maketree"
  (lisp-unit:assert-equal '(((21 . 37) (19 . 46) (A . B) (20 . 46))
 			   ((21 . 37) (19 . 46) (A . C) (20 . 46)))
 			 (spread '((21 . 37)
-				   (((19 . 46) (A . B)) ((19 . 46) (A . C)))
+				   (((19 . 46) (A . B))
+				    ((19 . 46) (A . C)))
 				   (20 . 46))))
  (lisp-unit:assert-equal '(((19 . 46) (A . B))
 			   ((19 . 46) (A . C)))
@@ -1217,6 +1231,7 @@ respectively.  TODO: cache/memoise maketree"
 				   (20 . 46)))))
 
 (lisp-unit:define-test test-flatten
+  (lisp-unit:assert-equal '(e . f) (flatten '(e . f)))
   (lisp-unit:assert-equal '((e . f)) (flatten '((e . f))))
   (lisp-unit:assert-equal '(((0 . 0) (5 . 3))) (flatten '((0 . 0) ((5 . 3)))))
   (lisp-unit:assert-equal
