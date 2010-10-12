@@ -89,6 +89,7 @@ any non-terminal child under it."
 	    (f-tag-tree (third node) tab)
 	    (f-tag-tree (fourth node) tab)))))
 
+
 (defun treefind (c-id tree)
   "Just return the subtree of `tree' starting with `c-id'."
   (if (and tree (listp tree))
@@ -127,6 +128,22 @@ subtrees)."
 		    ;; not in both, but try either left or right
 		    (Ltree (values Ltree (1+ Ldepth)))
 		    (Rtree (values Rtree (1+ Rdepth)))))))))
+
+
+(defun pred-tag-alignment (f-alignment tab_s tab_t)
+  "Given an `f-alignment' from `f-align', exchange var numbers for the
+names in the pred values."
+  (when f-alignment
+      (if (f-link? f-alignment)
+	  (cons (second (get-pred (car f-alignment) tab_s))
+		(second (get-pred (cdr f-alignment) tab_t)))
+	  (cons (pred-tag-alignment (car f-alignment) tab_s tab_t)
+		(mapcar (lambda (branch)
+			  (mapcar (lambda (sub)
+				    (pred-tag-alignment sub tab_s tab_t))
+				  branch))
+		 (cdr f-alignment))))))
+
 
 (defun eq-phi (c-id1 c-id2 tab)
     "`c-id1' and `c-id2' are two c-structure id-s in `tab'. 
