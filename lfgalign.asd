@@ -19,4 +19,7 @@
 		      :depends-on ("cl-extra"))
 	       (:file "lfgalign"
 		      :depends-on ("cl-extra")
+		      :depends-on ("prolog-import"))
+	       (:file "eval"
+		      :depends-on ("lfgalign")
 		      :depends-on ("prolog-import"))))
