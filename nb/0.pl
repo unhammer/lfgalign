@@ -19,6 +19,7 @@ fstructure('Det regnet.',
 	% Equivalences:
 	[
 	select(A1, 1),
+	select(B2, 1)
 	],
 	% Constraints:
 	[
