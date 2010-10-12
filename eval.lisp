@@ -10,14 +10,23 @@
        (tree_s (maketree tab_s))
        (tree_t (maketree tab_t))
        (LPTs (make-LPT))
-       (aligntab (make-aligntab)))
+       (aligntab (make-aligntab))
+       (f-alignment (f-align '(0 . 0) tab_s tab_t LPTs))
+       (flat-f ))
     (out "~%f-tagged ~A and ~A~%~A~% ~A~%"
 	 n_s n_t
-	 (f-tag-tree (skip-suff_base tree_s) tab_s)
-	 (f-tag-tree (skip-suff_base tree_t) tab_t))
-    (out "~A~%" (f-align '(0 . 0) tab_s tab_t LPTs))))
+	 (skip-suff_base tree_s) tab_s
+	 (skip-suff_base tree_t) tab_t)
+    (let ((allpairs (mapcan #'append (flatten f-alignment))))
+      (flet ((preds (getter tab)
+	       (mapcar (lambda (var)
+			 (get-pred var tab))
+		       (remove-duplicates (mapcar getter allpairs)))))
+	(out "srcs: ~A~%trgs: ~A~%" (preds #'car tab_s) (preds #'cdr tab_t))))
+    (out "~A~%" (pred-tag-alignment f-alignment tab_s tab_t))))
 
 (defun ev-all ()
+  (evaluate 0 0)
   (evaluate 1 1)
   (evaluate 2 2)			; merge
   ;; (evaluate 3 3) ; >1 solutions
