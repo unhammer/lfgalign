@@ -829,10 +829,25 @@ score."
 (defun arg-order-rate (link seen branch &optional tab_s tab_t)
   "How close does the argument order of `branch' correspond with that
 of src and trg in `link'? Return 1 if arguments are completely
-aligned, if not, perhaps something like:
- ((1 / amount of switches) / length) ?
+aligned, if not: 
+matches in argument position / length of linked-argument list
+TODO: adjuncts will give nil in (position adjunct args)!
 "
-  1)
+  (let ((args_s (get-args (car link) tab_s))
+	(args_t (get-args (cdr link) tab_t)))
+    (out "~A~A~%" args_s args_t)
+    (loop for pair in branch
+       for pairlink = (if (f-link? pair)
+			  pair
+			  (first pair))
+       for src = (car pair)
+       for trg = (cdr pair)
+	 ; check if argument before this: (note: mismatch if one is adjunct, one arg)
+       for pos_s = (position src args_s)
+       for pos_t = (position trg args_t)
+       summing (if (equal pos_s pos_t) 1 0) into matches
+       do (out "~A:~A~%" pos_s pos_t)
+	 finally (return (/ matches (length branch))))))
 
 (defun sub-f-rate (seen branch &optional tab_s tab_t)
   "How many of the alignments in this branch have sub-alignments, if
