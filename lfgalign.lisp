@@ -771,7 +771,6 @@ TODO: select the one where argument order aligns fully."
       (values f-alignments
 	      1)
     (let* ((outer-links (cons (car f-alignments) seen)))
-      (out "key: ~A~% Now rank each of the branches:~%" (car f-alignments))
       (when (cdr f-alignments) ; if we got this far, will we ever see nil cdr?
 	(loop with best-rate = 0	; worst possible sub-f-score, all failed
 	      with best-branches = nil
