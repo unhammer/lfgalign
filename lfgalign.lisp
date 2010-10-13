@@ -735,7 +735,8 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
 
 
 (defun f-link? (x)
-  (and (atom (car x))
+  (and (consp x)
+       (atom (car x))
        (atom (cdr x))))
 
 (lisp-unit:define-test test-rank-sub-f
@@ -753,21 +754,37 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
     '((0 . 0) (10 . 0) (9 . 3))	; perf-qePa, bjeffe-qePa, hund-jaGli (correct)
     (values (rank f-alignments aligntab tab_s tab_t)))))
 
+(lisp-unit:define-test test-rank-argorder
+ ;; Should select the alignment where argument orders match
+ (let* ((tab_s (open-and-import "dev/TEST_regargadj_s.pl"))
+        (tab_t (open-and-import "dev/TEST_regargadj_t.pl"))
+	(LPT (make-LPT))
+	(aligntab (make-aligntab))
+	(f-alignments (f-align '(0 . 0) tab_s tab_t LPT aligntab)))
+   (lisp-unit:assert-equality ; make sure next test doesn't give false negative
+    #'set-of-set-equal
+    '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+      ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+      ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
+    (flatten f-alignments))
+   (lisp-unit:assert-equality
+    #'set-equal
+    '((0 . 0) (11 . 3) (10 . 9) (9 . 6))
+    (values (rank f-alignments aligntab tab_s tab_t)))))
+
+
+
 (defun rank (f-alignments aligntab tab_s tab_t)
-  "This could be done in a million different ways. For now, this is the procedure:
-We start with input like
-
- '((0 . 0) branch1 branch2 ...)
-
-and rank branch1 versus branch2 versus ... on a superficial level, and
-only then delve into each branch.
-
-branch1 is e.g. '((9 . 0) (10 . 3)), 
+  "This could be done in a million different ways. For now, this is
+the procedure: We start with input like '((0 . 0) branch1 branch2 ...)
+where branch1 is e.g. '((9 . 0) (10 . 3)), 
 or '((9 . 0) ((10 . 3) ((1 . 2) (7 . 8)) ((7 . 2) (1 . 8))))
 
-As of yet, this only ranks on whether we have sub-f-alignments.
-
-TODO: select the one where argument order aligns fully."
+`rank-helper' selects the best-ranking branch of branch1, branch2
+etc. It gets a score for each branch from `rank-branch' which
+calculates a score for (0 . 0) and a specific branch (set of
+argument/adjunct links), multiplied with the ranks of each member of
+that branch."
   (rank-helper nil f-alignments aligntab tab_s tab_t))
 
 (defun rank-helper (seen f-alignments &optional aligntab tab_s tab_t)
@@ -823,31 +840,49 @@ score."
 	 (values subs
 		 ;; Multiply this branch with those from children:
 		 (* (sub-f-rate seen branch tab_s tab_t)
-		    (arg-order-rate seen branch tab_s tab_t)
+		    (arg-order-rate link seen branch tab_s tab_t)
 		    (/ sub-rate-sum (length subs)))))))
+
+(defun argpos (var args tab)
+  "Return the position of `var' in an argument list `args'. Also
+handles equivalences."
+  (loop for equiv in (get-equivs var tab 'include-this)
+	thereis (position equiv args)))
 
 (defun arg-order-rate (link seen branch &optional tab_s tab_t)
   "How close does the argument order of `branch' correspond with that
 of src and trg in `link'? Return 1 if arguments are completely
 aligned, if not: 
-matches in argument position / length of linked-argument list
-TODO: adjuncts will give nil in (position adjunct args)!
-"
-  (let ((args_s (get-args (car link) tab_s))
-	(args_t (get-args (cdr link) tab_t)))
-    (out "~A~A~%" args_s args_t)
-    (loop for pair in branch
-       for pairlink = (if (f-link? pair)
-			  pair
-			  (first pair))
-       for src = (car pair)
-       for trg = (cdr pair)
-	 ; check if argument before this: (note: mismatch if one is adjunct, one arg)
-       for pos_s = (position src args_s)
-       for pos_t = (position trg args_t)
-       summing (if (equal pos_s pos_t) 1 0) into matches
-       do (out "~A:~A~%" pos_s pos_t)
-	 finally (return (/ matches (length branch))))))
+sum matches in argument position, weighted by length of linked arg/adj-list
+
+Adjunct-argument links are counted as a non-match.
+
+TODO: How should merges score here? For now, just bail out and return
+1 if branch is a merge."
+  (let ((args_s (get-args (car link) tab_s 'no-nulls)) ; TODO: no-nulls OK?
+	(args_t (get-args (cdr link) tab_t 'no-nulls)))
+    (loop for sub in branch
+	  for pair = (if (f-link? sub)
+			     sub
+			   (first sub))
+	  for src = (car pair)
+	  for trg = (cdr pair)
+	  for pos_s = (argpos src args_s tab_s)
+	  for pos_t = (argpos trg args_t tab_t)
+	  if (member-either pair seen)
+	  do (return 1)			; this is a merge, bail out
+	  end
+	  summing (if (or
+		       (and (not pos_s) ; trivial match: both are adjuncts
+			    (not pos_t))
+		       (and pos_s   ; both are arguments, and have the
+			    pos_t ; same position in the arg-structures
+			    (equal pos_s pos_t))) 
+		      1
+		    0)
+	  into matches
+	  finally (return (/ matches
+			     (length branch))))))
 
 (defun sub-f-rate (seen branch &optional tab_s tab_t)
   "How many of the alignments in this branch have sub-alignments, if
