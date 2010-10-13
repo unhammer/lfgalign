@@ -2617,7 +2617,11 @@ N-grambasert modell.
 
 
 ** Evaluering av =lfgalign=
+=lfgalign= stiller høge krav til inndata: det må vere ferdig
+disambiguert og setningssamanstilt.
 
+Setning 13 + 10 i sofie illustrerer eit anna problem: for store
+forskjellar i argumentstruktur gir feil løysing.
 ** Samanlikning med tremetodar og n-grammetodar
 I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
 som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
