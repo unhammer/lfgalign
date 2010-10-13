@@ -13,17 +13,20 @@
        (aligntab (make-aligntab))
        (f-alignment (f-align '(0 . 0) tab_s tab_t LPTs))
        (flat-f ))
-    (out "~%f-tagged ~A and ~A~%~A~% ~A~%"
-	 n_s n_t
-	 (skip-suff_base tree_s) tab_s
-	 (skip-suff_base tree_t) tab_t)
+    (out "=================================~% src: ka/~A.pl trg: nb/~A.pl~%"
+	 n_s n_t)
+    (out "~A~% ~A~%"
+	 (skip-suff_base tree_s)
+	 (skip-suff_base tree_t))
     (let ((allpairs (mapcan #'append (flatten f-alignment))))
       (flet ((preds (getter tab)
 	       (mapcar (lambda (var)
 			 (get-pred var tab))
 		       (remove-duplicates (mapcar getter allpairs)))))
-	(out "srcs: ~A~%trgs: ~A~%" (preds #'car tab_s) (preds #'cdr tab_t))))
-    (out "~A~%" (pred-tag-alignment f-alignment tab_s tab_t))))
+	(out "~%srcs: ~A~%trgs: ~A~%"
+	     (preds #'car tab_s) (preds #'cdr tab_t))))
+    (out "~A~%" (pred-tag-alignment f-alignment tab_s tab_t))
+    (out "~A~%" (rank f-alignment aligntab tab_s tab_t))))
 
 (defun ev-all ()
   (evaluate 0 0)
