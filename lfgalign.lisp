@@ -790,6 +790,9 @@ TODO: select the one where argument order aligns fully."
 			      best-rate)))))))
 
 (defun rank-branch (seen branch &optional aligntab tab_s tab_t)
+  ;; TODO: add branch-parent as argument here, so we can check for arg-order
+  ;;       1 if same, otherwise... ((1 / amount of switches) / length) ?
+  ;;       Then multiply it into this-rate.
   (let ((this-rate (sub-f-rate seen branch tab_s tab_t)))
     (multiple-value-bind
 	(subs sub-rates)
