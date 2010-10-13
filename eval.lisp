@@ -16,8 +16,8 @@
     (out "=================================~% ~A src: ka/~A.pl trg: nb/~A.pl~%"
 	 subdir n_s n_t)
     (out "~A~% ~A~%"
-	 (skip-suff_base tree_s)
-	 (skip-suff_base tree_t))
+	 (f-tag-tree (skip-suff_base tree_s) tab_s)
+	 (f-tag-tree (skip-suff_base tree_t) tab_t))
     (let ((allpairs (mapcan #'append (flatten f-alignment))))
       (flet ((preds (getter tab)
 	       (mapcar (lambda (var)
@@ -25,18 +25,26 @@
 		       (remove-duplicates (mapcar getter allpairs)))))
 	(out "~%srcs: ~A~%trgs: ~A~%"
 	     (preds #'car tab_s) (preds #'cdr tab_t))))
-    (out "unranked: ~A~%" (pred-tag-alignment f-alignment tab_s tab_t))
+    (out "unranked: ~A~%" (pred-tag-alignment f-alignment tab_s tab_t)
+	 )
     (out "ranked: ~A~%" (pred-tag-alignment (rank f-alignment aligntab tab_s tab_t)
 					    tab_s tab_t))))
 
 (defun ev-all ()
   (evaluate "mrs" 0 0)
   (evaluate "mrs" 1 1)
-  (evaluate "mrs" 2 2)			; merge
+  (evaluate "mrs" 2 2)		; merge
   ;; (evaluate "mrs" 3 3) ; >1 solutions
   (evaluate "mrs" 4 4)
 
   (evaluate "sofie" 2 0)
+
+  ;; i 13-10 må ein leggje til (add-to-LPT "-ken" "inn" LPT) for at
+  ;; ein i det heile teke skal få ut ei løysing som lenkjer desse to,
+  ;; sidan det georgiske verbet tek tri arg (to er pro) medan det
+  ;; norske berre tek eitt:
+  (evaluate "sofie" 13 10) 
+
   ;; (evaluate "sofie" 3 1) ; >1 solutions
   ;; (evaluate "sofie" 4 2)
   ;; (evaluate "sofie" 5 3)
@@ -44,7 +52,6 @@
   ;; (evaluate "sofie" 7 5)
   ;; (evaluate "sofie" 8 6)
   ;; (evaluate "sofie" 9 7)
-  (evaluate "sofie" 13 10)
   ;; (evaluate "sofie" 21 18)
   ;; (evaluate "sofie" 32 32)
   ;; (evaluate "sofie" 41 46)
