@@ -132,17 +132,21 @@ subtrees)."
 
 (defun pred-tag-alignment (f-alignment tab_s tab_t)
   "Given an `f-alignment' from `f-align', exchange var numbers for the
-names in the pred values."
+names in the pred values. Also handles output from `flatten'/`rank'."
   (when f-alignment
       (if (f-link? f-alignment)
 	  (cons (second (get-pred (car f-alignment) tab_s))
-		(second (get-pred (cdr f-alignment) tab_t)))
+		(second (get-pred (cdr f-alignment) tab_t)))	  
 	  (cons (pred-tag-alignment (car f-alignment) tab_s tab_t)
-		(mapcar (lambda (branch)
-			  (mapcar (lambda (sub)
-				    (pred-tag-alignment sub tab_s tab_t))
-				  branch))
-		 (cdr f-alignment))))))
+		(if (f-link? (first (cdr f-alignment)))
+		    (mapcar (lambda (sub) ; flat
+			      (pred-tag-alignment sub tab_s tab_t))
+			    (cdr f-alignment))   
+		    (mapcar (lambda (branch) ; branching
+			      (mapcar (lambda (sub)
+					(pred-tag-alignment sub tab_s tab_t))
+				      branch))
+			    (cdr f-alignment)))))))
 
 
 (defun eq-phi (c-id1 c-id2 tab)
