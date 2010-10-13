@@ -774,14 +774,15 @@ TODO: select the one where argument order aligns fully."
   (if (f-link? f-alignments)
       (values f-alignments
 	      1)
-    (let* ((outer-links (cons (car f-alignments) seen)))
+    (let* ((link (car f-alignments))
+	   (outer-links (cons link seen)))
       (when (cdr f-alignments) ; if we got this far, will we ever see nil cdr?
 	(loop with best-rate = 0	; worst possible sub-f-score, all failed
 	      with best-branches = nil
 	      for branch in (cdr f-alignments)
 	      do (setf (values newbranch
 			       rate)
-		       (rank-branch outer-links branch aligntab tab_s tab_t))
+		       (rank-branch link outer-links branch aligntab tab_s tab_t))
 	      if (= rate best-rate)
 	      do (setq best-branches (cons newbranch best-branches))
 	      else if (> rate best-rate)
@@ -793,27 +794,51 @@ TODO: select the one where argument order aligns fully."
 	      (return (values (append outer-links (car best-branches))
 			      best-rate)))))))
 
-(defun rank-branch (seen branch &optional aligntab tab_s tab_t)
-  ;; TODO: add branch-parent as argument here, so we can check for arg-order
-  ;;       1 if same, otherwise... ((1 / amount of switches) / length) ?
-  ;;       Then multiply it into this-rate.
-  (let ((this-rate (sub-f-rate seen branch tab_s tab_t)))
-    (multiple-value-bind
-	(subs sub-rates)
-	(loop for f-alignment in branch
-	      do (setf (values newsub sub-rate)
-		       (rank-helper seen f-alignment aligntab tab_s tab_t))
-	      collecting newsub into subs
-	      summing sub-rate into sub-rates
-	      finally (return (values subs
-				      (/ sub-rates (length subs)))))
-      (values subs
-	      (* this-rate sub-rates)))))
+(defun rank-branch (link seen branch &optional aligntab tab_s tab_t)
+  "The individual branch score is the product of
+- `sub-f-rate' which gives how many recursive sub-alignments were
+  successful as opposed to simply having LPT-correspondence,
+- `arg-order-rate' which gives how close a match there is between the
+  argument orders of the src and trg pred's of the branch parent
+  `link', and
+- the weighted sum of the sub-alignment scores, achieved by recursive
+  `rank-helper' calls
+
+So we calculate pretty much the same as a PCFG: the score of this node
+is multiplied with the sum of sub-node scores (weighted by branch
+length, since we don't want the length of the argument list to play a
+role here).
+
+Returns both the ranked sub-alignments from `rank-helper' and the
+score."
+  ;; Sum over individual sub-alignments in the branch -- retrieved
+  ;; recursively -- and weight by number of sub-alignments (arguments):
+  (loop for f-alignment in branch
+     do (setf (values newsub sub-rate)
+	      (rank-helper seen f-alignment aligntab tab_s tab_t))
+     collecting newsub into subs
+     summing sub-rate into sub-rate-sum
+     finally
+       (return
+	 (values subs
+		 ;; Multiply this branch with those from children:
+		 (* (sub-f-rate seen branch tab_s tab_t)
+		    (arg-order-rate seen branch tab_s tab_t)
+		    (/ sub-rate-sum (length subs)))))))
+
+(defun arg-order-rate (link seen branch &optional tab_s tab_t)
+  "How close does the argument order of `branch' correspond with that
+of src and trg in `link'? Return 1 if arguments are completely
+aligned, if not, perhaps something like:
+ ((1 / amount of switches) / length) ?
+"
+  1)
 
 (defun sub-f-rate (seen branch &optional tab_s tab_t)
   "How many of the alignments in this branch have sub-alignments, if
 possible? If the links have no arguments, it's a trivial success;
-otherwise it's a success if there are any sub-alignments at all...
+otherwise it's a success if there are any sub-alignments at all.
+
 TODO: differentiate between how many of the args were sub-aligned."
   (flet ((failed-sub (f-alignment)
 	  (and (f-link? f-alignment)	; there are no sub-alignments
