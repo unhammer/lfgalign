@@ -1,4 +1,4 @@
-% Created 2010-10-14 to. 17:40
+% Created 2010-10-14 to. 17:51
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -2204,11 +2204,11 @@ utelukke lenkjing av f-strukturane $F_s$ og $F_t$ i \Next under:
 
 }
 
-Men det kan vere at me ikkje \emph{vil} krevje dette i alle moglege
-tilfelle. Ei tryggare løysing er å rangere ulike løysingar i
-etterkant, ved å spørje etter dei argumentsamanstillingane som har
-flest medlem i $aligntable$, dette kjem eg tilbake til i
-\ref{SEC:impl-f-rangering} nedanfor.
+Men som del \ref{SEC:rangering} nemner kan det vere at me ikkje \emph{vil}
+krevje dette i alle moglege tilfelle. Ei tryggare løysing er å rangere
+ulike løysingar i etterkant, ved å spørje etter dei
+argumentsamanstillingane som har flest medlem i $aligntable$, dette
+kjem eg tilbake til i \ref{SEC:impl-f-rangering} nedanfor.
 \subsection{Overflødige adverbial}
 \label{sec-4.1.1}
 
@@ -2329,14 +2329,27 @@ argumentpermutasjonane.
 
 \label{SEC:impl-f-rangering}
 
-Rangering foregår etter ulike kriterium. Her er eit par forslag:
-\subsection{rekursivt lenkja > ulenkja, men LPT}
-\label{sec-4.2.1}
+Rangering foregår etter kriteria formalisert i del
+\ref{SEC:rangering}. Implementasjonen av kriteria følgjer den
+formaliseringa ganske eksakt. 
 
-    $aligntable$ seier om noko er rekursivt lenkja eller ikkje,
-    plusspoeng viss me har klart å lenkje rekursivt.
+      \SetKwComment{Comment}{ // }{}
+     \SetKwInOut{Input}{usage}
+  
+     \begin{algorithm}[]
+      \caption{rank-f(seen, alignments)}
+      \label{algo:rank-f}
+
+      \uIf{f-link?(alignments)} {\Return (alignments, 1)}
+      \uElse{
+        best-rate $\gets$ 0 \;
+        best-branches $\gets \emptyset$ \;
+        \ForAll{branches in alignment} {
+        }
+      }
+      \end{algorithm}
 \subsection{argument-argument > argument-adjunkt}
-\label{sec-4.2.2}
+\label{sec-4.2.1}
 
     Plusspoeng for argument-argument-lenkjer, burde vere eit bra
     kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
@@ -2345,7 +2358,7 @@ Rangering foregår etter ulike kriterium. Her er eit par forslag:
     \texttt{bet<Abrams,sigarett,regne>} adjunkt: \texttt{Browne}
     
 \subsection{arg1-arg1 arg2-arg2 > arg1-arg2 arg2-arg1 (følgje)}
-\label{sec-4.2.3}
+\label{sec-4.2.2}
 
     Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
     viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
@@ -2357,12 +2370,12 @@ Rangering foregår etter ulike kriterium. Her er eit par forslag:
 
     Andre forslag: \href{http://en.wikipedia.org/wiki/Edit_distance}{http://en.wikipedia.org/wiki/Edit\_distance})
 \subsection{flest lenkja adjunkt}
-\label{sec-4.2.4}
+\label{sec-4.2.3}
 
     Usikker på dette\ldots{} avheng av om me tillèt lenkjer på tvers av
     f-strukturar.
 \subsection{Prioritet på rangeringskriterium}
-\label{sec-4.2.5}
+\label{sec-4.2.4}
 
     Dette bør sjølvsagt testast empirisk, blir kanskje utanfor denne
     oppgåva (diskusjonsdel?), men kan jo prøve meg litt rundt.

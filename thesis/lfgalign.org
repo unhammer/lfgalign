@@ -2389,11 +2389,11 @@ utelukke lenkjing av f-strukturane $F_s$ og $F_t$ i \Next under:
 }
 #+END_LaTeX
 
-Men det kan vere at me ikkje /vil/ krevje dette i alle moglege
-tilfelle. Ei tryggare løysing er å rangere ulike løysingar i
-etterkant, ved å spørje etter dei argumentsamanstillingane som har
-flest medlem i $aligntable$, dette kjem eg tilbake til i
-\ref{SEC:impl-f-rangering} nedanfor.
+Men som del \ref{SEC:rangering} nemner kan det vere at me ikkje /vil/
+krevje dette i alle moglege tilfelle. Ei tryggare løysing er å rangere
+ulike løysingar i etterkant, ved å spørje etter dei
+argumentsamanstillingane som har flest medlem i $aligntable$, dette
+kjem eg tilbake til i \ref{SEC:impl-f-rangering} nedanfor.
 *** Overflødige adverbial
    \label{SEC:impl-adjalign}
 
@@ -2501,10 +2501,27 @@ argumentpermutasjonane.
 ** SKRIV Rangering
 \label{SEC:impl-f-rangering}
 
-Rangering foregår etter ulike kriterium. Her er eit par forslag:
-*** rekursivt lenkja > ulenkja, men LPT
-    $aligntable$ seier om noko er rekursivt lenkja eller ikkje,
-    plusspoeng viss me har klart å lenkje rekursivt.
+Rangering foregår etter kriteria formalisert i del
+\ref{SEC:rangering}. Implementasjonen av kriteria følgjer den
+formaliseringa ganske eksakt. 
+
+#+BEGIN_LaTeX
+      \SetKwComment{Comment}{ // }{}
+     \SetKwInOut{Input}{usage}
+  
+     \begin{algorithm}[]
+      \caption{rank-f(seen, alignments)}
+      \label{algo:rank-f}
+
+      \uIf{f-link?(alignments)} {\Return (alignments, 1)}
+      \uElse{
+        best-rate $\gets$ 0 \;
+ 	best-branches $\gets \emptyset$ \;
+        \ForAll{branches in alignment} {
+        }
+      }
+      \end{algorithm}
+#+END_LaTeX
 *** argument-argument > argument-adjunkt
     Plusspoeng for argument-argument-lenkjer, burde vere eit bra
     kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
