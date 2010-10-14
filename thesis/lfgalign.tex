@@ -1,4 +1,4 @@
-% Created 2010-09-22 on. 14:41
+% Created 2010-10-14 to. 17:40
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -52,7 +52,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{22/09, 2010}
+\date{14/10, 2010}
 
 \begin{document}
 
@@ -1096,7 +1096,7 @@ f-strukturnivå:
 \a. ordformene til $p$ og $q$ har LPT-korrespondanse
 \b. alle argument av $p$ har LPT-korrespondanse med eit argument eller adjunkt av $q$
 \c. alle argument av $q$ har LPT-korrespondanse med eit argument eller adjunkt av $p$
-\d. LPT-korrespondansane er ein-til-ein
+\d. LPT-korrespondansane kan lenkjast ein-til-ein
 \e. ingen adjunkt til $p$ er lenkja til f-strukturar utanfor $q$, og omvendt
 
 Det \Last[d] seier er at me ikkje lenkjer t.d. to instansar av «hest»
@@ -1861,7 +1861,121 @@ funksjonelle kategoriar.
 \label{sec-3.8}
 
    \label{SEC:rangering}
-(meir om dette i del \ref{SEC:impl-f-rangering})
+
+Gitt ei viss f-struktursamanstilling, vil det berre vere ein mogleg
+måte å lenkje på c-strukturnivå. Men slik f-strukturkrava er stilt,
+kan me få mange ulike moglege samanstillingar på
+f-strukturnivå. Ideelt sett burde krava vere nyanserte nok til å
+plukke ut berre dei samanstillingane som er ønskelege, men som vist
+over er dette ikkje alltid like lett, spesielt om me ikkje har
+fullstendig informasjon om LPT-korrespondansar.
+
+Difor er det nyttig å ha nokre kriterium, eller i det minste
+heuristikkar, for å rangere ulike f-struktursamanstillingar. Det er
+sjølvsagt svært mange måtar ein kan rangere to strukturar på; kriteria
+nedanfor er tenkt å gi dei samanstillingane som føreset at
+argumentstrukturane er så like som mogleg. Implementasjonen av
+kriteria kjem i del \ref{SEC:impl-f-rangering}.
+
+Merk at om me har «fullstendig» LPT-informasjon (t.d. ei perfekt
+omsetjingsordbok), treng me aldri rangere. Desse kriteria er difor
+kanskje mindre teoretisk interessante, sidan dei alltid kan
+overstyrast ved å gi systemet meir kunnskap. Men det kan au vere
+interessant å teste kor godt ulike rangeringskriterium fungerer der me
+ikkje har LPT-informasjon i det heile -- då vil dei i prinsippet
+fungere som «mjuke» skrankar på f-struktursamanstillinga.
+
+Nedanfor følgjer dei kriteria eg har basert implementasjonen på. Som
+nemnt er det berre ein av mange moglege måtar å gjere det på, men eg
+trur det tek innover seg dei viktigaste trekka.
+
+\subsection{Rangering ved følgje}
+\label{sec-3.8.1}
+
+I \citet[s.~75--76]{dyvik2009lmp} blir det formulert eit
+spesialtilfelle av krava for lenkjing på f-strukturnivå, der det er
+like mange argument på kvart predikat, og førsteargument er lenkja til
+førsteargument, andre til andre, osb. I slike situasjonar er ingen
+adjunkt lenkja til argument; og om argumentstrukturane i analysane
+reflekterer det semantiske rollehierarkiet, vil me aldri lenkje
+t.d. agens til patiens og patiens til agens. Der grammatikkane er
+skrivne etter parallelle prinsipp, bør ei slik samanstilling -- om alt
+anna er likt -- gi den ønskelege lenkjinga.
+
+Difor har me dette som eit rangeringskriterium. For å nyansere det
+litt, kan me sjå på kor mange av lenkjene frå argumenta til eit
+predikat som ikkje er argument-adjunkt-lenkjer, og der dei ikkje har
+ulik posisjon i argumentstrukturen. Meir formelt:
+
+\ex. La $m$ vere mengda av ein-til-ein LPT-korresponderande
+     argument/adjunkt av to lenkja f-strukturar $F_s$ og $F_t$. La $n$
+     vere dei elementa av $m$ som anten begge er adjunkt, eller begge
+     er argument og har same posisjon i argumentstrukturane
+     sine. \emph{Følgjeskåren} til $F_s$, $F_t$ er då $\frac{n}{m}$.
+
+I spesialtilfellet nemnt over, vil skåren altså vere 1. Når det står
+«ein-til-ein LPT-korresponderande» over, er det for å plukke ut ein
+viss måte å samanstille argumenta og adjunkta til $F_s$ og $F_t$ --
+men utan krav om at desse skal vere rekursivt lenkja. Kriteriet
+nedanfor rangerer rekursive lenkjer høgare enn enkle
+LPT-korrespondansar.
+
+\subsection{Rangering ved djupn}
+\label{sec-3.8.2}
+
+Krav \ref{krav:PRED} krev ein-til-ein LPT-korrespondanse mellom
+argument/adjunkt av kjelde- og målpredikatet, men stiller ikkje krav
+om at dei LPT-korresponderande elementa sjølv må vere lenkja på
+f-strukturnivå. Så viss «She tried to ride a bike» er lenkja med «Ho
+prøvde å sykle», kan me lenkje \emph{try} med \emph{prøve} sjølv om \emph{ride} og
+\emph{sykle} ikkje kan lenkjast -- \emph{bike} er eit påkravd argument\footnote{Merk: utan meir informasjon her vil krava i tillegg opne for
+        ei mange-mange-lenkje mellom \emph{ride} + \emph{bike} og \emph{sykle}; for
+        skuld argumentet ser me berre på ein-til-ein-lenkjer her. }. I
+situasjonar der me har eit val mellom berre LPT-korrespondanse, og
+full rekursiv lenkjing, vil ei rekursiv lenkje skildre meir
+strukturell likskap enn berre LPT-korrespondansen.
+
+Difor har me dette som eit rangeringskriterium. Me kan formalisere det
+slik:
+
+\ex. La $m$ vere mengda av ein-til-ein LPT-korresponderande
+     argument/adjunkt av to lenkja f-strukturar $F_s$ og $F_t$. La $n$
+     vere dei elementa av $m$ som anten ikkje har argument sjølve,
+     eller som er lenkja på f-strukturnivå. \emph{Djupnskåren} til $F_s$,
+     $F_t$ er då $\frac{n}{m}$.
+
+Der alle LPT-korresponderande argument/adjunkt av $F_s$ og $F_t$ au er
+lenkja, vil djupnskåren vere 1.
+
+\subsection{Rangering for heile samanstillinga}
+\label{sec-3.8.3}
+
+Kriteria over gir to skårer for eit visst par av PRED-element. Utan å
+ha testa desse kriteria empirisk er det naturleg å vekte dei likt;
+altså bør skåren for eitt par av PRED-element innehalde produktet av
+desse skårane.
+
+Men argumenta og adjunkta av desse to elementa kan sjølv ha ulike
+moglege delsamanstillingar, som kan gi ulike skårer. La $a_s$ og
+$a_t$, argument eller adjunkt av $F_s$ og $F_t$, vere lenkja i ei
+mogleg samanstilling av $F_s$ og $F_t$. Innanfor $a_s$, $a_t$ finn me
+kanskje ulike moglege samanstillingar, her vel me den som gir best
+skåre. Men det kan hende at det finst ei alternativ måte å lenkje på,
+kor $F_s$ er lenkja til $G_t$, $a_s$ til $d_t$ (argument/adjunkt av
+$G_t$), og $a_s$, $b_t$ har høgare skåre enn $a_s$, $a_t$. Viss alt
+anna er likt, bør me då heller velje $F_s$, $G_t$ enn $F_s$, $F_t$.
+
+Den endelege skåren for $F_s$, $F_t$ er då produktet av følgjeskåren,
+djupnskåren og den vekta summen av dei endelege skårane for lenkja
+argument/adjunkt av $F_s$ og $F_t$. Denne summen er vekta på lengden
+av lista med lenkja argument/adjunkt, for å ikkje gi unaturleg høg
+skåre til f-strukturar med mange argument/adjunkt\footnote{Sidan det ikkje er meininga å nytte denne skåringa i
+        maskinlæring har eg ikkje undersøkt om dette kan gjerast til
+        ein stringent sannsynsmodell (der summen av skårar for alle
+        moglege samanstillingar aldri går over 1); men det bør vere
+        mogleg å gjere noko slikt ut av det. }.
+
+
 
 \section{\textbf{SKRIV} Oppsummering av krava}
 \label{sec-3.9}
@@ -2215,8 +2329,6 @@ argumentpermutasjonane.
 
 \label{SEC:impl-f-rangering}
 
-\fxnote[inline,nomargin]{Rangering er ikkje implementert enno (akkurat no gir
-rank(f-alignments) berre ut første samanstilling.)}
 Rangering foregår etter ulike kriterium. Her er eit par forslag:
 \subsection{rekursivt lenkja > ulenkja, men LPT}
 \label{sec-4.2.1}
@@ -2459,7 +2571,11 @@ N-grambasert modell.
 \section{Evaluering av \texttt{lfgalign}}
 \label{sec-5.3}
 
+\texttt{lfgalign} stiller høge krav til inndata: det må vere ferdig
+disambiguert og setningssamanstilt.
 
+Setning 13 + 10 i sofie illustrerer eit anna problem: for store
+forskjellar i argumentstruktur gir feil løysing.
 \section{Samanlikning med tremetodar og n-grammetodar}
 \label{sec-5.4}
 
@@ -2506,6 +2622,9 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
+
+
 
 
 
