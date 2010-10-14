@@ -881,8 +881,9 @@ TODO: How should merges score here? For now, just bail out and return
 		      1
 		    0)
 	  into matches
+	  counting sub into total
 	  finally (return (/ matches
-			     (length branch))))))
+			     total)))))
 
 (defun sub-f-rate (seen branch &optional tab_s tab_t)
   "How many of the alignments in this branch have sub-alignments, if
@@ -897,10 +898,11 @@ TODO: differentiate between how many of the args were sub-aligned."
 	       tab_t ; check if we could have sub-aligned but didn't:
 	       (or (get-args (car f-alignment) tab_s 'no-nulls)
 		   (get-args (cdr f-alignment) tab_t 'no-nulls)))))
-    (loop for pair in branch
-	  counting (not (failed-sub pair)) into sub-f
-	  counting pair into total
-	  finally (return (/ sub-f total)))))
+    (loop for sub in branch
+	  counting (not (failed-sub sub)) into sub-f
+	  counting sub into total
+	  finally (return (/ sub-f
+			     total)))))
 
 (defun old-rank (f-alignments aligntab)
   (unless *no-warnings* (warn "mock ranking, just selects first option"))
