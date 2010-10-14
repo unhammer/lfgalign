@@ -904,10 +904,6 @@ TODO: differentiate between how many of the args were sub-aligned."
 	  finally (return (/ sub-f
 			     total)))))
 
-(defun old-rank (f-alignments aligntab)
-  (unless *no-warnings* (warn "mock ranking, just selects first option"))
-  (car (flatten f-alignments))) 
-
 (defun spread (flatperm)
   "See `test-spread'."
   (when flatperm
