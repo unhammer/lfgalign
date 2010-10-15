@@ -29,6 +29,7 @@
 #+LaTeX_HEADER: \newcommand{\proj}[2]{\begin{tabular}{c}\footnotesize{#1}\\\normalsize{#2}\end{tabular}}
 #+LaTeX_HEADER: \newcommand{\ua}{\ensuremath{\uparrow}}
 #+LaTeX_HEADER: \newcommand{\da}{\ensuremath{\downarrow}}
+#+LaTeX_HEADER: \newcommand{\p}[1]{`\textbf{#1}'}
 
 
 * COMMENT Generell TODO
@@ -357,7 +358,16 @@ ein LFG-parse -- det er dette som er strategien til programmet
 overlapp mellom krava som kjem i kapittel \ref{SEC:ideell} og dei gitt
 i den første publiseringa i XPar-prosjektet, \citet{dyvik2009lmp}.
 
-
+*** ULEST Cyrus, FuSe-prosjektet 				     :ROTETE:
+\citet{cyrus2004apa}
+«Abstract: We report on a recently initiated project which aims at
+building a multi-layered parallel treebank of English and
+German. Particular attention is devoted to a dedicated
+predicate-argument layer which is used for aligning translationally
+equivalent sentences of the two languages. We describe both our
+conceptual decisions and aspects of their technical realisation. We
+discuss some selected problems and conclude with a few remarks on how
+this project relates to similar projects in the field.»
 ** SKRIV Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi
  \label{SEC:omgrepsavklaring}
 
@@ -716,16 +726,16 @@ Når det gjeld f-strukturane er det ganske mange element me teoretisk
 sett kunne ha lenkja, t.d. enkelttrekk som kasus eller dei uordna
 mengdene med adjunkt, men det som er mest /nyttig/ og /meiningsfullt/
 er nok å berre lenkje der det er ei nær kopling til orda i
-setninga. Sidan alle PRED-element i ein f-struktur unikt står for
+setninga. Sidan alle \PRED{}-element i ein f-struktur unikt står for
 predikerande ord, kan me -- gitt to samanstilte setningar -- la
 \emph{kandidatane for samanstilling på f-strukturnivå} inkludere alle
-desse PRED-elementa i f-strukturane til
-setningane[fn:12]. PRED-element representerer semantiske bidrag som
+desse \PRED{}-elementa i f-strukturane til
+setningane[fn:12]. \PRED{}-element representerer semantiske bidrag som
 oftast er påkrevde på begge språk i omsetjingar, medan andre
 f-strukturtrekk gjerne er valfrie på det eine av språka; det er ikkje
 alle språk som har t.d. obligatorisk kasusmarkering, og ein vil
 kanskje nytte trebanken til å oppdage nettopp slik variasjon.
-PRED-elementa er i tillegg gjerne enklare å knyte direkte opp mot den
+\PRED{}-elementa er i tillegg gjerne enklare å knyte direkte opp mot den
 konkrete, observerte tekststrengen (eventuelt testast mot korpora,
 eller talarintuisjonar), medan t.d. eit trekk som aspekt kanskje er
 umogleg å skilje frå tempus i affikset (det vil vere vanskelegare å
@@ -733,20 +743,20 @@ teste om ei lenkje mellom aspekt-trekk er empirisk motivert utan å dra
 inn ein heil del teori).
 
 Samtidig er det au eit omsetjingsforhold mellom trekka i same
-f-struktur som dei lenkja PRED-elementa, og me ville kanskje ikkje ha
-omsett dei to PRED-elementa i andre f-strukturkontekstar. Difor bør me
-au sjå på ei PRED-lenkje som ei lenkje mellom \emph{f-strukturane til
-desse PRED-elementa}[fn:7].  Med dette i tankane, kombinert med
+f-struktur som dei lenkja \PRED{}-elementa, og me ville kanskje ikkje ha
+omsett dei to \PRED{}-elementa i andre f-strukturkontekstar. Difor bør me
+au sjå på ei \PRED{}-lenkje som ei lenkje mellom \emph{f-strukturane til
+desse \PRED{}-elementa}[fn:7].  Med dette i tankane, kombinert med
 c-struktur-f-strukturavbildinga $\phi$ (sjå del
 \ref{SEC:omgrepsavklaring}), får me følgjande samanheng, illustrert i
 figur \ref{fig:viss-PRED-så-f-og-c}:
 
-\ex. \label{krav:f-links} Ei lenkje mellom to PRED-element $p$ og $q$, kor
+\ex. \label{krav:f-links} Ei lenkje mellom to \PRED{}-element $p$ og $q$, kor
       $p$ er medlem av f-strukturen $f$, og $q$ er medlem av
       f-strukturen $g$, tilseier at:
 \a. \label{krav:f-links-substr} me tolkar f-strukturane $f$ og $g$ som lenkja,
 \b. \label{krav:f-links-words} orda i setningane som projiserer
-     PRED-elementa tek del i ei lenkje (kor andre
+     \PRED{}-elementa tek del i ei lenkje (kor andre
      ord kan vere involvert), og at
 \c. \label{krav:f-links-domain} nodar innanfor $\phi^{-1}(f)$
      og $\phi^{-1}(g)$, dei funksjonelle domena til f-strukturane $f$
@@ -788,19 +798,19 @@ figur \ref{fig:viss-PRED-så-f-og-c}:
     
 \fxnote{TODO: teikne inn f-domene}
 
-    \caption{Ei PRED-lenkje $l_p$ kan tolkast som ei f-strukturlenkje
+    \caption{Ei \PRED{}-lenkje $l_p$ kan tolkast som ei f-strukturlenkje
     $l_f$, og impliserer ei c-strukturlenkje $l_c$ mellom toppnodane i
-    dei funksjonelle domena. Orda som projiserer PRED-elementa er med
+    dei funksjonelle domena. Orda som projiserer \PRED{}-elementa er med
     i ei lenkje $l_o$ (som kan inkludere fleire ord).}
    \label{fig:viss-PRED-så-f-og-c}
  \end{figure}
 #+END_LaTeX
 
 Punkt \ref{krav:f-links-substr} og \ref{krav:f-links-domain} over seier at viss
-PRED-elementa projisert av t.d. to verb i verbfrasar er lenkja, kan
+\PRED{}-elementa projisert av t.d. to verb i verbfrasar er lenkja, kan
 VP-ane som heilskap lenkjast, i tilfellet i figur
 \ref{fig:viss-PRED-så-f-og-c} kan iallfall dei øvste nodane i VP-ane
-lenkjast, i tillegg til f-strukturane frå ytre PRED til verba.  Det er
+lenkjast, i tillegg til f-strukturane frå ytre \PRED{} til verba.  Det er
 dette at heile VP-ane (kanskje inkludert objekt) er lenkja som gjer
 det til ei fraselenkje og ikkje berre ei ordlenkje. Punkt
 \ref{krav:f-links-substr} er forsvart over, medan punkt
@@ -811,17 +821,17 @@ som punkt \ref{krav:f-links-domain} indikerer finst det au situasjonar der
 nodar innanfor domena skal stå ulenkja.
 
 Alle nodar i c-strukturen (alle syntaktiske /frasar/konstituentar/ i
-setninga) som kan koplast til PRED-haldande f-strukturar, vil vere
+setninga) som kan koplast til \PRED{}-haldande f-strukturar, vil vere
 kandidatar for samanstilling på c-strukturnivå (dette inkluderer
 diskontinuerlege konstituentar), men ikkje alle vil bli lenkja.  I del
 \ref{SEC:subnode} ser eg på kva som må til for å lenkje nodar i det
 funksjonelle domenet.  I tillegg finst det nodar over ord som ikkje
-projiserer PRED-element, desse kjem eg tilbake til i del
+projiserer \PRED{}-element, desse kjem eg tilbake til i del
 \ref{SEC:fnord}.
 
 I følgje punkt \ref{krav:f-links-words} vil fraselenkja leie til at sjølve
-verba i to lenkja VP-ar au er lenkja, som tilseier at /ei PRED-lenkje
-impliserer ei ordlenkje/. I visse tilfelle er dette heilt
+verba i to lenkja VP-ar au er lenkja, som tilseier at \emph{ei \PRED{}-lenkje
+impliserer ei ordlenkje}. I visse tilfelle er dette heilt
 uproblematisk, t.d. viss /I slept down by the river/ skal lenkjast med
 \emph{Eg sov nede med elva} vil me uansett lenkje /slept/ og /sov/; dette
 kan gjelde transitive verb au:
@@ -846,17 +856,17 @@ det som i \Last mogleg å skilje ut delsamanstillingar, som
 \fxnote[inline,nomargin]{TODO: når?} seinare.
 #+END_LaTeX
 
-Sidan PRED-lenkjing impliserer ordlenkjing, må me sjekke om krava på
+Sidan \PRED{}-lenkjing impliserer ordlenkjing, må me sjekke om krava på
 ordnivå (del \ref{SEC:ordkrav}) er oppfylte for å lenkje to
-PRED-element. \fxnote[inline,nomargin]{TODO: litt brå avslutning}
+\PRED{}-element. \fxnote[inline,nomargin]{TODO: litt brå avslutning}
 
-** Forholdet mellom ordlenkjer og PRED-lenkjer 			     :ROTETE:
-\fxnote{der ADJUNKT ikkje er realisert, lenkjer me ikkje PRED.  skal
+** Forholdet mellom ordlenkjer og \PRED{}-lenkjer 			     :ROTETE:
+\fxnote{der ADJUNKT ikkje er realisert, lenkjer me ikkje \PRED{}.  skal
 me då ikkje lenkje ord heller?}
 
-\fxnote{finst det tilfelle der ordlenkjer ikkje impliserer PRED-lenkjer? 
+\fxnote{finst det tilfelle der ordlenkjer ikkje impliserer \PRED{}-lenkjer? 
 \\
-(hypotese: det er alltid slik at ordlenkjing av predikerande ord => PRED-lenkje)
+(hypotese: det er alltid slik at ordlenkjing av predikerande ord => \PRED{}-lenkje)
 \\
 PRED->ord :: iallfall\\
 PRED<-ord :: ?\\
@@ -877,7 +887,7 @@ Det er visse ting me ikkje kan spesifisere ut frå rein c- og
 f-strukturinformasjon. Den norske setninga /eg vil ete/ kan fint
 samanstillast med /I want to eat/, med ei lenkje mellom /ete/ og
 /eat/. Men kva står i vegen for å lenkje /ete/ til hovudverbet i /I
-want to drink/? Forskjellen på f-strukturnivå er berre at PRED-verdien
+want to drink/? Forskjellen på f-strukturnivå er berre at \PRED{}-verdien
 er ulik (*eat* mot *drink*). Me må altså ha eit krav om at tydinga til
 lenkja ord (og deira predikat) er «lik nok» til at me kan sjå på dei
 som omsetjingar[fn:21]. \citet[s.~74]{dyvik2009lmp} krev at orda
@@ -917,7 +927,7 @@ ordnivå, derimot, kan me ikkje lenkje /han/ til /iqePa/ åleine -- her
 må me ha ei mange-til-ein-lenkje mellom $\{ \rm han, bjeffa \}$ og $\{
 \rm iqePa \}$. 
 Generelt må me ha slike lenkjer der eitt ord projiserer fleire
-PRED-element[fn:13].
+\PRED{}-element[fn:13].
 
 *** Ordklasse
 Ulike språk leksikaliserer same konsept på ulike
@@ -997,7 +1007,7 @@ grunnar til å /ikkje/ kalle dette eit argument.
 For å gjere dette konkret kan me sjå på setning 7 i test-suiten til
 XPar-prosjektet:
 
-\exg.  abramsi brouns       daenajleva sigaretze, rom cvimda \\
+\exg. abramsi brouns       daenajleva sigaretze, rom cvimda \label{ex:vedde-gloss} \\
       Abrams.NOM Brown.DAT vedde.3SG sigarett.om, at  regne.3SG.IMP \\
      `Abrams veddet en sigarett med Brown på at det regnet' 
 
@@ -1125,17 +1135,17 @@ denne oppgåva ikkje vere nok til å gi korrekt lenkjing.
 *** Krav om argumentlenkjer
 Sjølv om me ikkje krev lik følgje i argumentlenkjer, og tillèt
 argument-adjunkt-lenkjer, er det eit minstekrav for å lenkje to
-PRED-element at alle argumenta til det eine PRED-elementet kan
-korrespondere med argument eller adjunkt av det andre PRED-elementet.
+\PRED{}-element at alle argumenta til det eine \PRED{}-elementet kan
+korrespondere med argument eller adjunkt av det andre \PRED{}-elementet.
 Dette følgjer av formålet med å finne ut korleis ulike språk
 realiserer ulike semantiske roller syntaktisk; om eit verbargument
 ikkje kan lenkjast til noko i omsetjinga (ikkje ein gong eit
 pro-element), er det usannsynleg at verba uttrykker same situasjon, og
 tildeler same roller. På same måte må sjølvsagt lenkja predikat ha
 LPT-korrespondanse. \citet[s.~75]{dyvik2009lmp} gir følgjande krav på
-f-strukturnivå:
+f-strukturnivå[fn:32]:
 
-\ex. \label{krav:PRED} Krav for lenkjing av to PRED-element $p$ og $q$:
+\ex. \label{krav:PRED} Krav for lenkjing av to \PRED{}-element $p$ og $q$:
 \a. ordformene til $p$ og $q$ har LPT-korrespondanse
 \b. alle argument av $p$ har LPT-korrespondanse med eit argument eller adjunkt av $q$
 \c. alle argument av $q$ har LPT-korrespondanse med eit argument eller adjunkt av $p$
@@ -1147,7 +1157,7 @@ på det eine språket til éin instans av «horse» på det andre. Krav
 \Last[e] kjem eg tilbake til nedanfor.
 
 Det går an å gjere \Last strengare, og krevje at argumenta -- i
-tillegg til å ha LPT-korrespondanse -- sjølv er PRED-lenkja. Dette har
+tillegg til å ha LPT-korrespondanse -- sjølv er \PRED{}-lenkja. Dette har
 eg ikkje gjort i implementasjonen min, men det er mogleg å ha det som
 eit rangeringskriterium, noko eg kjem tilbake til i del
 \ref{SEC:rangering}. Ved å /ikkje/ krevje at lenkjinga går heilt til
@@ -1167,7 +1177,7 @@ det er ulenkja gjeld ikkje krav \Last for $a_q$, så \Last hindrar
 ikkje ei lenkje mellom $a_p$ og døtre av $a_q$. 
 
 I tillegg vil ikkje \Last hindre at t.d. den ytste f-strukturen i
-kjeldespråket er lenkja til eit XCOMP-argument på målspråket; men i
+kjeldespråket er lenkja til eit \XCOMP{}-argument på målspråket; men i
 dette tilfellet bør kanskje ikkje /setningane/ vere lenkja i
 utgangspunktet.
 
@@ -1176,7 +1186,7 @@ vanskeleg å finne ikkje-vilkårlege avgrensingar for når ein skal kunne
 lenkje f-strukturar som står i ulike omgivnader; i implementasjonen
 min har eg difor følgt eit strengare krav enn \Last[e]:
 
-\ex. \label{krav:PRED-omgivnad} PRED-elementa $p$ og $q$ kan berre
+\ex. \label{krav:PRED-omgivnad} \PRED{}-elementa $p$ og $q$ kan berre
      lenkjast om dei er ytste f-strukturar i lenkja setningar, eller
      er argument/adjunkt til lenkja f-strukturar.
 
@@ -1186,54 +1196,70 @@ kravet modifiserast.
 
 Krav \ref{krav:PRED} og \ref{krav:PRED-omgivnad} bør i enkle
 situasjonar vere tilstrekkelege for lenkjing på f-strukturnivå, men
-det finst au meir komplekse korrespondansar mellom PRED-element. Desse
+det finst au meir komplekse korrespondansar mellom \PRED{}-element. Desse
 ser eg på del \ref{SEC:f-mange-mange}.
 
-*** SKRIV Adposisjonsobjekt
 
-I følgjande setningspar har me eit objekt «sigarett» som svarer til
-PP-en «sigaretze» («sigareti» + «ze»), eit adjunkt:
+*** Adposisjonsobjekt
+\label{SEC:adposisjonsobjekt}
 
-: Abrams veddet en sigarett med Browne på at det regnet.
-: abramsi brouns daenajleva sigaretze, rom cvimda.
+ I setningsparet i \ref{ex:vedde-gloss} har me eit objekt /sigarett/
+ som svarer til PP-en /sigaretze/ (/sigareti/ + /ze/), som i \Next
+ nedanfor:
 
-: F_s [ PRED sigarett ]
+#+BEGIN_LaTeX
+{\avmoptions{}
+\ex. \a. $\begin{avm}\[pred & `{\bf{}sigarett}' \]\end{avm}\\$
+     $\\\leftrightarrow$\\
+     \b.     $\begin{avm}\[pred & `{\bf{}ze}<\@{1}>' \\
+                 obj & \@{1} \[pred & `{\bf{}sigareti}'\] \]\end{avm}$
 
-: F_t [ PRED ze<1> 1[ PRED sigareti ] ]
+}
+#+END_LaTeX
 
-F_s og F_t er døtre av dei ytre predikata i kvar setning, krav (iii)
-seier at det må vere LPT-korrespondanse mellom desse for at me skal
-kunne lenkje «veddet» og «daenajleva».  Her synest det feil å føye
-saman «sigareti» og «ze», =(F_s . (F_t 1))=, sidan «sigarett» ikkje
-inneheld informasjonen gitt av «ze».
+ Medan \p{sigarett} er argument til \p{vedde}, står det ein adposisjon
+ mellom \p{sigareti} og \p{da-najleveba}. I følgje krav
+ \ref{krav:PRED} må me ha LPT-korrespondanse mellom \p{sigarett} og
+ eit argument/adjunkt av \p{da-najleveba} for å lenkje \p{vedde} og
+ \p{da-najleveba}, det har me ikkje -- det står ein adposisjon i vegen.
 
-Det finst då to løysingar. Me kan slakke på LMT-kravet ved å la
-=L'(F_t) = {sigaretze, ze}= (evt. ={sigaret, ze}=), då kan me lenkje
-=(F_s . F_t)=, medan 1 er ulenkja.
+ Éi løysing ville vore å mange-mange-lenkje \p{sigarett} med
+ \p{sigareti} og \p{ze} -- men dette gir ei misvisande lenkje, sidan
+ \p{sigarett} ikkje bidreg med noko som tilsvarer den (syntaktiske)
+ informasjonen som er gitt av \p{ze}. 
 
-Eller me kan lenkje =(F_s . 1)=, kor me har skikkeleg
-LMT-korrespondanse, men då må me slakke på (iii) og (iv), og altså ha
-lov til å «hoppe over» ein f-struktur for å lenkje «veddet» og
-«daenajleva». F_t er då ulenkja. Det er løysinga valt i
-\citet[s.~75,~fotnote~3]{dyvik2009lmp}, og den løysinga eg følgjer
-vidare i oppgåva.
+ Løysinga valt i \citet[s.~75,~fotnote~3]{dyvik2009lmp}, som eg
+ følgjer i implementasjonen, er å berre hoppe over slike
+ preposisjonar. Ved lenkjing av \p{vedde} og \p{da-najleveba} ser me
+ då på f-strukturane i \Last som om dei var som i \Next nedanfor.
+
+#+BEGIN_LaTeX
+{\avmoptions{}
+\ex. \a. $\begin{avm}\[pred & `{\bf{}sigarett}' \]\end{avm}\\$
+     $\\\leftrightarrow$\\
+     \b.     $\begin{avm}\[pred & `{\bf{}sigareti}' \]\end{avm}$
+
+}
+#+END_LaTeX
+
+ Dette må ein altså ha i mente når ein følgjer krav \ref{krav:PRED}. I
+ neste del diskuterer eg kva me kan gjere i dei situasjane der det
+ ikkje er mogleg å berre hoppe over mellomliggande element.
 
 *** SKRIV Kausativar og inkorporering
 \label{SEC:f-mange-mange}
-Til no har me føresett at eit PRED-element anten er ulenkja, eller
-er lenkja til eitt og berre eitt anna PRED-element. Men i visse
-tilfelle kan det vere ønskeleg å lenkje til fleire PRED-element.
-\fxnote{Denne delen treng fleire ekte døme, og forsvar for kvifor me
-vil ha ein-mange-lenkjer for våre \emph{formål} (georgisk ser ut til å vere
-borte frå xle-web?)}
+
+Til no har me føresett at eit \PRED{}-element anten er ulenkja, eller
+er lenkja til eitt og berre eitt anna \PRED{}-element. Men i visse
+tilfelle kan det vere ønskeleg å lenkje til fleire \PRED{}-element.
 
 I ein norsk /la/-konstruksjon, t.d. den me har i «å la noko fryse» (i
 tydinga å forårsake at noko frys til) har me semantiske bidrag frå
-både /la/ og hovudverbet /fryse/, og begge har PRED-element (sjølv om
+både /la/ og hovudverbet /fryse/, og begge har \PRED{}-element (sjølv om
 bidraget frå /la/ nok er meir «grammatisk»). Men slike perifrastiske
-kan gjerne omsetjast til leksikaliserte kausativar som berre har eitt
-PRED-element, men likevel med tydinga «å la fryse». Påfunnet i
-\Next illustrerer denne situasjonen:
+konstruksjonar kan gjerne omsetjast til leksikaliserte kausativar som
+berre har eitt \PRED{}-element, men likevel med tydinga «å la
+fryse». Påfunnet i \Next illustrerer denne situasjonen:
 
 #+BEGIN_LaTeX
 {\avmoptions{}
@@ -1248,8 +1274,8 @@ PRED-element, men likevel med tydinga «å la fryse». Påfunnet i
 #+END_LaTeX
 
 Her er altså den kausative tydinga leksikalisert, og verbet har berre
-eitt PRED-element (på same måte som det norske verbet /kjøle/ berre
-har eitt PRED-element, ikkje /la/ + /bli kald/).[fn:25]
+eitt \PRED{}-element (på same måte som det norske verbet /kjøle/ berre
+har eitt \PRED{}-element, ikkje /la/ + /bli kald/).[fn:25]
 
 Den same situasjonen får me der eit argument eller adjunkt er
 inkorporert i verbet på det eine språket, men uttrykt som eit separat
@@ -1260,18 +1286,18 @@ på samisk.
 I \Last har /la-fryse/ to argument, som ved krav \ref{krav:PRED} begge
 må finne korresponderande argument eller adjunkt for å lenkje /la-fryse/. 
 Då går det ikkje an å lenkje /la-fryse/ til berre /fryse/,
-som har eitt argument; me får eit XCOMP til overs som manglar
+som har eitt argument; me får eit \XCOMP{} til overs som manglar
 lenkje. Me kan heller ikkje lenkje berre /la/ til /la-fryse/, sidan
-det då får ein XCOMP til overs.
+det då får ein \XCOMP{} til overs.
 
 Men, ved å ha ei ein-mange-lenkje, frå /la-fryse/ til både /la/ og /fryse/,
 kan me oppfylle krav \ref{krav:PRED}. Då treng ikkje
-XCOMP-argumentet lenkjast til eit argument av /la-fryse/, det er
-allereie lenkja til PRED-elementet; det som står igjen er unionen av
+\XCOMP{}-argumentet lenkjast til eit argument av /la-fryse/, det er
+allereie lenkja til \PRED{}-elementet; det som står igjen er unionen av
 argumenta til /la/ og /fryse/, desse må alle ha LPT-korrespondanse med
 argument eller adjunkt av /la-fryse/, og omvendt må alle argument av /la-fryse/ 
 ha LPT-korrespondanse med argument eller adjunkt av /la/
-eller /fryse/ (utanom XCOMP-argumentet til /la/, som allereie har ei
+eller /fryse/ (utanom \XCOMP{}-argumentet til /la/, som allereie har ei
 lenkje). Ein kan tolke dette som om /la/ og /fryse/ var samanføyd til
 eitt predikat som krevde to argument (her: /ho/ og /huset/).
 
@@ -1279,13 +1305,13 @@ Den einaste formelle forskjellen mellom dette og
 substantivinkorporering blir då at substantivet ikkje krev eigne
 argument. Det er au mogleg å tenkje seg ein kausativ med eit
 inkorporert objekt, omsett til /la + hovudverb + objekt/, altså ei
-lenkje frå eitt PRED til tre PRED. Igjen vil me då sjå på dei resterande
+lenkje frå eitt \PRED{} til tre \PRED{}. Igjen vil me då sjå på dei resterande
 ulenkja argumenta på kvar side; kvar av desse må lenkjast med eit
 unikt argument eller adjunkt.
 
 Men det bør kanskje vere grenser for kor langt slik samanføying kan
 gå, om ikkje anna fordi problemet fort blir komputasjonelt
-vanskeleg. Å opne for ein-mange-lenkjer mellom PRED-element (eller til
+vanskeleg. Å opne for ein-mange-lenkjer mellom \PRED{}-element (eller til
 og med mange-mange-lenkjer) gir ei mykje større mengd moglege
 løysingar på lenkjingsproblemet; i alle situasjonar der me krev
 LPT-korrespondanse mellom eit argument $a_p$ av $p$ og eit adjunkt
@@ -1312,14 +1338,14 @@ prioritere denne.
 
 I implementasjonen blir difor alle ein-til-ein-lenkjer prøvd
 først. \fxnote[inline,nomargin]{TODO:implementere:} Sidan kan ein
-prøve å føye saman eit ulenkja PRED-element $p$ med eit ulenkja
-PRED-element $a_p$ kor $a_p$ er argument eller adjunkt av $p$, og der
-$p$ og $a_p$ vil kunne lenkjast med eit ulenkja PRED-element $q$ ved
+prøve å føye saman eit ulenkja \PRED{}-element $p$ med eit ulenkja
+\PRED{}-element $a_p$ kor $a_p$ er argument eller adjunkt av $p$, og der
+$p$ og $a_p$ vil kunne lenkjast med eit ulenkja \PRED{}-element $q$ ved
 føringane gitt over, og alle dei andre lenkjingskrava er dekkja. Me
 får då eit modifisert krav \ref{krav:PRED}:
 
-\ex. \label{krav:f-ein-mange} Krav for samanføyd lenkjing frå PRED-elementa
-$p$ og $a_p$, kor $a_p$ er eit argument eller adjunkt av $p$, til PRED-elementet $q$:
+\ex. \label{krav:f-ein-mange} Krav for samanføyd lenkjing frå \PRED{}-elementa
+$p$ og $a_p$, kor $a_p$ er eit argument eller adjunkt av $p$, til \PRED{}-elementet $q$:
 \a. ordformene til $p$ og $a_p$ har saman LPT-korrespondanse med ordformen til $q$
 \b. la $A$ vere unionen av argument til $p$ og argument til $a_p$,
     utanom $a_p$ sjølv;
@@ -1348,13 +1374,13 @@ og \{ /a, deep, appreciation/ \} på den andre.
 
 I vårt system vil bin<ich,dankbar> og have<I,appreciation> lenkjast,
 dankbar og appreciation har LPT-korrespondanse, men kan ikkje lenkjast
-på PRED-nivå sidan dankbar<ich,da> medan appreciation<>, /that/ er
+på \PRED{}-nivå sidan dankbar<ich,da> medan appreciation<>, /that/ er
 adjunkt til appreciation og ville kunne lenkjast til /da/, men /ich/
 får ingen lenkje...
 
 Dette bør kanskje få eit unntak, sidan /ich/ allereie /er/ lenkja? I
 såfall vil det jo gå greit. Sidan ein f-struktur kan stå som argument
-for fleire PRED, bør me tillate at dei står ulenkja så lenge dei er
+for fleire \PRED{}, bør me tillate at dei står ulenkja så lenge dei er
 lenkja minst ein gong? 
 
 Her er det eit problem at me går top-down i f-align. For dette dømet
@@ -1725,8 +1751,8 @@ lenkjing av $n_s$ og $n_t$, men dei to mengdene kan ikkje vere tomme.
 Dette kravet gjer at ein ikkje treng krav \ref{krav:c-tentativt}, og
 vil gi ei mange-mange-lenkje mellom alle nodane i dei to funksjonelle
 domena til /gaiGo-åpnet/ i figur \ref{fig:gaiGo}. Viss me skriv ei
-f-strukturlenkje som eit ordna par mellom PRED-verdien på kjeldesida
-(georgisk, med subskript $_s$) og PRED-verdien på målsida (norsk, med
+f-strukturlenkje som eit ordna par mellom \PRED{}-verdien på kjeldesida
+(georgisk, med subskript $_s$) og \PRED{}-verdien på målsida (norsk, med
 subskript $_t$) får me
 $LL(IP_s)=LL(I'_s)=LL(I_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}=LL(IP_t)=LL(I'_t)=LL(I_t)$
 kor /det/ og /seg/ er ulenkja på både c-strukturnivå og ordnivå[fn:26].
@@ -1823,22 +1849,22 @@ definert i form av f-strukturlenkjer på preterminale nodar.
 *** Funksjonelle c-strukturnodar
 \label{SEC:fnord}
 
-Ikkje alle ord tilsvarer PRED-element i f-strukturen, dette gjeld
+Ikkje alle ord tilsvarer \PRED{}-element i f-strukturen, dette gjeld
 typisk funksjonsord (t.d. /som/, /at/). \fxnote[inline,nomargin]{...og
 desse vil me lenkje kvifor? i kva situasjonar? TODO diskuter.}
 Ved endosentrisitetsprinsippa
 til \citet{bresnan2001lfs} er komplementet til funksjonelle kategoriar
 (C, I, P) ein funksjonell ko-kjerne, det er altså komplementet som gir
-PRED-elementet i dette funksjonelle domenet.
+\PRED{}-elementet i dette funksjonelle domenet.
 
 Problemet med å nytte krava nemnt over i dette tilfellet er at nodar
 over funksjonsord er i det same funksjonelle domenet som komplementet,
-og nodane over funksjonsorda tilføyer ikkje ei ny PRED-lenkje som kan
+og nodane over funksjonsorda tilføyer ikkje ei ny \PRED{}-lenkje som kan
 dele opp treet slik me gjorde tidlegare. Så me må utvide prinsippa for
 å dele opp c-strukturtreet i buntar som dominerer same mengd med
 lenkjer.
 
-Ord som ikkje projiserer PRED-lenkjer kan likevel ha
+Ord som ikkje projiserer \PRED{}-lenkjer kan likevel ha
 LPT-korrespondanse og bestå krava på ordnivå, men når me skal lenkje
 desse på c-strukturnivå må me sjekke ordkrava direkte (me kan ikkje gå
 via nokon f-strukturlenkjing). LPT-kravet gir oss eit utgangspunkt for
@@ -1852,7 +1878,7 @@ ikkje at eit manglande funksjonsord på det eine språket skal hindre
 lenkjing av komplementa, sidan det kan hende at funksjonsordet ikkje
 er krevd på det språket (eventuelt kjem dette fram som korrespondansar
 i f-strukturtrekk, eg har ikkje teke høgd for korrespondansar mellom
-andre f-strukturelement enn PRED i denne oppgåva).
+andre f-strukturelement enn \PRED{} i denne oppgåva).
 
 Me kan krevje at komplementa er lenkja for å sikre at me ikkje lenkjer
 nodar som står i ulike konstekstar (me vil ikkje lenkje /at/ i «han
@@ -1919,7 +1945,7 @@ krav \ref{krav:c-pro} er dekkja for S-nodane med unntaket over.)
 
 Der det eine språket har eit funksjonsord og det andre språket ikkje
 krever det, bryr me oss ikkje om funksjonsordet. For å sjekke noko
-slikt må me som nemnt sjå på andre trekk enn PRED i f-strukturane,
+slikt må me som nemnt sjå på andre trekk enn \PRED{} i f-strukturane,
 noko som blir utanfor denne oppgåva; men om me hadde sjekka slike
 f-strukturkorrespondansar kunne me unngått kravet om
 LPT-korrespondanse og i staden nytta informasjon frå f-strukturane til
@@ -1929,7 +1955,7 @@ implementasjonen min har eg difor lagt mindre vekt lenkjing av
 funksjonelle kategoriar.
 
 *** TOGROK cvimda<PRO> men regne<>expletive -- lenkje? 		     :ROTETE:
-*** TOGROK kva med ekspletivar? ingen PRED men heller ikkje C/F/I    :ROTETE:
+*** TOGROK kva med ekspletivar? ingen \PRED{} men heller ikkje C/F/I    :ROTETE:
 Kandidatane på f-strukturnivå må jo inkludere desse au...
 
 ** SKRIV Mangel på samsvar i syntaks og semantikk		     :ROTETE:
@@ -1949,26 +1975,14 @@ mellom /never/ og /nikby/.
 # samanstilling).
 
 ** TOGROK Diskontinuerlege einingar				     :ROTETE:
-   - diskontinuerlege einingar \cite[s.~4]{cheung2002scg} [[http://scholar.google.no/scholar.bib%3Fhl%3Dno&lr%3D&ie%3DUTF-8&q%3Dinfo:Qh_MRSftNZgJ:scholar.google.com/&output%3Dcitation&oe%3DMACINTOSH&oi%3Dcitation][@books.google]] -- skal dei eigentleg samanstillast? Kva for problem gir dei i forhold til c-strukturnivåsamanstilling?
+   - diskontinuerlege einingar \cite[s.~4]{cheung2002scg}
+     [[http://scholar.google.no/scholar.bib%3Fhl%3Dno&lr%3D&ie%3DUTF-8&q%3Dinfo:Qh_MRSftNZgJ:scholar.google.com/&output%3Dcitation&oe%3DMACINTOSH&oi%3Dcitation][@books.google]] -- skal dei eigentleg samanstillast? Kva for
+     problem gir dei i forhold til c-strukturnivåsamanstilling?
 
-bør ikkje finnast på f-nivå, PRED er unikt instansiert; MEN: prøv «jeg
+bør ikkje finnast på f-nivå, \PRED{} er unikt instansiert; MEN: prøv «jeg
 tror på ham» i XLE, ser ut som dei har komplekse predikat :-/
 *** TODO døme på diskontinuerlege konstituentar som er lenkja	     :ROTETE:
-** TOGROK Er «compounds» frasar?	     :ROTETE:
- \citep[p.~1]{giegerich2006aea}
 
-** TOGROK kva var poenget med dette?				     :ROTETE:
-«etter og uten er dei einaste prep som tek setn utan å vere arg»
-** ULEST Cyrus, FuSe-prosjektet					     :ROTETE:
-\citet{cyrus2004apa}
-«Abstract: We report on a recently initiated project which aims at
-building a multi-layered parallel treebank of English and
-German. Particular attention is devoted to a dedicated
-predicate-argument layer which is used for aligning translationally
-equivalent sentences of the two languages. We describe both our
-conceptual decisions and aspects of their technical realisation. We
-discuss some selected problems and conclude with a few remarks on how
-this project relates to similar projects in the field.»
 ** TODO Konstruksjonar og komposisjonell inekvivalens		     :ROTETE:
 # eg siterer her alsina frå min eigen artikkel..heller sitere min??
 \xbar-teori føreset at det finst éi dotter i kvart ledd som kan
@@ -2014,71 +2028,8 @@ iallfall eit omsetjingsforhold:
 (kan me få den siste generaliseringa frå trebanken?)
 
 
-** SKRIV definer sitering frå MRS-suiten			     :ROTETE:
-** SKRIV setning 7 i MRS-suiten					     :ROTETE:
-# setning 31: her har relativpronomenet (romeli) ingen (anaforisk)
-# kopling til hunden... manglar dette?
 
-# eh, betre tittel
-
-# II.bøyingsklasse i aorist-serien har nominativ-subjekt og
-# dativ-DO/IO som vanleg, medan
-# I.bøyingsklasse-aroist-serie-subjektet står i ergativ, og får
-# nominativ-DO og dativ-IO. danajleva må altså vere i
-# II.bøyingsklasse, og brouns er indirekte objekt? Applikativ?
-  
-
-Ein samanstilling bør i det minste gi følgjande:
-
-# TODO: høgrestill venstre kolonne
-| abramsi brouns daenajleva sigaretze, rom cvimda | Abrams veddet en sigarett med Brown på at det regnet |
-| abramsi brouns daenajleva sigaretze             | Abrams veddet en sigarett med Brown                  |
-| brouns daenajleva sigaretze                     | veddet en sigarett med Brown                         |
-| daenajleva sigaretze                            | veddet (en) sigarett (på)                            |
-| daenajleva                                      | veddet                                               |
-| sigaretze                                       | (en) sigarett (på)                                   |
-| rom cvimda                                      | at det regnet                                        |
-| cvimda                                          | (det) regnet                                         |
-| abramsi                                         | Abrams                                               |
-| brouns                                          | Brown                                                |
-|                                                 |                                                      |
- 
-** TOGROK og så finst jo større forskjellar, stilistiske osb...	     :ROTETE:
-
-** TOGROK prosessering, kognitive modellar?			     :ROTETE:
-finne empiri frå korleis menneske samanstillar? (dvs., korleis skjer
-omsetjing)
-
-- \citet{maier2009sis}, http://linguistlist.org/issues/20/20-1786.html
-«cross-linguistic structural phenomena in the language production of
-bilinguals in the specific context of translation.»
-
-- http://www.linguistlist.org/pubs/diss/browse-diss-action.cfm?DissID=143
-
-- [[http://books.google.com/books%3Fhl%3Dno&lr%3D&ie%3DUTF-8&id%3DhHFoJguRE4oC&oi%3Dfnd&pg%3DPA141&dq%3Dprocessing%2Btranslation%2Bpsycholinguistic%2Bsyntax&ots%3DNUlz1ebVnE&sig%3DrkMwuX59RoIikvTYGq23HNkYtzc][books.google bialystok????lpb]]: «Translation has been called
-  "interlanguage paraphrase"», «a metalinguistic skill». «Paraphrasing
-  consists in finding the meaning of two compared sequences and
-  showing its equivalence, and this identification constitutes a
-  judgment on the sequences»[s.~151]
-
-- [[http://books.google.com/books%3Fhl%3Dno&lr%3D&ie%3DUTF-8&id%3DCZXcTzFLDuwC&oi%3Dfnd&pg%3DPA17&dq%3Dprocessing%2Btranslation%2Bpsycholinguistic%2Bsyntax&ots%3DFUm_X5VCeu&sig%3DNoHLNrNxq7bGNAcsRda8RWNDyOY][books.google house????iic]]: «The process of translation, particularly
-  if successful, necessitates a complex text and discourse
-  processing. The process of interpretation performed by the
-  translator on the source text might lead to a TL text which is more
-  redundant than the SL text. This argument may be stated as "the
-  explicitation hypothesis", [...] especially marked in the work of
-  "non professional" translators» [s.~19--20]
-
-- Hutchinson: «What is a grammatical sentence?» (vanskeleg å unngå
-  /talaren/ i akseptabilitetvurderingar); kva _er_ ei frasesamanstilling,
-  sånn ute i naturen? 
-** TOGROK Retningslinjer for samanstilling			     :ROTETE:
-Ved korpusbygging er det vanleg at retningslinjer for samanstilling
-blir utvikla /etter kvart som ein finn problem/... (det er vanskeleg å
-seie noko /a priori/ om kva for vanskar ein kan finne).
-
-
-** SKRIV Rangering
+** Rangering
    \label{SEC:rangering}
 
 Gitt ei viss f-struktursamanstilling, vil det berre vere ein mogleg
@@ -2124,11 +2075,12 @@ litt, kan me sjå på kor mange av lenkjene frå argumenta til eit
 predikat som ikkje er argument-adjunkt-lenkjer, og der dei ikkje har
 ulik posisjon i argumentstrukturen. Meir formelt:
 
-\ex. La $m$ vere mengda av ein-til-ein LPT-korresponderande
-     argument/adjunkt av to lenkja f-strukturar $F_s$ og $F_t$. La $n$
-     vere dei elementa av $m$ som anten begge er adjunkt, eller begge
-     er argument og har same posisjon i argumentstrukturane
-     sine. /Følgjeskåren/ til $F_s$, $F_t$ er då $\frac{n}{m}$.
+\ex. \label{krav:arg-order-rate} La $m$ vere mengda av ein-til-ein
+     LPT-korresponderande argument/adjunkt av to lenkja f-strukturar
+     $F_s$ og $F_t$. La $n$ vere dei elementa av $m$ som anten begge
+     er adjunkt, eller begge er argument og har same posisjon i
+     argumentstrukturane sine. /Følgjeskåren/ til $F_s$, $F_t$ er då
+     $\frac{n}{m}$.
 
 I spesialtilfellet nemnt over, vil skåren altså vere 1. Når det står
 «ein-til-ein LPT-korresponderande» over, er det for å plukke ut ein
@@ -2151,19 +2103,20 @@ strukturell likskap enn berre LPT-korrespondansen.
 Difor har me dette som eit rangeringskriterium. Me kan formalisere det
 slik:
 
-\ex. La $m$ vere mengda av ein-til-ein LPT-korresponderande
-     argument/adjunkt av to lenkja f-strukturar $F_s$ og $F_t$. La $n$
-     vere dei elementa av $m$ som anten ikkje har argument sjølve,
-     eller som er lenkja på f-strukturnivå. /Djupnskåren/ til $F_s$,
-     $F_t$ er då $\frac{n}{m}$.
+\ex. \label{krav:sub-f-rate} La $m$ vere mengda av ein-til-ein
+     LPT-korresponderande argument/adjunkt av to lenkja f-strukturar
+     $F_s$ og $F_t$. La $n$ vere dei elementa av $m$ som anten ikkje
+     har argument sjølve, eller som er lenkja på
+     f-strukturnivå. /Djupnskåren/ til $F_s$, $F_t$ er då
+     $\frac{n}{m}$.
 
 Der alle LPT-korresponderande argument/adjunkt av $F_s$ og $F_t$ au er
 lenkja, vil djupnskåren vere 1.
 
 *** Rangering for heile samanstillinga
-Kriteria over gir to skårer for eit visst par av PRED-element. Utan å
+Kriteria over gir to skårer for eit visst par av \PRED{}-element. Utan å
 ha testa desse kriteria empirisk er det naturleg å vekte dei likt;
-altså bør skåren for eitt par av PRED-element innehalde produktet av
+altså bør skåren for eitt par av \PRED{}-element innehalde produktet av
 desse skårane.
 
 Men argumenta og adjunkta av desse to elementa kan sjølv ha ulike
@@ -2240,7 +2193,7 @@ sjekka før alle kall på =f-align=. Der me ikkje har informasjon om
 LPT-korrespondanse mellom to ord (orda er ukjende), er lenkjing
 lov. Pro-element og substantiv kan alltid lenkjast med kvarandre.
 \fxnote{TOGROK: kan me i tillegg sjekke om funksjonelle nodar i same
-f-domene som PRED-ordformen har LPT-korrespondanse?}
+f-domene som \PRED{}-ordformen har LPT-korrespondanse?}
 
 Hjelpefunksjonen =argalign= (som igjen kallar =argalign-p=, vist i
 kodefigur \ref{algo:argalign-p}) gir alle moglege
@@ -2421,8 +2374,6 @@ vist i kodefigur \ref{algo:f-align}).
 
 *** SKRIV Funksjonsord utan LPT-korrespondanse bør eigentleg hindre f-strukturlenkjing
 *** SKRIV Når f-lenkjene ikkje er 1-1
-\fxnote{Dette må 1. spesifiserast (kap.3), og 2. implementerast...}
-**** kausativ
 **** preposisjonsobjekt
 "sigaretten" og "sigaretze" er ikkje på same nivå i dei respektive
 f-strukturane nedanfor:
@@ -2446,12 +2397,9 @@ preposisjonsobjekt (m.a. fordi ved eit kall P(X) kan ikkje P vite om X
 er eit adjunkt eller argument).
 
 Sjå au del \ref{SEC:merge-daughters}.
+**** kausativ
 
-**** notat 							     :ROTETE:
-filene 
-: ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
-:  (tab_t (open-and-import "dev/TEST_argadj_t.pl")))
-viser at me kan trenge samanføying av pred på ulike nivå.
+
 *** Kan me gjere f-struktursamanstillinga bottom-up?
 #+BEGIN_LaTeX
   %     \begin{quotation}
@@ -2498,53 +2446,84 @@ sjanse for å korrespondere med kvarandre. For kvart steg du går
 innover må du multiplisere inn sjansen for å trå feil i
 argumentpermutasjonane.
 
-** SKRIV Rangering
+** Rangering
 \label{SEC:impl-f-rangering}
 
-Rangering foregår etter kriteria formalisert i del
-\ref{SEC:rangering}. Implementasjonen av kriteria følgjer den
-formaliseringa ganske eksakt. 
+ Rangering foregår etter kriteria formalisert i del
+ \ref{SEC:rangering}. Implementasjonen av kriteria følgjer
+ formaliseringa ganske eksakt. Funksjonen /rank-f/, i kodefigur
+ \ref{algo:rank-f}, tek ei urangert f-struktursamanstilling,
+ representert som eit avgjerdstre kor førsteelement er ei lenkje
+ (/link/) mellom to f-strukturar, og andreelement er ei mengd
+ (/branches/) med moglege måtar å samanstille argumenta og adjunkta
+ til desse f-strukturane. Kvar enkelt grein i /branches/ er ei mengd
+ med nye avgjerdstre, eitt tre for kvart lenkja argument/adjunkt i den
+ moglege delsamanstillinga. Så viss me har ei lenkje mellom to ytre
+ pred $F_s$ og $F_t$, og desse har to argument kvar ($a1_s$, $a2_s$,
+ $a1_t$, $a2_t$), vil /link/ vere $(F_t,F_s)$ medan /branches/ er $\{
+ \{ a1a1tree, a2a2tree \}, \{ a1a2tree, a2a1tree \} \}$; her har
+ $a1a1tree$ har som /link/ $(a1_s, a2_t)$, osb. Viss desse argumenta
+ ikkje har argument/adjunkt sjølve, vil deira /branches/ vere tomme,
+ og deira /rank-f/ er då 1. For $F_t$ og $F_s$ vil funksjonen /rank-f/
+ returnere den greina som har best skåre[fn:30], gitt ved
+ /rank-branch/.
+
+ Kodefigur \ref{algo:rank-branch} illustrerer funksjonen
+ /rank-branch/. Her har me fått ei viss lenkje /link/ mellom
+ \PRED{}-element, og ser på alle dei moglege måtane å lenkje
+ argument/adjunkt på -- kvar måte er representert ved eit par
+ /sublink, subbranches/. Me finn først den rekursive skåren for
+ /subbranches/ via /rank-f/ igjen, og summerer dette inn i
+ /subrate-sum/. Me returnerer produktet av skårene frå
+ rangeringskriterium \ref{krav:arg-order-rate} og
+ \ref{krav:sub-f-rate} med /subrate-sum/ vekta på kor mange lenkjer
+ det var i greina.
 
 #+BEGIN_LaTeX
       \SetKwComment{Comment}{ // }{}
      \SetKwInOut{Input}{usage}
   
      \begin{algorithm}[]
-      \caption{rank-f(seen, alignments)}
+      \caption{rank-f(seen, link, branches)}
       \label{algo:rank-f}
 
-      \uIf{f-link?(alignments)} {\Return (alignments, 1)}
+      \uIf{branches $=\emptyset$} {\Return (link, 1)}
       \uElse{
         best-rate $\gets$ 0 \;
  	best-branches $\gets \emptyset$ \;
-        \ForAll{branches in alignment} {
-        }
+        \ForAll{branch $\in$ branches} {
+	  newbranch, rate $\gets$ rank-branch(seen, link, branch) \;
+	  \uIf{rate $>=$ best-rate}{
+            best-branch $\gets$ newbranch \;
+            best-rate $\gets$ rate \;
+          }
+	}
+	add best-branch to seen \;
+	\Return seen, best-rate \;
       }
       \end{algorithm}
+
+      \begin{algorithm}[]
+      subs $\gets \emptyset$ \;
+      subrate-sum $\gets$ 0 \;
+      \caption{rank-branch(seen, link, branch)}
+      \label{algo:rank-branch}
+        \ForAll{sublink, subbranches $\in$ branch} {
+	  newsub, subrate $\gets$ rank-f(seen, sublink, subbranches) \;
+	  add newsub to subs \;
+	  subrate-sum $+=$ subrate \;
+	}
+	rate $\gets$ sub-f-rate(seen, branch) $\cdot$ arg-order-rate(link, seen, branch) \\
+	\hfill $\cdot \frac{\text{subrate-sum}}{\text{count(subs)}}$ \;
+	\Return subs, rate \;
+      \end{algorithm}
 #+END_LaTeX
-*** argument-argument > argument-adjunkt
-    Plusspoeng for argument-argument-lenkjer, burde vere eit bra
-    kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
-    i døme \ref{ex:vedde} med \\
-    =da-najleveba<Abrams,Browne,regne>= adjunkt: =sigarett=\\
-    =bet<Abrams,sigarett,regne>= adjunkt: =Browne=
-    
-*** arg1-arg1 arg2-arg2 > arg1-arg2 arg2-arg1 (følgje)
-    Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
-    viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
-    i leksikon ikkje er basert på semantikk, men syntaks). Men elles
-    er det vel OK.
 
-    Enklaste implementasjon: Levenshtein-avstand. Men burde visse
-    argument vektast? (T.d. vekte subjekt om alt anna er likt.)
+I tillegg til skåren, returnerer desse funksjonane den beste
+greina[fn:31], slik at me ender opp med ei enkel, «flat» liste med
+lenkjer. Denne blir sendt vidare til c-strukturlenkjinga.
 
-    Andre forslag: http://en.wikipedia.org/wiki/Edit_distance)
-*** flest lenkja adjunkt
-    Usikker på dette... avheng av om me tillèt lenkjer på tvers av
-    f-strukturar.
-*** Prioritet på rangeringskriterium
-    Dette bør sjølvsagt testast empirisk, blir kanskje utanfor denne
-    oppgåva (diskusjonsdel?), men kan jo prøve meg litt rundt.
+
 ** Lenkjing av c-strukturnodar
 Samanstilling mellom f-strukturar treng i =lfgalign= ikkje informasjon
 om c-strukturen, medan lenkjing av c-strukturnodar skjer på grunnlag
@@ -2785,6 +2764,24 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
 
 
 
+** Rangeringsproblem
+*** argument-argument > argument-adjunkt
+    Plusspoeng for argument-argument-lenkjer, burde vere eit bra
+    kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
+    i døme \ref{ex:vedde} med \\
+    =da-najleveba<Abrams,Browne,regne>= adjunkt: =sigarett=\\
+    =bet<Abrams,sigarett,regne>= adjunkt: =Browne=
+    
+*** arg1-arg1 arg2-arg2 > arg1-arg2 arg2-arg1 (følgje)
+    Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
+    viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
+    i leksikon ikkje er basert på semantikk, men syntaks). Men elles
+    er det vel OK.
+
+    Enklaste implementasjon: Levenshtein-avstand. Men burde visse
+    argument vektast? (T.d. vekte subjekt om alt anna er likt.)
+
+    Andre forslag: http://en.wikipedia.org/wiki/Edit_distance)
 
 * Avslutning
 # tom inndeling for å halde bibliografien sist
@@ -2825,15 +2822,15 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
        ParGram-prosjektet \citep{butt2002pgp} faktisk er, på ulike
        nivå (leksikon og argumentstruktur, c-struktur, f-struktur).
 
-[fn:10] Skal ein lenkje ordet /som/ (utan PRED) med ordet /which/ (med
-        PRED)? Viss krava elles er oppfylt, kan det kanskje vere
+[fn:10] Skal ein lenkje ordet /som/ (utan \PRED{}) med ordet /which/ (med
+        \PRED{})? Viss krava elles er oppfylt, kan det kanskje vere
         informativt med ein type «defekt» lenkje, sjølv om berre det
         eine ordet blir rekna for å vere eit innhaldsord. Frasane til
         deira funksjonelle domene vil uansett kunne lenkjast viss dei andre
         krava er oppfylte.
 
 [fn:12] I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
-        inkludere visse f-strukturar utan PRED-element i kandidatane
+        inkludere visse f-strukturar utan \PRED{}-element i kandidatane
         for samanstilling.
 
 [fn:14] Analysane er henta 18. mai, 2009, frå
@@ -2861,7 +2858,7 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
         Parsebanker \citep{rosen2009lpt}).
 
 [fn:17] Når eg her skriv at to f-strukturar har LPT-korrespondanse,
-        meiner eg sjølvsagt at ordformene til PRED-verdien til kvar
+        meiner eg sjølvsagt at ordformene til \PRED{}-verdien til kvar
         f-struktur har LPT-korrespondanse.
 
 [fn:18] Eigentleg eit slag avgjerdstre; kvart element er eit par, kor
@@ -2887,7 +2884,7 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
         «there is».
 
 [fn:7] Eventuelt kunne me ha definert lenkjingskandidatane på
-       f-strukturnivå som alle PRED-haldande f-strukturar, resultatet
+       f-strukturnivå som alle \PRED{}-haldande f-strukturar, resultatet
        blir det same.
 
 [fn:21] Eigentleg burde slike setningar ikkje vere lenkja på
@@ -2898,7 +2895,7 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
 [fn:13] Me ville au fått ei mange-til-ein-lenkje om me tillot
         /komplekse predikat/ i analysane, t.d. slik
         \citet{butt1998merger} foreslår ved å la kombinasjonen av to
-        ord endre argumentstrukturen til eitt PRED-element.
+        ord endre argumentstrukturen til eitt \PRED{}-element.
 
 [fn:22] Då kan me au representere mange-til-mange-ordlenkjer som
         «udelelege», $(\{\text{gaiGo}\},\{\text{det,åpnet,seg}\})$
@@ -2922,7 +2919,7 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
         synonyme, heller enn generelt plausible omsetjingar.
 
 [fn:25] Det går sjølvsagt an å analysere sjølv leksikaliserte
-        kausativar som om dei har fleire PRED-element, men det bør i
+        kausativar som om dei har fleire \PRED{}-element, men det bør i
         såfall skje på uavhengig grunnlag, ikkje for å gjere lenkjinga
         enklare.
 
@@ -2959,6 +2956,15 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
         ein stringent sannsynsmodell (der summen av skårar for alle
         moglege samanstillingar aldri går over 1); men det bør vere
         mogleg å gjere noko slikt ut av det.
+
+[fn:30] Det kan godt hende me har fleire greiner med same skåre -- for
+        no blir berre den første returnert.
+
+[fn:31] Alternativt kunne me returnert eit tre som var annotert med
+        skårene.
+
+[fn:32] Med eit unntak for adposisjonsobjekt som eg kjem tilbake til i
+        del \ref{SEC:adposisjonsobjekt}.
 
 
 
