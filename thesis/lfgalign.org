@@ -1246,7 +1246,7 @@ ser eg på del \ref{SEC:f-mange-mange}.
  neste del diskuterer eg kva me kan gjere i dei situasjane der det
  ikkje er mogleg å berre hoppe over mellomliggande element.
 
-*** SKRIV Kausativar og inkorporering
+*** Kausativar og inkorporering
 \label{SEC:f-mange-mange}
 
 Til no har me føresett at eit \PRED{}-element anten er ulenkja, eller
@@ -1267,8 +1267,8 @@ fryse». Påfunnet i \Next illustrerer denne situasjonen:
      $\begin{avm}\[pred & `{\bf{}la-fryse}<ho, hus>' \]\end{avm}$
      $\\\\\leftrightarrow$\\
      \b. ho lar huset fryse \\
-     $\begin{avm}\[pred & `{\bf{}la}<ho, hus, XCOMP>' \\
-     xcomp & \[pred & `{\bf{}fryse}<hus>'\]\]\end{avm}$
+     $\begin{avm}\[pred & `{\bf{}la}<ho, hus, \@{1}>' \\
+     xcomp & \@{1} \[pred & `{\bf{}fryse}<hus>'\]\]\end{avm}$
 
 }
 #+END_LaTeX
@@ -1290,7 +1290,14 @@ som har eitt argument; me får eit \XCOMP{} til overs som manglar
 lenkje. Me kan heller ikkje lenkje berre /la/ til /la-fryse/, sidan
 det då får ein \XCOMP{} til overs.
 
-Men, ved å ha ei ein-mange-lenkje, frå /la-fryse/ til både /la/ og /fryse/,
+Det er mogleg å løyse dette formelt ved ei mange-mange-lenkje, kor ein
+tenkjer seg /la/ og /fryse/ som samanføyd og at dei deler
+argumentlister. Sidan begge verba tilfører viktig semantisk
+informasjon, som er reflektert i den leksikaliserte kausativen, ville
+det ikkje vore ønskeleg med ei ein-til-ein-lenkje sjølv om ein såg
+vekk frå problemet med å lenkje argumenta.
+
+Ved å ha ei ein-mange-lenkje, frå /la-fryse/ til både /la/ og /fryse/,
 kan me oppfylle krav \ref{krav:PRED}. Då treng ikkje
 \XCOMP{}-argumentet lenkjast til eit argument av /la-fryse/, det er
 allereie lenkja til \PRED{}-elementet; det som står igjen er unionen av
@@ -1337,12 +1344,12 @@ opprette ei samanstilling på bakgrunn av lik syntaks, vil me
 prioritere denne.
 
 I implementasjonen blir difor alle ein-til-ein-lenkjer prøvd
-først. \fxnote[inline,nomargin]{TODO:implementere:} Sidan kan ein
-prøve å føye saman eit ulenkja \PRED{}-element $p$ med eit ulenkja
-\PRED{}-element $a_p$ kor $a_p$ er argument eller adjunkt av $p$, og der
-$p$ og $a_p$ vil kunne lenkjast med eit ulenkja \PRED{}-element $q$ ved
-føringane gitt over, og alle dei andre lenkjingskrava er dekkja. Me
-får då eit modifisert krav \ref{krav:PRED}:
+først. Sidan kan ein prøve å føye saman eit ulenkja \PRED{}-element
+$p$ med eit ulenkja \PRED{}-element $a_p$ kor $a_p$ er argument eller
+adjunkt av $p$, og der $p$ og $a_p$ vil kunne lenkjast med eit ulenkja
+\PRED{}-element $q$ ved føringane gitt over, og alle dei andre
+lenkjingskrava er dekkja. Me får då ei modifisert utgåve av krav
+\ref{krav:PRED}:
 
 \ex. \label{krav:f-ein-mange} Krav for samanføyd lenkjing frå \PRED{}-elementa
 $p$ og $a_p$, kor $a_p$ er eit argument eller adjunkt av $p$, til \PRED{}-elementet $q$:
@@ -1358,63 +1365,9 @@ $p$ og $a_p$, kor $a_p$ er eit argument eller adjunkt av $p$, til \PRED{}-elemen
     adjunkt til $q$ er lenkja til f-strukturar utanfor $p$
 
 Det er trivielt å utvide dette kravet til å fungere for
-mange-mange-lenkjer au.
-**** TOGROK kan me handtere zutiefst dankbar/deep appreciation?  :ROTETE:
-\citet[s.~40--41]{riezler2006gmt} tillet mange-til-mange-lenkjing
-mellom f-strukturar, så lenge alle f-strukturane som blir lenkja til
-slutt opptrer i same transfer-regel. Frå følgjande setningspar:
-
-\ex. Dafür bin ich zutiefst dankbar \\
-     I have a deep appreciation for that
-
-lenkjar dei \{/zutiefst/\} med \{ /a, deep, appreciation/ \}, men
-sidan \{/appreciation/\} er samanstilt med \{/dankbar/\}, må
-transfer-regelen inkludere \{ /zutiefst, dankbar/ \} på den eine sida
-og \{ /a, deep, appreciation/ \} på den andre.
-
-I vårt system vil bin<ich,dankbar> og have<I,appreciation> lenkjast,
-dankbar og appreciation har LPT-korrespondanse, men kan ikkje lenkjast
-på \PRED{}-nivå sidan dankbar<ich,da> medan appreciation<>, /that/ er
-adjunkt til appreciation og ville kunne lenkjast til /da/, men /ich/
-får ingen lenkje...
-
-Dette bør kanskje få eit unntak, sidan /ich/ allereie /er/ lenkja? I
-såfall vil det jo gå greit. Sidan ein f-struktur kan stå som argument
-for fleire \PRED{}, bør me tillate at dei står ulenkja så lenge dei er
-lenkja minst ein gong? 
-
-Her er det eit problem at me går top-down i f-align. For dette dømet
-går det greit, /ich-I/ blir lenkja ved /bin-have/, men om det var
-omvendt, at me hadde eit ytre predikat kor me hadde argument til
-overs, som blei dekkja ved indre argument, ville
-\ref{krav:PRED-omgivnad} og top-down-metoden til f-align hindra oss i
-å finne dei rette lenkjene.
-
-**** SKRIV om global tyding, ikkje-komposisjonell.. 		     :ROTETE:
-Same globale tyding krev i det minste at, i situasjonen verbet
-denoterer, speler deltakarane same rolle. Men dette er endå meir
-abstrakt/semantisk enn (semantisk) argumentstruktur...
-
-Problem: ikkje-komposisjonell omsetjing. Same globale tyding. Det
-treng ikkje vere berre pragmatisk forskjell--type /kan du lukke døra/
-vs /lukk døra/, kor situasjon gjer setningane like--sidan me kan ha
-konvensjonaliserte konstruksjoner på L1 kor heile tilsvarer enkeltord
-på L2, a la japansk /viss eg ikkje går på skulen så kan det ikkje
-vere/ ~= /eg må gå på skulen/. 
-
-Ein føresetnad eg har, er at setningar som er samanstilte faktisk har
-ein omsetjingsmessig korrespondanse (dette er min data). Så om eit par
-av ytre predikat ikkje korresponderer er det au ein type data; nemleg
-at me har ein omsetjingsmessig korrespondanse der det var ein mismatch
-i ytre argumentstruktur. (Algoritmen bør då lagre slike mismatches
-eksplisitt, ikkje berre la vere å lenkje, for det kan vere andre
-grunnar til at det ikkje kom ei lenkjing. A la ekspertsystem: forklare
-resonnementet.)
-
-Alternativt ein konstruksjonslenkjing... 
-
-Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slag delmengd av
-argstr til $PRED_{L2}$. 
+mange-mange-lenkjer au; men til no har eg ikkje komme over situasjonar
+som krev meir enn ein-mange/mange-ein-lenkjer, og implementasjonen min
+held seg til desse for no.
 
 ** Krav på c-strukturnivå
 \label{SEC:subnode}
@@ -2032,7 +1985,7 @@ iallfall eit omsetjingsforhold:
 ** Rangering
    \label{SEC:rangering}
 
-Gitt ei viss f-struktursamanstilling, vil det berre vere ein mogleg
+Gitt ei viss f-struktursamanstilling, vil det berre vere éin mogleg
 måte å lenkje på c-strukturnivå. Men slik f-strukturkrava er stilt,
 kan me få mange ulike moglege samanstillingar på
 f-strukturnivå. Ideelt sett burde krava vere nyanserte nok til å
@@ -2056,8 +2009,9 @@ ikkje har LPT-informasjon i det heile -- då vil dei i prinsippet
 fungere som «mjuke» skrankar på f-struktursamanstillinga.
 
 Nedanfor følgjer dei kriteria eg har basert implementasjonen på. Som
-nemnt er det berre ein av mange moglege måtar å gjere det på, men eg
-trur det tek innover seg dei viktigaste trekka.
+nemnt er det berre ein av mange moglege måtar å gjere det på, men
+kriteria tek innover seg dei trekka som er relevante for
+argumentstrukturen: argumentfølgje og rekursiv f-strukturlenkjing.
 
 *** Rangering ved følgje
 I \citet[s.~75--76]{dyvik2009lmp} blir det formulert eit
@@ -2137,13 +2091,25 @@ skåre til f-strukturar med mange argument/adjunkt[fn:29].
 
 
 
-** SKRIV Oppsummering av krava
+** Oppsummering
+Krava formulert i denne delen definerer kva for lenkjer som er
+ønskelege mellom konstituentar og mellom f-strukturar, når formålet er
+å annotere ein parallell trebank for lingvistiske studium. Det finst
+visse tilfelle der krava /ikkje/ kan avgjere kva som er den ideelle
+lenkja utan meir informasjon enn det dei grammatiske analysane gir; eg
+diskuterer slike døme i kapittel \ref{SEC:diskusjon}, i tillegg til
+døme som er problematiske for krava sjølv der me har fullstendig
+informasjon, og der meir arbeid trengst. Kapittelet som kjem no gir
+detaljane for programmet =lfgalign=, som implementerer krava frå dette
+kapittelet sånn at det er lettare å teste kor dei slår feil.
+
+
 * Implementasjonen av =lfgalign=
 \label{SEC:implementasjon}
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
-beste evne i eit Lisp[fn:16]-program.
+beste evne i eit Common Lisp[fn:16]-program.
 
 \fxnote{intro TODO, kanskje noko om kva eg faktisk har fått ut av
 implementasjonen} Ei implementering gjer det svært synleg om det finst
@@ -2654,8 +2620,10 @@ konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
     (dette er vel heller stoff for diskusjonsdelen?)}
 
 
-* Diskusjon, resultat av å automatisk samanstille norske og georgiske setningar
+* Diskusjon
 \label{SEC:diskusjon}
+
+# resultat av å automatisk samanstille norske og georgiske setningar osb
 
 I denne delen gir eg ei evaluering av resultata frå å køyre =lfgalign=
 på LFG-analysar av norske og georgiske parallelle setningar. Eg ser på
@@ -2782,7 +2750,81 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
     argument vektast? (T.d. vekte subjekt om alt anna er likt.)
 
     Andre forslag: http://en.wikipedia.org/wiki/Edit_distance)
+** Opne problem
+*** SKRIV om global tyding, ikkje-komposisjonell.. 		     :ROTETE:
+Same globale tyding krev i det minste at, i situasjonen verbet
+denoterer, speler deltakarane same rolle. Men dette er endå meir
+abstrakt/semantisk enn (semantisk) argumentstruktur...
 
+Problem: ikkje-komposisjonell omsetjing. Same globale tyding. Det
+treng ikkje vere berre pragmatisk forskjell--type /kan du lukke døra/
+vs /lukk døra/, kor situasjon gjer setningane like--sidan me kan ha
+konvensjonaliserte konstruksjoner på L1 kor heile tilsvarer enkeltord
+på L2, a la japansk /viss eg ikkje går på skulen så kan det ikkje
+vere/ ~= /eg må gå på skulen/. 
+
+Ein føresetnad eg har, er at setningar som er samanstilte faktisk har
+ein omsetjingsmessig korrespondanse (dette er min data). Så om eit par
+av ytre predikat ikkje korresponderer er det au ein type data; nemleg
+at me har ein omsetjingsmessig korrespondanse der det var ein mismatch
+i ytre argumentstruktur. (Algoritmen bør då lagre slike mismatches
+eksplisitt, ikkje berre la vere å lenkje, for det kan vere andre
+grunnar til at det ikkje kom ei lenkjing. A la ekspertsystem: forklare
+resonnementet.)
+
+Alternativt ein konstruksjonslenkjing... 
+
+Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slag delmengd av
+argstr til $PRED_{L2}$. 
+*** Reentrancy 							     :ROTETE:
+
+Setningsparet i \Next (frå \citet[s.~40]{riezler2006gmt}, nemnt i del
+\ref{SEC:bakgrunn}, ein metode som går frå fraselenkjer til
+f-strukturlenkjer) bør kunne lenkjast, men gir nokre intrikate
+problem.
+
+#+BEGIN_LaTeX
+{\avmoptions{}
+\ex. \ag. Dafür bin ich zutiefst dankbar \\
+      for.det er eg djupt takknemleg \\
+     $\begin{avm}\[pred & `{\bf{}bin}<\@{5}, \@{1}>'  \\
+     subj & \@{5} \[pred &  `{\bf{}ich}' \] \\
+     xcomp & \@{1} \[pred & `{\bf{}dankbar}<\@{5}, \@{3}>' \\
+                     obj &  \@{3} `{\bf{}für}<da>' \] \] \end{avm}$
+     $\\\\\leftrightarrow$\\
+     \bg. I have a deep appreciation for that \\
+      Eg har ei djup takksemd for det \\
+     $\begin{avm}\[pred & `{\bf{}have}<I, \@{2}>' \\
+     xcomp & \@{2} \[pred & `{\bf{}appreciation}'\]\\
+     adjunct  & \{ \[pred & `{\bf{}for}<that>' \] \} \]\end{avm}$
+
+}
+#+END_LaTeX
+
+I =lfgalign= vil me kunne lenkje \p{bin} og \p{have}, med
+LPT-korrespondanse mellom \p{ich} og \p{I} og mellom \p{dankbar} og
+\p{appreciation}. Når me prøver å lenkje \p{dankbar} med
+\p{appreciation} har me LPT-korrespondanse mellom \p{da} og \p
+
+I vårt system vil bin<ich,dankbar> og have<I,appreciation> lenkjast,
+dankbar og appreciation har LPT-korrespondanse, men kan ikkje lenkjast
+på \PRED{}-nivå sidan dankbar<ich,da> medan appreciation<>, /that/ er
+adjunkt til appreciation og ville kunne lenkjast til /da/, men /ich/
+får ingen lenkje...
+
+Dette bør kanskje få eit unntak, sidan /ich/ allereie /er/ lenkja? I
+såfall vil det jo gå greit. Sidan ein f-struktur kan stå som argument
+for fleire \PRED{}, bør me tillate at dei står ulenkja så lenge dei er
+lenkja minst ein gong? 
+
+Her er det eit problem at me går top-down i f-align. For dette dømet
+går det greit, /ich-I/ blir lenkja ved /bin-have/, men om det var
+omvendt, at me hadde eit ytre predikat kor me hadde argument til
+overs, som blei dekkja ved indre argument, ville
+\ref{krav:PRED-omgivnad} og top-down-metoden til f-align hindra oss i
+å finne dei rette lenkjene.
+**** TODO XLE er nede igjen, får ikkje dobbeltsjekka analysen :/
+     
 * Avslutning
 # tom inndeling for å halde bibliografien sist
 
