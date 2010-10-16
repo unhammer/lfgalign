@@ -2107,6 +2107,21 @@ kapittelet sånn at det er lettare å teste kor dei slår feil.
 * Implementasjonen av =lfgalign=
 \label{SEC:implementasjon}
 
+#+BEGIN_LaTeX
+\begin{quotation}
+An article about [...] science in a scientific publication is
+\textbf{not} the scholarship itself, it is merely \textbf{advertising}
+of the scholarship. The actual scholarship is the complete software
+development environment and the complete set of instructions which
+generated the figures.  \\
+\begin{minipage}{0.8\textwidth}
+\begin{flushright}
+(Jon Claerbout)
+\end{flushright}
+\end{minipage}
+\end{quotation}
+#+END_LaTeX
+
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
 beste evne i eit Common Lisp[fn:16]-program.
@@ -2886,7 +2901,7 @@ overs, som blei dekkja ved indre argument, ville
 [fn:2] Tilgjengeleg frå http://github.com/unhammer/lfgalign som fri og
        open programvare under GNU General Public License versjon 3
        eller seinare (av grunnar som burde vere openberre, men sjå
-       \citet{pedersen2008enm, barnes2010pcc} for velformulerte
+       \citet{pedersen2008enm} og \citet{barnes2010pcc} for velformulerte
        argument).
 
 [fn:5] Formatet er dokumentert på

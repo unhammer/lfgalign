@@ -1,4 +1,4 @@
-% Created 2010-10-16 la. 15:08
+% Created 2010-10-16 la. 15:42
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -2015,6 +2015,19 @@ kapittelet sånn at det er lettare å teste kor dei slår feil.
 
 \label{SEC:implementasjon}
 
+\begin{quotation}
+An article about [...] science in a scientific publication is
+\textbf{not} the scholarship itself, it is merely \textbf{advertising}
+of the scholarship. The actual scholarship is the complete software
+development environment and the complete set of instructions which
+generated the figures.  \\
+\begin{minipage}{0.8\textwidth}
+\begin{flushright}
+(Jon Claerbout)
+\end{flushright}
+\end{minipage}
+\end{quotation}
+
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
 beste evne i eit Common Lisp\footnote{Dette språkvalet kan gjere eventuell integrering med andre
@@ -2029,7 +2042,7 @@ spesifisert.
 Programmet \texttt{lfgalign}\footnote{Tilgjengeleg frå \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign} som fri og
        open programvare under GNU General Public License versjon 3
        eller seinare (av grunnar som burde vere openberre, men sjå
-       \citet{pedersen2008enm, barnes2010pcc} for velformulerte
+       \citet{pedersen2008enm} og \citet{barnes2010pcc} for velformulerte
        argument). } tek inn LFG-analysane av to
 setningar som me av uavhengige grunnar trur er omsetjingar av
 kvarandre. LFG-analysane må vere disambiguerte og i Prolog-formatet
