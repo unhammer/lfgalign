@@ -2886,7 +2886,8 @@ overs, som blei dekkja ved indre argument, ville
 [fn:2] Tilgjengeleg frå http://github.com/unhammer/lfgalign som fri og
        open programvare under GNU General Public License versjon 3
        eller seinare (av grunnar som burde vere openberre, men sjå
-       \citet{pedersen2008enm, barnes2010pcc} svært gode argument).
+       \citet{pedersen2008enm, barnes2010pcc} for velformulerte
+       argument).
 
 [fn:5] Formatet er dokumentert på
        http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html. Importeringa
