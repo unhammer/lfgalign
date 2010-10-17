@@ -2218,6 +2218,51 @@ desse f-strukturane med eitt av argumenta til den andre.
  alle kombinasjonane må inkludere alle argument frå $F_s$ og $F_t$,
  jf. krav \ref{krav:PRED} (ev. krav \ref{krav:f-ein-mange}, for
  =margalign=, kalt der me har ei ein-mange/mange-ein-lenkje). 
+#+BEGIN_LaTeX
+  \begin{algorithm}[]
+    \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
+    \label{algo:argalign-p}
+    
+    \Input{Kalt av argalign slik: \\ argalign-p(arguments($F_s$),
+      adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))\\
+      ved samanføyd lenkje frå $F_s$ og $a_s$ til $F_t$ slik: \\
+      argalign-p( arguments($a_s$) $\bigcup$ arguments($F_s$) $-a_s$,
+      adjuncts($a_s$) $\bigcup$ adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))}
+    \BlankLine
+    
+    $a \gets \emptyset$\;
+    \uIf{$args_s$} {
+      $s \in args_s$\;
+      \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
+        \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t-\{t\}$,$adjs_t$)}{
+          add $\{(s,t)\} \bigcup p$ to $a$\;
+        }
+      }
+      \ForAll{$t \in adjs_t$ \textbf{where} LPT($s$,$t$)} {
+        \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t$,$adjs_t-\{t\}$)}{
+          add $\{(s,t)\} \bigcup p$ to $a$\;
+        }
+      }
+      \Return $a$\;
+    }
+    \uElseIf{$args_t$} {
+      \uIf{$adjs_s$}{
+        $s \in adjs_s$\;
+        \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
+          \lForAll{$p \in$ argalign-p($args_s$, $adjs_s-\{s\}$, $args_t-\{t\}$,$adjs_t$)}{
+            add $\{(s,t)\} \bigcup p$ to $a$\;
+          }
+        }
+        \Return $a$\;
+      }\uElse{
+        \Return $\emptyset$  \Comment*[l]{Fail}
+      }
+    }
+    \uElse {
+      \Return \{$\emptyset$\} \Comment*[l]{End}
+    }     
+  \end{algorithm}
+#+END_LaTeX
 
  Funksjonen =argloop= i kodefigur \ref{algo:argloop} går gjennom éin
  av desse argumentpermutasjonane, og prøver å leggje til overflødige
@@ -2301,50 +2346,6 @@ desse f-strukturane med eitt av argumenta til den andre.
         }
     \Return $p$
   \end{algorithm}    
-  
-  \begin{algorithm}[]
-    \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
-    \label{algo:argalign-p}
-    
-    \Input{Kalt av argalign slik: \\ argalign-p(arguments($F_s$),
-      adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))\\
-      ved samanføyd lenkje frå $F_s$ og $a_s$ til $F_t$ slik: \\
-      argalign-p( arguments($a_s$) $\bigcup$ arguments($F_s$) $-a_s$,
-      adjuncts($a_s$) $\bigcup$ adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))}
-    \BlankLine
-    
-    $a \gets \emptyset$\;
-    \uIf{$args_s$} {
-      $s \in args_s$\;
-      \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
-        \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t-\{t\}$,$adjs_t$)}{
-          add $\{(s,t)\} \bigcup p$ to $a$\;
-        }
-      }
-      \ForAll{$t \in adjs_t$ \textbf{where} LPT($s$,$t$)} {
-        \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t$,$adjs_t-\{t\}$)}{
-          add $\{(s,t)\} \bigcup p$ to $a$\;
-        }
-      }
-      \Return $a$\;
-    }
-    \uElseIf{$args_t$} {
-      \uIf{$adjs_s$}{
-        $s \in adjs_s$\;
-        \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
-          \lForAll{$p \in$ argalign-p($args_s$, $adjs_s-\{s\}$, $args_t-\{t\}$,$adjs_t$)}{
-            add $\{(s,t)\} \bigcup p$ to $a$\;
-          }
-        }
-        \Return $a$\;
-      }\uElse{
-        \Return $\emptyset$  \Comment*[l]{Fail}
-      }
-    }
-    \uElse {
-      \Return \{$\emptyset$\} \Comment*[l]{End}
-    }     
-  \end{algorithm}
 #+END_LaTeX
 
 Sjølv om det er krav om LPT-korrespondanse mellom kvart argument og
@@ -2402,7 +2403,7 @@ permutasjonane der eitt adjunktpar er ulenkja.
 Viss $F_s$ og $F_t$ ikkje hadde argument i det heile teke, går
 =argloop= au gjennom moglege permutasjonar av adjunktdøtre, på same
 måte.
-*** Når f-lenkjene ikkje er ein-til-ein
+*** Når f-strukturlenkjene ikkje er ein-til-ein
  Som nemnt i del \ref{SEC:adposisjonsobjekt} hoppar me over
  preposisjonar som plukkar ut adjunkt/argument, dette skjer t.d. i
  =adjalign= ved at funksjonen som henter ut f-strukturen til
@@ -2590,7 +2591,6 @@ har same informasjonstap. Prosedyren =c-align= i kodefigur
 \ref{algo:c-align} implementerer dette kravet. 
 
 #+BEGIN_LaTeX
-\fxnote{TODO: gammal implementasjon, er ganske annleis no.}
  \begin{algorithm}[]
    \caption{c-align(f-alignment, $tree_s$, $tree_t$)}
    \label{algo:c-align}
