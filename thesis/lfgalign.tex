@@ -1,4 +1,4 @@
-% Created 2010-10-17 su. 12:26
+% Created 2010-10-17 su. 13:48
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -50,6 +50,8 @@
 \newcommand{\ua}{\ensuremath{\uparrow}}
 \newcommand{\da}{\ensuremath{\downarrow}}
 \newcommand{\p}[1]{`\textbf{#1}'}
+\SetKwComment{Comment}{ // }{}
+\SetKwInOut{Input}{usage}
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
@@ -2109,76 +2111,81 @@ går ut frå at dette paret har LPT-korrespondanse\footnote{Når eg her skriv at
 sjekka før alle kall på \texttt{f-align}. Der me ikkje har informasjon om
 LPT-korrespondanse mellom to ord (orda er ukjende), er lenkjing
 lov. Pro-element og substantiv kan alltid lenkjast med kvarandre.
-\fxnote{TOGROK: kan me i tillegg sjekke om funksjonelle nodar i same
-f-domene som \PRED{}-ordformen har LPT-korrespondanse?}
 
-Hjelpefunksjonen \texttt{argalign} (som igjen kallar \texttt{argalign-p}, vist i
-kodefigur \ref{algo:argalign-p}) gir alle moglege
-«argumentpermutasjonar», dvs. moglege kombinasjonar av lenkjer mellom
-argumenta til $F_s$ og $F_t$ som tilfredsstiller kravet om
-LPT-korrespondanse, men utan å sjekke at desse argumenta igjen kan
-samanstillast. Funksjonen prøver å lenkje kvart argument til eit
-argument eller eit adjunkt, men gir ingen lenkjer mellom to adjunkt
-(sjå del \ref{SEC:impl-adjalign} nedanfor om dette). Funksjonen gir
-heller ikkje kombinasjonar der minst eitt argument ikkje er lenkja --
-alle kombinasjonane må inkludere alle argument frå $F_s$ og $F_t$,
-jf. krav (iii) og (iv) i \citet[s.~75]{dyvik2009lmp}. Elles er krav
-(i) er tautologisk oppfylt, medan me som nemnt føreset at krav (ii) er
-oppfylt før alle kall på \texttt{f-align}.
+Funksjonen \texttt{f-align} prøver først å lenkje $F_s$ og $F_t$
+ein-til-ein. Viss ikkje dette går, prøver me å føye saman den eine av
+desse f-strukturane med eitt av argumenta til den andre. 
 
-Eit døme: viss $F_s$ har argumenta \SUBJs og \OBJs og ingen adjunkt,
-og $F_t$ har argumentet \SUBJs og eitt adjunkt \ADJ, der alle
-ord-omsetjingar er moglege, vil \texttt{argalign} gi dei to samanstillingane
-$\{(\SUBJ,\SUBJ), (\OBJ,\ADJ)\}$ og $\{(\SUBJ,\ADJ),
-(\OBJ,\SUBJ)\}$. Viss adjunktet til $F_t$ ikkje fantest, eller ikkje
-hadde LPT-korrespondanse med nokon av argumenta til $F_s$, ville me
-ikkje fått nokon samanstillingar; medan viss paret $(\SUBJ,\SUBJ)$
-ikkje hadde LPT-korrespondanse og alt anna var likt, ville me berre
-fått den siste samanstillinga.
 
-Funksjonen \texttt{f-align} går så gjennom kvar lenkje i kvar
-argumentpermutasjon, og prøver å kalle \texttt{f-align} på alle
-lenkjene. Sidan lenkjene som \texttt{argalign} gir har LPT-korrespondanse,
-vil alle f-strukturane i dei rekursive kalla i \texttt{f-align} ha
-LPT-korrespondanse. Eit rekursivt kall kan gi nye samanstillingar i
-dei indre f-strukturane, viss dei relevante krava er oppfylte.
-
-Det er mogleg at ei lenkje frå éi samanstilling kan finnast i andre
-samanstillingar, me unngår dobbeltarbeid ved å lagre alle delvise
-samanstillingar i tabellen $aligntable$. Dette føreset at
-\texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt; t.d. må
-mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
-mot subjektet til $F_t$ vere uavhengig av om objektet til $F_s$ er
-lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. \fxnote{TODO:
-nemne føresetnaden om uavhengnad i kapittel 3}
-
-  \SetKwComment{Comment}{ // }{}
-  \SetKwInOut{Input}{usage}
-  
   \begin{algorithm}[]
-    \caption{sub-f(perm, aligntable)}
-    \label{algo:sub-f}
+    \caption{f-align($F_s$, $F_t$)}
+    \label{algo:f-align}
     
-    $p \gets \emptyset$  \;
-        \ForAll{$A_s$, $A_t$ in perm} {
-          \uIf{aligntable[$A_s$,$A_t$]} {
-            alignment $\gets$ aligntable[$A_s$,$A_t$] \;
-          }
-          \Else {
-            alignment $\gets$ f-align($A_s$, $A_t$)\;
-            aligntable[$A_s$,$A_t$] $\gets$ alignment \;
-          }
-          
-          \uIf{alignment}{
-            add alignment to $p$\;
-          }
-          \uElse{
-            add $(A_s, A_t)$ to $p$ \;
-          }
-        }
-    \Return $p$
+    $alignments \gets \emptyset$  \;
+    $argperms \gets$ argalign($F_s$, $F_t$) \;
+    \uIf{argperms}{
+      add argloop(argperms, $\emptyset$) to $alignments$ \;
+    }
+    \uElse{
+      \ForAll{$A_s$ in arguments($F_s$) \textbf{where} LPT($A_s$,$F_t$)}{
+        $argperms \gets$ margalign($F_s,F_t, A_s,F_t$) \;
+        add argloop($F_s,F_t, (A_s,F_t)$) to $alignments$ \;
+      }
+      \ForAll{$A_t$ in arguments($F_t$) \textbf{where} LPT($F_s$,$A_t$)}{
+        $argperms \gets$ margalign($F_s,F_t, F_s,A_t$) \;
+        add argloop($F_s,F_t, (F_s,A_t)$) to $alignments$ \;
+      }
+    }
+    \lIf {$alignments=\emptyset$}{ \Return $\emptyset$ \Comment*[l]{Fail} }
+    \lElse{ \Return $((F_s, F_t), alignments)$ \; }
   \end{algorithm}    
-  
+
+ Hjelpefunksjonen \texttt{argalign} (som igjen kallar \texttt{argalign-p}, vist i
+ kodefigur \ref{algo:argalign-p}) gir alle moglege
+ «argumentpermutasjonar», dvs. moglege kombinasjonar av lenkjer mellom
+ argumenta til $F_s$ og $F_t$ som tilfredsstiller kravet om
+ LPT-korrespondanse, men utan å sjekke at desse argumenta igjen kan
+ samanstillast. Funksjonen prøver å lenkje kvart argument til eit
+ argument eller eit adjunkt, men gir ingen lenkjer mellom to adjunkt
+ (sjå del \ref{SEC:impl-adjalign} nedanfor om dette). Funksjonen gir
+ heller ikkje kombinasjonar der minst eitt argument ikkje er lenkja --
+ alle kombinasjonane må inkludere alle argument frå $F_s$ og $F_t$,
+ jf. krav \ref{krav:PRED} (ev. krav \ref{krav:f-ein-mange}, for
+ \texttt{margalign}, kalt der me har ei ein-mange/mange-ein-lenkje). 
+
+ Funksjonen \texttt{argloop} i kodefigur \ref{algo:argloop} går gjennom éin
+ av desse argumentpermutasjonane, og prøver å leggje til overflødige
+ adjunkt, i tillegg til å kalle \texttt{sub-f} (kodefigur \ref{algo:sub-f}),
+ som prøver å rekursivt lenkje kvart par av argument/adjunkt i
+ permutasjonen.
+
+ Eit døme: viss $F_s$ har argumenta \SUBJs og \OBJs og ingen adjunkt,
+ og $F_t$ har argumentet \SUBJs og eitt adjunkt \ADJ, der alle
+ ord-omsetjingar er moglege, vil \texttt{argalign} gi dei to samanstillingane
+ $\{(\SUBJ,\SUBJ), (\OBJ,\ADJ)\}$ og $\{(\SUBJ,\ADJ),
+ (\OBJ,\SUBJ)\}$. Viss adjunktet til $F_t$ ikkje fantest, eller ikkje
+ hadde LPT-korrespondanse med nokon av argumenta til $F_s$, ville me
+ ikkje fått nokon samanstillingar; medan viss paret $(\SUBJ,\SUBJ)$
+ ikkje hadde LPT-korrespondanse og alt anna var likt, ville me berre
+ fått den siste samanstillinga.
+
+ Funksjonen \texttt{argloop} går så gjennom kvar argumentpermutasjon og
+ kallar \texttt{sub-f} på permutasjonen; \texttt{sub-f} prøver å kalle \texttt{f-align} på
+ alle lenkjene. Sidan lenkjene som \texttt{argalign} gir har
+ LPT-korrespondanse, vil alle f-strukturane i dei rekursive kalla i
+ \texttt{f-align} ha LPT-korrespondanse. Eit rekursivt kall kan gi nye
+ samanstillingar i dei indre f-strukturane, viss dei relevante krava
+ er oppfylte.
+
+ Det er mogleg at ei lenkje frå éi samanstilling kan finnast i andre
+ samanstillingar, \texttt{sub-f} unngår dobbeltarbeid ved å lagre alle
+ delvise samanstillingar i tabellen $aligntable$. Dette føreset at
+ \texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt; t.d. må
+ mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
+ mot subjektet til $F_t$ vere uavhengig av om objektet til $F_s$ er
+ lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. \fxnote{TODO:
+ nemne føresetnaden om uavhengnad i kapittel 3}
+
   \begin{algorithm}[]
     \caption{argloop(argperms, ($M_s,M_t$))}
     \label{algo:argloop}
@@ -2205,28 +2212,28 @@ nemne føresetnaden om uavhengnad i kapittel 3}
   \end{algorithm}    
   
   \begin{algorithm}[]
-    \caption{f-align($F_s$, $F_t$)}
-    \label{algo:f-align}
+    \caption{sub-f(perm, aligntable)}
+    \label{algo:sub-f}
     
-    $alignments \gets \emptyset$  \;
-    $argperms \gets$ argalign($F_s$, $F_t$) \;
-    \uIf{argperms}{
-      add argloop(argperms, $\emptyset$) to $alignments$ \;
-    }
-    \uElse{
-      \ForAll{$A_s$ in arguments($F_s$)}{
-        $argperms \gets$ margalign($F_s,F_t, A_s,F_t$) \;
-        add argloop($F_s,F_t, (A_s,F_t)$) to $alignments$ \;
-      }
-      \ForAll{$A_t$ in arguments($F_t$)}{
-        $argperms \gets$ margalign($F_s,F_t, F_s,A_t$) \;
-        add argloop($F_s,F_t, (F_s,A_t)$) to $alignments$ \;
-      }
-    }
-    \lIf {$alignments=\emptyset$}{ \Return $\emptyset$ \Comment*[l]{Fail} }
-    \lElse{ \Return $((F_s, F_t), alignments)$ \; }
+    $p \gets \emptyset$  \;
+        \ForAll{$A_s$, $A_t$ in perm} {
+          \uIf{aligntable[$A_s$,$A_t$]} {
+            alignment $\gets$ aligntable[$A_s$,$A_t$] \;
+          }
+          \Else {
+            alignment $\gets$ f-align($A_s$, $A_t$)\;
+            aligntable[$A_s$,$A_t$] $\gets$ alignment \;
+          }
+          
+          \uIf{alignment}{
+            add alignment to $p$\;
+          }
+          \uElse{
+            add $(A_s, A_t)$ to $p$ \;
+          }
+        }
+    \Return $p$
   \end{algorithm}    
-  
   
   \begin{algorithm}[]
     \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
@@ -2314,66 +2321,40 @@ og $F_t$ berre på grunn av at ikkje alle adjunkt kunne lenkjast. Men
 når me har prøvd ein argumentpermutasjon, kan me lage ein kopi av
 denne som i tillegg inneheld lenkjer mellom «overflødige» adverbial,
 altså dei adjunkt-adjunkt-lenkjene som \texttt{argalign} ikkje
-prøver. Hjelpefunksjonen \texttt{adjalign} (ikkje vist her
-\fxnote[inline,nomargin]{TODO: implementere :->}) konstruerer moglege
-permutasjonar av lenkjer mellom adjunkt som ikkje er inkludert i
-$argperm$, og \texttt{f-align} prøver desse rekursivt på same måte som med
-argumentlenkjene. \fxnote{og så er det spørsmålet om me kan lenkje
-adjunkt på ulike nivå i f-strukturane} Lenkjene blir lagt til ein
-\emph{kopi} av argumentpermutasjonane, sidan det ikkje er sikkert at me
-ønskjer å lenkje alle adjunktdøtre. Viss me har to overflødige adjunkt
-på kvar side, og kravet om LPT-korrespondanse er dekkja for alle fire
-moglege par, får me seks moglege permutasjonar, sidan me inkluderer
-dei fire permutasjonane der eitt adjunktpar er ulenkja.
+prøver. Hjelpefunksjonen \texttt{adjalign} (ikkje vist her) konstruerer
+moglege permutasjonar av lenkjer mellom adjunkt som ikkje er inkludert
+i $argperm$, og \texttt{argloop} prøver desse rekursivt via \texttt{sub-f} på same
+måte som med argumentlenkjene. Lenkjene blir lagt til ein \emph{kopi} av
+argumentpermutasjonane, sidan det ikkje er sikkert at me ønskjer å
+lenkje alle adjunktdøtre. Viss me har to overflødige adjunkt på kvar
+side, og kravet om LPT-korrespondanse er dekkja for alle fire moglege
+par, får me seks moglege permutasjonar, sidan me inkluderer dei fire
+permutasjonane der eitt adjunktpar er ulenkja.
 
-Viss $F_s$ og $F_t$ ikkje hadde argument i det heile teke, går me au
-gjennom moglege permutasjonar av adjunktdøtre, på same måte (ikkje
-vist i kodefigur \ref{algo:f-align}).
-
-\subsection{\textbf{SKRIV} Funksjonsord utan LPT-korrespondanse bør eigentleg hindre f-strukturlenkjing}
+Viss $F_s$ og $F_t$ ikkje hadde argument i det heile teke, går
+\texttt{argloop} au gjennom moglege permutasjonar av adjunktdøtre, på same
+måte.
+\subsection{Når f-lenkjene ikkje er ein-til-ein}
 \label{sec-4.1.2}
 
-\subsection{\textbf{SKRIV} Når f-lenkjene ikkje er 1-1}
-\label{sec-4.1.3}
+ Som nemnt i del \ref{SEC:adposisjonsobjekt} hoppar me over
+ preposisjonar som plukkar ut adjunkt/argument, dette skjer t.d. i
+ \texttt{adjalign} ved at funksjonen som henter ut f-strukturen til
+ adjunkt-døtre av ein f-struktur hoppar over preposisjonar.
 
-\subsubsection{preposisjonsobjekt}
-\label{sec-4.1.3.1}
-
-``sigaretten'' og ``sigaretze'' er ikkje på same nivå i dei respektive
-f-strukturane nedanfor:
-\begin{verbatim}
- 0[ PRED vedde<28,29,27,30>
-    29[ PRED sigarett<> ] ]
-\end{verbatim}
-
-
-\begin{verbatim}
- 0[ PRED da-najleveba<37,10,46>
-    ADJUNCT { 2 }
-    2[ ze<5>
-       OBJ 5[ sigareti ] ] ]
-\end{verbatim}
-
-
-Men dette er fordi sigaretze er \underline{adjunkt}, og i følgje fotnote 3 i
-\citet{dyvik2009lmp} er P(ADJ) lik den semantiske formen til
-\underline{preposisjonsobjektet} til ADJ. (Er dette heilt enkelt? Kan me ha
-adjunkt med fleire «preposisjonsargument»?)
-
-I motsetning til å endre på P(ADJ) slik at pred-verdien til eit
-adjunkt hoppar over preposisjonar og inn i preposisjonsobjekt, har eg
-i implementasjonen min gjort det slik at funksjonen som henter ut \emph{f-strukturen} til adjunkt-døtre av ein f-struktur hoppar over
-preposisjonsobjekt (m.a. fordi ved eit kall P(X) kan ikkje P vite om X
-er eit adjunkt eller argument).
-
-Sjå au del \ref{SEC:merge-daughters}.
-\subsubsection{kausativ}
-\label{sec-4.1.3.2}
-
-
+ Der det er umogleg å finne ein kombinasjon av argument- og
+ adjunkt-lenkjer slik at alle argument har LPT-korrespondanse med ein
+ unik f-struktur, dvs. der \texttt{argalign} feilar, prøver me
+ ein-mange/mange-ein-lenkjer. Dette er ikkje verre enn at ein kallar
+ \texttt{argalign-p} med unionen av argument frå dei to samanføyde
+ f-strukturane (minus desse f-strukturane sjølve); men me sjekker i
+ tillegg at kjeldeargumentet som blir samanføyd med kjeldepredikatet
+ har LPT-korrespondanse med målpredikatet. Sidan dette berre skjer
+ viss \texttt{argalign} feilar, blir det naturleg nedprioritert, som forklart
+ i del \ref{SEC:f-mange-mange}.
 
 \subsection{Kan me gjere f-struktursamanstillinga bottom-up?}
-\label{sec-4.1.4}
+\label{sec-4.1.3}
 
   %     \begin{quotation}
   %    Any sufficiently complex problem needs to be coded three times.\\
@@ -2383,6 +2364,11 @@ Sjå au del \ref{SEC:merge-daughters}.
   % \end{flushright}
   % \end{minipage}
   %    \end{quotation}
+
+Denne metoden går top-down frå ytre PRED og ned i underordna
+argument/adjunkt. Me vil difor aldri prøve å lenkje ein ytre
+f-struktur med ein indre f-struktur, utanom ved ein-mange-lenkjing.
+
 Ein alternativ metode for lenkjing av f-strukturane er å byrje med
 alle logisk moglege permutasjonar av LPT-korrespondansar, og så sile
 ut dei som ikkje svarer til krava. Prosessen ville nok blitt mykje
@@ -2402,7 +2388,7 @@ eitt ord er ulenkja, utan at me treng å vite kva for ord det er; med
 desse kortare listene inkludert får me endå fleire moglege
 samanstillingar per setning (4 ord gir 26, 8 ord gir 2186 moglege
 samanstillingar). Sjølv om me heile tida vel dei samanstillingane som
-lenkjar flest ord, ville maskinen raskt fått problem. I tillegg har me
+lenkjar flest ord, vil maskinen raskt få problem. I tillegg har me
 problemet med 1-mange-lenkjer, som skaper endå fleire moglege
 samanstillingar.
 
@@ -2417,6 +2403,10 @@ omsetjingar av kvarandre, vil dei to ytre f-strukturane ha størst
 sjanse for å korrespondere med kvarandre. For kvart steg du går
 innover må du multiplisere inn sjansen for å trå feil i
 argumentpermutasjonane.
+
+Det finst altså både praktiske og meir ideelle grunnar til å gjere det
+på denne måten, men om det faktisk fungerer er eit spørsmål eg kjem
+tilbake til i del \ref{SEC:diskusjon}.
 
 \section{Rangering}
 \label{sec-4.2}
@@ -2454,9 +2444,6 @@ argumentpermutasjonane.
  \ref{krav:sub-f-rate} med \emph{subrate-sum} vekta på kor mange lenkjer
  det var i greina.
 
-      \SetKwComment{Comment}{ // }{}
-     \SetKwInOut{Input}{usage}
-  
      \begin{algorithm}[]
       \caption{rank-f(seen, link, branches)}
       \label{algo:rank-f}
