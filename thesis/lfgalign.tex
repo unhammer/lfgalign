@@ -1,4 +1,4 @@
-% Created 2010-10-17 su. 10:16
+% Created 2010-10-17 su. 12:26
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -2152,82 +2152,125 @@ mot subjektet til $F_t$ vere uavhengig av om objektet til $F_s$ er
 lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. \fxnote{TODO:
 nemne føresetnaden om uavhengnad i kapittel 3}
 
-      \SetKwComment{Comment}{ // }{}
-     \SetKwInOut{Input}{usage}
+  \SetKwComment{Comment}{ // }{}
+  \SetKwInOut{Input}{usage}
   
-     \begin{algorithm}[]
-      \caption{f-align($F_s$, $F_t$)}
-      \label{algo:f-align}
-      
-      $alignments \gets \emptyset$  \;
-      \ForAll{argperm in argalign($F_s$, $F_t$)} {
-        $p \gets \emptyset$ \;
-         \ForAll{$A_s$, $A_t$ in argperm} {
-           \uIf{not(aligntable[$A_s$,$A_t$])} {
-           aligntable[$A_s$,$A_t$] $\gets$ f-align($A_s$, $A_t$)\;
-           }
-          \uIf{aligntable[$A_s$,$A_t$]}{add aligntable[$A_s$,$A_t$] to $p$\;}
-          \uElse{add $(A_s, A_t)$ to $p$}
+  \begin{algorithm}[]
+    \caption{sub-f(perm, aligntable)}
+    \label{algo:sub-f}
+    
+    $p \gets \emptyset$  \;
+        \ForAll{$A_s$, $A_t$ in perm} {
+          \uIf{aligntable[$A_s$,$A_t$]} {
+            alignment $\gets$ aligntable[$A_s$,$A_t$] \;
+          }
+          \Else {
+            alignment $\gets$ f-align($A_s$, $A_t$)\;
+            aligntable[$A_s$,$A_t$] $\gets$ alignment \;
+          }
+          
+          \uIf{alignment}{
+            add alignment to $p$\;
+          }
+          \uElse{
+            add $(A_s, A_t)$ to $p$ \;
+          }
         }
+    \Return $p$
+  \end{algorithm}    
+  
+  \begin{algorithm}[]
+    \caption{argloop(argperms, ($M_s,M_t$))}
+    \label{algo:argloop}
+
+    $alignments \gets \emptyset$  \;
+    \uIf{argperms non-empty} {
+      \ForAll{argperm in argperms} {
+        $p \gets (M_s,M_t) \bigcup$ sub-f(argperm)
+    \Comment*[r]{optional merged arg}
         add $p$ to $alignments$ \;
         \ForAll{adjperm in adjalign(argperm, $F_s$, $F_t$)} {
-          $a \gets$ copy-of($p$) \Comment*[r]{optional adjunct links}
-          \ForAll{$A_s$, $A_t$ in adjperm}{
-            \uIf{not(aligntable[$A_s$,$A_t$])} {
-              aligntable[$A_s$,$A_t$] $\gets$ f-align($A_s$, $A_t$)\;
-            }
-            \uIf{aligntable[$A_s$,$A_t$]}{add aligntable[$A_s$,$A_t$] to $a$\;}
-            \uElse{add $(A_s, A_t)$ to $a$}
-          }
-          add $a$ to $alignments$ \;
+          $a \gets p \bigcup$ sub-f(adjperm)  \Comment*[r]{optional adjunct links}
+          add $a$ to $alignments$\;
         } % adjperm in adjalign
-       } % argperm in argalign
-       \Comment{loop through adjalign if no arguments exist}
-       \lIf {$alignments=\emptyset$}{ \Return $\emptyset$ \Comment*[l]{Fail} }
-       \lElse{ \Return $((F_s, F_t), alignments)$ \; }
-       \end{algorithm}    
+      } % argperm in argalign
+    }
+    \uElse {
+      \Comment{no arguments that need matching, add any adjuncts}
+      \ForAll{adjperm in adjalign($\emptyset$, $F_s$, $F_t$)} {
+        add sub-f(adjperm) to $alignments$ \;
+      } % adjperm in adjalign
+    }
+    \Return $alignments$
+  \end{algorithm}    
+  
+  \begin{algorithm}[]
+    \caption{f-align($F_s$, $F_t$)}
+    \label{algo:f-align}
     
+    $alignments \gets \emptyset$  \;
+    $argperms \gets$ argalign($F_s$, $F_t$) \;
+    \uIf{argperms}{
+      add argloop(argperms, $\emptyset$) to $alignments$ \;
+    }
+    \uElse{
+      \ForAll{$A_s$ in arguments($F_s$)}{
+        $argperms \gets$ margalign($F_s,F_t, A_s,F_t$) \;
+        add argloop($F_s,F_t, (A_s,F_t)$) to $alignments$ \;
+      }
+      \ForAll{$A_t$ in arguments($F_t$)}{
+        $argperms \gets$ margalign($F_s,F_t, F_s,A_t$) \;
+        add argloop($F_s,F_t, (F_s,A_t)$) to $alignments$ \;
+      }
+    }
+    \lIf {$alignments=\emptyset$}{ \Return $\emptyset$ \Comment*[l]{Fail} }
+    \lElse{ \Return $((F_s, F_t), alignments)$ \; }
+  \end{algorithm}    
+  
+  
+  \begin{algorithm}[]
+    \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
+    \label{algo:argalign-p}
     
-      \begin{algorithm}[]
-      \caption{argalign-p($args_s$, $adjs_s$, $args_t$, $adjs_t$)}
-      \label{algo:argalign-p}
+    \Input{Kalt av argalign slik: \\ argalign-p(arguments($F_s$),
+      adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))\\
+      ved samanføyd lenkje frå $F_s$ og $a_s$ til $F_t$ slik: \\
+      argalign-p( arguments($a_s$) $\bigcup$ arguments($F_s$) $-a_s$,
+      adjuncts($a_s$) $\bigcup$ adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))}
+    \BlankLine
     
-      \Input{Kalt av argalign slik: \\ argalign-p(arguments($F_s$),
-      adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))}
-      \BlankLine
-      
-     $a \gets \emptyset$\;
-     \uIf{$args_s$} {
-           $s \in args_s$\;
-           \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
-               \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t-\{t\}$,$adjs_t$)}{
-  add $\{(s,t)\} \bigcup p$ to $a$\;
-             }
-            }
-           \ForAll{$t \in adjs_t$ \textbf{where} LPT($s$,$t$)} {
-               \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t$,$adjs_t-\{t\}$)}{
-  add $\{(s,t)\} \bigcup p$ to $a$\;
-                }
-           }
-             \Return $a$\;
-         }
-          \uElseIf{$args_t$} {
-            \uIf{$adjs_s$}{
-                $s \in adjs_s$\;
-           \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
-               \lForAll{$p \in$ argalign-p($args_s$, $adjs_s-\{s\}$, $args_t-\{t\}$,$adjs_t$)}{
-  add $\{(s,t)\} \bigcup p$ to $a$\;
-             }
-            }
-             \Return $a$\;
-        }\uElse{
-              \Return $\emptyset$  \Comment*[l]{Fail}
-            }
+    $a \gets \emptyset$\;
+    \uIf{$args_s$} {
+      $s \in args_s$\;
+      \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
+        \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t-\{t\}$,$adjs_t$)}{
+          add $\{(s,t)\} \bigcup p$ to $a$\;
+        }
+      }
+      \ForAll{$t \in adjs_t$ \textbf{where} LPT($s$,$t$)} {
+        \lForAll{$p \in$ argalign-p($args_s-\{s\}$, $adjs_s$, $args_t$,$adjs_t-\{t\}$)}{
+          add $\{(s,t)\} \bigcup p$ to $a$\;
+        }
+      }
+      \Return $a$\;
+    }
+    \uElseIf{$args_t$} {
+      \uIf{$adjs_s$}{
+        $s \in adjs_s$\;
+        \ForAll{$t \in args_t$ \textbf{where} LPT($s$,$t$)} {
+          \lForAll{$p \in$ argalign-p($args_s$, $adjs_s-\{s\}$, $args_t-\{t\}$,$adjs_t$)}{
+            add $\{(s,t)\} \bigcup p$ to $a$\;
           }
-        \uElse {
-          \Return \{$\emptyset$\} \Comment*[l]{End}
-        }     
-      \end{algorithm}
+        }
+        \Return $a$\;
+      }\uElse{
+        \Return $\emptyset$  \Comment*[l]{Fail}
+      }
+    }
+    \uElse {
+      \Return \{$\emptyset$\} \Comment*[l]{End}
+    }     
+  \end{algorithm}
 
 Sjølv om det er krav om LPT-korrespondanse mellom kvart argument og
 eit argument/adjunkt for å lenkje $F_s$ og $F_t$, er det ikkje noko
@@ -2575,22 +2618,8 @@ diskusjonsdel:\emph{Det er ikkje berre ei N-gramsamanstilling; sidan
 lenkjene er mellom c-strukturnodar kor kvar node dominerer ein
 konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
 
-
-\subsection{\textbf{SKRIV} viss me har LPT, men ikkje rekursiv f-lenkje}
-\label{sec-4.3.1}
-
-    Dette bør kanskje vere valfritt i programmet, for å sjå kva det
-    fører til: vil du ta med LPT-korrespondansar som ikkje har
-    f-lenkjer i \texttt{add-links}?
-
-    Og omvendt, finst det LPT-korrespondansar som ikkje kjem med i
-    f-alignment i det heile teke, men som likevel burde ha noko å seie
-    for c-strukturlenkjinga? (Men burde dei ikkje då vere med i
-    f-alignment au?)
-
-\fxnote{Kan me \textbf{fjerne} visse f-samanstillingar pga. c-strukturinfo?
-    dvs. disambiguere...
-    (dette er vel heller stoff for diskusjonsdelen?)}
+I neste kapittel går eg gjennom resultat av å køyre \texttt{lfgalign} på eit
+lite testsett. 
 
 
 \chapter{Diskusjon}
