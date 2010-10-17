@@ -1,4 +1,4 @@
-% Created 2010-10-16 la. 15:42
+% Created 2010-10-17 su. 10:16
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -53,7 +53,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{16/10, 2010}
+\date{17/10, 2010}
 
 \begin{document}
 
@@ -2016,34 +2016,39 @@ kapittelet sånn at det er lettare å teste kor dei slår feil.
 \label{SEC:implementasjon}
 
 \begin{quotation}
-An article about [...] science in a scientific publication is
-\textbf{not} the scholarship itself, it is merely \textbf{advertising}
-of the scholarship. The actual scholarship is the complete software
-development environment and the complete set of instructions which
-generated the figures.  \\
-\begin{minipage}{0.8\textwidth}
+Scientists reproduce results; engineers build impressive and enduring
+artifacts; and theologians muse about what they believe but can't see
+or prove.
+\begin{minipage}{0.77\textwidth}
 \begin{flushright}
-(Jon Claerbout)
+\citep[s.~466]{pedersen2008enm}
 \end{flushright}
 \end{minipage}
 \end{quotation}
+
+Eit formelt krav kan se bra ut på papiret, men ha skjulte manglar som
+ikkje kjem fram før ein har testa det.  Ei implementering gjer det med
+ein gong synleg om det finst manglar i det formelle kravet, eller om
+noko ikkje er presist nok spesifisert.
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
 beste evne i eit Common Lisp\footnote{Dette språkvalet kan gjere eventuell integrering med andre
         LFG-system lettare (Common Lisp er m.a. nytta i LFG
-        Parsebanker \citep{rosen2009lpt}). }-program.
+        Parsebanker \citep{rosen2009lpt}). }-program. Dette kapittelet gir eit
+overblikk over implementasjonen, medan neste kapittel går gjennom
+resultat av køyring\footnote{«An article about [\ldots{}] science in a scientific publication is
+       \textbf{not} the scholarship itself, it is merely
+       \textbf{advertising} of the scholarship. The actual scholarship
+       is the complete software development environment and the
+       complete set of instructions which generated the figures.»
+       \citep[Jon Claerbout,~i][s.~7--8]{stodden2009err}. Kjeldekoden
+       til implementasjonen er tilgjengeleg frå
+       \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign} (som fri og open
+       programvare under GNU General Public License versjon 3 eller
+       seinare), saman med testmaterialet nytta i neste kapittel. }.
 
-\fxnote{intro TODO, kanskje noko om kva eg faktisk har fått ut av
-implementasjonen} Ei implementering gjer det svært synleg om det finst
-manglar i eit formelt krav, eller om noko ikkje er godt nok
-spesifisert.
-
-Programmet \texttt{lfgalign}\footnote{Tilgjengeleg frå \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign} som fri og
-       open programvare under GNU General Public License versjon 3
-       eller seinare (av grunnar som burde vere openberre, men sjå
-       \citet{pedersen2008enm} og \citet{barnes2010pcc} for velformulerte
-       argument). } tek inn LFG-analysane av to
+Programmet \texttt{lfgalign} tek inn LFG-analysane av to
 setningar som me av uavhengige grunnar trur er omsetjingar av
 kvarandre. LFG-analysane må vere disambiguerte og i Prolog-formatet
 frå XLE\footnote{Formatet er dokumentert på
@@ -2091,12 +2096,12 @@ moglege samanstillingar. Kvar samanstilling er ei mengd med par av
 f-strukturar\footnote{Eigentleg eit slag avgjerdstre; kvart element er eit par, kor
         første element er lenkja mellom dei yttarste f-strukturane, og
         andre element er dei moglege samanstillingane for dei indre
-        strukturane. Denne strukturen kan vere nyttig for å rangere
+        strukturane. Denne strukturen er nyttig for å rangere
         samanstillingar, og \texttt{f-align} blir mykje meir oversiktleg av å
-        jobbe med eit slikt tre. Ein funksjon \texttt{flatten} omformar det
-        ferdige treet til ei enkel liste med samanstillingar, kor kvar
-        samanstilling er ei flat liste med lenkjer mellom
-        f-strukturar. }. Eit par $(F_s,F_t)$ representerer ei lenkje frå
+        jobbe med eit slikt tre. Ein funksjon \texttt{flatten} kan nyttast
+        til å omforme det ferdige treet til ei enkel liste med
+        samanstillingar, kor kvar samanstilling er ei flat liste med
+        lenkjer mellom f-strukturar. }. Eit par $(F_s,F_t)$ representerer ei lenkje frå
 ein f-struktur på kjeldespråket, til ein f-struktur på målspråket. Me
 går ut frå at dette paret har LPT-korrespondanse\footnote{Når eg her skriv at to f-strukturar har LPT-korrespondanse,
         meiner eg sjølvsagt at ordformene til \PRED{}-verdien til kvar

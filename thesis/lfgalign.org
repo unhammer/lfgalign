@@ -2109,29 +2109,29 @@ kapittelet sånn at det er lettare å teste kor dei slår feil.
 
 #+BEGIN_LaTeX
 \begin{quotation}
-An article about [...] science in a scientific publication is
-\textbf{not} the scholarship itself, it is merely \textbf{advertising}
-of the scholarship. The actual scholarship is the complete software
-development environment and the complete set of instructions which
-generated the figures.  \\
-\begin{minipage}{0.8\textwidth}
+Scientists reproduce results; engineers build impressive and enduring
+artifacts; and theologians muse about what they believe but can't see
+or prove.
+\begin{minipage}{0.77\textwidth}
 \begin{flushright}
-(Jon Claerbout)
+\citep[s.~466]{pedersen2008enm}
 \end{flushright}
 \end{minipage}
 \end{quotation}
 #+END_LaTeX
 
+Eit formelt krav kan se bra ut på papiret, men ha skjulte manglar som
+ikkje kjem fram før ein har testa det.  Ei implementering gjer det med
+ein gong synleg om det finst manglar i det formelle kravet, eller om
+noko ikkje er presist nok spesifisert.
+
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
-beste evne i eit Common Lisp[fn:16]-program.
+beste evne i eit Common Lisp[fn:16]-program. Dette kapittelet gir eit
+overblikk over implementasjonen, medan neste kapittel går gjennom
+resultat av køyring[fn:2].
 
-\fxnote{intro TODO, kanskje noko om kva eg faktisk har fått ut av
-implementasjonen} Ei implementering gjer det svært synleg om det finst
-manglar i eit formelt krav, eller om noko ikkje er godt nok
-spesifisert.
-
-Programmet \texttt{lfgalign}[fn:2] tek inn LFG-analysane av to
+Programmet \texttt{lfgalign} tek inn LFG-analysane av to
 setningar som me av uavhengige grunnar trur er omsetjingar av
 kvarandre. LFG-analysane må vere disambiguerte og i Prolog-formatet
 frå XLE[fn:5]. Programmet les inn dei to filene og opprettar ein
@@ -2898,11 +2898,16 @@ overs, som blei dekkja ved indre argument, ville
         ikkje hadde korrekt analyse (t.d. eit \textsc{PRO} der
         grammatikken burde funne eit substantiv).
 
-[fn:2] Tilgjengeleg frå http://github.com/unhammer/lfgalign som fri og
-       open programvare under GNU General Public License versjon 3
-       eller seinare (av grunnar som burde vere openberre, men sjå
-       \citet{pedersen2008enm} og \citet{barnes2010pcc} for velformulerte
-       argument).
+[fn:2] «An article about [...] science in a scientific publication is
+       \textbf{not} the scholarship itself, it is merely
+       \textbf{advertising} of the scholarship. The actual scholarship
+       is the complete software development environment and the
+       complete set of instructions which generated the figures.»
+       \citep[Jon Claerbout,~i][s.~7--8]{stodden2009err}. Kjeldekoden
+       til implementasjonen er tilgjengeleg frå
+       http://github.com/unhammer/lfgalign (som fri og open
+       programvare under GNU General Public License versjon 3 eller
+       seinare), saman med testmaterialet nytta i neste kapittel.
 
 [fn:5] Formatet er dokumentert på
        http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html. Importeringa
@@ -2924,12 +2929,12 @@ overs, som blei dekkja ved indre argument, ville
 [fn:18] Eigentleg eit slag avgjerdstre; kvart element er eit par, kor
         første element er lenkja mellom dei yttarste f-strukturane, og
         andre element er dei moglege samanstillingane for dei indre
-        strukturane. Denne strukturen kan vere nyttig for å rangere
+        strukturane. Denne strukturen er nyttig for å rangere
         samanstillingar, og =f-align= blir mykje meir oversiktleg av å
-        jobbe med eit slikt tre. Ein funksjon =flatten= omformar det
-        ferdige treet til ei enkel liste med samanstillingar, kor kvar
-        samanstilling er ei flat liste med lenkjer mellom
-        f-strukturar.
+        jobbe med eit slikt tre. Ein funksjon =flatten= kan nyttast
+        til å omforme det ferdige treet til ei enkel liste med
+        samanstillingar, kor kvar samanstilling er ei flat liste med
+        lenkjer mellom f-strukturar.
 
 [fn:19] Ved c-struktur-f-strukturavbildinga $\phi$, ein funksjon som
         tek ein c-strukturnode og returnerer ein (delvis) f-struktur.
