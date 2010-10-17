@@ -1656,17 +1656,18 @@ I'-nodane dominerer ulike f-strukturlenkja informasjonstilskot på dei
 ulike språka; likeins for I-nodane. Eg kjem tilbake til korleis ein
 kan formalisere dette kravet i del \ref{SEC:c-strengare}.
 
-Det andre alternativet er å ikkje gjere forskjell på IP, I' og I når det
-gjeld c-strukturlenkjinga. Grunnen til å gjere dette er at /gaiGo/
-både korresponderer med heile frasen /det åpnet seg/, men au med berre /åpnet seg/.
-I figur \ref{fig:PanJara-gaiGo} ser me t.d. at I'-nodane
-kan lenkjast (utan å sjå på anna enn krav \ref{krav:c-tentativt}), det vil altså
-vere mogleg å lenkje I'-nodane
-i andre omgivnader. Det finst ein slags dobbeltheit mellom
-korrespondansen /gaiGo-det åpnet seg/ og korrespondansen /gaiGo-åpnet seg/
-og me kan uttrykkje dette ved å ikkje gjere forskjell på IP og I' i figur
-\ref{fig:gaiGo} \citep{dyvik2010pc}.\fxnote[inline,nomargin]{har eg forstått dette
-rett? (korleis er dette ein korrespondanse på tokennivå?)}
+ Det andre alternativet er å ikkje gjere forskjell på IP, I' og I når
+ det gjeld c-strukturlenkjinga. Grunnen til å gjere dette er at
+ /gaiGo/ både korresponderer med heile frasen /det åpnet seg/, men au
+ med berre /åpnet seg/.  I figur \ref{fig:PanJara-gaiGo} ser me
+ t.d. at I'-nodane kan lenkjast (utan å sjå på anna enn krav
+ \ref{krav:c-tentativt}), det vil altså vere mogleg å lenkje I'-nodane
+ i andre omgivnader. Det finst ein slags dobbeltheit mellom
+ korrespondansen /gaiGo-det åpnet seg/ og korrespondansen /gaiGo-åpnet
+ seg/ og me kan uttrykkje dette ved å ikkje gjere forskjell på IP og
+ I' i figur \ref{fig:gaiGo} (Dyvik 2010
+ \citep{dyvik2010pc}).\fxnote[inline,nomargin]{har eg forstått dette
+ rett? (korleis er dette ein korrespondanse på tokennivå?)}
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -2683,73 +2684,79 @@ kapittel \ref{SEC:ideell}, og samanliknar dei resultata som er moglege
 å få frå =lfgalign= med dei som er mogleg å få med andre metodar, då
 spesielt reint N-grambaserte metodar. I tillegg diskuterer eg kort
 ulike bruksområde for desse samanstillingane.
+
+ Det er visse føresetnader i =lfgalign= som er gjort for å forenkle
+ metoden, som kan føre til feil i samanstillinga. T.d. følgjer
+ implementasjonen krav \ref{krav:PRED-omgivnad}, som nok er for
+ strengt, men som avskjerer ein god del umotiverte lenkjingar. I
+ tillegg er c-strukturlenkjinga i implementasjonen direkte avleidd av
+ f-strukturlenkjinga; men, som nemnt i del \ref{SEC:fnord} kan det
+ finnast c-strukturforhold som bør påverke f-strukturlenkjinga.
+
 ** Ressursar
-Kjeldematerialet mitt er ei mengd med omtrent hundre
-\fxnote[inline,nomargin]{med mindre det finst fleire?} LFG-analyserte
-testsetningar på norsk og georgisk, frå eit testsett kor setningane er
-valt for å illustrere ei vid rekkje ulike syntaktiske
-situasjonar. Analysane er manuelt disambiguerte.
+ Kjeldematerialet mitt er ei mengd med omtrent hundre
+ \fxnote[inline,nomargin]{med mindre det finst fleire?} LFG-analyserte
+ testsetningar på norsk og georgisk, frå eit testsett kor setningane
+ er valde for å illustrere ei vid rekkje ulike syntaktiske
+ situasjonar. Analysane er manuelt disambiguerte.
 
-Dette materialet er sjølvsagt alt for lite for statistisk
-samanstilling, så når eg samanliknar med N-grambaserte metodar gir eg
-desse «perfekte» lenkjer (så gode som det vil vere mogleg å få). 
-** N-grambaserte metodar
-\citet[s.~20--21]{och2003scv} definerer ei samanstilling på det mest
-generelle som ei delmengd av det kartesiske produktet av
-ordposisjonane i to setningar. Viss $f_{1}^{J}=f_1,...,f_j,...,f_J$ er
-orda i setninga på kjeldespråket og $e_{1}^{I}=e_1,...,e_i,...,e_I$ er
-orda i setninga på målspråket[fn:27], er ei N-gramsamanstilling
-$\mathcal{A}$ gitt ved $\mathcal{A}\subseteq \{(j,i):
-j=1,...,J;i=1,...,I\}$. Eitt kjeldeord kan altså vere lenkja til eitt
-eller fleire målord, og omvendt. 
-
-I praksis vil spesifikke modellar prøve å avgrense dette, t.d. ved å
-krevje maksimalt eitt målord per kjeldeord, kor ein nyttar «det tomme
-ordet» for kjeldeord som ikkje er lenkja med noko målord. I
-litteraturen om statistiske metodar er dette ei /ordsamanstilling/;
-når mange-mange-lenkjer er med har me ei /frasesamanstilling/.
-
-Ei samanstilling er her altså ei mengd par av ordposisjonar. Det finst
-mange ulike måtar å komme fram til samanstillinga på. Dei vanlege
-metodane er basert på statistiske modellar, kor den beste
-samanstillinga $a$ er den som får høgast skåre på $p(f_1^J,a|e_1^I)$,
-dvs. sannsynet for samanstillinga $a$ og kjeldesetninga gitt
-målsetninga og parametrane i modellen. Verdien til parametrane finn
-ein ved å trene modellen på eit parallellkorpus, kor ein god
-treningsmetode aukar den totale $p$ for heile korpuset (dvs. produktet
-av $p$ for alle setningane). For å finne $p$ er det vanleg å nytte ein
-skjult Markov-modell, dvs. at $p$ for heile setninga blir dekomponert
-til $p$ for eitt enkelt kjeldeord, kor det siste er basert på $p$ av
-orda som kjem før. I tillegg vil ein ofte vekte på sannsynet for ei
-viss setningslengd gitt målsetninga (sidan lange setningar ofte blir
-omsett til like lange setningar, modulo språkforskjellar). Det er
-mogleg å forenkle Markov-modellen til at $p$ for eit enkeltord berre
-er avhengig av ordet som kjem rett før, noko som gjer utrekningane
-enklare (og lèt ein generalisere på bakgrunn av mindre data), men
-sjølvsagt gir ein mindre nyansert modell. Om me har forenkla modellen
-slik at $p$ berre er avhengig av dei N orda som kjem før, har me ein
-N-grambasert modell.
-
-
-** Evaluering av =lfgalign=
-=lfgalign= stiller høge krav til inndata: det må vere ferdig
-disambiguert og setningssamanstilt.
-
-Setning 13 + 10 i sofie illustrerer eit anna problem: for store
-forskjellar i argumentstruktur gir feil løysing.
+ Dette materialet er sjølvsagt alt for lite for statistisk
+ samanstilling, så når eg samanliknar med N-grambaserte metodar gir eg
+ desse «perfekte» lenkjer (så gode som det vil vere mogleg å få).
 ** Samanlikning med tremetodar og n-grammetodar
 I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
 som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
 informasjon som er kvalitativt forskjellig frå det ein kan få med å
 berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
 
+=lfgalign= stiller høge krav til inndata: det må vere ferdig
+disambiguert og setningssamanstilt.
+*** N-grambaserte metodar
+   \fxnote{Flytte dette ned litt, og byrje med ideell-diskusjon?}
+
+ Dei fleste metodane for frasesamanstilling er N-grambaserte; difor er
+ det naturleg å samanlikne metoden i =lfgalign= med slike metodar.
+
+ \citet[s.~20--21]{och2003scv} definerer ei samanstilling på det mest
+ generelle som ei delmengd av det kartesiske produktet av
+ ordposisjonane i to setningar. Viss $f_{1}^{J}=f_1,...,f_j,...,f_J$
+ er orda i setninga på kjeldespråket og
+ $e_{1}^{I}=e_1,...,e_i,...,e_I$ er orda i setninga på
+ målspråket[fn:27], er ei N-gramsamanstilling $\mathcal{A}$ gitt ved
+ $\mathcal{A}\subseteq \{(j,i): j=1,...,J;i=1,...,I\}$. Eitt kjeldeord
+ kan altså vere lenkja til eitt eller fleire målord, og omvendt.
+
+ I praksis vil spesifikke modellar prøve å avgrense dette, t.d. ved å
+ krevje maksimalt eitt målord per kjeldeord, kor ein nyttar «det tomme
+ ordet» for kjeldeord som ikkje er lenkja med noko målord. I
+ litteraturen om statistiske metodar er dette ei /ordsamanstilling/;
+ når mange-mange-lenkjer er med har me ei /frasesamanstilling/.
+
+ Ei samanstilling er her altså ei mengd par av ordposisjonar. Det
+ finst mange ulike måtar å komme fram til samanstillinga på. Dei
+ vanlege metodane er basert på statistiske modellar, kor den beste
+ samanstillinga $a$ er den som får høgast skåre på $p(f_1^J,a|e_1^I)$,
+ dvs. sannsynet for samanstillinga $a$ og kjeldesetninga gitt
+ målsetninga og parametrane i modellen. Verdien til parametrane finn
+ ein ved å trene modellen på eit parallellkorpus, kor ein god
+ treningsmetode aukar den totale $p$ for heile korpuset
+ (dvs. produktet av $p$ for alle setningane). For å finne $p$ er det
+ vanleg å nytte ein skjult Markov-modell, dvs. at $p$ for heile
+ setninga blir dekomponert til $p$ for eitt enkelt kjeldeord, kor det
+ siste er basert på $p$ av orda som kjem før. I tillegg vil ein ofte
+ vekte på sannsynet for ei viss setningslengd gitt målsetninga (sidan
+ lange setningar ofte blir omsett til like lange setningar, modulo
+ språkforskjellar). Det er mogleg å forenkle Markov-modellen til at
+ $p$ for eit enkeltord berre er avhengig av ordet som kjem rett før,
+ noko som gjer utrekningane enklare (og lèt ein generalisere på
+ bakgrunn av mindre data), men sjølvsagt gir ein mindre nyansert
+ modell. Om me har forenkla modellen slik at $p$ berre er avhengig av
+ dei N orda som kjem før, har me ein N-grambasert modell.
 *** c->f er mange-til-ein
 Avbildinga frå c-strukturnodar til f-struktur er mange-til-ein, kan me
 t.d. innanfor eitt tre ha fleire N-gram per f-strukturhovud; ein
 metode som berre ser på enkle N-gramlenkjer vil ikkje registrere desse
 relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
- 
-
 
 *** TOGROK men korleis gjenfinne there is/es gibt? 		     :ROTETE:
 1. N-gram kjem like ofte som heile konstruksjonen, då kan dette
@@ -2758,6 +2765,11 @@ relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
      /there is/ eller /es gibt/ førekjem. Eit TigerXML-type søk etter
      /there is NP/es gibt NP/ burde jo vere mogleg, sjekk om dette er
      delmengd av /there is/es gibt/. * Avslutning
+
+
+** Evaluering av =lfgalign=
+Setning 13 + 10 i sofie illustrerer eit anna problem: for store
+forskjellar i argumentstruktur gir feil løysing.
 
 
 ** TOGROK korleis finn me /there is/-lenkjer då?		     :ROTETE:
@@ -2802,7 +2814,7 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
 
     Andre forslag: http://en.wikipedia.org/wiki/Edit_distance)
 ** Opne problem
-*** SKRIV om global tyding, ikkje-komposisjonell.. 		     :ROTETE:
+*** SKRIV om global tyding, ikkje-komposisjonell..
 Same globale tyding krev i det minste at, i situasjonen verbet
 denoterer, speler deltakarane same rolle. Men dette er endå meir
 abstrakt/semantisk enn (semantisk) argumentstruktur...
@@ -2827,11 +2839,9 @@ Alternativt ein konstruksjonslenkjing...
 
 Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slag delmengd av
 argstr til $PRED_{L2}$. 
-*** Reentrancy 							     :ROTETE:
+*** Reentrancy og top-down f-strukturlenkjing
 
-Setningsparet i \Next (frå \citet[s.~40]{riezler2006gmt}, nemnt i del
-\ref{SEC:bakgrunn}, ein metode som går frå fraselenkjer til
-f-strukturlenkjer) bør kunne lenkjast, men gir nokre intrikate
+Setningsparet i \Next bør kunne lenkjast, men gir nokre intrikate
 problem.
 
 #+BEGIN_LaTeX
@@ -2845,36 +2855,65 @@ problem.
      $\\\\\leftrightarrow$\\
      \bg. I have a deep appreciation for that \\
       Eg har ei djup takksemd for det \\
-     $\begin{avm}\[pred & `{\bf{}have}<I, \@{2}>' \\
-     xcomp & \@{2} \[pred & `{\bf{}appreciation}'\]\\
-     adjunct  & \{ \[pred & `{\bf{}for}<that>' \] \} \]\end{avm}$
+     $\begin{avm}\[pred & `{\bf{}have}<\@{4}, \@{2}>' \\
+     subj & \@{4} \[pred & `{\bf{}I}' \] \\
+     xcomp & \@{2} \[pred & `{\bf{}appreciation}'\\
+     adjunct  & \{ \[pred & `{\bf{}for}<that>' \] \} \] \]\end{avm}$
 
 }
 #+END_LaTeX
 
-I =lfgalign= vil me kunne lenkje \p{bin} og \p{have}, med
-LPT-korrespondanse mellom \p{ich} og \p{I} og mellom \p{dankbar} og
-\p{appreciation}. Når me prøver å lenkje \p{dankbar} med
-\p{appreciation} har me LPT-korrespondanse mellom \p{da} og \p
+ I =lfgalign= vil me kunne lenkje \p{bin} og \p{have}, med
+ LPT-korrespondanse mellom \p{ich} og \p{I} og mellom \p{dankbar} og
+ \p{appreciation}. Når me prøver å lenkje \p{dankbar} med
+ \p{appreciation} har me LPT-korrespondanse mellom \p{da} og \p{that},
+ men me finn ingenting å lenkje \p{ich} med. Dette argumentet har
+ LPT-korrespondanse med \p{I}, og er jo allereie lenkja med \p{I}
+ sidan det er identisk med subjektet til \p{bin} -- men når me ser det
+ igjen på eit djupare nivå har me ingen element på det nivået å lenkje
+ med. Verken krava i kapittel \ref{SEC:ideell} eller implementasjonen
+ av dei tek innover seg slike problem.
 
-I vårt system vil bin<ich,dankbar> og have<I,appreciation> lenkjast,
-dankbar og appreciation har LPT-korrespondanse, men kan ikkje lenkjast
-på \PRED{}-nivå sidan dankbar<ich,da> medan appreciation<>, /that/ er
-adjunkt til appreciation og ville kunne lenkjast til /da/, men /ich/
-får ingen lenkje...
+ Ein /kan/ gjere unntak i krav \ref{krav:PRED} om at argument som
+ allereie har ei lenkje på ytre nivå ikkje skal lenkjast -- altså må
+ eit argument berre lenkjast «ein gong». Dette bør løyse problemet
+ over, og bør ikkje vere for vanskeleg å implementere heller.
 
-Dette bør kanskje få eit unntak, sidan /ich/ allereie /er/ lenkja? I
-såfall vil det jo gå greit. Sidan ein f-struktur kan stå som argument
-for fleire \PRED{}, bør me tillate at dei står ulenkja så lenge dei er
-lenkja minst ein gong? 
+ Men ein variant av situasjonen over kan gi litt større problem. I
+ \Next kan me tenkje oss at den ønskelege lenkjinga er
+ \{(\p{p},\p{r}),(\p{q},\p{s}),(\p{ich},\p{I})\}. Den einaste
+ relevante forskjellen frå \Last er at i \Last står \p{I} berre i ytre
+ \PRED, medan i \Next står \p{I} berre i indre \PRED.
 
-Her er det eit problem at me går top-down i f-align. For dette dømet
-går det greit, /ich-I/ blir lenkja ved /bin-have/, men om det var
-omvendt, at me hadde eit ytre predikat kor me hadde argument til
-overs, som blei dekkja ved indre argument, ville
-\ref{krav:PRED-omgivnad} og top-down-metoden til f-align hindra oss i
-å finne dei rette lenkjene.
-**** TODO XLE er nede igjen, får ikkje dobbeltsjekka analysen :/
+#+BEGIN_LaTeX
+{\avmoptions{}
+\ex. \a. $\begin{avm}\[pred & `{\bf{}p}<\@{1}, \@{2}>'  \\
+     subj & \@{1} \[pred &  `{\bf{}ich}' \] \\
+     xcomp & \@{2} \[pred & `{\bf{}q}<\@{1}>' \] \] \end{avm}$
+     $\\\\\leftrightarrow$\\
+     \b. $\begin{avm}\[pred & `{\bf{}r}<\@{3}>' \\
+     xcomp & \@{3} \[pred & `{\bf{}s}<\@{4}>' \\
+     subj & \@{4} \[pred &  `{\bf{}I}' \] \] \]\end{avm}$
+
+}
+#+END_LaTeX
+
+ Då er det eit problem at me følgjer krav \ref{krav:PRED-omgivnad} og
+ går top-down i f-strukturlenkjinga i =lfgalign=. Når me skal lenkje
+ \p{p} og \p{r} vil me ikkje finne ein argumentpermutasjon
+ (ein-til-ein LPT-korrespondanse) som fyller krav \ref{krav:PRED} --
+ \p{q} og \p{s} har LPT-korrespondanse, men \p{ich} har ikkje noko som
+ svarer til seg blant argument/adjunkt av \p{r}.
+
+ Det er sjølvsagt mogleg å køyre top-down-metoden frå fleire
+ startpunkt i f-strukturane dersom dei første ikkje går, men om ein må
+ gjere det er det kanskje eit teikn på at heile strategien må
+ endrast. På den andre sida, viss desse situasjonane ikkje dukker opp
+ i faktiske analysar, så kan det hende at metoden er god nok. Til no
+ har eg ikkje sett slike situasjonar, men det er altså logisk mogleg
+ at dei kan dukke opp.
+
+
      
 * Avslutning
 # tom inndeling for å halde bibliografien sist
@@ -3046,7 +3085,7 @@ overs, som blei dekkja ved indre argument, ville
        frå ParGram/XPar-analysane, det bør ikkje ha noko å seie for
        framstillinga her.
 
-[fn:27] $e$ for engelsk og $f$ for fransk, sjølvsagt.
+[fn:27] Kor $e$ står for engelsk og $f$ for fransk, sjølvsagt.
 
 [fn:28] Merk: utan meir informasjon her vil krava i tillegg opne for
         ei mange-mange-lenkje mellom /ride/ + /bike/ og /sykle/; for
@@ -3066,6 +3105,8 @@ overs, som blei dekkja ved indre argument, ville
 
 [fn:32] Med eit unntak for adposisjonsobjekt som eg kjem tilbake til i
         del \ref{SEC:adposisjonsobjekt}.
+
+
 
 
 
