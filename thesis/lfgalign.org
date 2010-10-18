@@ -2677,43 +2677,36 @@ lite testsett.
 
 # resultat av å automatisk samanstille norske og georgiske setningar osb
 
-I denne delen gir eg ei evaluering av resultata frå å køyre =lfgalign=
-på LFG-analysar av norske og georgiske parallelle setningar. Eg ser på
-manglar ved implementasjonen i forhold til dei ideelle krava frå
-kapittel \ref{SEC:ideell}, og samanliknar dei resultata som er moglege
-å få frå =lfgalign= med dei som er mogleg å få med andre metodar, då
-spesielt reint N-grambaserte metodar. I tillegg diskuterer eg kort
-ulike bruksområde for desse samanstillingane.
+ I denne delen gir eg ei evaluering av resultata frå å køyre
+ =lfgalign= på LFG-analysar av norske og georgiske parallelle
+ setningar. Eg ser på manglar ved implementasjonen i forhold til dei
+ ideelle krava frå kapittel \ref{SEC:ideell}, og samanliknar dei
+ resultata som er moglege å få frå =lfgalign= med dei som er mogleg å
+ få med andre metodar, då spesielt reint N-grambaserte metodar. I
+ tillegg diskuterer eg kort ulike bruksområde for desse
+ samanstillingane.
 
- Det er visse føresetnader i =lfgalign= som er gjort for å forenkle
- metoden, som kan føre til feil i samanstillinga. T.d. følgjer
- implementasjonen krav \ref{krav:PRED-omgivnad}, som nok er for
- strengt, men som avskjerer ein god del umotiverte lenkjingar. I
- tillegg er c-strukturlenkjinga i implementasjonen direkte avleidd av
- f-strukturlenkjinga; men, som nemnt i del \ref{SEC:fnord} kan det
- finnast c-strukturforhold som bør påverke f-strukturlenkjinga.
+ Det er visse føresetnader i implementasjonen som er gjort for å
+ forenkle metoden, som kan føre til feil i
+ samanstillinga. T.d. følgjer implementasjonen krav
+ \ref{krav:PRED-omgivnad}, som nok er for strengt, men som avskjerer
+ ein god del umotiverte lenkjingar. I tillegg er c-strukturlenkjinga i
+ implementasjonen direkte avleidd av f-strukturlenkjinga; men, som
+ nemnt i del \ref{SEC:fnord} kan det finnast c-strukturforhold som bør
+ påverke f-strukturlenkjinga. \fxnote[inline,nomargin]{«eg kjem
+ tilbake til dette blah»}
 
-** Ressursar
- Kjeldematerialet mitt er ei mengd med omtrent hundre
- \fxnote[inline,nomargin]{med mindre det finst fleire?} LFG-analyserte
- testsetningar på norsk og georgisk, frå eit testsett kor setningane
- er valde for å illustrere ei vid rekkje ulike syntaktiske
- situasjonar. Analysane er manuelt disambiguerte.
-
+ Kjeldematerialet mitt for denne evalueringa er ei mengd med omtrent
+ hundre \fxnote[inline,nomargin]{med mindre det finst fleire?}
+ LFG-analyserte testsetningar på norsk og georgisk, frå eit testsett
+ kor setningane er valde for å illustrere ei vid rekkje ulike
+ syntaktiske situasjonar. Analysane er manuelt disambiguerte.
  Dette materialet er sjølvsagt alt for lite for statistisk
  samanstilling, så når eg samanliknar med N-grambaserte metodar gir eg
- desse «perfekte» lenkjer (så gode som det vil vere mogleg å få).
-** Samanlikning med tremetodar og n-grammetodar
-I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
-som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
-informasjon som er kvalitativt forskjellig frå det ein kan få med å
-berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
+ desse «perfekte» lenkjer (så gode som det vil vere mogleg å
+ få).
 
-=lfgalign= stiller høge krav til inndata: det må vere ferdig
-disambiguert og setningssamanstilt.
-*** N-grambaserte metodar
-   \fxnote{Flytte dette ned litt, og byrje med ideell-diskusjon?}
-
+** N-grambaserte metodar
  Dei fleste metodane for frasesamanstilling er N-grambaserte; difor er
  det naturleg å samanlikne metoden i =lfgalign= med slike metodar.
 
@@ -2752,6 +2745,44 @@ disambiguert og setningssamanstilt.
  bakgrunn av mindre data), men sjølvsagt gir ein mindre nyansert
  modell. Om me har forenkla modellen slik at $p$ berre er avhengig av
  dei N orda som kjem før, har me ein N-grambasert modell.
+
+*** døme
+ Setning 4 i MRS-suiten gir følgjande urangerte
+ f-struktursamanstilling:
+ : ((mi-codeba . rekke-hand)
+ :           ((Browne . Abrams) (sigareti . Browne) (Abrams . sigarett))
+ :           ((Browne . Abrams) (sigareti . sigarett) (Abrams . Browne))
+ :           ((Browne . Browne) (sigareti . Abrams) (Abrams . sigarett))
+ :           ((Browne . Browne) (sigareti . sigarett) (Abrams . Abrams))
+ :           ((Browne . sigarett) (sigareti . Abrams) (Abrams . Browne))
+ :           ((Browne . sigarett) (sigareti . Browne) (Abrams . Abrams)))
+ Etter rangering, utan LPT-informasjon, får me
+ :  ((mi-codeba . rekke-hand) (Browne . sigarett) (sigareti . Browne)
+ :         (Abrams . Abrams))
+ som jo er feil. Dette skjer pga. argumentstrukturane til dei to verba
+ /ikkje/ er parallelle -- mi-codeba har <Abrams, sigareti, Browne>,
+ medan rekke-hand har <Abrams, Browne, sigarett>. Ved å t.d. leggje
+ til informasjonen om at Browne og Browne har LPT-korrespondanse, får
+ me
+ :  ((mi-codeba . rekke-hand) (Browne . Browne) (sigareti . sigarett)
+ :         (Abrams . Abrams))
+ Me kunne au klart oss med berre informasjonen om at sigareti og
+ sigarett har LPT-korrespondanse -- så sjølv om LPT-korrespondanse kan
+ vere viktig, treng ein ikkje /fullstendig/ LPT-korrespondanse.
+
+ 
+*** foo
+
+ I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
+ som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
+ informasjon som er kvalitativt forskjellig frå det ein kan få med å
+ berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
+
+=lfgalign= stiller høge krav til inndata: det må vere ferdig
+disambiguert og setningssamanstilt.
+
+
+
 *** c->f er mange-til-ein
 Avbildinga frå c-strukturnodar til f-struktur er mange-til-ein, kan me
 t.d. innanfor eitt tre ha fleire N-gram per f-strukturhovud; ein
