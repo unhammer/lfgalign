@@ -1057,16 +1057,6 @@ phi's don't match anything in the files)."
 	it))))
 
 
-(defun c-align-all (flat-alignments tab_s tab_t)
-  "`f-alignments' must have been through `flatten'."
-  (let ((tree_s (maketree tab_s))
-	(tree_t (maketree tab_t)))
-    (mapcar (lambda (f-alignment)
-	      (c-align-ranked f-alignment tree_s tab_s tree_t tab_t))
-	    flat-alignments)))
-
-
-
 (lisp-unit:define-test test-c-align-ranked ()
   (let* 
       ((tab_s (open-and-import "dev/TEST_subord-c-align_s.pl"))
