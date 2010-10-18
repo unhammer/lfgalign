@@ -32,9 +32,12 @@
     (out "ranked: ~A~%" (pred-tag-alignment best-f-alignment tab_s tab_t))
     (mapcar (lambda (pair)
 	      (out "ALIGN c_s: ~A~%      c_t: ~A~%"
-		   (skip-suff_base (trimtree (car pair) (topnodes (car pair) tree_s 'allow-several)))
-		   (skip-suff_base (trimtree (cadr pair) (topnodes (cadr pair) tree_t 'allow-several)))
-		   ))
+		   (mapcar (lambda (tree)
+			     (skip-suff_base (trimtree (car pair) tree)))
+			   (topnodes (car pair) tree_s))
+		   (mapcar (lambda (tree)
+			     (skip-suff_base (trimtree (cadr pair) tree)))
+			   (topnodes (cadr pair) tree_t))))
 	    c-alignments)))
 
 (defun ev-all ()

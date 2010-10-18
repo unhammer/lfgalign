@@ -98,37 +98,26 @@ any non-terminal child under it."
 	  (or (treefind c-id (third tree))
 	      (treefind c-id (fourth tree))))))
 
-(defun topnodes (c-ids tree &optional allow-several)
+(defun topnodes (c-ids tree)
   "`c-ids' (given by `phi^-1') describes a functional domain, find the
-first/topmost of the nodes in the c-structure which project this
-domain (member of `c-ids').
+topmost of the nodes in the c-structure which project this
+domain (member of `c-ids'). 
 
-Unfortunately, id's aren't sorted in any smart way :-/
+Since we may have discontiguous domains, returns a list.
 
-TODO: instead of finding the topmost subtree, this should return the
-list of \"all topmost\" such subtrees. However, in all of the MRS
-suite test set, I can find no examples of discontinuous
-constituents (or, functional domains described by discontinuous
-subtrees)."
-  (if (and tree (listp tree))
-      (if (member (car tree) c-ids)
-	  (values tree 0)		; gotcha!
-	  (multiple-value-bind (Ltree Ldepth) (topnodes c-ids (third tree))
-	    (multiple-value-bind (Rtree Rdepth) (topnodes c-ids (fourth tree))
-	      (cond ((and Ltree Rtree) ; exists in both, choose shallowest
-		     (let ((msg (format nil "Found several topnodes (possible discontinuous constituent), TODO!~%~A~%~A" c-ids tree)))
-		       (if allow-several
-			   (when *debug* (out msg))
-			 (error msg)))
-		     ;; unreachable code due to above error ;-)
-		     (when (= Ldepth Rdepth) (warn "Equal depth, arbitrarily going right"))
-		     (if (< Ldepth Rdepth)
-			 (values Ltree (1+ Ldepth))
-			 (values Rtree (1+ Rdepth))))
-		    ;; not in both, but try either left or right
-		    (Ltree (values Ltree (1+ Ldepth)))
-		    (Rtree (values Rtree (1+ Rdepth)))))))))
-
+Unfortunately, id's aren't sorted in any smart way :-/"
+  (when (and tree (listp tree))
+    (if (member (car tree) c-ids)
+	(list tree)
+      (let ((Ltree (topnodes c-ids (third tree)))
+	    (Rtree (topnodes c-ids (fourth tree))))
+	(cond ((and Ltree Rtree)
+	       (append Ltree Rtree))
+	      ;; Not in both, but try either left or right:
+	      (Ltree Ltree)
+	      (Rtree Rtree)
+	      ;; Not in either: return nil
+	      )))))
 
 (defun pred-tag-alignment (f-alignment tab_s tab_t)
   "Given an `f-alignment' from `f-align', exchange var numbers for the
@@ -186,7 +175,8 @@ a number (pointing to where the trimmed tree was cut off)."
 
 (defun pretty-topnode (f-var tab tree)
   "Skip the more boring nodes."
-  (skip-suff_base (topnodes (phi^-1 f-var tab) tree)))
+  (mapcar #'skip-suff_base
+	  (topnodes (phi^-1 f-var tab) tree)))
 
 
 ;;;;;;;; VARIOUS HELPERS:
@@ -1120,9 +1110,12 @@ phi's don't match anything in the files)."
     (out "ALIGN f: ~A~%" best-f-alignment)
     (mapcar (lambda (pair)
 	      (out "ALIGN c_s: ~A~%      c_t: ~A~%"
-		   (skip-suff_base (trimtree (car pair) (topnodes (car pair) tree_s 'allow-several)))
-		   (skip-suff_base (trimtree (cadr pair) (topnodes (cadr pair) tree_t 'allow-several)))
-		   ))
+		   (mapcar (lambda (tree)
+			     (skip-suff_base (trimtree (car pair) tree)))
+			   (topnodes (car pair) tree_s))
+		   (mapcar (lambda (tree)
+			     (skip-suff_base (trimtree (cadr pair) tree)))
+			   (topnodes (cadr pair) tree_t))))
 	    c-alignments)
     (list best-f-alignment c-alignments)))
 
@@ -1140,8 +1133,8 @@ respectively.  TODO: cache/memoise maketree"
 	 (pred2 (get-pred var2 tab2)))
     (format t "Align ~A with ~A~%" pred1 pred2)
     (unless (or (null-pred? pred1) (null-pred? pred2))
-      (format t "Align tree ~A~%" (pretty-topnode var1 tab1 (maketree tab1)))
-      (format t " with tree ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
+      (format t "Align tree(s) ~A~%" (pretty-topnode var1 tab1 (maketree tab1)))
+      (format t " with tree(s) ~A~%" (pretty-topnode var2 tab2 (maketree tab2)))
       (when (and pred1 pred2)
       (loop
 	 for arg1 in (get-args pred1 tab1)
@@ -1433,20 +1426,20 @@ respectively.  TODO: cache/memoise maketree"
           (20 "V_SUFF_BASE" NIL (21 "+Verb" (17))))
          (18 "V_SUFF_BASE" NIL (19 "+Past" (17)))))))
      (62 "PERIOD" NIL (55 "." (55))))
-   (trimtree c0 (topnodes c0 tree_s)))
+   (trimtree c0 (first (topnodes c0 tree_s))))
    (lisp-unit:assert-equal
     '(235 "PROPP" NIL (13 "PROP" NIL (SNIP . 1)))
-    (trimtree c5 (topnodes c5 tree_s)))))
+    (trimtree c5 (first (topnodes c5 tree_s))))))
 
 (lisp-unit:define-test test-topnode
  (let* ((tab (open-and-import "dev/TEST_parse.pl"))
 	(tree (maketree tab)))
    (lisp-unit:assert-equal
     '(34 "qePa-2746-3" (21))
-    (topnodes (phi^-1 15 tab) tree))
+    (first (topnodes (phi^-1 15 tab) tree)))
    (lisp-unit:assert-equal
     '(144 "PROPP" NIL (2 "PROP" NIL (1 "abramsma" (1))))
-    (topnodes (phi^-1 3 tab) tree))))
+    (first (topnodes (phi^-1 3 tab) tree)))))
 
 (lisp-unit:define-test test-preterms
   (let ((tree_s (maketree (open-and-import "dev/TEST_regargadj_s.pl"))))
@@ -1512,7 +1505,8 @@ respectively.  TODO: cache/memoise maketree"
     (lisp-unit:assert-equality
      #'set-equal
      '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-     (LL-single (car (topnodes (phi^-1 0 tab_s) tree_s)) f-alignment tree_s tab_s 'src))
+     (LL-single (car (first (topnodes (phi^-1 0 tab_s) tree_s)))
+		f-alignment tree_s tab_s 'src))
     (lisp-unit:assert-equality
      #'set-equal
      '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
