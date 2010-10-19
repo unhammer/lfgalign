@@ -233,28 +233,19 @@ add all equivalent variables and their possible expansions."
       (error "Found superfluous, non-equal unravellings of ~A ~A:~%~A~%" val att it))
     (cons att (car it))))
 
-(defun get-pred (var tab &optional no-error)
-  "Use `no-error' to return nil if no PRED was found."
+(defun get-pred (var tab &optional nil-on-none)
+  "Use `nil-on-none' to return nil if no PRED was found."
   (if (null-pred? var)
       var
       (aif (unravel "PRED" var tab)
 	   (cons var (cdr it))
-	   (unless no-error (error 'no-pred-error-todo var)))))
+	   (unless nil-on-none
+	     (unless *no-warnings*
+	       (warn "No PRED for var ~A, treating it as a pro~%" var))
+	     (list var "pro" nil NIL NIL)))))
 
 
 
-
-(defun outer> (Pr1 Pr2 tab) 
-  "Is `Pr1' a predecessor of `Pr2' (outermore in the f-structure)?
-Note: we actually only look at the car of `Pr2', which has to be its
-variable (ie. what `get-pred' returns)."
-  (let ((args (get-args Pr1 tab)))
-    (or (member (car Pr2) args)
-	(loop for c in args
-	   for Prc = (unravel "PRED" c tab)
-	   thereis (and Prc
-			(not (null-pred? c))
-			(outer> Prc Pr2 tab))))))
 
 
 (defun predp (Pr)
@@ -314,17 +305,21 @@ var `childv'."
 (defun lemma (Pr) (second Pr))
 
 (defun L (Pr tab)
-  "Return the lexical expression (ie. surfaceform) of PRED `Pr'. 
-Note: a \"pro\" argument will return its verb!"
-  (let* ((semform_id (third Pr))
-	 (semform (assoc semform_id (gethash '|semform_data| tab)))
-	 (preterminal (assoc (second semform)
-			     (gethash '|subtree| tab)))
-	 (terminal (assoc (fourth preterminal)
-			  (gethash '|terminal| tab)))
-	 (surfaceform (assoc (car (third terminal))
-			     (gethash '|surfaceform| tab))))
-    (second surfaceform)))
+  "Return the lexical expression (ie. surfaceform) of PRED `Pr'.
+Note: a real \"pro\" argument will return its verb!  A fake \"pro\"
+element (created by get-pred for var's that have no PRED element) will
+return \"pro\"."
+  (if (third Pr)
+      (let* ((semform_id (third Pr))
+	     (semform (assoc semform_id (gethash '|semform_data| tab)))
+	     (preterminal (assoc (second semform)
+				 (gethash '|subtree| tab)))
+	     (terminal (assoc (fourth preterminal)
+			      (gethash '|terminal| tab)))
+	     (surfaceform (assoc (car (third terminal))
+				 (gethash '|surfaceform| tab))))
+	(second surfaceform))
+    (second Pr)))
 
 
 ;;;;;;;; LPT:
@@ -1534,17 +1529,30 @@ of others."
 	when (not (equal '(0) unref)) do
 	(format t "f:~A unref:~A~%" f unref)))
 
+
+(defun outer> (Pr1 Pr2 tab) 
+  "Is `Pr1' a predecessor of `Pr2' (outermore in the f-structure)?
+Note: we actually only look at the car of `Pr2', which has to be its
+variable (ie. what `get-pred' returns)."
+  (let ((args (get-args Pr1 tab)))
+    (or (member (car Pr2) args)
+	(loop for c in args
+	   for Prc = (unravel "PRED" c tab)
+	   thereis (and Prc
+			(not (null-pred? c))
+			(outer> Prc Pr2 tab))))))
+
 (defun outer>-LPT (Pr_s tab_s var_t tab_t LPTs)
   "Return a list of the outermost possible `LPTs' of `Pr_s' in `tab_t'
 starting at `var_s'."
-  (let ((Pr_t (get-pred var_t tab_t 'noerror)))
+  (let ((Pr_t (get-pred var_t tab_t 'nil-on-none)))
     (when (and Pr_s Pr_t)  
       (if (LPT? Pr_s tab_s Pr_t tab_t LPTs)
 	  (list var_t)
-	  (loop 
-	     for c in (get-args Pr_t tab_t)
-	     for outer = (outer>-LPT Pr_s tab_s c tab_t LPTs)
-	     when outer append it)))))
+	(loop 
+	 for c in (get-args Pr_t tab_t)
+	 for outer = (outer>-LPT Pr_s tab_s c tab_t LPTs)
+	 when outer append it)))))
 
 (defun all-outer>-LPT (tab_s tab_t LPTs)
   "Return an association list of all possible outermost LPTs, using
@@ -1554,7 +1562,7 @@ and 9 and 8 are outermost PRED's in `tab_t', and they are all possible
 LPT's."
   (loop
      for var_s in (unreferenced-preds tab_s)
-     for Pr_s = (get-pred var_s tab_s 'no-error)
+     for Pr_s = (get-pred var_s tab_s 'nil-on-none)
      collect (cons var_s
 		   (loop 
 		      for var_t in (unreferenced-preds tab_t) 
