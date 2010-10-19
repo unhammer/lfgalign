@@ -257,10 +257,13 @@ with the var key."
 key is an f-str variable or a c-structure part (subtree, phi, fspan,
 terminal etc.)"
   (awhen (parse-prolog stream)
-	 (dup-alist-to-table (append (clean-f-str (filter-equiv (raw-equiv it)
-								(raw-f-str it)))
-				     (clean-c-str (filter-equiv (raw-equiv it)
-								(raw-c-str it)))))))
+    (dup-alist-to-table
+     (cons (cons '|sentence| (car (second it)))
+	   (append (clean-f-str (filter-equiv (raw-equiv it)
+					      (raw-f-str it)))
+		   (clean-c-str (filter-equiv (raw-equiv it)
+					      (raw-c-str it))))))))
+
 (defun open-and-import (file)
   "Convenience function. `file' is relative to the lfgalign directory."
   (with-open-file
