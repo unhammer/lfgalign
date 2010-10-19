@@ -253,15 +253,6 @@ add all equivalent variables and their possible expansions."
 		       (get-pred var tab)))))
      (table-to-alist tab))))
 
-(defun unreferenced-preds (tab)
-  "Return a list of variables of those PRED's which are not arguments
-of others."
-  (let (vars backrefs)
-    (mapcar (lambda (Pr)
-	      (pushnew (first Pr) vars)
-	      (setq backrefs (union (fourth Pr) (union (fifth Pr) backrefs))))
-	    (all-preds tab))
-    (remove-if (lambda (v) (member v backrefs)) vars)))
 
 
 (defun outer> (Pr1 Pr2 tab) 
@@ -416,33 +407,6 @@ the pro no matter what, but will this give us trouble?"
 		       (warn "Neither ~A/~A nor ~A/~A are in LPTs" LPr_s lem_s LPr_t lem_t))
 		     'trivial)))))))
 
-(defun all-LPT (tab_s tab_t LPTs)
-  "Return all possible LPTs of each PRED, as pairs of PREDs."
-  (mapcan-true
-   (lambda (Pr_s)
-     (mapcar-true
-      (lambda (Pr_t) (when (LPT? Pr_s tab_s Pr_t tab_t LPTs)
-		      (list Pr_s Pr_t)))
-      (all-preds tab_t)))
-   (all-preds tab_s)))
-
-(defun all-LPT-vars (tab_s tab_t LPTs)
-  "Return an association list of all possible LPTs, using the
-variables of the PRED entries from `tab_s' as keys. So the
-alist-entry (0 9 8) means that var 0 is a PRED in `tab_s', and 9 and 8
-are outermost PRED's in `tab_t', and they are all possible LPT's."
-  (loop
-     for Pr_s in (all-preds tab_s)
-     collect (cons (car Pr_s)
-		   (loop 
-		    for Pr_t in (all-preds tab_t)
-		    for o = (LPT? Pr_s tab_s Pr_t tab_t LPTs)
-		    when o append (list (car Pr_t))))))
-
-(defun longest-sublists (lists)
-  (let ((maxlen (loop for l in lists maximize (length l))))
-    (mapcar-true (lambda (l) (when (>= (length l) maxlen) l))
-		 lists)))
 
 
 
@@ -1552,12 +1516,22 @@ respectively.  TODO: cache/memoise maketree"
 
 ;;;;;;;; DEPRECATED:
 ;;;;;;;; -----------
+(defun unreferenced-preds (tab)
+  "Return a list of variables of those PRED's which are not arguments
+of others."
+  (let (vars backrefs)
+    (mapcar (lambda (Pr)
+	      (pushnew (first Pr) vars)
+	      (setq backrefs (union (fourth Pr) (union (fifth Pr) backrefs))))
+	    (all-preds tab))
+    (remove-if (lambda (v) (member v backrefs)) vars)))
+
 (defun find-multiple-unreferenced () "Fluff"
   (loop for i from 1 to 106
-     for f = (concatenate 'string "nb/" (prin1-to-string i) ".pl")
-     for unref = (unreferenced-preds (open-and-import f))
-     when (not (equal '(0) unref)) do
-     (format t "f:~A unref:~A~%" f unref)))
+	for f = (concatenate 'string "nb/" (prin1-to-string i) ".pl")
+	for unref = (unreferenced-preds (open-and-import f))
+	when (not (equal '(0) unref)) do
+	(format t "f:~A unref:~A~%" f unref)))
 
 (defun outer>-LPT (Pr_s tab_s var_t tab_t LPTs)
   "Return a list of the outermost possible `LPTs' of `Pr_s' in `tab_t'
@@ -1587,5 +1561,30 @@ LPT's."
 		      when o append it))))
 
 
+(defun all-LPT (tab_s tab_t LPTs)
+  "Return all possible LPTs of each PRED, as pairs of PREDs."
+  (mapcan-true
+   (lambda (Pr_s)
+     (mapcar-true
+      (lambda (Pr_t) (when (LPT? Pr_s tab_s Pr_t tab_t LPTs)
+		      (list Pr_s Pr_t)))
+      (all-preds tab_t)))
+   (all-preds tab_s)))
 
+(defun all-LPT-vars (tab_s tab_t LPTs)
+  "Return an association list of all possible LPTs, using the
+variables of the PRED entries from `tab_s' as keys. So the
+alist-entry (0 9 8) means that var 0 is a PRED in `tab_s', and 9 and 8
+are outermost PRED's in `tab_t', and they are all possible LPT's."
+  (loop
+     for Pr_s in (all-preds tab_s)
+     collect (cons (car Pr_s)
+		   (loop 
+		    for Pr_t in (all-preds tab_t)
+		    for o = (LPT? Pr_s tab_s Pr_t tab_t LPTs)
+		    when o append (list (car Pr_t))))))
 
+(defun longest-sublists (lists)
+  (let ((maxlen (loop for l in lists maximize (length l))))
+    (mapcar-true (lambda (l) (when (>= (length l) maxlen) l))
+		 lists)))
