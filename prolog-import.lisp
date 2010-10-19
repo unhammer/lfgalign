@@ -96,6 +96,8 @@ structure."
     (and (disambiguated? raw)
 	 raw)))
 
+(defun raw-sentence (parse)
+  (second parse))
 (defun raw-equiv (parse)
   "Skip the first element, LIST."
   (cdr (fifth parse)))
@@ -258,7 +260,7 @@ key is an f-str variable or a c-structure part (subtree, phi, fspan,
 terminal etc.)"
   (awhen (parse-prolog stream)
     (dup-alist-to-table
-     (cons (cons '|sentence| (car (second it)))
+     (cons (cons '|sentence| (clean-car/var (raw-sentence it)))
 	   (append (clean-f-str (filter-equiv (raw-equiv it)
 					      (raw-f-str it)))
 		   (clean-c-str (filter-equiv (raw-equiv it)
