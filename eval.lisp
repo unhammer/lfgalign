@@ -49,7 +49,14 @@
 		       ; alltid vere LPT ved samanføying
   (evaluate "mrs" 3 3) ; hadde >1 solutions
   (evaluate "mrs" 4 4) ; treng LPT
+  (evaluate "mrs" 4 5) ; treng LPT
   (evaluate "mrs" 5 6) ; treng LPT
+  (evaluate "mrs" 6 7)
+  (evaluate "mrs" 7 8)
+  (evaluate "mrs" 9 10)
+  (evaluate "mrs" 10 11)
+  (evaluate "mrs" 11 12)
+  (evaluate "mrs" 16 17)
 
   (evaluate "sofie" 2 0)
 
