@@ -266,31 +266,34 @@ look up to get a pred."
 	(remove-if (lambda (p) (null-pred? p))
 		   (union (fourth Pr) (fifth Pr)))
       (mapcar (lambda (var)
-		(skip-prep var tab))
+		(skip-pp var tab))
 	      (union (fourth Pr) (fifth Pr))))))
 
-(defun skip-prep (var tab)
-  "Skip prepositions of adjuncts, as defined in footnote 3 in
+(defun skip-pp (var tab)
+  "Skip adpositions, as defined in footnote 3 in
 dyvik2009lmp. 
 
-TODO: do all prepositions have PFORM and OBJ, or are there other ways
-of representing them? This really ought to be user-configurable."
-  (if (and (assoc "PFORM" (gethash var tab) :test #'equal)
-	   (assoc "OBJ" (gethash var tab) :test #'equal))
-      (cdr (assoc "OBJ" (gethash var tab) :test #'equal))
-      var))
+TODO: do all prepositions/postpositions have PFORM/CHECK->_POSTP and
+OBJ, or are there other ways of representing them? This really ought
+to be user-configurable."
+  (if (and (or (awhen (assoc-equal "CHECK" (gethash var tab))
+		      (assoc-equal "_POSTP" (gethash (cdr it) tab)))
+	       (assoc-equal "PFORM" (gethash var tab)))       
+	   (assoc-equal "OBJ" (gethash var tab)))
+      (cdr (assoc-equal "OBJ" (gethash var tab)))
+    var))
 
 (defun get-adjs (var tab &optional no-error)
   "Use `no-error' to return nil if no ADJUNCT was found.
 TODO: find example to test where we need `unravel' / eq-sets.
 TODO: Skip prepositions, as defined in footnote 3 in
-dyvik2009lmp, with `skip-prep'."
+dyvik2009lmp, with `skip-pp'."
   (let ((adjvar (assoc "ADJUNCT" (gethash var tab) :test #'equal)))
     (if adjvar
 	(if (get-equivs (cdr adjvar) tab)
 	    (error 'unexpected-input "eqvar of ADJUNCT, TODO")
 	    (mapcar-true (lambda (pair) (when (eq (cdr pair) (cdr adjvar))
-					  (skip-prep (car pair) tab)))
+					  (skip-pp (car pair) tab)))
 			 (cdr (gethash '|in_set| tab))))
 	(unless no-error (error 'no-adjs-error-todo var)))))
 
