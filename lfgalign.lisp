@@ -241,17 +241,6 @@ add all equivalent variables and their possible expansions."
 	   (cons var (cdr it))
 	   (unless no-error (error 'no-pred-error-todo var)))))
 
-(defun all-preds (tab)
-  "TODO: cache/memoise in table?"
-  (let (seen)
-    (mapcar-true
-     (lambda (x) (let ((var (car x)))
-		   (when (and (numberp var)
-			      (assoc "PRED" (cdr x) :test #'equal))
-		     (unless (intersection seen (get-equivs var tab))
-		       (pushnew var seen)
-		       (get-pred var tab)))))
-     (table-to-alist tab))))
 
 
 
@@ -1516,6 +1505,18 @@ respectively.  TODO: cache/memoise maketree"
 
 ;;;;;;;; DEPRECATED:
 ;;;;;;;; -----------
+(defun all-preds (tab)
+  "TODO: cache/memoise in table?"
+  (let (seen)
+    (mapcar-true
+     (lambda (x) (let ((var (car x)))
+		   (when (and (numberp var)
+			      (assoc "PRED" (cdr x) :test #'equal))
+		     (unless (intersection seen (get-equivs var tab))
+		       (pushnew var seen)
+		       (get-pred var tab)))))
+     (table-to-alist tab))))
+
 (defun unreferenced-preds (tab)
   "Return a list of variables of those PRED's which are not arguments
 of others."
