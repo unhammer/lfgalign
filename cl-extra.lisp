@@ -50,6 +50,9 @@ the list of pairs `list'."
 	  :test (lambda (a b) (or (eq (car a) (car b))
 				  (eq (cdr a) (cdr b))))))
 
+(defun assoc-equal (item alist &key key)
+  (assoc item alist :key key :test #'equal))
+
 ;;;;;;;; DSET implementations. Remember to (setf *print-circle* t) 
 ;;;;;;;; ----------------------------------------------------------
 
