@@ -2774,15 +2774,25 @@ lite testsett.
 *** Kor mange av døma treng LPT-korrespondanse for å bli rette
 «min LPT-par» er «LPT-korrespondansar som trengst for å få rette
 f-lenkjer»
-| setning       | l_s | l_t | min LPT-par | moglege LPT-par                          |
-|---------------+-----+-----+-------------+------------------------------------------|
-| mrs 0.pl 0.pl |   1 |   2 |           0 |                                          |
-| mrs 1.pl 1.pl |   2 |   2 |           0 |                                          |
-| mrs 2.pl 2.pl |   3 |   2 |           1 | {(ga-Geba,pro)}, {(PanJara,vindu)}       |
-| mrs 3.pl 3.pl |   3 |   3 |           0 |                                          |
-| mrs 4.pl 4.pl |   4 |   4 |           1 | {(Browne,Browne)}, {(sigareti,sigarett)} |
-| mrs 5.pl 5.pl |   6 |  10 |           1 | {(Abrams,Abrams)}, {(sigareti,sigarett)} |
-  
+| setning         | l_s | l_t | min LPT-par | moglege LPT-par                          |
+|-----------------+-----+-----+-------------+------------------------------------------|
+| mrs 0.pl 0.pl   |   1 |   2 |           0 |                                          |
+| mrs 1.pl 1.pl   |   2 |   2 |           0 |                                          |
+| mrs 2.pl 2.pl   |   3 |   2 |           1 | {(ga-Geba,pro)}, {(PanJara,vindu)}       |
+| mrs 3.pl 3.pl   |   3 |   3 |           0 |                                          |
+| mrs 4.pl 4.pl   |   4 |   4 |           1 | {(Browne,Browne)}, {(sigareti,sigarett)} |
+| mrs 4.pl 5.pl   |   4 |   5 |           1 | {(Browne,Browne)}, {(sigareti,sigarett)} |
+| mrs 5.pl 6.pl   |   6 |  10 |           1 | {(Abrams,Abrams)}, {(sigareti,sigarett)} |
+| mrs 6.pl 7.pl   |   4 |   5 |           0 |                                          |
+| mrs 7.pl 8.pl   |   3 |   4 |           0 |                                          |
+| mrs 9.pl 10.pl  |   3 |   3 |           0 |                                          |
+| mrs 10.pl 11.pl |   5 |   5 |           0 |                                          |
+|                 |     |     |             |                                          |
+
+Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning 4
+på georgisk. Det finst ingen 8.pl på georgisk (som hadde tilsvart 9.pl
+på norsk).
+
 *** foo
 
  I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
