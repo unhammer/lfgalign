@@ -797,31 +797,33 @@ Adjunct-argument links are counted as a non-match.
 
 TODO: How should merges score here? For now, just bail out and return
 1 if branch is a merge."
-  (let ((args_s (get-args (car link) tab_s 'no-nulls)) ; TODO: no-nulls OK?
-	(args_t (get-args (cdr link) tab_t 'no-nulls)))
-    (loop for sub in branch
-	  for pair = (if (f-link? sub)
+  (if (and tab_s tab_t)
+      (let ((args_s (get-args (car link) tab_s 'no-nulls)) ; TODO: no-nulls OK?
+	    (args_t (get-args (cdr link) tab_t 'no-nulls)))
+	(loop for sub in branch
+	      for pair = (if (f-link? sub)
 			     sub
 			   (first sub))
-	  for src = (car pair)
-	  for trg = (cdr pair)
-	  for pos_s = (argpos src args_s tab_s)
-	  for pos_t = (argpos trg args_t tab_t)
-	  if (member-either pair seen)
-	  do (return 1)			; this is a merge, bail out
-	  end
-	  summing (if (or
-		       (and (not pos_s) ; trivial match: both are adjuncts
-			    (not pos_t))
-		       (and pos_s   ; both are arguments, and have the
-			    pos_t ; same position in the arg-structures
-			    (equal pos_s pos_t))) 
-		      1
-		    0)
-	  into matches
-	  counting sub into total
-	  finally (return (/ matches
-			     total)))))
+	      for src = (car pair)
+	      for trg = (cdr pair)
+	      for pos_s = (argpos src args_s tab_s)
+	      for pos_t = (argpos trg args_t tab_t)
+	      if (member-either pair seen)
+	      do (return 1)		; this is a merge, bail out
+	      end
+	      summing (if (or
+			   (and (not pos_s) ; trivial match: both are adjuncts
+				(not pos_t))
+			   (and pos_s ; both are arguments, and have the
+				pos_t ; same position in the arg-structures
+				(equal pos_s pos_t))) 
+			  1
+			0)
+	      into matches
+	      counting sub into total
+	      finally (return (/ matches
+				 total))))
+    1))
 
 (defun sub-f-rate (seen branch &optional tab_s tab_t)
   "How many of the alignments in this branch have sub-alignments, if
