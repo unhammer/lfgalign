@@ -21,6 +21,8 @@ fstructure('abramsi brouns sdevda.',
 	],
 	% Equivalences:
 	[
+	select(B2, 1),
+	select(A1, 1),
 	define(CV_001, or(B2,A1,A3))
 	],
 	% Constraints:
