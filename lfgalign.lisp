@@ -710,6 +710,17 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
     '((0 . 0) (11 . 3) (10 . 9) (9 . 6))
     (values (rank f-alignments aligntab tab_s tab_t)))))
 
+(lisp-unit:define-test test-rank-recursive
+ (lisp-unit:assert-equality
+  #'set-equal
+  '((0 . 0) (46 . 30) (116 . 128))
+  (values (rank-helper nil '((0 . 0) (((46 . 30) ((116 . 128))))))))
+ (lisp-unit:assert-equality
+  #'set-equal
+  '((0 . 0) (verb . verb) (subj . subj) (obj . obj) (adv . adv))
+  (values (rank-helper
+	   nil '((0 . 0) (((verb . verb) ((subj . subj) (obj . obj))) (adv . adv)))))))
+
 
 
 (defun rank (f-alignments aligntab tab_s tab_t)
@@ -727,7 +738,7 @@ that branch."
 
 (defun rank-helper (seen f-alignments &optional aligntab tab_s tab_t)
   (if (f-link? f-alignments)
-      (values f-alignments
+      (values (list f-alignments)
 	      1)
     (let* ((link (car f-alignments))
 	   (outer-links (cons link seen)))
@@ -744,9 +755,10 @@ that branch."
 	      do (setq best-rate rate
 		       best-branches (cons newbranch nil))
 	      finally
-	      ;; for now, just return the first..not sure what
-	      ;; else to do when there's nothing left to rank on:
-	      (return (values (append outer-links (car best-branches))
+	      ;; for now, just return the first of the best.. not sure
+	      ;; what else to do when there's nothing left to rank on:
+	      (return (values (cons link
+				    (car best-branches))
 			      best-rate)))))))
 
 (defun rank-branch (link seen branch &optional aligntab tab_s tab_t)
@@ -769,12 +781,14 @@ score."
   ;; Sum over individual sub-alignments in the branch -- retrieved
   ;; recursively -- and weight by number of sub-alignments (arguments):
   (loop for f-alignment in branch
-     do (setf (values newsub sub-rate)
+	with newsub
+	with sub-rate
+	do (setf (values newsub sub-rate)
 	      (rank-helper seen f-alignment aligntab tab_s tab_t))
-     collecting newsub into subs
-     summing sub-rate into sub-rate-sum
-     finally
-       (return
+	appending newsub into subs
+	summing sub-rate into sub-rate-sum
+	finally
+	(return
 	 (values subs
 		 ;; Multiply this branch with those from children:
 		 (* (sub-f-rate seen branch tab_s tab_t)
