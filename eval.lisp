@@ -8,9 +8,9 @@
        ;; In the thesis at least, ka is src, nb trg
        (tab_t (open-and-import (format nil "eval/~A/nb/~A.pl" subdir n_t)))
        (aligntab (make-aligntab))
+       (LPTs (or LPTs (make-LPT)))
        (f-alignments (f-align '(0 . 0) tab_s tab_t LPTs))
        (best-f-alignment (rank f-alignments aligntab tab_s tab_t))
-       (LPTs (or LPTs (make-LPT)))
        (tree_s (maketree tab_s))
        (tree_t (maketree tab_t))
        (c-alignments (c-align-ranked best-f-alignment 
@@ -18,6 +18,8 @@
 				     tree_t tab_t)))
     (out "=================================~% ~A src: ka/~A.pl trg: nb/~A.pl~%"
 	 subdir n_s n_t)
+    (out "~A~% <=> ~A~%"
+	 (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
     (out "~A~% ~A~%"
 	 (f-tag-tree (skip-suff_base tree_s) tab_s)
 	 (f-tag-tree (skip-suff_base tree_t) tab_t))
@@ -43,9 +45,11 @@
 (defun ev-all ()
   (evaluate "mrs" 0 0)
   (evaluate "mrs" 1 1)
-  (evaluate "mrs" 2 2)		; merge
-  ;; (evaluate "mrs" 3 3) ; >1 solutions
-  (evaluate "mrs" 4 4)
+  (evaluate "mrs" 2 2) ; merge; treng LPT. TODO: bør verb og pro
+		       ; alltid vere LPT ved samanføying
+  (evaluate "mrs" 3 3) ; hadde >1 solutions
+  (evaluate "mrs" 4 4) ; treng LPT
+  (evaluate "mrs" 5 6) ; treng LPT
 
   (evaluate "sofie" 2 0)
 

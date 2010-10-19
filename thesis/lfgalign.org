@@ -2747,7 +2747,7 @@ lite testsett.
  dei N orda som kjem før, har me ein N-grambasert modell.
 
 *** døme
- Setning 4 i MRS-suiten gir følgjande urangerte
+ Setning 5 i MRS-suiten (4.pl) gir følgjande urangerte
  f-struktursamanstilling:
  : ((mi-codeba . rekke-hand)
  :           ((Browne . Abrams) (sigareti . Browne) (Abrams . sigarett))
@@ -2768,9 +2768,21 @@ lite testsett.
  :         (Abrams . Abrams))
  Me kunne au klart oss med berre informasjonen om at sigareti og
  sigarett har LPT-korrespondanse -- så sjølv om LPT-korrespondanse kan
- vere viktig, treng ein ikkje /fullstendig/ LPT-korrespondanse.
+ vere viktig, viser dette dømet at ein ikkje treng /fullstendig/
+ LPT-korrespondanse for å forbetre resultatet.
 
- 
+*** Kor mange av døma treng LPT-korrespondanse for å bli rette
+«min LPT-par» er «LPT-korrespondansar som trengst for å få rette
+f-lenkjer»
+| setning       | l_s | l_t | min LPT-par | moglege LPT-par                          |
+|---------------+-----+-----+-------------+------------------------------------------|
+| mrs 0.pl 0.pl |   1 |   2 |           0 |                                          |
+| mrs 1.pl 1.pl |   2 |   2 |           0 |                                          |
+| mrs 2.pl 2.pl |   3 |   2 |           1 | {(ga-Geba,pro)}, {(PanJara,vindu)}       |
+| mrs 3.pl 3.pl |   3 |   3 |           0 |                                          |
+| mrs 4.pl 4.pl |   4 |   4 |           1 | {(Browne,Browne)}, {(sigareti,sigarett)} |
+| mrs 5.pl 5.pl |   6 |  10 |           1 | {(Abrams,Abrams)}, {(sigareti,sigarett)} |
+  
 *** foo
 
  I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
