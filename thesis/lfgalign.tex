@@ -1,4 +1,4 @@
-% Created 2010-10-20 on. 12:12
+% Created 2010-10-20 on. 15:17
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -81,7 +81,7 @@ står i eit slikt omsetjingsforhold.
 Omsetjingsforhold finn me mellom setningar i kontekst på ulike språk,
 men me kan au finne ulike typar ekvivalensforhold (samanstillingar)
 mellom frasar innanfor setningane, og mellom lingvistiske
-skildringar av setningane. I samanheng med XPar-prosjektet
+skildringar av setningane. I samanheng med Xpar-prosjektet
 \citep{xpar2008rcn} har eg sett på metodar for automatisk
 frasesamanstilling – å finne omsetjingsforhold mellom grupper av
 fleire ord. Resultatet blir ein \emph{annotasjon}, endå ei lingvistisk
@@ -133,7 +133,7 @@ genus, tal eller kasus. Nodar i c-strukturen kan spesifisere
 informasjon på ulike stader i f-strukturen\footnote{Ved c-struktur-f-strukturavbildinga $\phi$, ein funksjon som
         tek ein c-strukturnode og returnerer ein (delvis) f-struktur. }.
 
-I XPar-prosjektet vil ein finne ut om metodar for frasesamanstilling
+I Xpar-prosjektet vil ein finne ut om metodar for frasesamanstilling
 kan tene på det at LFG-grammatikkane for dei ulike språka er skrivne
 med same prinsipp lagt til grunn; to parallellstilte setningar bør ha
 f-strukturar som er like nok til at me kan samanstille frasar ved
@@ -293,7 +293,7 @@ altså prøver å finne eller betre på frase- og ordsamanstilling ut frå
 ein LFG-parse -- det er dette som er strategien til programmet
 \texttt{lfgalign} i kapittel \ref{SEC:implementasjon} -- men det er stor
 overlapp mellom krava som kjem i kapittel \ref{SEC:ideell} og dei gitt
-i den første publiseringa i XPar-prosjektet, \citet{dyvik2009lmp}.
+i den første publiseringa i Xpar-prosjektet, \citet{dyvik2009lmp}.
 
 \section{\textbf{SKRIV} Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi}
 \label{sec-2.2}
@@ -895,10 +895,6 @@ ordklasse.
 \section{Krav på f-strukturnivå}
 \label{sec-3.6}
 
-\fxnote{problematiser: må me ha /PRED-lenkje/ frå arg til arg/adj? (ikkje
-    krevd no...men skal me rangere ved det?)}
-\fxnote{kryssande f-lenkjer?}
-\fxnote{mange-mange-f-lenkjer?}
  
 På f-strukturnivå har me direkte tilgang til informasjon om
 argumentstrukturen til eit predikat, og mengda av adjunkt som
@@ -952,8 +948,8 @@ kan då nytte unionen over alle argument til korresponderande verb til
 å karakterisere kva ein meiner med \emph{deltakarane i verbsituasjonen}. Syntaktiske forhold i språket kan sjølvsagt gi
 grunnar til å \emph{ikkje} kalle dette eit argument.
 
-For å gjere dette konkret kan me sjå på setning 7 i test-suiten til
-XPar-prosjektet:
+For å gjere dette konkret kan me sjå på følgjande setning frå
+test-suiten til Xpar-prosjektet:
 
 \exg. abramsi brouns       daenajleva sigaretze, rom cvimda \label{ex:vedde-gloss} \\
       Abrams.NOM Brown.DAT vedde.3SG sigarett.om, at  regne.3SG.IMP \\
@@ -1381,7 +1377,7 @@ lenkja\footnote{I desse trea har eg annotert f-strukturforhold på visse nodar;
        der eg ikkje har teikna inn dette gjeld $\ua=\da$, altså at
        noden er i same funksjonelle domene som mornoden. Eg har i
        tillegg forenkla kategorinamna ein del frå dei som kjem direkte
-       frå ParGram/XPar-analysane, det bør ikkje ha noko å seie for
+       frå ParGram/Xpar-analysane, det bør ikkje ha noko å seie for
        framstillinga her. }, og det same med \emph{det/het} og \emph{kjøttbollar/gehaktballen}. 
 Viss me føreset at subjekt-NP-ane er lenkja med kvarandre, og at
 objekt-NP-ane er lenkja med kvarandre, på c-strukturnivå,
@@ -2019,16 +2015,16 @@ kapittelet sånn at det er lettare å teste kor dei slår feil.
 
 \label{SEC:implementasjon}
 
-\begin{quotation}
-Scientists reproduce results; engineers build impressive and enduring
-artifacts; and theologians muse about what they believe but can't see
-or prove.
-\begin{minipage}{0.77\textwidth}
-\begin{flushright}
-\citep[s.~466]{pedersen2008enm}
-\end{flushright}
-\end{minipage}
-\end{quotation}
+  % \begin{quotation}
+  % Scientists reproduce results; engineers build impressive and enduring
+  % artifacts; and theologians muse about what they believe but can't see
+  % or prove.
+  % \begin{minipage}{0.77\textwidth}
+  % \begin{flushright}
+  % \citep[s.~466]{pedersen2008enm}
+  % \end{flushright}
+  % \end{minipage}
+  % \end{quotation}
 
 Eit formelt krav kan se bra ut på papiret, men ha skjulte manglar som
 ikkje kjem fram før ein har testa det.  Ei implementering gjer det med
@@ -2063,9 +2059,7 @@ frå XLE\footnote{Formatet er dokumentert på
        Prolog-variabler refererer til same analyseval); men filene eg
        har testa utnyttar ikkje det fulle spennet til formatet, så det
        finst ganske sikkert feil. }. Programmet les inn dei to filene og opprettar ein
-intern representasjon av LFG-analysen.  \fxnote{treng eg ein eigen del
-om LPT i dette kapittelet? Implementasjonen er jo veldig enkel
-iallfall.}
+intern representasjon av LFG-analysen.  
 
 Me kan i tillegg gi programmet informasjon om kva for ord-omsetjingar
 me ser på som lingvistisk prediktable. Intensjonen er at dette kan
@@ -2228,8 +2222,7 @@ desse f-strukturane med eitt av argumenta til den andre.
  \texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt; t.d. må
  mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
  mot subjektet til $F_t$ vere uavhengig av om objektet til $F_s$ er
- lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. \fxnote{TODO:
- nemne føresetnaden om uavhengnad i kapittel 3}
+ lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. 
 
   \begin{algorithm}[]
     \caption{argloop(argperms, ($M_s,M_t$))}
@@ -2291,8 +2284,7 @@ inneheld $(\OBJ,\ADJ)$ og $(\SUBJ,\SUBJ)$. Me kan sjå i $aligntable$
 for å finne ut av om kvar av f-strukturane kunne lenkjast; i dette
 tilfellet vil $aligntable[\OBJ,\ADJ]$ vere tom.
 
-\fxnote{TODO: forskjellen mellom LPT-krav og rekursjonskrav på argument må
-inn i kapittel 3}
+
 
 Om me i tillegg krev at substrukturar kan samanstillast kan me
 utelukke lenkjing av f-strukturane $F_s$ og $F_t$ i \Next under:
@@ -2524,12 +2516,7 @@ f-struktursamanstillinga avgrenser vidare moglege ordlenkjer gitt
 f-strukturinformasjon. Preterminale nodar er dei mest ordnære nodane
 som kan ha ei f-strukturlenkje (ved $\phi$); når formålet er å lenkje
 c-strukturnodar kan me nytte f-strukturlenkja til den preterminale
-noden i staden for ordlenkjer.\fxnote[inline,nomargin]{To problem (kva vil me ha med?)\\
-1. me får \emph{ikkje} med LPT-korrespondansar som er OK, men
-ikkje med i $f-alignment$;\\
-2. me \emph{får} med LPT-korrespondansar
-som er med i $f-alignment$ men ikkje $aligntable$ (ikkje er rekursivt
-lenkja).}
+noden i staden for ordlenkjer.
 
 Programmet \texttt{lfgalign} følgjer krav \ref{krav:c-pro} og
 lenkjer øvste nodar i funksjonelle domene, og subordinate nodar som
@@ -2604,11 +2591,6 @@ diskutert i del \ref{SEC:f-lenkje-utan-c-node}.
 Prosessen er no ferdig, mange-til-mange-lenkjene mellom
 c-strukturnodar definerer frasesamanstillinga
 
-\fxnote[inline,nomargin]{til
-diskusjonsdel:\emph{Det er ikkje berre ei N-gramsamanstilling; sidan
-lenkjene er mellom c-strukturnodar kor kvar node dominerer ein
-konstituent, kunne me kalt det ei} konstituentsamanstilling.}.
-
 I neste kapittel går eg gjennom resultat av å køyre \texttt{lfgalign} på eit
 lite testsett. 
 
@@ -2617,6 +2599,8 @@ lite testsett.
 \label{sec-5}
 
 \label{SEC:diskusjon}
+
+\fxnote{alt i denne delen er uferdig...}
 
 
  I denne delen gir eg ei evaluering av resultata frå å køyre
@@ -2647,11 +2631,16 @@ lite testsett.
  når eg samanliknar med N-grambaserte metodar gir eg desse «perfekte»
  lenkjer (så gode som det vil vere mogleg å få).
 
+\fxnote[inline,nomargin]{Kvifor georgisk: ...}
+
 \section{N-grambaserte metodar}
 \label{sec-5.1}
 
- Dei fleste metodane for frasesamanstilling er N-grambaserte; difor er
- det naturleg å samanlikne metoden i \texttt{lfgalign} med slike metodar.
+   \fxnote{Planen er altså å fortelje litt om dei alternative
+ metodane, og så samanlikne med dei...er litt usikker på korleis eg
+ skal samanlikne då.}  Dei fleste metodane for frasesamanstilling er
+ N-grambaserte; difor er det naturleg å samanlikne metoden i
+ \texttt{lfgalign} med slike metodar.
 
  \citet[s.~20--21]{och2003scv} definerer ei samanstilling på det mest
  generelle som ei delmengd av det kartesiske produktet av
@@ -2689,8 +2678,11 @@ lite testsett.
  modell. Om me har forenkla modellen slik at $p$ berre er avhengig av
  dei N orda som kjem før, har me ein N-grambasert modell.
 
-\subsection{døme}
+\subsection{Døme}
 \label{sec-5.1.1}
+
+   \fxnote[inline,nomargin]{Grundig gjennomgang av eit døme, for samanlikning med
+ N-grambaserte metodar}
 
  Setning 5 i MRS-suiten (4.pl) gir følgjande urangerte
  f-struktursamanstilling:
@@ -2725,11 +2717,54 @@ lite testsett.
  vere viktig, viser dette dømet at ein ikkje treng \emph{fullstendig}
  LPT-korrespondanse for å forbetre resultatet.
 
-\subsection{Kor mange av døma treng LPT-korrespondanse for å bli rette}
+\begin{itemize}
+\item Kva informasjon får me ut av lenkjinga
+\item Kva informasjon ville me fått ut av ei rein N-gram-lenkjing
+
+\begin{itemize}
+\item \ldots{}og korleis kan N-grambaserte metodar nyttast til tre-lenkjing
+    (Samuelsson \& Volk)
+\end{itemize}
+
+\end{itemize}
+\subsection{Men korleis gjenfinne there is/es gibt?}
 \label{sec-5.1.2}
 
-«min LPT-par» er «LPT-korrespondansar som trengst for å få rette
-f-lenkjer»
+(og kva skal me med det, viss ikkje me driv med statistisk
+maskinomsetjing?)
+
+\begin{itemize}
+\item N-gram kjem like ofte som heile konstruksjonen, då kan dette
+  gjenfinnast
+
+\begin{itemize}
+\item dvs., \emph{there is NP/es gibt NP}-samanstilling kjem like ofte som
+    \emph{there is} eller \emph{es gibt} førekjem. Eit TigerXML-type søk etter
+    \emph{there is NP/es gibt NP} burde jo vere mogleg, sjekk om dette er
+    delmengd av \emph{there is/es gibt}.
+\end{itemize}
+
+\end{itemize}
+Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
+(\emph{There} never \emph{is}) som opptrer utanfor N-grammet på det andre
+språket.
+
+\section{Kor mange setningspar treng LPT-korrespondanse for å bli rette}
+\label{sec-5.2}
+
+Sidan eit mål med oppgåva er å finne ut av kor lite
+bottom-up-informasjon ein kan klare seg med, går eg her gjennom
+setningane i testsettet mitt for å sjå kor mange av dei som krev
+LPT-informasjon for å unngå feil lenkjer mellom argument/adjunkt av
+same predikat. Merk: sjølv om testsettet viser ei vid rekkje
+syntaktiske fenomen, er det langt frå å vere eit representativt
+korpus.
+
+«min LPT-par» i tabellen er «kor mange LPT-korrespondansar som trengst
+for å få rette f-lenkjer»; «moglege LPT-par» viser moglege mengder med
+minimal LPT-informasjon som er nok til at me får rett analyse (mange
+mengder i denne kolonnen vil altså seie at det er mange måtar å få
+rett analyse på).
 
 \begin{center}
 \begin{tabular}{lrrrll}
@@ -2767,6 +2802,8 @@ f-lenkjer»
 
 
 
+Kommentarar til analysane:
+
 Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning 4
 på georgisk. Det finst ingen 8.pl på georgisk sidan denne (som hadde
 tilsvart 9.pl på norsk) ikkje hadde analyse, difor manglar dette
@@ -2787,63 +2824,33 @@ bilde, sjå på SPEC, og sjå på POSS for å finne \p{Abrams}. Dette bør
 vere mogleg å rette på i programmet
 
 71.pl og 72.pl viser at koordinering ikkje fungerer\ldots{} får berre
-\texttt{((mo-svla . ankomme) (pro . pro))} men burde vel få
-\texttt{((mo-svla . ankomme) (Abrams . Abrams) (Browne . Browne))}.
-\subsection{foo}
-\label{sec-5.1.3}
+\texttt{((mo-svla . ankomme) (pro . pro))} men burde vel få \texttt{((mo-svla . ankomme) (da . og) (Abrams . Abrams) (Browne . Browne))}.  Dette
+skjer fordi koordineringar ikkje har PRED-element i analysane, men i
+staden er representert som \texttt{(("REF-COORD" . "+") ("NUM" . "pl") ("COORD-FORM" . "og") ("CASE" . "nom")) \{1, 2\}} kor det på slutten
+altså er ei \emph{mengd} med 1 og 2 (Abrams og Browne). Me kan t.d. løyse
+dette ved å introdusere eit «falskt PRED» for desse koordineringane
+med så mange argument som det er i mengda. Så for å lenkje ei
+koordinering, må alle element i koordineringa kunne lenkjast (som med
+argument).
 
+Dette dømet demonstrerer ein veikskap med \texttt{lfgalign}: om ein skal
+nytte \texttt{lfgalign} med nye LFG-grammatikkar, som kanskje har andre
+retningslinjer for analyse eller har gjort ting på litt spesielle
+måtar, må ein kanskje leggje til fleire unntak (evt. preprosessere
+analysane før lenkjing). Dette kan forsåvidt vere eit problem med alle
+metodar som er svært kunnskapsbaserte.
 
- I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
- som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
- informasjon som er kvalitativt forskjellig frå det ein kan få med å
- berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
-
-\texttt{lfgalign} stiller høge krav til inndata: det må vere ferdig
-disambiguert og setningssamanstilt.
-
-
-
-\subsection{c->f er mange-til-ein}
-\label{sec-5.1.4}
-
-Avbildinga frå c-strukturnodar til f-struktur er mange-til-ein, kan me
-t.d. innanfor eitt tre ha fleire N-gram per f-strukturhovud; ein
-metode som berre ser på enkle N-gramlenkjer vil ikkje registrere desse
-relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
-
-\section{Evaluering av \texttt{lfgalign}}
-\label{sec-5.2}
 
 Setning 13 + 10 i sofie illustrerer eit anna problem: for store
 forskjellar i argumentstruktur gir feil løysing.
 
 
-\section{Bruksområde}
-\label{sec-5.3}
-
-\subsection{Oppdage argumentstrukturalternasjon}
-\label{sec-5.3.1}
-
-\fixme{ref} I døme TODO i kapittel TODO viste eg at f-strukturar og
-LPT-korrespondanse kanskje ikkje har nok informasjon til å kunne
-handtere ulik følgje i argumentstruktur. Programmet mitt vil her gi
-begge løysingar, ei rangering basert på lik argumentfølgje vil gi feil
-løysing på topp.
-
-Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
-objekt til å lære slike argumentstrukturalternasjonar.  Om me
-observerer \emph{sie gefällt mir/jeg liker henne} vil me jo ha
-f-strukturinformasjon som kan nyttast til å informere
-argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.), om det var
-substantiv der ville LPT-korrespondanse kunne informere dette.
-
-
 
 \section{Rangeringsproblem}
-\label{sec-5.4}
+\label{sec-5.3}
 
-\subsection{argument-argument > argument-adjunkt}
-\label{sec-5.4.1}
+\subsection{argument-argument > argument-adjunkt (ikkje implementert!)}
+\label{sec-5.3.1}
 
     Plusspoeng for argument-argument-lenkjer, burde vere eit bra
     kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
@@ -2851,56 +2858,41 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
     \texttt{da-najleveba<Abrams,Browne,regne>} adjunkt: \texttt{sigarett}\\
     \texttt{bet<Abrams,sigarett,regne>} adjunkt: \texttt{Browne}
     
-\subsection{arg1-arg1 arg2-arg2 > arg1-arg2 arg2-arg1 (følgje)}
-\label{sec-5.4.2}
+\subsection{arg-følgje}
+\label{sec-5.3.2}
 
     Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
     viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
     i leksikon ikkje er basert på semantikk, men syntaks). Men elles
     er det vel OK.
+\section{Bruksområde}
+\label{sec-5.4}
 
-    Enklaste implementasjon: Levenshtein-avstand. Men burde visse
-    argument vektast? (T.d. vekte subjekt om alt anna er likt.)
+\subsection{Oppdage argumentstrukturalternasjon}
+\label{sec-5.4.1}
 
-    Andre forslag: \href{http://en.wikipedia.org/wiki/Edit_distance}{http://en.wikipedia.org/wiki/Edit\_distance})
+ I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
+ f-strukturar og LPT-korrespondanse ikkje alltid har nok informasjon
+ til å kunne handtere ulik følgje i argumentstruktur. Programmet mitt
+ vil her gi begge løysingar, ei rangering basert på lik argumentfølgje
+ vil gi feil løysing på topp.
+
+ Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
+ objekt til å lære slike argumentstrukturalternasjonar.  Om me
+ observerer \emph{sie gefällt mir/jeg liker henne} vil me jo ha
+ f-strukturinformasjon som kan nyttast til å informere
+ argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.), om det
+ var substantiv der ville LPT-korrespondanse kunne informere dette.
 \section{Opne problem}
 \label{sec-5.5}
 
-\subsection{\textbf{SKRIV} om global tyding, ikkje-komposisjonell..}
+\subsection{Reentrancy og top-down f-strukturlenkjing}
 \label{sec-5.5.1}
 
-Same globale tyding krev i det minste at, i situasjonen verbet
-denoterer, speler deltakarane same rolle. Men dette er endå meir
-abstrakt/semantisk enn (semantisk) argumentstruktur\ldots{}
+      \fxnote{Standarddømet med reentrancy er i mrs/ka/37.pl
+      mrs/nb/38.pl; jaGli/hund er subjekt både for \p{ville} og
+      \p{bjeffe}, difor får løysinga ut jaGli-hund to gonger.}
 
-Problem: ikkje-komposisjonell omsetjing. Same globale tyding. Det
-treng ikkje vere berre pragmatisk forskjell--type \emph{kan du lukke døra}
-vs \emph{lukk døra}, kor situasjon gjer setningane like--sidan me kan ha
-konvensjonaliserte konstruksjoner på L1 kor heile tilsvarer enkeltord
-på L2, a la japansk \emph{viss eg ikkje går på skulen så kan det ikkje vere} \~{}= \emph{eg må gå på skulen}. 
-
-Ein føresetnad eg har, er at setningar som er samanstilte faktisk har
-ein omsetjingsmessig korrespondanse (dette er min data). Så om eit par
-av ytre predikat ikkje korresponderer er det au ein type data; nemleg
-at me har ein omsetjingsmessig korrespondanse der det var ein mismatch
-i ytre argumentstruktur. (Algoritmen bør då lagre slike mismatches
-eksplisitt, ikkje berre la vere å lenkje, for det kan vere andre
-grunnar til at det ikkje kom ei lenkjing. A la ekspertsystem: forklare
-resonnementet.)
-
-Alternativt ein konstruksjonslenkjing\ldots{} 
-
-Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slag delmengd av
-argstr til $PRED_{L2}$. 
-\subsection{Reentrancy og top-down f-strukturlenkjing}
-\label{sec-5.5.2}
-
-\begin{itemize}
-\item Note taken on \textit{2010-10-19 ty. 17:07} \\
-      Standarddømet med reentrancy er i mrs/ka/37.pl mrs/nb/38.pl;
-      jaGli/hund er subjekt både for \p{ville} og \p{bjeffe}, difor får
-      løysinga ut jaGli-hund to gonger.
-\end{itemize}
 Setningsparet i \Next bør kunne lenkjast, men gir nokre intrikate
 problem.
 
@@ -2968,9 +2960,34 @@ problem.
  i faktiske analysar, så kan det hende at metoden er god nok. Til no
  har eg ikkje sett slike situasjonar, men det er altså logisk mogleg
  at dei kan dukke opp.
+\subsection{Koordinering}
+\label{sec-5.5.2}
 
+\fxnote[inline,nomargin]{Setning ka/71.pl og nb/72.pl}
+\section{Oppsummering}
+\label{sec-5.6}
 
-     
+\begin{itemize}
+\item Sidan avbildinga frå c-strukturnodar til f-struktur er
+   mange-til-ein, kan me t.d. innanfor eitt tre ha fleire N-gram per
+   f-strukturhovud; ein metode som berre ser på enkle N-gramlenkjer
+   vil ikkje registrere desse relasjonane (t.d. metoden i
+   \citet{samuelsson2007apa}).
+\item Det er ikkje berre ei N-gramsamanstilling; sidan
+   lenkjene er mellom c-strukturnodar kor kvar node dominerer ein
+   konstituent, kunne me kalt det ei konstituentsamanstilling.
+\item I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
+   som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
+   informasjon som er kvalitativt forskjellig frå det ein kan få med å
+   berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
+\item \texttt{lfgalign} stiller høge krav til inndata: det må vere ferdig
+   disambiguert og setningssamanstilt. I tillegg må grammatikkane som
+   gav analysane vere fundert på like prinsipp, for å få best mogleg
+   resultat. Det kan au oppstå problem viss ein køyrer programmet på
+   analysar frå grammatikkar som, sjølv om dei er fundert på like
+   prinsipp, har svært ulike måtar å representere ulike grammatiske
+   fenomen enn det grammatikkane i Xpar-prosjektet her.
+\end{itemize}
 \chapter{Avslutning}
 \label{sec-6}
 
