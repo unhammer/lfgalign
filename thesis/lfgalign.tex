@@ -1,4 +1,4 @@
-% Created 2010-10-18 må. 16:20
+% Created 2010-10-20 on. 12:12
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -55,7 +55,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{18/10, 2010}
+\date{20/10, 2010}
 
 \begin{document}
 
@@ -1989,7 +1989,9 @@ Den endelege skåren for $F_s$, $F_t$ er då produktet av følgjeskåren,
 djupnskåren og den vekta summen av dei endelege skårane for lenkja
 argument/adjunkt av $F_s$ og $F_t$. Denne summen er vekta på lengden
 av lista med lenkja argument/adjunkt, for å ikkje gi unaturleg høg
-skåre til f-strukturar med mange argument/adjunkt\footnote{Sidan det ikkje er meininga å nytte denne skåringa i
+skåre til f-strukturar med mange argument/adjunkt; men viss me til
+slutt har mange greiner med same skåre, vel me den lengste sidan den
+då har flest lenkja adjunkt\footnote{Sidan det ikkje er meininga å nytte denne skåringa i
         maskinlæring har eg ikkje undersøkt om dette kan gjerast til
         ein stringent sannsynsmodell (der summen av skårar for alle
         moglege samanstillingar aldri går over 1); men det bør vere
@@ -2428,8 +2430,12 @@ tilbake til i del \ref{SEC:diskusjon}.
  $a1a1tree$ har som \emph{link} $(a1_s, a2_t)$, osb. Viss desse argumenta
  ikkje har argument/adjunkt sjølve, vil deira \emph{branches} vere tomme,
  og deira \emph{rank-f} er då 1. For $F_t$ og $F_s$ vil funksjonen \emph{rank-f}
- returnere den greina som har best skåre\footnote{Det kan godt hende me har fleire greiner med same skåre -- for
-        no blir berre den første returnert. }, gitt ved
+ returnere den greina som har best skåre\footnote{Det kan godt hende me har fleire greiner med same skåre --
+        kodefiguren viser ikkje dette, men me samlar opp alle med
+        høgast skåre og returnerer den \emph{lengste} av desse for å fylle
+        opp med så mange adjunkt-lenkjer som mogleg. Viss det er
+        fleire lengste, vel me berre den første, sidan det ikkje er
+        meir å rangere på. }, gitt ved
  \emph{rank-branch}.
 
  Kodefigur \ref{algo:rank-branch} illustrerer funksjonen
@@ -2622,40 +2628,27 @@ lite testsett.
  tillegg diskuterer eg kort ulike bruksområde for desse
  samanstillingane.
 
- Det er visse føresetnader i \texttt{lfgalign} som er gjort for å forenkle
- metoden, som kan føre til feil i samanstillinga. T.d. følgjer
- implementasjonen krav \ref{krav:PRED-omgivnad}, som nok er for
- strengt, men som avskjerer ein god del umotiverte lenkjingar. I
- tillegg er c-strukturlenkjinga i implementasjonen direkte avleidd av
- f-strukturlenkjinga; men, som nemnt i del \ref{SEC:fnord} kan det
- finnast c-strukturforhold som bør påverke f-strukturlenkjinga.
+ Det er visse føresetnader i implementasjonen som er gjort for å
+ forenkle metoden, som kan føre til feil i
+ samanstillinga. T.d. følgjer implementasjonen krav
+ \ref{krav:PRED-omgivnad}, som nok er for strengt, men som avskjerer
+ ein god del umotiverte lenkjingar. I tillegg er c-strukturlenkjinga i
+ implementasjonen direkte avleidd av f-strukturlenkjinga; men, som
+ nemnt i del \ref{SEC:fnord} kan det finnast c-strukturforhold som bør
+ påverke f-strukturlenkjinga. \fxnote[inline,nomargin]{«eg kjem
+ tilbake til dette blah»}
 
-\section{Ressursar}
+ Kjeldematerialet mitt for denne evalueringa er ei mengd med omtrent
+ hundre \fxnote[inline,nomargin]{med mindre det finst fleire?}
+ LFG-analyserte testsetningar på norsk og georgisk, frå eit testsett
+ kor setningane er valde for å illustrere ei vid rekkje ulike
+ syntaktiske situasjonar. Analysane er manuelt disambiguerte.  Dette
+ materialet er sjølvsagt alt for lite for statistisk samanstilling, så
+ når eg samanliknar med N-grambaserte metodar gir eg desse «perfekte»
+ lenkjer (så gode som det vil vere mogleg å få).
+
+\section{N-grambaserte metodar}
 \label{sec-5.1}
-
- Kjeldematerialet mitt er ei mengd med omtrent hundre
- \fxnote[inline,nomargin]{med mindre det finst fleire?} LFG-analyserte
- testsetningar på norsk og georgisk, frå eit testsett kor setningane
- er valde for å illustrere ei vid rekkje ulike syntaktiske
- situasjonar. Analysane er manuelt disambiguerte.
-
- Dette materialet er sjølvsagt alt for lite for statistisk
- samanstilling, så når eg samanliknar med N-grambaserte metodar gir eg
- desse «perfekte» lenkjer (så gode som det vil vere mogleg å få).
-\section{Samanlikning med tremetodar og n-grammetodar}
-\label{sec-5.2}
-
-I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
-som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
-informasjon som er kvalitativt forskjellig frå det ein kan få med å
-berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
-
-\texttt{lfgalign} stiller høge krav til inndata: det må vere ferdig
-disambiguert og setningssamanstilt.
-\subsection{N-grambaserte metodar}
-\label{sec-5.2.1}
-
-   \fxnote{Flytte dette ned litt, og byrje med ideell-diskusjon?}
 
  Dei fleste metodane for frasesamanstilling er N-grambaserte; difor er
  det naturleg å samanlikne metoden i \texttt{lfgalign} med slike metodar.
@@ -2695,8 +2688,123 @@ disambiguert og setningssamanstilt.
  bakgrunn av mindre data), men sjølvsagt gir ein mindre nyansert
  modell. Om me har forenkla modellen slik at $p$ berre er avhengig av
  dei N orda som kjem før, har me ein N-grambasert modell.
+
+\subsection{døme}
+\label{sec-5.1.1}
+
+ Setning 5 i MRS-suiten (4.pl) gir følgjande urangerte
+ f-struktursamanstilling:
+\begin{verbatim}
+  ((mi-codeba . rekke-hand)
+            ((Browne . Abrams) (sigareti . Browne) (Abrams . sigarett))
+            ((Browne . Abrams) (sigareti . sigarett) (Abrams . Browne))
+            ((Browne . Browne) (sigareti . Abrams) (Abrams . sigarett))
+            ((Browne . Browne) (sigareti . sigarett) (Abrams . Abrams))
+            ((Browne . sigarett) (sigareti . Abrams) (Abrams . Browne))
+            ((Browne . sigarett) (sigareti . Browne) (Abrams . Abrams)))
+\end{verbatim}
+
+ Etter rangering, utan LPT-informasjon, får me
+\begin{verbatim}
+   ((mi-codeba . rekke-hand) (Browne . sigarett) (sigareti . Browne)
+          (Abrams . Abrams))
+\end{verbatim}
+
+ som jo er feil. Dette skjer pga. argumentstrukturane til dei to verba
+ \emph{ikkje} er parallelle -- mi-codeba har <Abrams, sigareti, Browne>,
+ medan rekke-hand har <Abrams, Browne, sigarett>. Ved å t.d. leggje
+ til informasjonen om at Browne og Browne har LPT-korrespondanse, får
+ me
+\begin{verbatim}
+   ((mi-codeba . rekke-hand) (Browne . Browne) (sigareti . sigarett)
+          (Abrams . Abrams))
+\end{verbatim}
+
+ Me kunne au klart oss med berre informasjonen om at sigareti og
+ sigarett har LPT-korrespondanse -- så sjølv om LPT-korrespondanse kan
+ vere viktig, viser dette dømet at ein ikkje treng \emph{fullstendig}
+ LPT-korrespondanse for å forbetre resultatet.
+
+\subsection{Kor mange av døma treng LPT-korrespondanse for å bli rette}
+\label{sec-5.1.2}
+
+«min LPT-par» er «LPT-korrespondansar som trengst for å få rette
+f-lenkjer»
+
+\begin{center}
+\begin{tabular}{lrrrll}
+ setning          &  l$_s$  &  l$_t$  &  min LPT-par  &  moglege LPT-par                               &         \\
+\hline
+ mrs 0.pl 0.pl    &      1  &      2  &            0  &                                                &         \\
+ mrs 1.pl 1.pl    &      2  &      2  &            0  &                                                &         \\
+ mrs 2.pl 2.pl    &      3  &      2  &            1  &  \{(ga-Geba,pro)\}, \{(PanJara,vindu)\}        &  merge  \\
+ mrs 3.pl 3.pl    &      3  &      3  &            0  &                                                &         \\
+ mrs 4.pl 4.pl    &      4  &      4  &            1  &  \{(Browne,Browne)\}, \{(sigareti,sigarett)\}  &         \\
+ mrs 4.pl 5.pl    &      4  &      5  &            1  &  \{(Browne,Browne)\}, \{(sigareti,sigarett)\}  &         \\
+ mrs 5.pl 6.pl    &      6  &     10  &            1  &  \{(Abrams,Abrams)\}, \{(sigareti,sigarett)\}  &         \\
+ mrs 6.pl 7.pl    &      4  &      5  &            0  &                                                &         \\
+ mrs 7.pl 8.pl    &      3  &      4  &            0  &                                                &         \\
+ mrs 9.pl 10.pl   &      3  &      3  &            0  &                                                &         \\
+ mrs 10.pl 11.pl  &      5  &      5  &            0  &                                                &         \\
+ mrs 11.pl 12.pl  &      3  &      3  &            0  &                                                &         \\
+ mrs 12.pl 13.pl  &      2  &      2  &            0  &                                                &         \\
+ mrs 16.pl 17.pl  &      2  &      2  &            0  &                                                &         \\
+ mrs 19.pl 20.pl  &      2  &      2  &            0  &                                                &         \\
+ mrs 22.pl 23.pl  &      3  &      3  &            0  &                                                &         \\
+ mrs 23.pl 24.pl  &      2  &      2  &            0  &                                                &         \\
+ mrs 24.pl 25.pl  &      3  &      3  &            0  &                                                &         \\
+ mrs 25.pl 26.pl  &      3  &      4  &            0  &                                                &         \\
+ mrs 26.pl 27.pl  &      2  &      2  &            0  &                                                &         \\
+ mrs 34.pl 35.pl  &      2  &      3  &            0  &                                                &  merge  \\
+ mrs 37.pl 38.pl  &      3  &      3  &            0  &                                                &         \\
+ mrs 38.pl 39.pl  &      2  &      5  &            0  &                                                &  merge  \\
+ mrs 57.pl 58.pl  &      3  &      4  &            0  &                                                &         \\
+ mrs 63.pl 64.pl  &      3  &      4  &            0  &                                                &         \\
+ mrs 67.pl 68.pl  &      3  &      4  &          (0)  &                                                &         \\
+ mrs 71.pl 72.pl  &      4  &      4  &          (0)  &                                                &         \\
+\end{tabular}
+\end{center}
+
+
+
+Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning 4
+på georgisk. Det finst ingen 8.pl på georgisk sidan denne (som hadde
+tilsvart 9.pl på norsk) ikkje hadde analyse, difor manglar dette
+setningsparet -- andre som manglar var anten ikkje disambiguerte eller
+hadde ikkje analysar. Eit par som ikkje var disambiguerte har eg sjølv
+manuelt disambiguert:
+\begin{itemize}
+\item mrs/nb/0.pl
+\item mrs/ka/3.pl
+\end{itemize}
+57.pl og 58.pl er eg usikker på kva den rette analysen bør vere (eller
+om har rette LFG-analysar), men fleire LPT-par vil iallfall ikkje
+endre på det.
+
+67.pl og 68.pl manglar adverbialet frå analysen; \emph{abramsis} er POSS i
+staden for adjunkt/objekt -- me må altså gå frå f-strukturen til
+bilde, sjå på SPEC, og sjå på POSS for å finne \p{Abrams}. Dette bør
+vere mogleg å rette på i programmet
+
+71.pl og 72.pl viser at koordinering ikkje fungerer\ldots{} får berre
+\texttt{((mo-svla . ankomme) (pro . pro))} men burde vel få
+\texttt{((mo-svla . ankomme) (Abrams . Abrams) (Browne . Browne))}.
+\subsection{foo}
+\label{sec-5.1.3}
+
+
+ I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
+ som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
+ informasjon som er kvalitativt forskjellig frå det ein kan få med å
+ berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
+
+\texttt{lfgalign} stiller høge krav til inndata: det må vere ferdig
+disambiguert og setningssamanstilt.
+
+
+
 \subsection{c->f er mange-til-ein}
-\label{sec-5.2.2}
+\label{sec-5.1.4}
 
 Avbildinga frå c-strukturnodar til f-struktur er mange-til-ein, kan me
 t.d. innanfor eitt tre ha fleire N-gram per f-strukturhovud; ein
@@ -2704,17 +2812,17 @@ metode som berre ser på enkle N-gramlenkjer vil ikkje registrere desse
 relasjonane (t.d. metoden i \citet{samuelsson2007apa}).
 
 \section{Evaluering av \texttt{lfgalign}}
-\label{sec-5.3}
+\label{sec-5.2}
 
 Setning 13 + 10 i sofie illustrerer eit anna problem: for store
 forskjellar i argumentstruktur gir feil løysing.
 
 
 \section{Bruksområde}
-\label{sec-5.4}
+\label{sec-5.3}
 
 \subsection{Oppdage argumentstrukturalternasjon}
-\label{sec-5.4.1}
+\label{sec-5.3.1}
 
 \fixme{ref} I døme TODO i kapittel TODO viste eg at f-strukturar og
 LPT-korrespondanse kanskje ikkje har nok informasjon til å kunne
@@ -2732,10 +2840,10 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
 
 
 \section{Rangeringsproblem}
-\label{sec-5.5}
+\label{sec-5.4}
 
 \subsection{argument-argument > argument-adjunkt}
-\label{sec-5.5.1}
+\label{sec-5.4.1}
 
     Plusspoeng for argument-argument-lenkjer, burde vere eit bra
     kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
@@ -2744,7 +2852,7 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
     \texttt{bet<Abrams,sigarett,regne>} adjunkt: \texttt{Browne}
     
 \subsection{arg1-arg1 arg2-arg2 > arg1-arg2 arg2-arg1 (følgje)}
-\label{sec-5.5.2}
+\label{sec-5.4.2}
 
     Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
     viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
@@ -2756,10 +2864,10 @@ substantiv der ville LPT-korrespondanse kunne informere dette.
 
     Andre forslag: \href{http://en.wikipedia.org/wiki/Edit_distance}{http://en.wikipedia.org/wiki/Edit\_distance})
 \section{Opne problem}
-\label{sec-5.6}
+\label{sec-5.5}
 
 \subsection{\textbf{SKRIV} om global tyding, ikkje-komposisjonell..}
-\label{sec-5.6.1}
+\label{sec-5.5.1}
 
 Same globale tyding krev i det minste at, i situasjonen verbet
 denoterer, speler deltakarane same rolle. Men dette er endå meir
@@ -2785,9 +2893,14 @@ Alternativt ein konstruksjonslenkjing\ldots{}
 Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slag delmengd av
 argstr til $PRED_{L2}$. 
 \subsection{Reentrancy og top-down f-strukturlenkjing}
-\label{sec-5.6.2}
+\label{sec-5.5.2}
 
-
+\begin{itemize}
+\item Note taken on \textit{2010-10-19 ty. 17:07} \\
+      Standarddømet med reentrancy er i mrs/ka/37.pl mrs/nb/38.pl;
+      jaGli/hund er subjekt både for \p{ville} og \p{bjeffe}, difor får
+      løysinga ut jaGli-hund to gonger.
+\end{itemize}
 Setningsparet i \Next bør kunne lenkjast, men gir nokre intrikate
 problem.
 
@@ -2864,6 +2977,8 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
+
 
 
 

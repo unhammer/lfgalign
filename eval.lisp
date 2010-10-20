@@ -57,6 +57,19 @@
   (evaluate "mrs" 10 11)
   (evaluate "mrs" 11 12)
   (evaluate "mrs" 16 17)
+  (evaluate "mrs" 19 20)
+  (evaluate "mrs" 22 23)
+  (evaluate "mrs" 23 24)
+  (evaluate "mrs" 24 25)
+  (evaluate "mrs" 25 26)
+  (evaluate "mrs" 26 27)
+  (evaluate "mrs" 34 35)
+  (evaluate "mrs" 37 38)
+  (evaluate "mrs" 38 39)
+  (evaluate "mrs" 57 58)
+  (evaluate "mrs" 63 64)
+  (evaluate "mrs" 67 68)
+  (evaluate "mrs" 71 72)	  ; TODO: koordinering fungerer ikkje!
 
   (evaluate "sofie" 2 0)
 

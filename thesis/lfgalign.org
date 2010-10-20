@@ -2090,7 +2090,9 @@ Den endelege skåren for $F_s$, $F_t$ er då produktet av følgjeskåren,
 djupnskåren og den vekta summen av dei endelege skårane for lenkja
 argument/adjunkt av $F_s$ og $F_t$. Denne summen er vekta på lengden
 av lista med lenkja argument/adjunkt, for å ikkje gi unaturleg høg
-skåre til f-strukturar med mange argument/adjunkt[fn:29].
+skåre til f-strukturar med mange argument/adjunkt; men viss me til
+slutt har mange greiner med same skåre, vel me den lengste sidan den
+då har flest lenkja adjunkt[fn:29].
 
 
 
@@ -2800,7 +2802,9 @@ f-lenkjer»
 | mrs 37.pl 38.pl |   3 |   3 |           0 |                                          |       |
 | mrs 38.pl 39.pl |   2 |   5 |           0 |                                          | merge |
 | mrs 57.pl 58.pl |   3 |   4 |           0 |                                          |       |
-| mrs 63.pl 64.pl |   3 |   4 |           0? |                                          |       |
+| mrs 63.pl 64.pl |   3 |   4 |           0 |                                          |       |
+| mrs 67.pl 68.pl |   3 |   4 |         (0) |                                          |       |
+| mrs 71.pl 72.pl |   4 |   4 |         (0) |                                          |       |
 
 Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning 4
 på georgisk. Det finst ingen 8.pl på georgisk sidan denne (som hadde
@@ -2815,7 +2819,14 @@ manuelt disambiguert:
 om har rette LFG-analysar), men fleire LPT-par vil iallfall ikkje
 endre på det.
 
-63.pl og 64.pl manglar adverbialet av ein eller annan grunn.
+67.pl og 68.pl manglar adverbialet frå analysen; /abramsis/ er POSS i
+staden for adjunkt/objekt -- me må altså gå frå f-strukturen til
+bilde, sjå på SPEC, og sjå på POSS for å finne \p{Abrams}. Dette bør
+vere mogleg å rette på i programmet
+
+71.pl og 72.pl viser at koordinering ikkje fungerer... får berre
+=((mo-svla . ankomme) (pro . pro))= men burde vel få
+=((mo-svla . ankomme) (Abrams . Abrams) (Browne . Browne))=.
 *** foo
 
  I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
@@ -3177,8 +3188,12 @@ problem.
         moglege samanstillingar aldri går over 1); men det bør vere
         mogleg å gjere noko slikt ut av det.
 
-[fn:30] Det kan godt hende me har fleire greiner med same skåre -- for
-        no blir berre den første returnert.
+[fn:30] Det kan godt hende me har fleire greiner med same skåre --
+        kodefiguren viser ikkje dette, men me samlar opp alle med
+        høgast skåre og returnerer den /lengste/ av desse for å fylle
+        opp med så mange adjunkt-lenkjer som mogleg. Viss det er
+        fleire lengste, vel me berre den første, sidan det ikkje er
+        meir å rangere på.
 
 [fn:31] Alternativt kunne me returnert eit tre som var annotert med
         skårene.
