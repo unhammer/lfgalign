@@ -754,6 +754,14 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
 
 
 
+
+(defun longest-sublists (lists)
+  "Return the longest sublists in `lists'. Could do this in one loop,
+but meh."
+  (let ((maxlen (loop for l in lists maximize (length l))))
+    (mapcar-true (lambda (l) (when (>= (length l) maxlen) l))
+		 lists)))
+
 (defun rank (f-alignments aligntab tab_s tab_t)
   "This could be done in a million different ways. For now, this is
 the procedure: We start with input like '((0 . 0) branch1 branch2 ...)
@@ -764,7 +772,10 @@ or '((9 . 0) ((10 . 3) ((1 . 2) (7 . 8)) ((7 . 2) (1 . 8))))
 etc. It gets a score for each branch from `rank-branch' which
 calculates a score for (0 . 0) and a specific branch (set of
 argument/adjunct links), multiplied with the ranks of each member of
-that branch."
+that branch.
+
+If there are several with equal rank, choose the first of the longest
+branches (thus trying to align as many adjuncts as possible)."
   (rank-helper nil f-alignments aligntab tab_s tab_t))
 
 (defun rank-helper (seen f-alignments &optional aligntab tab_s tab_t)
@@ -773,24 +784,24 @@ that branch."
 	      1)
     (let* ((link (car f-alignments))
 	   (outer-links (cons link seen)))
-      (when (cdr f-alignments) ; if we got this far, will we ever see nil cdr?
-	(loop with best-rate = 0	; worst possible sub-f-score, all failed
-	      with best-branches = nil
-	      for branch in (cdr f-alignments)
-	      do (setf (values newbranch
-			       rate)
-		       (rank-branch link outer-links branch aligntab tab_s tab_t))
-	      if (= rate best-rate)
-	      do (setq best-branches (cons newbranch best-branches))
-	      else if (> rate best-rate)
-	      do (setq best-rate rate
-		       best-branches (cons newbranch nil))
-	      finally
-	      ;; for now, just return the first of the best.. not sure
-	      ;; what else to do when there's nothing left to rank on:
-	      (return (values (cons link
-				    (car best-branches))
-			      best-rate)))))))
+      ;; If (cdr f-alignments) were nil, this would return nil
+      (loop with best-rate = 0 ; worst possible sub-f-score, all failed
+	    with best-branches = nil
+	    for branch in (cdr f-alignments)
+	    do (setf (values newbranch
+			     rate)
+		     (rank-branch link outer-links branch aligntab tab_s tab_t))
+	    if (= rate best-rate)
+	    do (setq best-branches (cons newbranch best-branches))
+	    else if (> rate best-rate)
+	    do (setq best-rate rate
+		     best-branches (cons newbranch nil))
+	    finally
+	    ;; for now, just return the first of the longest of the best..
+	    ;; not sure what else to do when there's nothing left to rank on:
+	    (return (values (cons link
+				  (car (longest-sublists best-branches)))
+			    best-rate))))))
 
 (defun rank-branch (link seen branch &optional aligntab tab_s tab_t)
   "The individual branch score is the product of
@@ -1639,8 +1650,3 @@ are outermost PRED's in `tab_t', and they are all possible LPT's."
 		    for Pr_t in (all-preds tab_t)
 		    for o = (LPT? Pr_s tab_s Pr_t tab_t LPTs)
 		    when o append (list (car Pr_t))))))
-
-(defun longest-sublists (lists)
-  (let ((maxlen (loop for l in lists maximize (length l))))
-    (mapcar-true (lambda (l) (when (>= (length l) maxlen) l))
-		 lists)))
