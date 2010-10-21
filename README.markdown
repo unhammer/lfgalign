@@ -2,11 +2,12 @@ Usage
 =====
 
 Prerequisites:
+
 - [asdf](http://common-lisp.net/project/asdf/), this is bundled with
   [SBCL](http://www.sbcl.org/) as well as the less common Common
   Lisps.
--
-  [lisp-unit](http://github.com/OdonataResearchLLC/lisp-unit)
+
+- [lisp-unit](http://github.com/OdonataResearchLLC/lisp-unit)
   (optional, for regression tests)
 
 Make a symlink from your `systems` directory to `lfgalign.asd` in this
