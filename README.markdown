@@ -1,5 +1,37 @@
+Usage
+=====
+
+You should have [asdf](http://common-lisp.net/project/asdf/)
+installed, I believe this is bundled with SBCL. Make a symlink from
+your `systems` directory to `lfgalign.asd` in this directory; since I
+installed SBCL using
+[clbuild](http://common-lisp.net/project/clbuild/) this was in
+`/path/to/clbuild/systems`, but you can find the path by evaluating
+`asdf:*central-registry*` in your interpreter after requiring `'asdf`.
+
+There is no command-line interface yet. Load the package in your
+interpreter with
+
+    (asdf:operate 'asdf:load-op 'lfgalign)
+
+I've only tried running this through Emacs with Slime, where you do
+the following to change to the `lfgalign` package:
+
+    (swank:set-package "LFGALIGN")
+
+(Although I feel this should be possible without Slime/Swank...)
+
+You can then run the regression tests with
+
+    (lisp-unit:run-tests)
+    
+The function `evaluate` in the file `eval.lisp` shows how you load two
+Prolog files into analysis tables, create an empty LPT table, run
+f-alignment, ranking and c-alignment, finally give some
+not-very-formatted output.
+
 Progress
-==========
+========
 
 lfgalign
 ----------
@@ -27,7 +59,11 @@ lfgalign.lisp currently does the following:
 - `f-align` combines the above and recursively tries to align all
   arguments in all permutations of argument-argument/adjunct pairs,
   creating a decision tree of sorts; `flatten` spreads this out into
-  simple lists. 
+  several simple lists. 
+  
+- `rank` uses `rank-helper` and `rank-branch` to turn the output from
+  `f-align` into a single flat, ranked list of links for input into
+  `c-align`.
   
 - `add-links` takes a flat f-alignment and a tree, and creates a table
   of type `LL-splits`. Each node `n` is added to a list in the table,
@@ -35,7 +71,7 @@ lfgalign.lisp currently does the following:
   nodes dominated by node `n` (so several nodes may have the same
   index).
 
-- `c-align` turns takes a flat f-alignment and finds the `LL-splits`
+- `c-align` takes a flat f-alignment and finds the `LL-splits`
   of source and target trees, intersecting that on the keys to find
   which nodes can be aligned.
   
@@ -92,41 +128,14 @@ equivalent to the selected parse (see `filter-equiv`, `in-disjunction`
 and `disambiguated?`). 
 
 TODO
-==========
-
-- `argalign` only links daughters of the same f-var (PRED), there are
-  two problems here:
-  1. A causative **make-do<SUBJ,OBJ>** may be translated to
-  **make<SUBJ,OBJ,do>**. Here it would seem natural that **make-do**
-  is linked with both **make** and **do**. If the remaining arguments
-  are linked (**SUBJ-SUBJ**, **OBJ-OBJ**), we have in a sense
-  fullfilled the requirements that all arguments of linked
-  f-structures be linked, if we imagine that **make** and **do** are
-  *merged*.
-  2. A (possibly case-marked) f-structure may be linked to an object
-  picked out by a preposition. This is what we get when the argument
-  **sigarett** is linked to the adjunct **sigaretze** analysed as
-  **ze<sigareti>**. Here, merging seems wrong, so either we link to
-  **ze** and loosen the LMT-constraint to include substructures, or we
-  link to **sigareti**, and allow arguments to be linked to daughters
-  of adjuncts (possibly also to daughters of arguments).
-
-- There should be a `rank` function between `c-align` and `f-align`
-  (either before or after `flatten`), which checks:
-  - is there f-alignment as well as LPT-correspondence in the argument
-    list?
-  - is there reordering in the linked argument lists, or is it subject
-    to subject, object to object, etc.? (This is a bit more complex
-    than it looks, but I guess we could pretend it's "edit distance".)
-  - is there any merging or other funny business going on? (Well,
-    merging is still todo...)
-   
-- Currently `get-links` in `add-links` also adds those links for which
-  there is no actual f-structure alignment, only
-  LPT-correspondence. But what should we do about these? Not add them
-  at all? (Make it an option for now!)
+====
 
 - Try calling f-align on all unreferenced preds, not just `'(0 . 0)`.
+  Generalising this: if recursive f-alignment stops anywhere in the
+  f-structure, we could try skipping a step in either source or
+  target, and re-try f-align; eventually trying all possible
+  pairs... However, this will allow aligning f-structures that are not
+  in «similar contexts». Hmm.
 
 - Run Giza++ to get LPT-correspondence (criterion i in
    http://tlt8.unicatt.it/allegati/Proceedings_TLT8.pdf p.71--82, our
