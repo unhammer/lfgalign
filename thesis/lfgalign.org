@@ -2799,37 +2799,43 @@ korpus.
 for å få rette f-lenkjer»; «moglege LPT-par» viser moglege mengder med
 minimal LPT-informasjon som er nok til at me får rett analyse (mange
 mengder i denne kolonnen vil altså seie at det er mange måtar å få
-rett analyse på).
-| setning         | l_s | l_t | min LPT-par | moglege LPT-par                          |       |
-|-----------------+-----+-----+-------------+------------------------------------------+-------|
-| mrs 0.pl 0.pl   |   1 |   2 |           0 |                                          |       |
-| mrs 1.pl 1.pl   |   2 |   2 |           0 |                                          |       |
-| mrs 2.pl 2.pl   |   3 |   2 |           1 | {(ga-Geba,pro)}, {(PanJara,vindu)}       | merge |
-| mrs 3.pl 3.pl   |   3 |   3 |           0 |                                          |       |
-| mrs 4.pl 4.pl   |   4 |   4 |           1 | {(Browne,Browne)}, {(sigareti,sigarett)} |       |
-| mrs 4.pl 5.pl   |   4 |   5 |           1 | {(Browne,Browne)}, {(sigareti,sigarett)} |       |
-| mrs 5.pl 6.pl   |   6 |  10 |           1 | {(Abrams,Abrams)}, {(sigareti,sigarett)} |       |
-| mrs 6.pl 7.pl   |   4 |   5 |           0 |                                          |       |
-| mrs 7.pl 8.pl   |   3 |   4 |           0 |                                          |       |
-| mrs 9.pl 10.pl  |   3 |   3 |           0 |                                          |       |
-| mrs 10.pl 11.pl |   5 |   5 |           0 |                                          |       |
-| mrs 11.pl 12.pl |   3 |   3 |           0 |                                          |       |
-| mrs 12.pl 13.pl |   2 |   2 |           0 |                                          |       |
-|                 |     |     |             |                                          |       |
-| mrs 16.pl 17.pl |   2 |   2 |           0 |                                          |       |
-| mrs 19.pl 20.pl |   2 |   2 |           0 |                                          |       |
-| mrs 22.pl 23.pl |   3 |   3 |           0 |                                          |       |
-| mrs 23.pl 24.pl |   2 |   2 |           0 |                                          |       |
-| mrs 24.pl 25.pl |   3 |   3 |           0 |                                          |       |
-| mrs 25.pl 26.pl |   3 |   4 |           0 |                                          |       |
-| mrs 26.pl 27.pl |   2 |   2 |           0 |                                          |       |
-| mrs 34.pl 35.pl |   2 |   3 |           0 |                                          | merge |
-| mrs 37.pl 38.pl |   3 |   3 |           0 |                                          |       |
-| mrs 38.pl 39.pl |   2 |   5 |           0 |                                          | merge |
-| mrs 57.pl 58.pl |   3 |   4 |           0 |                                          |       |
-| mrs 63.pl 64.pl |   3 |   4 |           0 |                                          |       |
-| mrs 67.pl 68.pl |   3 |   4 |         (0) |                                          |       |
-| mrs 71.pl 72.pl |   4 |   4 |         (0) |                                          |       |
+rett analyse på). Viss eit tal står i parentes har setningsparet andre
+problem enn berre LPT-korrespondanse som gjer at ikkje alt som skal
+bli lenkja, blir lenkja.
+| setning         | l_s | l_t | min LPT-par | moglege LPT-par                          |        |
+|-----------------+-----+-----+-------------+------------------------------------------+--------|
+| mrs 0.pl 0.pl   |   1 |   2 |           0 |                                          |        |
+| mrs 1.pl 1.pl   |   2 |   2 |           0 |                                          |        |
+| mrs 2.pl 2.pl   |   3 |   2 |           1 | {(ga-Geba,pro)}, {(PanJara,vindu)}       | merge  |
+| mrs 3.pl 3.pl   |   3 |   3 |           0 |                                          |        |
+| mrs 4.pl 4.pl   |   4 |   4 |           1 | {(Browne,Browne)}, {(sigareti,sigarett)} |        |
+| mrs 4.pl 5.pl   |   4 |   5 |           1 | {(Browne,Browne)}, {(sigareti,sigarett)} |        |
+| mrs 5.pl 6.pl   |   6 |  10 |           1 | {(Abrams,Abrams)}, {(sigareti,sigarett)} |        |
+| mrs 6.pl 7.pl   |   4 |   5 |           0 |                                          |        |
+| mrs 7.pl 8.pl   |   3 |   4 |           0 |                                          |        |
+| mrs 9.pl 10.pl  |   3 |   3 |           0 |                                          |        |
+| mrs 10.pl 11.pl |   5 |   5 |           0 |                                          |        |
+| mrs 11.pl 12.pl |   3 |   3 |           0 |                                          |        |
+| mrs 12.pl 13.pl |   2 |   2 |           0 |                                          |        |
+|                 |     |     |             |                                          |        |
+| mrs 16.pl 17.pl |   2 |   2 |           0 |                                          |        |
+| mrs 19.pl 20.pl |   2 |   2 |           0 |                                          |        |
+| mrs 22.pl 23.pl |   3 |   3 |           0 |                                          |        |
+| mrs 23.pl 24.pl |   2 |   2 |           0 |                                          |        |
+| mrs 24.pl 25.pl |   3 |   3 |           0 |                                          |        |
+| mrs 25.pl 26.pl |   3 |   4 |           0 |                                          |        |
+| mrs 26.pl 27.pl |   2 |   2 |           0 |                                          |        |
+| mrs 34.pl 35.pl |   2 |   3 |           0 |                                          | merge  |
+| mrs 37.pl 38.pl |   3 |   3 |           0 |                                          |        |
+| mrs 38.pl 39.pl |   2 |   5 |           0 |                                          | merge  |
+| mrs 57.pl 58.pl |   3 |   4 |           0 |                                          |        |
+| mrs 63.pl 64.pl |   3 |   4 |           0 |                                          |        |
+| mrs 67.pl 68.pl |   3 |   4 |         (0) |                                          | COORD  |
+| mrs 71.pl 72.pl |   4 |   4 |         (0) |                                          | COORD  |
+| mrs 73.pl 74.pl |   4 |   4 |         (0) |                                          | COORD  |
+|                 |     |     |             |                                          |        |
+| sofie 2.pl 0.pl |   4 |   8 |         (1) | {(amundsen,Amundsen)}                    | constr |
+| sofie 2.pl 0.pl |   3 |   6 |         (0) |                                          | constr |
 
 Kommentarar til analysane:
 
@@ -2861,7 +2867,8 @@ altså er ei /mengd/ med 1 og 2 (Abrams og Browne). Me kan t.d. løyse
 dette ved å introdusere eit «falskt PRED» for desse koordineringane
 med så mange argument som det er i mengda. Så for å lenkje ei
 koordinering, må alle element i koordineringa kunne lenkjast (som med
-argument).
+argument). Same problemet med 73.pl og 74.pl, her får me berre =((da
+. og))= sidan det er ein VP-koordinering.
 
 Dette dømet demonstrerer ein veikskap med =lfgalign=: om ein skal
 nytte =lfgalign= med nye LFG-grammatikkar, som kanskje har andre
@@ -2871,8 +2878,55 @@ analysane før lenkjing). Dette kan forsåvidt vere eit problem med alle
 metodar som er svært kunnskapsbaserte.
 
 
-Setning 13 + 10 i sofie illustrerer eit anna problem: for store
-forskjellar i argumentstruktur gir feil løysing.
+Setning 2 + 0 i sofie har verb + adverb «være på vei hjem» som blir
+omsett til «bruneba» `dreie'. Lenkjinga gir =((*-bruneba . være)
+(amundsen . Amundsen) (skola . vei))= etter at amundsen/Amundsen står
+i LPT, men me kjem ikkje djupare. Her burde jo anten heile «være på
+vei hjem» lenkjast med «bruneba» (altså ei ein-til-tre-lenkje på
+f-strukturnivå), eller så burde me ha ein måte å hoppe over
+f-strukturar for å prøve å fylle opp med ulenkja adjunkt eller
+liknande. Eg trur det siste er det beste.
+
+: [ PRED bruneba<10>
+:   10:[ PRED Amundsen ]
+:   ADJUNCT { 5:[ PRED skola ] } ]
+: [ PRED være<23,24>
+:   23:[ PRED Amundsen ]
+:   24:[ PRED på<64>
+:        64:[ PRED vei
+:             ADJUNCT { 22:[ PRED hjem
+:                            ADJUNCT { 74:[ PRED skole ] } ] } ] ] ]
+
+
+Setning 13 + 10 i sofie har fått =(soPi . hun)= =D har liknande
+problem. For store forskjellar i argumentstruktur gir feil løysing.
+
+: [ PRED Se-Hveva<10,17:pro,15:pro>
+:   10:[ PRED soPi ]
+:   ADJUNCT { 5:[ PRED klevervegeni ] } ]
+: [ PRED svinge<18:hun>
+:   ADJUNCT { 5:[ PRED inn ], 6:[ PRED _nå ] } ]
+
+Me får her =((0 . 0) (15 . 18) (17 . 6) (10 . 5))=, dvs. =((Se-Hveva
+. svinge) (pro . hun) (pro . _nå) (soPi . inn))=. Desse pro-elementa
+på georgisk skal sjølvsagt /ikkje/ lenkjast med adjunkta på norsk; her
+har me «overgenerering» av lenkjer pga. me opnar for
+argument-adjunkt-lenkjer. Slik =lfgalign= fungerer no, kan ein unngå
+at pro blir lenkja til adjunkt ved å leggje inn LPT-informasjon om
+adjunkta (evt. krevje at pro /berre/ kan lenkjast til nominalar). Om
+ein legg inn ei omsetjing for /nå/, får ein ut =((Se-Hveva . svinge)
+(pro . svinge) (pro . hun) (soPi . inn))=, som kanskje er hakket
+betre, men sidan mange-mange-lenkjing berre er to-til-ein så langt,
+vil LPT-informasjon om både /nå/ og /inn/ resultere i at denne
+setninga /ikkje får nokon lenkjing/. Dette er kanskje å føretrekkje,
+når me først skal krevje likskap i argumentstruktur for å lenkje; så
+er det opp til grammatikarane om dei vil sjå på omsetjinga som
+argument for at det georgiske verbet har ei alternativ tyding med
+berre eitt argument, og endre grammatikkane til ei seinare utgåve av
+trebanken.
+
+\fxnote{TODO: problematiser at N-grambaserte metodar vil få alt for
+mange lenkjer her (og i 2/0-dømet) som ikkje eigentleg høyrer heime.}
 
 
 

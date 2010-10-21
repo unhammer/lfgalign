@@ -70,8 +70,10 @@
   (evaluate "mrs" 63 64)
   (evaluate "mrs" 67 68)
   (evaluate "mrs" 71 72)	  ; TODO: koordinering fungerer ikkje!
+  ; (evaluate "mrs" 73 74)	  ; TODO: koordinering fungerer ikkje!
+  ;; ^^^ krasjer i tillegg pred-tag-alignment...
 
-  (evaluate "sofie" 2 0)
+  (evaluate "sofie" 2 0)		; for stor avstand i argumentstruktur: være på vei hjem <=> bruneba
 
   ;; i 13-10 må ein leggje til (add-to-LPT "-ken" "inn" LPT) for at
   ;; ein i det heile teke skal få ut ei løysing som lenkjer desse to,
