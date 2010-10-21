@@ -262,12 +262,10 @@ add all equivalent variables and their possible expansions."
   "The argument `Pr' is either a pred or a variable id that we can
 look up to get a pred."
   (let ((Pr (if (predp Pr) Pr (get-pred Pr tab))))
-    (if no-nulls
-	(remove-if (lambda (p) (null-pred? p))
-		   (union (fourth Pr) (fifth Pr)))
-      (mapcar (lambda (var)
-		(skip-pp var tab))
-	      (union (fourth Pr) (fifth Pr))))))
+    (remove-if (lambda (p) (and no-nulls (null-pred? p)))
+     (mapcar (lambda (var)
+	       (skip-pp var tab))
+	     (union (fourth Pr) (fifth Pr))))))
 
 (defun skip-pp (var tab)
   "Skip adpositions, as defined in footnote 3 in
