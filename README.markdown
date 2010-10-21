@@ -1,25 +1,33 @@
 Usage
 =====
 
-You should have [asdf](http://common-lisp.net/project/asdf/)
-installed, I believe this is bundled with SBCL. Make a symlink from
-your `systems` directory to `lfgalign.asd` in this directory; since I
-installed SBCL using
-[clbuild](http://common-lisp.net/project/clbuild/) this was in
-`/path/to/clbuild/systems`, but you can find the path by evaluating
-`asdf:*central-registry*` in your interpreter after requiring `'asdf`.
+Prerequisites:
+- [asdf](http://common-lisp.net/project/asdf/), this is bundled with
+  [SBCL](http://www.sbcl.org/) as well as the less common Common
+  Lisps.
+-
+  [lisp-unit](http://github.com/OdonataResearchLLC/lisp-unit)
+  (optional, for regression tests)
 
-There is no command-line interface yet. Load the package in your
-interpreter with
+Make a symlink from your `systems` directory to `lfgalign.asd` in this
+directory (you can do the same for `lisp-unit`); since I installed
+SBCL using [clbuild](http://common-lisp.net/project/clbuild/) this
+directory was at `/path/to/clbuild/systems`, but you can find the path
+by evaluating `asdf:*central-registry*` in your interpreter after
+requiring `'asdf`.
+
+There is no command-line interface to `lfgalign` yet. Load the package
+in your interpreter with
 
     (asdf:operate 'asdf:load-op 'lfgalign)
 
-I've only tried running this through Emacs with Slime, where you do
-the following to change to the `lfgalign` package:
+Switch to the `lfgalign` package:
 
-    (swank:set-package "LFGALIGN")
+    (in-package :lfgalign)
 
-(Although I feel this should be possible without Slime/Swank...)
+(If you're using through Emacs with Slime, you can load from the REPL
+with `, load RET lfgalign RET` and switch with `, in RET lfgalign
+RET`.)
 
 You can then run the regression tests with
 
