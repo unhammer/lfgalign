@@ -783,8 +783,10 @@ branches (thus trying to align as many adjuncts as possible)."
     (let* ((link (car f-alignments))
 	   (outer-links (cons link seen)))
       ;; If (cdr f-alignments) were nil, this would return nil
-      (loop with best-rate = 0 ; worst possible sub-f-score, all failed
-	    with best-branches = nil
+      (loop with best-branches = nil
+	    with best-rate = 0 ; worst possible sub-f-score, all failed
+	    with newbranch
+	    with rate
 	    for branch in (cdr f-alignments)
 	    do (setf (values newbranch
 			     rate)
