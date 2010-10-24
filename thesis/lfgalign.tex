@@ -1,4 +1,4 @@
-% Created 2010-10-24 su. 14:45
+% Created 2010-10-24 su. 21:00
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -2665,35 +2665,60 @@ lite testsett.
  I praksis vil spesifikke modellar prøve å avgrense dette, t.d. ved å
  krevje maksimalt eitt målord per kjeldeord, kor ein nyttar «det tomme
  ordet» for kjeldeord som ikkje er lenkja med noko målord. I
- litteraturen om statistiske metodar er dette ei \emph{ordsamanstilling};
- når mange-mange-lenkjer er med har me ei \emph{frasesamanstilling}.
+ litteraturen om statistiske metodar er ei slik
+ ein-mange-samanstilling ei \emph{ordsamanstilling}; når
+ mange-mange-lenkjer er med har me ei \emph{frasesamanstilling}.
 
  Ei samanstilling er her altså ei mengd par av ordposisjonar. Det
  finst mange ulike måtar å komme fram til samanstillinga på; men
  grunntanken er at ord som oftare enn forventa opptrer saman i omsette
- setningar i eit korpus, sannsynlegvis er omsetjingar.  Dei vanlegaste
- metodane er basert på sannsynsmodellar\footnote{Det finst au \emph{heuristiske} metodar, t.d. basert på
+ setningar i eit korpus, sannsynlegvis er omsetjingar.
+
+ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \emph{heuristiske} metodar, t.d. basert på
         strenglikskap, eller på mål som \emph{Mutual Information} eller
         Dice-koeffisienten (som kan vise om to ord førekjem oftare
-        saman i omsetjingar enn ein ville forventa). }, kor den beste
- samanstillinga $a$ er den som får høgast skåre på $p(f_1^J,a|e_1^I)$,
- dvs. sannsynet for samanstillinga $a$ og kjeldesetninga gitt
- målsetninga og parametrane i modellen. Verdien til parametrane finn
- ein ved å trene modellen på eit parallellkorpus, kor ein god
- treningsmetode aukar den totale $p$ for heile korpuset (dvs. summen
- av $p$ for alle setningane). For å finne $p$ er det vanleg å nytte
- ein skjult Markov-modell, dvs. at $p$ for heile setninga blir
- dekomponert til $p$ for eitt enkelt kjeldeord, kor p av enkeltord er
- basert på $p$ av orda som kjem før. I tillegg vil ein ofte vekte på
- sannsynet for ei viss setningslengd gitt målsetninga (sidan lange
- setningar ofte blir omsett til like lange setningar, modulo
- språkforskjellar). Det er mogleg å forenkle Markov-modellen til at
- $p$ for eit enkeltord berre er avhengig av ordet som kjem rett før,
- noko som gjer utrekningane enklare (og lèt ein generalisere på
- bakgrunn av mindre data), men sjølvsagt gir ein mindre nyansert
- modell. Om me har forenkla modellen slik at $p$ berre er avhengig av
- dei N orda som kjem før, har me ein N-grambasert modell.
+        saman i omsetjingar enn ein ville forventa). }, kor den
+ beste samanstillinga $a$ er den som får høgast skåre på
+ $p(f_1^J,a|e_1^I)$, dvs. sannsynet for samanstillinga $a$ og
+ kjeldesetninga gitt målsetninga og parametrane i modellen. Verdien
+ til parametrane finn ein ved å trene modellen på eit parallellkorpus,
+ kor ein god treningsmetode aukar den totale $p$ for heile korpuset
+ (dvs. summen av $p$ for alle setningane).  For å finne $p$ for
+ ordsamanstillingar er det vanleg å nytte ein skjult Markov-modell,
+ dvs. at $p$ for heile setninga blir dekomponert til $p$ for eitt
+ enkelt kjeldeord, kor p av enkeltord er basert på $p$ av orda som
+ kjem før. (I tillegg vil ein ofte vekte på sannsynet for ei viss
+ setningslengd gitt målsetninga, sidan lange setningar ofte blir
+ omsett til like lange setningar, modulo språkforskjellar.) Det er
+ mogleg å forenkle Markov-modellen til at $p$ for eit enkeltord berre
+ er avhengig av ordet som kjem rett før, noko som gjer utrekningane
+ enklare (og lèt ein generalisere på bakgrunn av mindre data), men
+ sjølvsagt gir ein mindre nyansert modell. Om me har forenkla modellen
+ slik at $p$ berre er avhengig av dei N orda som kjem før, har me ein
+ N-grambasert modell.
 
+ Ein av dei vanlegaste treningsmetodane er \emph{sannsynsmaksimering}, som
+ lèt ein rekne ut elles umoglege sannsynsproblem ved å iterativt endre
+ modellen slik at skårene blir betre. Eg gir her eit \emph{svært forenkla}
+ oversyn over korleis dette går føre seg.  Me byrjar med å setje $p_0$
+ for alle moglege samanstillingar og ordpar til ein viss verdi,
+ kanskje på ein tilfeldig måte. Så genererer me eit falskt målkorpus
+ basert på kjeldekorpuset kombinert med $p_0$. Me tel opp
+ samanstillingsførekomstene her i ein tabell; når me ser ordet \emph{Es} i
+ ei setning omsett til \emph{There is}, vil tabellraden med \emph{Es} få auka
+ frekvensskåre i kolonnane til \emph{There} og \emph{is} -- men sidan dette
+ målkorpuset var vekta på $p_0$ vil denne frekvensen au vere vekta, og
+ treng ikkje vere 1 eller 0. Så går ein gjennom korpuset slik og gir
+ skårar for alle moglege ordomsetjingar, til slutt vil sannsynlegvis
+ raden til \emph{es} og \emph{there} ha høgare skåre enn \emph{es} og \emph{is}. Me reknar
+ så ut $p_1$ ved å telje opp dei relative frekvensane til alle
+ tabellradene; dette blir nytta i neste iterasjon for å generere det
+ falske målkorpuset.
+
+
+ 
+
+ 
  
 \subsection{Døme}
 \label{sec-5.1.1}
