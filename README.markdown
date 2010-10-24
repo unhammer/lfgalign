@@ -17,8 +17,9 @@ directory was at `/path/to/clbuild/systems`, but you can find the path
 by evaluating `asdf:*central-registry*` in your interpreter after
 requiring `'asdf`.
 
-There is no command-line interface to `lfgalign` yet. Load the package
-in your interpreter with
+Running in the interpreter
+--------------------------
+Load the package in your interpreter with
 
     (asdf:operate 'asdf:load-op 'lfgalign)
 
@@ -38,6 +39,25 @@ The function `evaluate` in the file `eval.lisp` shows how you load two
 Prolog files into analysis tables, create an empty LPT table, run
 f-alignment, ranking and c-alignment, finally give some
 not-very-formatted output.
+
+Running from the command-line
+-----------------------------
+
+A very preliminary command-line interface using SBCL is available. You
+should be able to align two Prolog files by simply saying
+
+    ./align.sh source.pl target.pl
+    
+although it assumes SBCL is installed in `usr`; you can set the
+correct paths to SBCL and your asdf systems directory (where you
+symlinked to lfgalign.asd) first by doing e.g.:
+    
+    export LISP=/l/c/clbuild/target/bin/sbcl
+    export LISPCORE=/l/c/clbuild/target/lib/sbcl/sbcl.core
+    export ASDFSYSTEMS=/l/c/clbuild/systems/
+
+Common Lisp command-line interfaces are unfortunately not very
+standardised.
 
 Progress
 ========
