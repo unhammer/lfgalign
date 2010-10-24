@@ -275,7 +275,7 @@ med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
 * Bakgrunn og omgrepsavklaring
   \label{SEC:bakgrunn}
-
+  
 ** SKRIV Relaterte metodar
 Automatisk frasesamanstilling er eit nytt felt. Det finst allereie
 veldig gode system for automatisk setningssamanstilling, og automatisk
@@ -311,15 +311,15 @@ rangere resultata
 \citep[Papineni~et~al.,~2001,~i][s.~51]{koehn2003spb}, som gir ei
 rangering ved (N-grambasert) samanlikning med ferdig omsett tekst.
 
-Den første metoden, /AP/, er reint N-grambasert. Dei nyttar verktøyet
-Giza++ \citep[Och~og~Ney,~2000,~i][s.~50]{koehn2003spb} til å indusere
-ordsamanstilling frå eit setningssamanstilt korpus (vha. «modell 4»
-for ordsamanstilling, utvikla ved IBM av \citet{brown1993msm}). Denne
-samanstillinga er 1-til-n (t.d. eitt engelsk ord til to franske), så
-dei finn ordsamanstilling for begge retningar og tek så snittet av alle
-moglege N-gramsamanstillingar som ikkje er i konflikt med
-ordsamanstillingane. Dei føyer så på ord frå unionen av desse
-vha. nokre enkle heuristikkar.
+Den første metoden, /AP/, er reint N-grambasert[fn:35]. Dei nyttar
+verktøyet Giza++ \citep[Och~og~Ney,~2000,~i][s.~50]{koehn2003spb} til
+å indusere ordsamanstilling frå eit setningssamanstilt korpus
+(vha. «modell 4» for ordsamanstilling, utvikla ved IBM av
+\citet{brown1993msm}). Denne samanstillinga er 1-til-n (t.d. eitt
+engelsk ord til to franske), så dei finn ordsamanstilling for begge
+retningar og tek så snittet av alle moglege N-gramsamanstillingar som
+ikkje er i konflikt med ordsamanstillingane. Dei føyer så på ord frå
+unionen av desse vha. nokre enkle heuristikkar.
 
 Den andre metoden, /Syn/, tek berre med dei frasane som står under
 syntaktiske nodar i eit parsa korpus; frasesamanstillinga til /Syn/ er
@@ -330,7 +330,7 @@ ordsamanstilling, utan frasesamanstilling). Dei forklarer dette med
 den store mengda uttrykk som ikkje utgjer syntaktiske konstituentar i
 følgje parsaren deira, men likevel konsekvent blir omsett til visse
 uttrykk på det andre språket (t.d. «es gibt» på tysk til «there is» på
-engelsk).
+engelsk). 
 
 Seinare resultat har vist at ein /kombinasjon/ av syntaktisk
 informerte metodar med reint N-grambaserte modellar (dvs. i motsetning
@@ -2676,12 +2676,13 @@ lite testsett.
  Det er visse føresetnader i implementasjonen som er gjort for å
  forenkle metoden, som kan føre til feil i
  samanstillinga. T.d. følgjer implementasjonen krav
- \ref{krav:PRED-omgivnad}, som nok er for strengt, men som avskjerer
- ein god del umotiverte lenkjingar. I tillegg er c-strukturlenkjinga i
- implementasjonen direkte avleidd av f-strukturlenkjinga; men, som
- nemnt i del \ref{SEC:fnord} kan det finnast c-strukturforhold som bør
- påverke f-strukturlenkjinga. \fxnote[inline,nomargin]{«eg kjem
- tilbake til dette blah»}
+ \ref{krav:PRED-omgivnad} i kapittel \ref{SEC:ideell}, som nok er for
+ strengt, men som avskjerer ein god del umotiverte lenkjingar. I
+ tillegg er c-strukturlenkjinga i implementasjonen direkte avleidd av
+ f-strukturlenkjinga; men, som nemnt i del \ref{SEC:fnord} kan det
+ finnast c-strukturforhold som bør påverke
+ f-strukturlenkjinga. \fxnote[inline,nomargin]{«eg kjem tilbake til
+ dette blah»}
 
  Kjeldematerialet mitt for denne evalueringa er ei mengd med omtrent
  tredve \fxnote[inline,nomargin]{med mindre det finst fleire?}
@@ -2701,7 +2702,9 @@ lite testsett.
  skal samanlikne då.}
 
  Dei fleste metodane for frasesamanstilling er N-grambaserte; difor er
- det naturleg å samanlikne metoden i =lfgalign= med slike metodar.
+ det naturleg å samanlikne metoden i =lfgalign= med slike metodar. Eg
+ gir først ein kort introduksjon til korleis N-grambaserte metodar gir
+ ordlenkjer og fraselenkjer.
 
  \citet[s.~20--21]{och2003scv} definerer ei samanstilling på det mest
  generelle som ei delmengd av det kartesiske produktet av
@@ -2719,19 +2722,21 @@ lite testsett.
  når mange-mange-lenkjer er med har me ei /frasesamanstilling/.
 
  Ei samanstilling er her altså ei mengd par av ordposisjonar. Det
- finst mange ulike måtar å komme fram til samanstillinga på. Dei
- vanlege metodane er basert på statistiske modellar, kor den beste
+ finst mange ulike måtar å komme fram til samanstillinga på; men
+ grunntanken er at ord som oftare enn forventa opptrer saman i omsette
+ setningar i eit korpus, sannsynlegvis er omsetjingar.  Dei vanlegaste
+ metodane er basert på sannsynsmodellar[fn:36], kor den beste
  samanstillinga $a$ er den som får høgast skåre på $p(f_1^J,a|e_1^I)$,
  dvs. sannsynet for samanstillinga $a$ og kjeldesetninga gitt
  målsetninga og parametrane i modellen. Verdien til parametrane finn
  ein ved å trene modellen på eit parallellkorpus, kor ein god
- treningsmetode aukar den totale $p$ for heile korpuset
- (dvs. produktet av $p$ for alle setningane). For å finne $p$ er det
- vanleg å nytte ein skjult Markov-modell, dvs. at $p$ for heile
- setninga blir dekomponert til $p$ for eitt enkelt kjeldeord, kor det
- siste er basert på $p$ av orda som kjem før. I tillegg vil ein ofte
- vekte på sannsynet for ei viss setningslengd gitt målsetninga (sidan
- lange setningar ofte blir omsett til like lange setningar, modulo
+ treningsmetode aukar den totale $p$ for heile korpuset (dvs. summen
+ av $p$ for alle setningane). For å finne $p$ er det vanleg å nytte
+ ein skjult Markov-modell, dvs. at $p$ for heile setninga blir
+ dekomponert til $p$ for eitt enkelt kjeldeord, kor p av enkeltord er
+ basert på $p$ av orda som kjem før. I tillegg vil ein ofte vekte på
+ sannsynet for ei viss setningslengd gitt målsetninga (sidan lange
+ setningar ofte blir omsett til like lange setningar, modulo
  språkforskjellar). Det er mogleg å forenkle Markov-modellen til at
  $p$ for eit enkeltord berre er avhengig av ordet som kjem rett før,
  noko som gjer utrekningane enklare (og lèt ein generalisere på
@@ -2739,6 +2744,7 @@ lite testsett.
  modell. Om me har forenkla modellen slik at $p$ berre er avhengig av
  dei N orda som kjem før, har me ein N-grambasert modell.
 
+ 
 *** Døme
    \fxnote[inline,nomargin]{Grundig gjennomgang av eit døme, for samanlikning med
  N-grambaserte metodar}
@@ -3292,3 +3298,11 @@ problem.
 
 [fn:34] Dette måtte i tillegg vore LFG-analysert og disambiguert for
         at eg skulle kunne samanlikne med =lfgalign=.
+
+[fn:35] Eg går grundigare gjennom korleis N-grambaserte metodar
+        fungerer i kapittel \ref{SEC:diskusjon}.
+
+[fn:36] Det finst au /heuristiske/ metodar, t.d. basert på
+        strenglikskap, eller på mål som /Mutual Information/ eller
+        Dice-koeffisienten (som kan vise om to ord førekjem oftare
+        saman i omsetjingar enn ein ville forventa).
