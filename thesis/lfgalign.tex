@@ -1,4 +1,4 @@
-% Created 2010-10-24 su. 21:00
+% Created 2010-10-25 må. 16:00
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -55,7 +55,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{24/10, 2010}
+\date{25/10, 2010}
 
 \begin{document}
 
@@ -467,7 +467,12 @@ Sjølvsagt kan ein her seie at den \emph{ideelle} annotasjonen vil vere å
 berre ha korrekte analysar, men sjølv ved ideelle krav er formålet
 viktig: er ein ute etter å finne N-gram som ofte blir omsett med
 kvarande, men som \emph{ikkje} er syntaktiske konstituentar, er det klart
-at retningslinjene nedanfor ikkje er så nyttige.
+at retningslinjene nedanfor ikkje er så nyttige\footnote{Eit anna perspektiv ein kan ta er kva for samanstillingar eit
+        utval av tospråklege annotørar meiner er passande -- gitt
+        visse overordna retningslinjer for
+        annotasjonen. \citet{volk2008hjp} operasjonaliserer konseptet
+        \emph{samanstilling} på denne måten, og testar slik kor enkelt det
+        er å følgje dei overordna retningslinjene deira. }.
 
 Sidan utviklinga av automatisk frasesamanstilling hovudsakleg har
 skjedd innanfor frasebasert statistisk maskinomsetjing (PBSMT), kjem
@@ -852,7 +857,9 @@ i omsetjingar er at eit pronomen på kjeldespråket blir nytta der
 målspråket har eit koreferent substantiv, eller
 omvendt. \citet{dyvik2009lmp} opnar for at desse au har
 LPT-korrespondanse (som nemnt i \cite{thunes2003eal} må lenkja ord
-uansett vere koreferente).
+uansett vere koreferente); om formålet vårt var maskinomsetjing heller
+enn å byggje ein trebank for lingvistiske studie, ville det nok vore
+betre å unngå slike lenkjer \citep[s.~53]{volk2008hjp}.
 
 Men kva då med lenkjing av pronomen til verb bøygd for person og tal i
 pro-drop-språk?
@@ -2666,7 +2673,7 @@ lite testsett.
  krevje maksimalt eitt målord per kjeldeord, kor ein nyttar «det tomme
  ordet» for kjeldeord som ikkje er lenkja med noko målord. I
  litteraturen om statistiske metodar er ei slik
- ein-mange-samanstilling ei \emph{ordsamanstilling}; når
+ mange-ein-samanstilling ei \emph{ordsamanstilling}; når
  mange-mange-lenkjer er med har me ei \emph{frasesamanstilling}.
 
  Ei samanstilling er her altså ei mengd par av ordposisjonar. Det
@@ -2683,7 +2690,7 @@ lite testsett.
  kjeldesetninga gitt målsetninga og parametrane i modellen. Verdien
  til parametrane finn ein ved å trene modellen på eit parallellkorpus,
  kor ein god treningsmetode aukar den totale $p$ for heile korpuset
- (dvs. summen av $p$ for alle setningane).  For å finne $p$ for
+ (dvs. produktet av $p$ for alle setningane).  For å finne $p$ for
  ordsamanstillingar er det vanleg å nytte ein skjult Markov-modell,
  dvs. at $p$ for heile setninga blir dekomponert til $p$ for eitt
  enkelt kjeldeord, kor p av enkeltord er basert på $p$ av orda som
@@ -2696,26 +2703,64 @@ lite testsett.
  sjølvsagt gir ein mindre nyansert modell. Om me har forenkla modellen
  slik at $p$ berre er avhengig av dei N orda som kjem før, har me ein
  N-grambasert modell.
+ 
+ Ein av dei vanlegaste treningsmetodane er \emph{sannsynsmaksimering}
+ \citep[utførleg skildra i][]{prescher-em}, som lèt ein rekne ut elles
+ uhandterlege sannsynsproblem ved å iterativt endre modellparametrane
+ slik at skårene blir betre. Eg gir her eit \emph{svært forenkla} oversyn
+ over korleis dette går føre seg. Me byrjar med å setje $p_0$ for alle
+ moglege samanstillingar og ordpar til ein viss verdi, kanskje på ein
+ tilfeldig måte. Så genererer me alle moglege samanstillingar til
+ målkorpuset basert på kjeldekorpuset, kor kvar
+ samanstillingsførekomst førekjem med ein frekvens som er vekta ved
+ hjelp av $p_0$. Me tel opp samanstillingsførekomstene her i ein
+ tabell; når me ser ordet \emph{Es} i ei setning omsett til \emph{There is}, vil
+ tabellraden med \emph{Es} få auka frekvensskåre i kolonnane til \emph{There} og
+ \emph{is} -- men sidan dette var vekta på $p_0$ treng ikkje dette talet
+ vere 1 eller 0. Så går ein gjennom korpuset slik og gir skårar for
+ alle moglege ordomsetjingar, til slutt vil sannsynlegvis raden til
+ \emph{es} og \emph{there} ha høgare skåre enn \emph{es} og \emph{is}. Me reknar så ut ein
+ ny $p_1$ ved å telje opp dei relative frekvensane til alle
+ tabellradene; dette blir nytta i neste iterasjon for å generere den
+ neste mengda med samanstillingar. Det totale korpussannsynet vil auke
+ for kvar iterasjon, og til slutt flate ut. Som med fjellklatringssøk
+ er me ikkje garantert å finne den beste løysinga med denne metoden
+ (verdiane me har i $p_0$ har ofte mykje å seie), men me \emph{er}
+ garantert at korpussannsynet\footnote{Korpussannsynet er produktet av $p$ for alle setningane i
+        heile korpuset, kor $p$ for ei setning er summen av $p$ for
+        kvar samanstilling i setninga. Om modellen er god, vil auka
+        sannsyn over heile korpuset seie at parametrane gir eit betre
+        estimat av dei faktiske samanstillingane. } aldri vil bli mindre i neste
+ iterasjon.
 
- Ein av dei vanlegaste treningsmetodane er \emph{sannsynsmaksimering}, som
- lèt ein rekne ut elles umoglege sannsynsproblem ved å iterativt endre
- modellen slik at skårene blir betre. Eg gir her eit \emph{svært forenkla}
- oversyn over korleis dette går føre seg.  Me byrjar med å setje $p_0$
- for alle moglege samanstillingar og ordpar til ein viss verdi,
- kanskje på ein tilfeldig måte. Så genererer me eit falskt målkorpus
- basert på kjeldekorpuset kombinert med $p_0$. Me tel opp
- samanstillingsførekomstene her i ein tabell; når me ser ordet \emph{Es} i
- ei setning omsett til \emph{There is}, vil tabellraden med \emph{Es} få auka
- frekvensskåre i kolonnane til \emph{There} og \emph{is} -- men sidan dette
- målkorpuset var vekta på $p_0$ vil denne frekvensen au vere vekta, og
- treng ikkje vere 1 eller 0. Så går ein gjennom korpuset slik og gir
- skårar for alle moglege ordomsetjingar, til slutt vil sannsynlegvis
- raden til \emph{es} og \emph{there} ha høgare skåre enn \emph{es} og \emph{is}. Me reknar
- så ut $p_1$ ved å telje opp dei relative frekvensane til alle
- tabellradene; dette blir nytta i neste iterasjon for å generere det
- falske målkorpuset.
+ Om ein har funne mange-ein-lenkjene mellom ord frå begge sider av eit
+ korpus, kan ein utleie mange-mange-lenkjer på ulike måtar. Gitt ei
+ (kanskje usannsynleg) samanstilling frå tysk til engelsk
+ \{(Es,is),(gibt,is)\}, dvs. ei mange-ein-lenkje frå \emph{Es gibt} til
+ \emph{is}, og ei frå engelsk til tysk \{(There,gibt),(is,gibt)\}, kan me
+ ta unionen av desse (med den eine retninga reversert), altså
+ \{(Es,is),(gibt,is),(gibt,There)\}, som representerer ei
+ mange-mange-lenkje mellom \emph{Es gibt} og \emph{There is}. Me kan au nytte
+ berre snittet, som gir høgare presisjon, men lågare dekning.
+ \citet{koehn2003spb}, allereie nemnt i kapittel \ref{SEC:bakgrunn}
+ finn mange-mange-lenkjer for frasebasert statistisk maskinomsetjing
+ ved å først ta snittet, og så leggje til frå unionen ved hjelp av
+ ulike heuristikkar. 
 
+ I \citet{samuelsson2007apa} nyttar dei liknande metodar for å finne
+ ein N-gramtabell, altså ein tabell med kjelde-N-gram, mål-N-gram og
+ sannsyn; saman med to frasestrukturannoterte einspråklege trebankar
+ blir denne tabellen sendt gjennom eit lingvistisk
+ samanstillingsfilter for å opprette ein frasesamanstilt parallell
+ trebank. Viss ein frasestrukturnode i kjeldetrebanken svarer til ein
+ frase i tabellen, og målfrasen i tabellen au er dekkja av ein node på
+ målspråket, kan ein opprette ei lenkje mellom nodane.
 
+ Teoretisk sett kan ein då opprette lenkjer mellom alle ulike nodar i
+ slike tre
+ 
+
+ 
  
 
  
@@ -2794,21 +2839,21 @@ språket.
 \section{Kor mange setningspar treng LPT-korrespondanse for å bli rette}
 \label{sec-5.2}
 
-Sidan eit mål med oppgåva er å finne ut av kor lite
-bottom-up-informasjon ein kan klare seg med, går eg her gjennom
-setningane i testsettet mitt for å sjå kor mange av dei som krev
-LPT-informasjon for å unngå feil lenkjer mellom argument/adjunkt av
-same predikat. Merk: sjølv om testsettet viser ei vid rekkje
-syntaktiske fenomen, er det langt frå å vere eit representativt
-korpus.
+ Sidan eit mål med oppgåva er å finne ut av kor lite
+ bottom-up-informasjon ein kan klare seg med, går eg her gjennom
+ setningane i testsettet mitt for å sjå kor mange av dei som krev
+ LPT-informasjon for å unngå feil lenkjer mellom argument/adjunkt av
+ same predikat. Merk: sjølv om testsettet viser ei vid rekkje
+ syntaktiske fenomen, er det langt frå å vere eit representativt
+ korpus.
 
-«min LPT-par» i tabellen er «kor mange LPT-korrespondansar som trengst
-for å få rette f-lenkjer»; «moglege LPT-par» viser moglege mengder med
-minimal LPT-informasjon som er nok til at me får rett analyse (mange
-mengder i denne kolonnen vil altså seie at det er mange måtar å få
-rett analyse på). Viss eit tal står i parentes har setningsparet andre
-problem enn berre LPT-korrespondanse som gjer at ikkje alt som skal
-bli lenkja, blir lenkja.
+ «min LPT-par» i tabellen er «kor mange LPT-korrespondansar som
+ trengst for å få rette f-lenkjer»; «moglege LPT-par» viser moglege
+ mengder med minimal LPT-informasjon som er nok til at me får rett
+ analyse (mange mengder i denne kolonnen vil altså seie at det er
+ mange måtar å få rett analyse på). Viss eit tal står i parentes har
+ setningsparet andre problem enn berre LPT-korrespondanse som gjer at
+ ikkje alt som skal bli lenkja, blir lenkja.
 
 \begin{center}
 \begin{tabular}{lrrrll}
@@ -3091,6 +3136,8 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
+
 
 
 
