@@ -276,7 +276,7 @@ med diskusjon rundt problema, vil au inngå i masteroppgåva.
 * Bakgrunn og omgrepsavklaring
   \label{SEC:bakgrunn}
   
-** SKRIV Relaterte metodar
+** Relaterte metodar
 Automatisk frasesamanstilling er eit nytt felt. Det finst allereie
 veldig gode system for automatisk setningssamanstilling, og automatisk
 samanstilling av ord har komme langt, men nivåa mellom ord og setning
@@ -300,7 +300,8 @@ over, blei nytta som evalueringsstandard for den automatiske metoden i
 ordsamanstilling, der berre N-gram som svarer til ein syntaktisk node
 blir lenkja som frasar (meir om denne metoden nedanfor). Formålet er å
 lage ein parallell trebank, kor det altså er unyttig å lenkje «frasar»
-som /ikkje/ er konstituentar.
+som /ikkje/ er konstituentar. Eg kjem tilbake til denne metoden i
+kapittel \ref{SEC:diskusjon}.
 
 Sjølv om fraselenkjer kan vere nyttige i korpuslingvistikken er det
 hovudsakleg innanfor statistisk maskinomsetjing at ein har forska på
@@ -350,16 +351,18 @@ mange-til-mange-korrespondansar mellom substrukturane i
 f-strukturane. Ved å leggje til LFG-basert generering fekk det
 kombinerte systemet betre resultat på langdistanseavhengnader og
 generalisering til nye uttrykk med strukturell likskap til tidlegare
-observerte uttrykk.
-\fxnote{Dette er motsett retning av det mitt program gjer, nemne
-seinare?}
+observerte uttrykk. Dei går altså frå ordlenkjer til
+f-strukturlenkjer, motsett retning frå metoden i denne
+oppgåva. Ordlenkjer har au gitt f-strukturlenkjer i transferbasert
+statistisk maskinomsetjing
+\citep{graham2010dsl,graham2009osr,graham2009fts}.
 
-Så langt har eg ikkje komme over metodar som går i motsett retning,
-altså prøver å finne eller betre på frase- og ordsamanstilling ut frå
-ein LFG-parse -- det er dette som er strategien til programmet
-=lfgalign= i kapittel \ref{SEC:implementasjon} -- men det er stor
-overlapp mellom krava som kjem i kapittel \ref{SEC:ideell} og dei gitt
-i den første publiseringa i Xpar-prosjektet, \citet{dyvik2009lmp}.
+Så langt har eg ikkje komme over metodar som prøver å finne eller
+betre på frase- og ordsamanstilling ut frå ein LFG-parse -- det er
+dette som er strategien til programmet =lfgalign= i kapittel
+\ref{SEC:implementasjon} -- men det er stor overlapp mellom krava som
+kjem i kapittel \ref{SEC:ideell} og dei gitt i den første publiseringa
+i Xpar-prosjektet, \citet{dyvik2009lmp}.
 
 *** ULEST Cyrus, FuSe-prosjektet 				     :ROTETE:
 \citet{cyrus2004apa}
@@ -2706,14 +2709,19 @@ lite testsett.
  Dei fleste metodane for frasesamanstilling er N-grambaserte; difor er
  det naturleg å samanlikne metoden i =lfgalign= med slike metodar. Eg
  gir først ein kort introduksjon til korleis N-grambaserte metodar gir
- ordlenkjer og fraselenkjer.
+ ordlenkjer og fraselenkjer, og ser så på kva slags lenkjer dette
+ fører til. Det finst sjølvsagt svært mange ulike moglege metodar og
+ variasjonar på temaet; for å avgrense diskusjonen konsentrerer eg meg
+ om metoden nytta i \citet{samuelsson2007apa}, som har som formål å
+ konstruere ein parallell, fraselenkja trebank.
 
- \citet[s.~20--21]{och2003scv} definerer ei samanstilling på det mest
- generelle som ei delmengd av det kartesiske produktet av
- ordposisjonane i to setningar. Viss $f_{1}^{J}=f_1,...,f_j,...,f_J$
- er orda i setninga på kjeldespråket og
- $e_{1}^{I}=e_1,...,e_i,...,e_I$ er orda i setninga på
- målspråket[fn:27], er ei N-gramsamanstilling $\mathcal{A}$ gitt ved
+ \citet[s.~20--21]{och2003scv} gir eit grundig oversyn over ulike
+ samanstillingsmetodar, først og fremst statistiske. Dei definerer ei
+ samanstilling på det mest generelle som ei delmengd av det kartesiske
+ produktet av ordposisjonane i to setningar. Viss
+ $f_{1}^{J}=f_1,...,f_j,...,f_J$ er orda i setninga på kjeldespråket
+ og $e_{1}^{I}=e_1,...,e_i,...,e_I$ er orda i setninga på
+ målspråket[fn:27], er ei samanstilling $\mathcal{A}$ gitt ved
  $\mathcal{A}\subseteq \{(j,i): j=1,...,J;i=1,...,I\}$. Eitt kjeldeord
  kan altså vere lenkja til eitt eller fleire målord, og omvendt.
 
@@ -2786,7 +2794,7 @@ lite testsett.
  \citet{koehn2003spb}, allereie nemnt i kapittel \ref{SEC:bakgrunn}
  finn mange-mange-lenkjer for frasebasert statistisk maskinomsetjing
  ved å først ta snittet, og så leggje til frå unionen ved hjelp av
- ulike heuristikkar. 
+ ulike heuristikkar.
 
  I \citet{samuelsson2007apa} nyttar dei liknande metodar for å finne
  ein N-gramtabell, altså ein tabell med kjelde-N-gram, mål-N-gram og
@@ -2795,72 +2803,86 @@ lite testsett.
  samanstillingsfilter for å opprette ein frasesamanstilt parallell
  trebank. Viss ein frasestrukturnode i kjeldetrebanken svarer til ein
  frase i tabellen, og målfrasen i tabellen au er dekkja av ein node på
- målspråket, kan ein opprette ei lenkje mellom nodane.
- N-gramtabellen er ikkje kopla til setningane, så teoretisk sett kan
- ein opprette lenkjer mellom alle moglege nodepar[fn:39].
+ målspråket, kan ein opprette ei lenkje mellom nodane.  N-gramtabellen
+ er ikkje kopla til setningane, så teoretisk sett kan ein opprette
+ lenkjer mellom alle moglege nodepar[fn:39]. 
+
+ Lenkjene mellom frasestrukturtre i \citet{samuelsson2007apa} er
+ ein-til-ein; dei skil seg slik formelt frå lenkjene i
+ =lfgalign=. Sidan strengpara dominert av nodelenkjene er ei delmengd
+ av mengda med N-gramkorrespondansar, kor desse altså er kontinuerlege
+ ordstrenger utan kontekst, kan dei ikkje innehalde lenkjer mellom
+ diskontinuerlege konstituentar. Sidan nodelenkjene er basert på
+ ordstrenger vil dei heller aldri ha evidens for eller imot å leggje
+ saman to nodar i ei mange-mange-lenkje (uansett om dei har dominans
+ mellom seg, eller er diskontinuerlege). Dette står i kontrast til
+ c-strukturlenkjing basert på f-strukturforhold -- her gir dei
+ funksjonelle domena (saman med dominans) evidens for når ein skal sjå
+ på to nodar som del av same mange-mange-lenkje.  Med desse
+ mange-mange-lenkjene mellom c-strukturnodar kan me utan problem
+ tillate lenkjer mellom diskontinuerlege konstituentar. I tillegg vil
+ nodar som, for skuld lenkjinga, bør sjåast på som like, bli handsama
+ som like ved å vere ein del av same mange-mange-lenkje.
  
+ Metoden i \citet{graham2009osr} finn f-strukturlenkjer frå
+ ordlenkjer, med formålet å lage overføringsreglar for
+ maskinomsetjing. Dei fjernar alle kantar i f-strukturgrafen som kan
+ skape sirkularitet eller som deler sluttnode med andre kantar (og
+ unngår dimed problemet med /reentrancy/, nemnt
+ nedanfor). F-strukturen blir då ekvivalent med ein enkel trestruktur,
+ slik at dei kan nytte omtrent same framgangsmåte som
+ \citet{samuelsson2007apa}, men misser altså ein del informasjon. Dei
+ lenkjer ikkje c-strukturnodar.
 
  
- 
+** Kor avhengig er =lfgalign= av LPT-korrespondanse?
+ Eitt mål med denne oppgåva er å finne ut av kor lite
+ bottom-up-informasjon ein kan klare seg med, når ein har
+ LFG-analysane å stø seg på. Viss analysane er korrekte, og prinsippa
+ for samanstilling er dekkjande, og implementasjonen av prinsippa er
+ korrekt, er det berre LPT-informasjonen som avgjer om samanstillinga
+ blir korrekt eller ikkje.
 
- 
- 
-*** Døme
-   \fxnote[inline,nomargin]{Grundig gjennomgang av eit døme, for samanlikning med
- N-grambaserte metodar}
+ Setningsparet i \Next illustrerer problemet.
 
- Setning 5 i MRS-suiten (4.pl) gir følgjande urangerte
- f-struktursamanstilling:
- : ((mi-codeba . rekke-hand)
- :           ((Browne . Abrams) (sigareti . Browne) (Abrams . sigarett))
- :           ((Browne . Abrams) (sigareti . sigarett) (Abrams . Browne))
- :           ((Browne . Browne) (sigareti . Abrams) (Abrams . sigarett))
- :           ((Browne . Browne) (sigareti . sigarett) (Abrams . Abrams))
- :           ((Browne . sigarett) (sigareti . Abrams) (Abrams . Browne))
- :           ((Browne . sigarett) (sigareti . Browne) (Abrams . Abrams)))
- Etter rangering, utan LPT-informasjon, får me
- :  ((mi-codeba . rekke-hand) (Browne . sigarett) (sigareti . Browne)
- :         (Abrams . Abrams))
+\ex. \a. abramsma brouns sigareti miacoda.\\
+     $\leftrightarrow$
+     \b. Abrams rakte Browne sigaretten.
+     
+ Om me ikkje har LPT-informasjon, blir den urangerte
+ f-struktursamanstillinga
+
+\ex. \{(\p{mi-codeba} . \p{rekke-hand}) \\
+ \{(\p{Browne} . \p{Abrams}) (\p{sigareti} . \p{Browne}) (\p{Abrams} . \p{sigarett})\} \\
+ \{(\p{Browne} . \p{Abrams}) (\p{sigareti} . \p{sigarett}) (\p{Abrams} . \p{Browne})\} \\
+ \{(\p{Browne} . \p{Browne}) (\p{sigareti} . \p{Abrams}) (\p{Abrams} . \p{sigarett})\} \\
+ \{(\p{Browne} . \p{Browne}) (\p{sigareti} . \p{sigarett}) (\p{Abrams} . \p{Abrams})\} \\
+ \{(\p{Browne} . \p{sigarett}) (\p{sigareti} . \p{Abrams}) (\p{Abrams} . \p{Browne})\} \\
+ \{(\p{Browne} . \p{sigarett}) (\p{sigareti} . \p{Browne}) (\p{Abrams} . \p{Abrams})\} \}
+
+ Etter rangering får me då 
+
+\ex. \{(\p{mi-codeba} . \p{rekke-hand}) (\p{Browne} . \p{sigarett}) (\p{sigareti} . \p{Browne}) (\p{Abrams} . \p{Abrams})\} 
+
  som jo er feil. Dette skjer pga. argumentstrukturane til dei to verba
- /ikkje/ er parallelle -- mi-codeba har <Abrams, sigareti, Browne>,
- medan rekke-hand har <Abrams, Browne, sigarett>. Ved å t.d. leggje
- til informasjonen om at Browne og Browne har LPT-korrespondanse, får
- me
- :  ((mi-codeba . rekke-hand) (Browne . Browne) (sigareti . sigarett)
- :         (Abrams . Abrams))
- Me kunne au klart oss med berre informasjonen om at sigareti og
- sigarett har LPT-korrespondanse -- så sjølv om LPT-korrespondanse kan
- vere viktig, viser dette dømet at ein ikkje treng /fullstendig/
+ /ikkje/ er parallelle -- \p{mi-codeba} har <\p{Abrams}, \p{sigareti},
+ \p{Browne}>, medan \p{rekke-hand} har <\p{Abrams}, \p{Browne},
+ \p{sigarett}>, og me har eit rangeringskriterium som føretrekkjer lik
+ følgje over ulik. Men ved å t.d. leggje til informasjonen om at /brouns/
+ og /Browne/ har LPT-korrespondanse, får me
+
+\ex. \{(\p{mi-codeba} . \p{rekke-hand})
+ (\p{Browne} . \p{Browne}) (\p{sigareti} . \p{sigarett}) (\p{Abrams} . \p{Abrams})\}
+
+ Me kunne au klart oss med berre informasjonen om at /sigareti/ og
+ /sigaretten/ har LPT-korrespondanse -- så sjølv om LPT-korrespondanse
+ kan vere viktig, viser dette dømet at ein ikkje treng /fullstendig/
  LPT-korrespondanse for å forbetre resultatet.
 
-- Kva informasjon får me ut av lenkjinga
-
-- Kva informasjon ville me fått ut av ei rein N-gram-lenkjing
-
-  - ...og korleis kan N-grambaserte metodar nyttast til tre-lenkjing
-    (Samuelsson & Volk)
-
-*** Men korleis gjenfinne there is/es gibt?
-(og kva skal me med det, viss ikkje me driv med statistisk
-maskinomsetjing?)
-
-- N-gram kjem like ofte som heile konstruksjonen, då kan dette
-  gjenfinnast
-  - dvs., /there is NP/es gibt NP/-samanstilling kjem like ofte som
-    /there is/ eller /es gibt/ førekjem. Eit TigerXML-type søk etter
-    /there is NP/es gibt NP/ burde jo vere mogleg, sjekk om dette er
-    delmengd av /there is/es gibt/. 
-
-Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
-(/There/ never /is/) som opptrer utanfor N-grammet på det andre
-språket.
-
-** Kor mange setningspar treng LPT-korrespondanse for å bli rette
- Sidan eit mål med oppgåva er å finne ut av kor lite
- bottom-up-informasjon ein kan klare seg med, går eg her gjennom
- setningane i testsettet mitt for å sjå kor mange av dei som krev
+ Sidan dette er ei openberr feilkjelde, går eg her gjennom setningane
+ i testsettet mitt[fn:40] for å sjå kor mange av dei som krev
  LPT-informasjon for å unngå feil lenkjer mellom argument/adjunkt av
- same predikat. Merk: sjølv om testsettet viser ei vid rekkje
+ same predikat. Men merk: sjølv om testsettet viser ei vid rekkje
  syntaktiske fenomen, er det langt frå å vere eit representativt
  korpus.
 
@@ -2996,6 +3018,23 @@ trebanken.
 
 \fxnote{TODO: problematiser at N-grambaserte metodar vil få alt for
 mange lenkjer her (og i 2/0-dømet) som ikkje eigentleg høyrer heime.}
+
+  
+
+*** Men korleis gjenfinne there is/es gibt?
+(og kva skal me med det, viss ikkje me driv med statistisk
+maskinomsetjing?)
+
+- N-gram kjem like ofte som heile konstruksjonen, då kan dette
+  gjenfinnast
+  - dvs., /there is NP/es gibt NP/-samanstilling kjem like ofte som
+    /there is/ eller /es gibt/ førekjem. Eit TigerXML-type søk etter
+    /there is NP/es gibt NP/ burde jo vere mogleg, sjekk om dette er
+    delmengd av /there is/es gibt/. 
+
+Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
+(/There/ never /is/) som opptrer utanfor N-grammet på det andre
+språket.
 
 
 
@@ -3365,7 +3404,9 @@ problem.
 [fn:36] Det finst au /heuristiske/ metodar, t.d. basert på
         strenglikskap, eller på mål som /Mutual Information/ eller
         Dice-koeffisienten (som kan vise om to ord førekjem oftare
-        saman i omsetjingar enn ein ville forventa).
+        saman i omsetjingar enn ein ville forventa); men desse synest
+        å gi dårlegare resultat enn statistiske metodar
+        \citep{och2003scv}.
 
 [fn:37] Korpussannsynet er produktet av $p$ for alle setningane i
         heile korpuset, kor $p$ for ei setning er summen av $p$ for
@@ -3385,3 +3426,8 @@ problem.
         ikkje ville ha gitt meining -- ved å krevje at viss ein node
         $n_s$ er lenkja til $n_t$, og er dominert av $m_s$ som er
         lenkja til $m_t$, må $m_t$ dominere $n_t$.
+
+[fn:40] Tilgjengeleg frå mappa =eval= i kjeldekoden til =lfgalign=,
+        som finst på http://github.com/unhammer/lfgalign.
+
+
