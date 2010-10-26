@@ -2,11 +2,10 @@
 ;;; problems about them
 (in-package #:lfgalign)
 
-(defun evaluate (subdir n_s n_t &optional LPTs)
+(defun evaluate (subdir path_s path_t &optional LPTs)
   (let*
-      ((tab_s (open-and-import (format nil "eval/~A/ka/~A.pl" subdir n_s)))
-       ;; In the thesis at least, ka is src, nb trg
-       (tab_t (open-and-import (format nil "eval/~A/nb/~A.pl" subdir n_t)))
+      ((tab_s (open-and-import (format nil "eval/~A/~A.pl" subdir path_s)))
+       (tab_t (open-and-import (format nil "eval/~A/~A.pl" subdir path_t)))
        (aligntab (make-aligntab))
        (LPTs (or LPTs (make-LPT)))
        (f-alignments (f-align '(0 . 0) tab_s tab_t LPTs))
@@ -17,13 +16,14 @@
 				     tree_s tab_s
 				     tree_t tab_t)))
     (out "=================================~% ~A src: ka/~A.pl trg: nb/~A.pl~%"
-	 subdir n_s n_t)
+	 subdir path_s path_t)
     (out "~A~% <=> ~A~%"
 	 (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
     (out "~A~% ~A~%"
 	 (f-tag-tree (skip-suff_base tree_s) tab_s)
 	 (f-tag-tree (skip-suff_base tree_t) tab_t))
-    (let ((allpairs (mapcan #'append (flatten f-alignments))))
+    ;; Strangely, mapcan #'append hangs if the list is long enough:
+    (let ((allpairs (loop for l in (flatten f-alignments) append l)))
       (flet ((preds (getter tab)
 	       (mapcar (lambda (var)
 			 (get-pred var tab))
@@ -42,53 +42,58 @@
 			   (topnodes (cadr pair) tree_t))))
 	    c-alignments)))
 
+(defun ev-ka-nb (subdir n_s n_t)
+  (evaluate subdir (format nil "ka/~A" n_s) (format nil "nb/~A" n_t)))
+
 (defun ev-all ()
-  (evaluate "mrs" 0 0)
-  (evaluate "mrs" 1 1)
-  (evaluate "mrs" 2 2) ; merge; treng LPT. TODO: bør verb og pro
+  (ev-ka-nb "mrs" 0 0)
+  (ev-ka-nb "mrs" 1 1)
+  (ev-ka-nb "mrs" 2 2) ; merge; treng LPT. TODO: bør verb og pro
 		       ; alltid vere LPT ved samanføying
-  (evaluate "mrs" 3 3) ; hadde >1 solutions
-  (evaluate "mrs" 4 4) ; treng LPT
-  (evaluate "mrs" 4 5) ; treng LPT
-  (evaluate "mrs" 5 6) ; treng LPT
-  (evaluate "mrs" 6 7)
-  (evaluate "mrs" 7 8)
-  (evaluate "mrs" 9 10)
-  (evaluate "mrs" 10 11)
-  (evaluate "mrs" 11 12)
-  (evaluate "mrs" 16 17)
-  (evaluate "mrs" 19 20)
-  (evaluate "mrs" 22 23)
-  (evaluate "mrs" 23 24)
-  (evaluate "mrs" 24 25)
-  (evaluate "mrs" 25 26)
-  (evaluate "mrs" 26 27)
-  (evaluate "mrs" 34 35)
-  (evaluate "mrs" 37 38)
-  (evaluate "mrs" 38 39)
-  (evaluate "mrs" 57 58)
-  (evaluate "mrs" 63 64)
-  (evaluate "mrs" 67 68)
-  (evaluate "mrs" 71 72)	  ; TODO: koordinering fungerer ikkje!
-  ; (evaluate "mrs" 73 74)	  ; TODO: koordinering fungerer ikkje!
+  (ev-ka-nb "mrs" 3 3) ; hadde >1 solutions
+  (ev-ka-nb "mrs" 4 4) ; treng LPT
+  (ev-ka-nb "mrs" 4 5) ; treng LPT
+  (ev-ka-nb "mrs" 5 6) ; treng LPT
+  (ev-ka-nb "mrs" 6 7)
+  (ev-ka-nb "mrs" 7 8)
+  (ev-ka-nb "mrs" 9 10)
+  (ev-ka-nb "mrs" 10 11)
+  (ev-ka-nb "mrs" 11 12)
+  (ev-ka-nb "mrs" 16 17)
+  (ev-ka-nb "mrs" 19 20)
+  (ev-ka-nb "mrs" 22 23)
+  (ev-ka-nb "mrs" 23 24)
+  (ev-ka-nb "mrs" 24 25)
+  (ev-ka-nb "mrs" 25 26)
+  (ev-ka-nb "mrs" 26 27)
+  (ev-ka-nb "mrs" 34 35)
+  (ev-ka-nb "mrs" 37 38)
+  (ev-ka-nb "mrs" 38 39)
+  (ev-ka-nb "mrs" 57 58)
+  (ev-ka-nb "mrs" 63 64)
+  (ev-ka-nb "mrs" 67 68)
+  (ev-ka-nb "mrs" 71 72)	  ; TODO: koordinering fungerer ikkje!
+  ; (ev-ka-nb "mrs" 73 74)	  ; TODO: koordinering fungerer ikkje!
   ;; ^^^ krasjer i tillegg pred-tag-alignment...
 
-  (evaluate "sofie" 2 0)		; for stor avstand i argumentstruktur: være på vei hjem <=> bruneba
+  (ev-ka-nb "sofie" 2 0)		; for stor avstand i argumentstruktur: være på vei hjem <=> bruneba
 
   ;; i 13-10 må ein leggje til (add-to-LPT "-ken" "inn" LPT) for at
   ;; ein i det heile teke skal få ut ei løysing som lenkjer desse to,
   ;; sidan det georgiske verbet tek tri arg (to er pro) medan det
   ;; norske berre tek eitt:
-  (evaluate "sofie" 13 10) 
+  (ev-ka-nb "sofie" 13 10) 
 
-  ;; (evaluate "sofie" 3 1) ; >1 solutions
-  ;; (evaluate "sofie" 4 2)
-  ;; (evaluate "sofie" 5 3)
-  ;; (evaluate "sofie" 6 4)
-  ;; (evaluate "sofie" 7 5)
-  ;; (evaluate "sofie" 8 6)
-  ;; (evaluate "sofie" 9 7)
-  ;; (evaluate "sofie" 21 18)
-  ;; (evaluate "sofie" 32 32)
-  ;; (evaluate "sofie" 41 46)
+  ;; (ev-ka-nb "sofie" 3 1) ; >1 solutions
+  ;; (ev-ka-nb "sofie" 4 2)
+  ;; (ev-ka-nb "sofie" 5 3)
+  ;; (ev-ka-nb "sofie" 6 4)
+  ;; (ev-ka-nb "sofie" 7 5)
+  ;; (ev-ka-nb "sofie" 8 6)
+  ;; (ev-ka-nb "sofie" 9 7)
+  ;; (ev-ka-nb "sofie" 21 18)
+  ;; (ev-ka-nb "sofie" 32 32)
+  ;; (ev-ka-nb "sofie" 41 46)
+
+  (evaluate "sulis" "de/D0000" "en/E0000")
   )
