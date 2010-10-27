@@ -233,16 +233,34 @@ add all equivalent variables and their possible expansions."
       (error "Found superfluous, non-equal unravellings of ~A ~A:~%~A~%" val att it))
     (cons att (car it))))
 
+(defun coord-to-pred (var lemma tab)
+  "Turn a coordination into a fake pred like
+  `and<>conjunct1,conjunct2,...'
+
+TODO: order conjuncts by appearance in the sentence."
+  (list var
+	lemma
+	nil				; semform_data?
+	nil				; inside args
+	(mapcar-true			; outside args
+	 ;; For coordinations, the f-structure id, here var, is the set id:
+	 (lambda (pair) (when (eq (cdr pair) var)
+			  (skip-pp (car pair) tab)))
+	 (cdr (gethash '|in_set| tab)))))
+
 (defun get-pred (var tab &optional nil-on-none)
   "Use `nil-on-none' to return nil if no PRED was found."
   (if (null-pred? var)
       var
       (aif (unravel "PRED" var tab)
 	   (cons var (cdr it))
-	   (unless nil-on-none
-	     (unless *no-warnings*
-	       (warn "No PRED for var ~A, treating it as a pro~%" var))
-	     (list var "pro" nil NIL NIL)))))
+	   ;; No PRED-value, perhaps make one up...
+	   (aif (unravel "COORD-FORM" var tab)
+		(coord-to-pred var (cdr it) tab)
+		(unless nil-on-none
+		  (unless *no-warnings*
+		    (warn "No PRED for var ~A, treating it as a pro~%" var))
+		  (list var "pro" nil nil nil))))))
 
 
 
@@ -252,7 +270,7 @@ add all equivalent variables and their possible expansions."
   (and (listp Pr)
        (numberp (first Pr))
        (stringp (second Pr))
-       (numberp (third Pr))
+       (or (numberp (third Pr)) (null (third Pr)))
        (listp (fourth Pr))
        (listp (fifth Pr))
        (null (sixth Pr))
