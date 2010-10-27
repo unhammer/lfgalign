@@ -2889,9 +2889,9 @@ lite testsett.
 
 
 #-ATTR_LaTeX: longtable align=l|lp{3cm}r|l
-#+CAPTION:  «min LPT-par» i tabellen er «kor mange LPT-korrespondansar som  trengst for å få rette f-lenkjer»; «moglege LPT-par» viser moglege  mengder med minimal LPT-informasjon som er nok til at me får rett  analyse (mange mengder i denne kolonnen vil altså seie at det er  mange måtar å få rett analyse på). Viss eit tal står i parentes har  setningsparet andre problem enn berre LPT-korrespondanse som gjer at  ikkje alt som skal bli lenkja, blir lenkja.
 #+LABEL: tbl:LPT
-| setning         | l_s | l_t | min LPT-par | moglege LPT-par                          |        |
+#+CAPTION: Kor mykje bottom-up-informasjon treng me for å lenkje argument/adjunkt korrekt?
+| setning         | l_s | l_t | min LPT | moglege LPT-par                          | merknad |
 |-----------------+-----+-----+-------------+------------------------------------------+--------|
 | mrs 0.pl 0.pl   |   1 |   2 |           0 |                                          |        |
 | mrs 1.pl 1.pl   |   2 |   2 |           0 |                                          |        |
@@ -2926,14 +2926,25 @@ lite testsett.
 | sofie 2.pl 0.pl |   4 |   8 |         (1) | {(amundsen,Amundsen)}                    | constr |
 | sofie 2.pl 0.pl |   3 |   6 |         (0) |                                          | constr |
 
-Nedanfor følgjer eit par utdjupande kommentarar til analysane.
+Tabell \ref{tbl:LPT} viser, for kvart korresponderande og disambiguert
+setningspar i testsettet, kor mange ord setningane hadde og kor mange
+LPT-korrespondansar som måtte til for å ikkje få feil i
+argument/adjunkt-lenkjinga (kolonnen «min LPT»). For dei setningane
+der LPT-korrespondansar måtte til, viser kolonnen «moglege LPT-par»
+kva for moglege mengder med minimal LPT-informasjon som er nok for å
+få rett analyse (mange mengder i denne kolonnen vil altså seie at det
+er mange måtar å få rett analyse på).  Der eit tal står i parentes har
+setningsparet andre problem enn berre LPT-korrespondanse som gjer at
+ikkje alt som skal bli lenkja, blir lenkja. Nedanfor følgjer eit par
+utdjupande kommentarar til analysane.
 
 Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning 4
 på georgisk. Det finst ingen 8.pl på georgisk sidan denne (som hadde
 tilsvart 9.pl på norsk) ikkje hadde analyse, difor manglar dette
-setningsparet -- andre som manglar var anten ikkje disambiguerte eller
-hadde ikkje analysar. Eit par som ikkje var disambiguerte har eg sjølv
-manuelt disambiguert (norsk 0.pl og georgisk 3.pl).
+setningsparet -- andre som manglar frå tabellen var anten ikkje
+disambiguerte eller hadde ikkje analysar. Eit par som ikkje var
+disambiguerte har eg sjølv manuelt disambiguert (norsk 0.pl og
+georgisk 3.pl).
 
 I setning 57.pl og 58.pl er eg usikker på kva den rette analysen bør
 vere (eller om har rette LFG-analysar), men meir LPT-informasjon vil
@@ -2947,12 +2958,12 @@ Setning 67.pl og 68.pl er vist i \Next nedanfor:
 
 Her klarte ikkje =lfgalign= å lenkje /abramsis/ med /av Abrams/ sidan
 den georgiske f-strukturen har dette som ein \F{poss} under \F{spec}
-til /suraTi/, i staden for å vere eit adjunkt/argument (f-strukturen
-til /Abrams/ står som argument til \p{bilde}). Programmet =lfgalign=
-finn ikkje f-strukturar via andre stigar enn adjunkt eller argument
-til tidlegare kjende f-strukturar. Det er nok ønskeleg å lenkje
-f-strukturane til desse frasane, så her treng kanskje
-lenkjingsprinsippa litt meir arbeid.
+av f-strukturen til /suraTi/, i staden for å vere eit
+adjunkt/argument (f-strukturen til /Abrams/ står som argument til
+\p{bilde}). Programmet =lfgalign= finn ikkje f-strukturar via andre
+stigar enn adjunkt eller argument til tidlegare kjende
+f-strukturar. Det er nok ønskeleg å lenkje f-strukturane til desse
+frasane, så her treng kanskje lenkjingsprinsippa litt meir arbeid.
 
 
 # CURRENT

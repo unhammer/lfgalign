@@ -1,4 +1,4 @@
-% Created 2010-10-27 on. 14:40
+% Created 2010-10-27 on. 16:39
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -2862,54 +2862,65 @@ lite testsett.
 
 
 \begin{table}[htb]
-\caption{\label{tbl:LPT}«min LPT-par» i tabellen er «kor mange LPT-korrespondansar som  trengst for å få rette f-lenkjer»; «moglege LPT-par» viser moglege  mengder med minimal LPT-informasjon som er nok til at me får rett  analyse (mange mengder i denne kolonnen vil altså seie at det er  mange måtar å få rett analyse på). Viss eit tal står i parentes har  setningsparet andre problem enn berre LPT-korrespondanse som gjer at  ikkje alt som skal bli lenkja, blir lenkja.}
+\caption{\label{tbl:LPT}Kor mykje bottom-up-informasjon treng me for å lenkje argument/adjunkt korrekt?}
 \begin{center}
 \begin{tabular}{lrrrll}
- setning          &  l$_s$  &  l$_t$  &  min LPT-par  &  moglege LPT-par                               &          \\
+ setning          &  l$_s$  &  l$_t$  &  min LPT  &  moglege LPT-par                               &  merknad  \\
 \hline
- mrs 0.pl 0.pl    &      1  &      2  &            0  &                                                &          \\
- mrs 1.pl 1.pl    &      2  &      2  &            0  &                                                &          \\
- mrs 2.pl 2.pl    &      3  &      2  &            1  &  \{(ga-Geba,pro)\}, \{(PanJara,vindu)\}        &  merge   \\
- mrs 3.pl 3.pl    &      3  &      3  &            0  &                                                &          \\
- mrs 4.pl 4.pl    &      4  &      4  &            1  &  \{(Browne,Browne)\}, \{(sigareti,sigarett)\}  &          \\
- mrs 4.pl 5.pl    &      4  &      5  &            1  &  \{(Browne,Browne)\}, \{(sigareti,sigarett)\}  &          \\
- mrs 5.pl 6.pl    &      6  &     10  &            1  &  \{(Abrams,Abrams)\}, \{(sigareti,sigarett)\}  &          \\
- mrs 6.pl 7.pl    &      4  &      5  &            0  &                                                &          \\
- mrs 7.pl 8.pl    &      3  &      4  &            0  &                                                &          \\
- mrs 9.pl 10.pl   &      3  &      3  &            0  &                                                &          \\
- mrs 10.pl 11.pl  &      5  &      5  &            0  &                                                &          \\
- mrs 11.pl 12.pl  &      3  &      3  &            0  &                                                &          \\
- mrs 12.pl 13.pl  &      2  &      2  &            0  &                                                &          \\
- mrs 16.pl 17.pl  &      2  &      2  &            0  &                                                &          \\
- mrs 19.pl 20.pl  &      2  &      2  &            0  &                                                &          \\
- mrs 22.pl 23.pl  &      3  &      3  &            0  &                                                &          \\
- mrs 23.pl 24.pl  &      2  &      2  &            0  &                                                &          \\
- mrs 24.pl 25.pl  &      3  &      3  &            0  &                                                &          \\
- mrs 25.pl 26.pl  &      3  &      4  &            0  &                                                &          \\
- mrs 26.pl 27.pl  &      2  &      2  &            0  &                                                &          \\
- mrs 34.pl 35.pl  &      2  &      3  &            0  &                                                &  merge   \\
- mrs 37.pl 38.pl  &      3  &      3  &            0  &                                                &          \\
- mrs 38.pl 39.pl  &      2  &      5  &            0  &                                                &  merge   \\
- mrs 57.pl 58.pl  &      3  &      4  &            0  &                                                &          \\
- mrs 63.pl 64.pl  &      3  &      4  &            0  &                                                &          \\
- mrs 67.pl 68.pl  &      3  &      4  &          (0)  &                                                &  COORD   \\
- mrs 71.pl 72.pl  &      4  &      4  &          (0)  &                                                &  COORD   \\
- mrs 73.pl 74.pl  &      4  &      4  &          (0)  &                                                &  COORD   \\
- sofie 2.pl 0.pl  &      4  &      8  &          (1)  &  \{(amundsen,Amundsen)\}                       &  constr  \\
- sofie 2.pl 0.pl  &      3  &      6  &          (0)  &                                                &  constr  \\
+ mrs 0.pl 0.pl    &      1  &      2  &        0  &                                                &           \\
+ mrs 1.pl 1.pl    &      2  &      2  &        0  &                                                &           \\
+ mrs 2.pl 2.pl    &      3  &      2  &        1  &  \{(ga-Geba,pro)\}, \{(PanJara,vindu)\}        &  merge    \\
+ mrs 3.pl 3.pl    &      3  &      3  &        0  &                                                &           \\
+ mrs 4.pl 4.pl    &      4  &      4  &        1  &  \{(Browne,Browne)\}, \{(sigareti,sigarett)\}  &           \\
+ mrs 4.pl 5.pl    &      4  &      5  &        1  &  \{(Browne,Browne)\}, \{(sigareti,sigarett)\}  &           \\
+ mrs 5.pl 6.pl    &      6  &     10  &        1  &  \{(Abrams,Abrams)\}, \{(sigareti,sigarett)\}  &           \\
+ mrs 6.pl 7.pl    &      4  &      5  &        0  &                                                &           \\
+ mrs 7.pl 8.pl    &      3  &      4  &        0  &                                                &           \\
+ mrs 9.pl 10.pl   &      3  &      3  &        0  &                                                &           \\
+ mrs 10.pl 11.pl  &      5  &      5  &        0  &                                                &           \\
+ mrs 11.pl 12.pl  &      3  &      3  &        0  &                                                &           \\
+ mrs 12.pl 13.pl  &      2  &      2  &        0  &                                                &           \\
+ mrs 16.pl 17.pl  &      2  &      2  &        0  &                                                &           \\
+ mrs 19.pl 20.pl  &      2  &      2  &        0  &                                                &           \\
+ mrs 22.pl 23.pl  &      3  &      3  &        0  &                                                &           \\
+ mrs 23.pl 24.pl  &      2  &      2  &        0  &                                                &           \\
+ mrs 24.pl 25.pl  &      3  &      3  &        0  &                                                &           \\
+ mrs 25.pl 26.pl  &      3  &      4  &        0  &                                                &           \\
+ mrs 26.pl 27.pl  &      2  &      2  &        0  &                                                &           \\
+ mrs 34.pl 35.pl  &      2  &      3  &        0  &                                                &  merge    \\
+ mrs 37.pl 38.pl  &      3  &      3  &        0  &                                                &           \\
+ mrs 38.pl 39.pl  &      2  &      5  &        0  &                                                &  merge    \\
+ mrs 57.pl 58.pl  &      3  &      4  &        0  &                                                &           \\
+ mrs 63.pl 64.pl  &      3  &      4  &        0  &                                                &           \\
+ mrs 67.pl 68.pl  &      3  &      4  &      (0)  &                                                &  COORD    \\
+ mrs 71.pl 72.pl  &      4  &      4  &      (0)  &                                                &  COORD    \\
+ mrs 73.pl 74.pl  &      4  &      4  &      (0)  &                                                &  COORD    \\
+ sofie 2.pl 0.pl  &      4  &      8  &      (1)  &  \{(amundsen,Amundsen)\}                       &  constr   \\
+ sofie 2.pl 0.pl  &      3  &      6  &      (0)  &                                                &  constr   \\
 \end{tabular}
 \end{center}
 \end{table}
 
 
-Nedanfor følgjer eit par utdjupande kommentarar til analysane.
+Tabell \ref{tbl:LPT} viser, for kvart setningspar i testsettet, kor
+mange ord setningane hadde og kor mange LPT-korrespondansar som måtte
+til for å ikkje få feil i argument/adjunkt-lenkjinga (kolonnen «min
+LPT»). For dei setningane der LPT-korrespondansar måtte til, viser
+kolonnen «moglege LPT-par» kva for moglege mengder med minimal
+LPT-informasjon som er nok for å få rett analyse (mange mengder i
+denne kolonnen vil altså seie at det er mange måtar å få rett analyse
+på).  Der eit tal står i parentes har setningsparet andre problem enn
+berre LPT-korrespondanse som gjer at ikkje alt som skal bli lenkja,
+blir lenkja. Nedanfor følgjer eit par utdjupande kommentarar til
+analysane.
 
 Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning 4
 på georgisk. Det finst ingen 8.pl på georgisk sidan denne (som hadde
 tilsvart 9.pl på norsk) ikkje hadde analyse, difor manglar dette
-setningsparet -- andre som manglar var anten ikkje disambiguerte eller
-hadde ikkje analysar. Eit par som ikkje var disambiguerte har eg sjølv
-manuelt disambiguert (norsk 0.pl og georgisk 3.pl).
+setningsparet -- andre som manglar frå tabellen var anten ikkje
+disambiguerte eller hadde ikkje analysar. Eit par som ikkje var
+disambiguerte har eg sjølv manuelt disambiguert (norsk 0.pl og
+georgisk 3.pl).
 
 I setning 57.pl og 58.pl er eg usikker på kva den rette analysen bør
 vere (eller om har rette LFG-analysar), men meir LPT-informasjon vil
@@ -2923,12 +2934,12 @@ Setning 67.pl og 68.pl er vist i \Next nedanfor:
 
 Her klarte ikkje \texttt{lfgalign} å lenkje \emph{abramsis} med \emph{av Abrams} sidan
 den georgiske f-strukturen har dette som ein \F{poss} under \F{spec}
-til \emph{suraTi}, i staden for å vere eit adjunkt/argument (f-strukturen
-til \emph{Abrams} står som argument til \p{bilde}). Programmet \texttt{lfgalign}
-finn ikkje f-strukturar via andre stigar enn adjunkt eller argument
-til tidlegare kjende f-strukturar. Det er nok ønskeleg å lenkje
-f-strukturane til desse frasane, så her treng kanskje
-lenkjingsprinsippa litt meir arbeid.
+av f-strukturen til \emph{suraTi}, i staden for å vere eit
+adjunkt/argument (f-strukturen til \emph{Abrams} står som argument til
+\p{bilde}). Programmet \texttt{lfgalign} finn ikkje f-strukturar via andre
+stigar enn adjunkt eller argument til tidlegare kjende
+f-strukturar. Det er nok ønskeleg å lenkje f-strukturane til desse
+frasane, så her treng kanskje lenkjingsprinsippa litt meir arbeid.
 
 
 
