@@ -2892,39 +2892,39 @@ lite testsett.
 #+LABEL: tbl:LPT
 #+CAPTION: Kor mykje bottom-up-informasjon treng me for å lenkje argument/adjunkt korrekt?
 | setning         | l_s | l_t | min LPT | moglege LPT-par                          | merknad |
-|-----------------+-----+-----+-------------+------------------------------------------+--------|
-| mrs 0.pl 0.pl   |   1 |   2 |           0 |                                          |        |
-| mrs 1.pl 1.pl   |   2 |   2 |           0 |                                          |        |
-| mrs 2.pl 2.pl   |   3 |   2 |           1 | {(ga-Geba,pro)}, {(PanJara,vindu)}       | merge  |
-| mrs 3.pl 3.pl   |   3 |   3 |           0 |                                          |        |
-| mrs 4.pl 4.pl   |   4 |   4 |           1 | {(Browne,Browne)}, {(sigareti,sigarett)} |        |
-| mrs 4.pl 5.pl   |   4 |   5 |           1 | {(Browne,Browne)}, {(sigareti,sigarett)} |        |
-| mrs 5.pl 6.pl   |   6 |  10 |           1 | {(Abrams,Abrams)}, {(sigareti,sigarett)} |        |
-| mrs 6.pl 7.pl   |   4 |   5 |           0 |                                          |        |
-| mrs 7.pl 8.pl   |   3 |   4 |           0 |                                          |        |
-| mrs 9.pl 10.pl  |   3 |   3 |           0 |                                          |        |
-| mrs 10.pl 11.pl |   5 |   5 |           0 |                                          |        |
-| mrs 11.pl 12.pl |   3 |   3 |           0 |                                          |        |
-| mrs 12.pl 13.pl |   2 |   2 |           0 |                                          |        |
-|                 |     |     |             |                                          |        |
-| mrs 16.pl 17.pl |   2 |   2 |           0 |                                          |        |
-| mrs 19.pl 20.pl |   2 |   2 |           0 |                                          |        |
-| mrs 22.pl 23.pl |   3 |   3 |           0 |                                          |        |
-| mrs 23.pl 24.pl |   2 |   2 |           0 |                                          |        |
-| mrs 24.pl 25.pl |   3 |   3 |           0 |                                          |        |
-| mrs 25.pl 26.pl |   3 |   4 |           0 |                                          |        |
-| mrs 26.pl 27.pl |   2 |   2 |           0 |                                          |        |
-| mrs 34.pl 35.pl |   2 |   3 |           0 |                                          | merge  |
-| mrs 37.pl 38.pl |   3 |   3 |           0 |                                          |        |
-| mrs 38.pl 39.pl |   2 |   5 |           0 |                                          | merge  |
-| mrs 57.pl 58.pl |   3 |   4 |           0 |                                          |        |
-| mrs 63.pl 64.pl |   3 |   4 |           0 |                                          |        |
-| mrs 67.pl 68.pl |   3 |   4 |         (0) |                                          | COORD  |
-| mrs 71.pl 72.pl |   4 |   4 |         (0) |                                          | COORD  |
-| mrs 73.pl 74.pl |   4 |   4 |         (0) |                                          | COORD  |
-|                 |     |     |             |                                          |        |
-| sofie 2.pl 0.pl |   4 |   8 |         (1) | {(amundsen,Amundsen)}                    | constr |
-| sofie 2.pl 0.pl |   3 |   6 |         (0) |                                          | constr |
+|-----------------+-----+-----+---------+------------------------------------------+---------|
+| mrs 0.pl 0.pl   |   1 |   2 |       0 |                                          |         |
+| mrs 1.pl 1.pl   |   2 |   2 |       0 |                                          |         |
+| mrs 2.pl 2.pl   |   3 |   2 |       1 | {(ga-Geba,pro)}, {(PanJara,vindu)}       | merge   |
+| mrs 3.pl 3.pl   |   3 |   3 |       0 |                                          |         |
+| mrs 4.pl 4.pl   |   4 |   4 |       1 | {(Browne,Browne)}, {(sigareti,sigarett)} |         |
+| mrs 4.pl 5.pl   |   4 |   5 |       1 | {(Browne,Browne)}, {(sigareti,sigarett)} |         |
+| mrs 5.pl 6.pl   |   6 |  10 |       1 | {(Abrams,Abrams)}, {(sigareti,sigarett)} |         |
+| mrs 6.pl 7.pl   |   4 |   5 |       0 |                                          |         |
+| mrs 7.pl 8.pl   |   3 |   4 |       0 |                                          |         |
+| mrs 9.pl 10.pl  |   3 |   3 |       0 |                                          |         |
+| mrs 10.pl 11.pl |   5 |   5 |       0 |                                          |         |
+| mrs 11.pl 12.pl |   3 |   3 |       0 |                                          |         |
+| mrs 12.pl 13.pl |   2 |   2 |       0 |                                          |         |
+|                 |     |     |         |                                          |         |
+| mrs 16.pl 17.pl |   2 |   2 |       0 |                                          |         |
+| mrs 19.pl 20.pl |   2 |   2 |       0 |                                          |         |
+| mrs 22.pl 23.pl |   3 |   3 |       0 |                                          |         |
+| mrs 23.pl 24.pl |   2 |   2 |       0 |                                          |         |
+| mrs 24.pl 25.pl |   3 |   3 |       0 |                                          |         |
+| mrs 25.pl 26.pl |   3 |   4 |       0 |                                          |         |
+| mrs 26.pl 27.pl |   2 |   2 |       0 |                                          |         |
+| mrs 34.pl 35.pl |   2 |   3 |       0 |                                          | merge   |
+| mrs 37.pl 38.pl |   3 |   3 |       0 |                                          |         |
+| mrs 38.pl 39.pl |   2 |   5 |       0 |                                          | merge   |
+| mrs 57.pl 58.pl |   3 |   4 |       0 |                                          |         |
+| mrs 63.pl 64.pl |   3 |   4 |       0 |                                          |         |
+| mrs 67.pl 68.pl |   3 |   4 |     (0) |                                          | COORD   |
+| mrs 71.pl 72.pl |   4 |   4 |     0   |                                          | COORD   |
+| mrs 73.pl 74.pl |   4 |   4 |       1 |                                          | COORD   |
+|                 |     |     |         |                                          |         |
+| sofie 2.pl 0.pl |   4 |   8 |     (1) | {(amundsen,Amundsen)}                    | constr  |
+| sofie 2.pl 0.pl |   3 |   6 |     (0) |                                          | constr  |
 
 Tabell \ref{tbl:LPT} viser, for kvart korresponderande og disambiguert
 setningspar i testsettet, kor mange ord setningane hadde og kor mange
@@ -2966,7 +2966,8 @@ f-strukturar. Det er nok ønskeleg å lenkje f-strukturane til desse
 frasane, så her treng kanskje lenkjingsprinsippa litt meir arbeid.
 
 
-# CURRENT
+# CURRENT: coord-form er implementert no, manglar berre argfølgje frå
+# setningsposisjon så skal dette gå greit, kan fjerne avsnittet nedanfor.
 
 Setning 71.pl og 72.pl viser at koordinering ikkje fungerer... får
 berre =((mo-svla . ankomme) (pro . pro))= men burde vel få =((mo-svla
