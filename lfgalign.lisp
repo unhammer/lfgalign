@@ -322,6 +322,36 @@ return \"pro\"."
 	(second surfaceform))
     (second Pr)))
 
+(defun all-pred-vars (tab)
+  "TODO: cache/memoise in table?"
+  (let (seen)
+    (mapcar-true
+     (lambda (x) (let ((var (car x)))
+		   (when (and (numberp var)
+			      (assoc "PRED" (cdr x) :test #'equal))
+		     (unless (intersection seen (get-equivs var tab))
+		       (pushnew var seen)
+		       var))))
+     (table-to-alist tab))))
+
+(defun unreferenced-preds (tab)
+  "Return a list of variables of those PRED's which are not arguments
+or adjuncts of others."
+  (let (vars backrefs)
+    
+    (mapcar (lambda (var)
+	      (pushnew var vars)
+	      (setq backrefs (union
+			      backrefs
+			      (union
+			       (get-args var tab 'no-nulls)
+			       (get-adjs var tab 'no-error)))))
+	    (all-pred-vars tab))
+    
+    (remove-if (lambda (v) (intersection (get-equivs v tab 'include-this)
+					 backrefs))
+	       vars)))
+
 
 ;;;;;;;; LPT:
 ;;;;;;;; ----
@@ -1558,31 +1588,9 @@ respectively.  TODO: cache/memoise maketree"
 
 ;;;;;;;; DEPRECATED:
 ;;;;;;;; -----------
-(defun all-preds (tab)
-  "TODO: cache/memoise in table?"
-  (let (seen)
-    (mapcar-true
-     (lambda (x) (let ((var (car x)))
-		   (when (and (numberp var)
-			      (assoc "PRED" (cdr x) :test #'equal))
-		     (unless (intersection seen (get-equivs var tab))
-		       (pushnew var seen)
-		       (get-pred var tab)))))
-     (table-to-alist tab))))
-
-(defun unreferenced-preds (tab)
-  "Return a list of variables of those PRED's which are not arguments
-of others."
-  (let (vars backrefs)
-    (mapcar (lambda (Pr)
-	      (pushnew (first Pr) vars)
-	      (setq backrefs (union (fourth Pr) (union (fifth Pr) backrefs))))
-	    (all-preds tab))
-    (remove-if (lambda (v) (member v backrefs)) vars)))
-
 (defun find-multiple-unreferenced () "Fluff"
   (loop for i from 1 to 106
-	for f = (concatenate 'string "nb/" (prin1-to-string i) ".pl")
+	for f = (concatenate 'string "eval/mrs/nb/" (prin1-to-string i) ".pl")
 	for unref = (unreferenced-preds (open-and-import f))
 	when (not (equal '(0) unref)) do
 	(format t "f:~A unref:~A~%" f unref)))
@@ -1631,12 +1639,15 @@ LPT's."
 (defun all-LPT (tab_s tab_t LPTs)
   "Return all possible LPTs of each PRED, as pairs of PREDs."
   (mapcan-true
-   (lambda (Pr_s)
-     (mapcar-true
-      (lambda (Pr_t) (when (LPT? Pr_s tab_s Pr_t tab_t LPTs)
-		      (list Pr_s Pr_t)))
-      (all-preds tab_t)))
-   (all-preds tab_s)))
+   (lambda (var_s)
+     (let ((Pr_s (get-pred var_s tab_s)))
+       (mapcar-true
+	(lambda (var_t)
+	  (let ((Pr_t (get-pred var_t tab_t)))
+	    (when (LPT? Pr_s tab_s Pr_t tab_t LPTs)
+	      (list Pr_s Pr_t))))
+	(all-pred-vars tab_t))))
+   (all-pred-vars tab_s)))
 
 (defun all-LPT-vars (tab_s tab_t LPTs)
   "Return an association list of all possible LPTs, using the
@@ -1644,9 +1655,11 @@ variables of the PRED entries from `tab_s' as keys. So the
 alist-entry (0 9 8) means that var 0 is a PRED in `tab_s', and 9 and 8
 are outermost PRED's in `tab_t', and they are all possible LPT's."
   (loop
-     for Pr_s in (all-preds tab_s)
-     collect (cons (car Pr_s)
-		   (loop 
-		    for Pr_t in (all-preds tab_t)
-		    for o = (LPT? Pr_s tab_s Pr_t tab_t LPTs)
-		    when o append (list (car Pr_t))))))
+   for var_s in (all-pred-vars tab_s)
+   for Pr_s = (get-pred var_s tab_s)
+   collect (cons (car Pr_s)
+		 (loop 
+		  for var_t in (all-pred-vars tab_t)
+		  for Pr_t = (get-pred var_t tab_t)
+		  for o = (LPT? Pr_s tab_s Pr_t tab_t LPTs)
+		  when o append (list (car Pr_t))))))

@@ -2,10 +2,10 @@
 ;;; problems about them
 (in-package #:lfgalign)
 
-(defun evaluate (subdir path_s path_t &optional LPTs)
+(defun evaluate (path_s path_t &optional LPTs absolute)
   (let*
-      ((tab_s (open-and-import (format nil "eval/~A/~A.pl" subdir path_s)))
-       (tab_t (open-and-import (format nil "eval/~A/~A.pl" subdir path_t)))
+      ((tab_s (open-and-import path_s absolute))
+       (tab_t (open-and-import path_t absolute))
        (aligntab (make-aligntab))
        (LPTs (or LPTs (make-LPT)))
        (f-alignments (f-align '(0 . 0) tab_s tab_t LPTs))
@@ -15,15 +15,18 @@
        (c-alignments (c-align-ranked best-f-alignment 
 				     tree_s tab_s
 				     tree_t tab_t)))
-    (out "=================================~% ~A src: ka/~A.pl trg: nb/~A.pl~%"
-	 subdir path_s path_t)
+    (out "=================================~% src: ~A trg: ~A~%"
+	 path_s path_t)
     (out "~A~% <=> ~A~%"
 	 (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
     (out "~A~% ~A~%"
 	 (f-tag-tree (skip-suff_base tree_s) tab_s)
 	 (f-tag-tree (skip-suff_base tree_t) tab_t))
-    ;; Strangely, mapcan #'append hangs if the list is long enough:
-    (let ((allpairs (loop for l in (flatten f-alignments) append l)))
+    (let ((allpairs
+	   (if (consp (cdr f-alignments))
+	       ;; Strangely, mapcan #'append hangs if the list is long enough:
+	       (loop for l in (flatten f-alignments) append l)
+	       (list f-alignments))))
       (flet ((preds (getter tab)
 	       (mapcar (lambda (var)
 			 (get-pred var tab))
@@ -43,7 +46,8 @@
 	    c-alignments)))
 
 (defun ev-ka-nb (subdir n_s n_t)
-  (evaluate subdir (format nil "ka/~A" n_s) (format nil "nb/~A" n_t)))
+  (evaluate (format nil "eval/~A/ka/~A.pl" subdir n_s)
+	    (format nil "eval/~A/nb/~A.pl" subdir n_t)))
 
 (defun ev-all ()
   (ev-ka-nb "mrs" 0 0)
@@ -95,5 +99,60 @@
   ;; (ev-ka-nb "sofie" 32 32)
   ;; (ev-ka-nb "sofie" 41 46)
 
-  (evaluate "sulis" "de/D0000" "en/E0000")
-  )
+  (evaluate "eval/sulis/de/D0000.pl" "eval/sulis/en/E0000.pl"))
+
+
+(defun ev-europarl (n)
+  (loop
+     repeat n
+     with dir = (append (pathname-directory
+			 (asdf:component-pathname (asdf:find-system :lfgalign)))
+			'("eval" "europarl"))
+     for path_s in (directory
+		    (make-pathname
+		     :name :wild
+		     :type "pl"
+		     :directory (append dir '("de"))))
+     for path_t = (make-pathname
+		   :name (pathname-name path_s)
+		   :type "pl"
+		   :directory
+		   (append (append dir '("en"))))
+       
+     do
+       (let*
+	   ((tab_s (open-and-import (format nil "~A" path_s) 'absolute))
+	    (tab_t (open-and-import (format nil "~A" path_t) 'absolute)))
+	 (out "~A: ~A og ~A~%" path_s
+	      (length (unreferenced-preds tab_s))
+	      (length (unreferenced-preds tab_t)))
+	 (when nil
+	   (let*
+	       ((aligntab (make-aligntab))
+		(LPTs (make-LPT))
+		(f-alignments (f-align '(0 . 0) tab_s tab_t LPTs))
+		(best-f-alignment (rank f-alignments aligntab tab_s tab_t))
+		(tree_s (maketree tab_s))
+		(tree_t (maketree tab_t))
+		(c-alignments (c-align-ranked best-f-alignment 
+					      tree_s tab_s
+					      tree_t tab_t)))
+	     ;; (out "=================================~% src: ~A trg: ~A~%"
+	     ;;      path_s path_t)
+	     (out "=================================~%~A~% <=> ~A~%"
+		  (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
+	     (let ((allpairs
+		    (if (consp (cdr f-alignments))
+			;; Strangely, mapcan #'append hangs if the list is long enough:
+			(loop for l in (flatten f-alignments) append l)
+			(list f-alignments))))
+	       (flet ((preds (getter tab)
+			(mapcar (lambda (var)
+				  (get-pred var tab))
+				(remove-duplicates (mapcar getter allpairs)))))
+		 (out "~%srcs: ~A~%trgs: ~A~%"
+		      (preds #'car tab_s) (preds #'cdr tab_t))))
+	     (out "unranked: ~A~%" (pred-tag-alignment f-alignments tab_s tab_t))
+	     (out "ranked: ~A~%" (pred-tag-alignment best-f-alignment tab_s tab_t)))))
+
+))
