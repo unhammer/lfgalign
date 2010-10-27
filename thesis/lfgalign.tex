@@ -1,4 +1,4 @@
-% Created 2010-10-26 ty. 20:32
+% Created 2010-10-27 on. 14:40
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -55,7 +55,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{26/10, 2010}
+\date{27/10, 2010}
 
 \begin{document}
 
@@ -1288,7 +1288,7 @@ difor ikkje treng LPT-korrespondanse med argument/adjunkt av $q$. Så
 kan det au hende at $a_p$ sjølv kan samanføyast med eit av sine
 argument/adjunkt. Skal me sjå etter slike løysingar samtidig som me
 ser etter løysingar med ein-ein-lenkjer, vil me måtte leite gjennom
-mange ufruktbare stiar. Ein måte å unngå dette på er å nedprioritere
+mange ufruktbare stigar. Ein måte å unngå dette på er å nedprioritere
 samanføying, og berre prøve dette der det ikkje finst andre
 alternativ.
 
@@ -2859,14 +2859,10 @@ lite testsett.
  syntaktiske fenomen, er det langt frå å vere eit representativt
  korpus.
 
- «min LPT-par» i tabellen er «kor mange LPT-korrespondansar som
- trengst for å få rette f-lenkjer»; «moglege LPT-par» viser moglege
- mengder med minimal LPT-informasjon som er nok til at me får rett
- analyse (mange mengder i denne kolonnen vil altså seie at det er
- mange måtar å få rett analyse på). Viss eit tal står i parentes har
- setningsparet andre problem enn berre LPT-korrespondanse som gjer at
- ikkje alt som skal bli lenkja, blir lenkja.
 
+
+\begin{table}[htb]
+\caption{\label{tbl:LPT}«min LPT-par» i tabellen er «kor mange LPT-korrespondansar som  trengst for å få rette f-lenkjer»; «moglege LPT-par» viser moglege  mengder med minimal LPT-informasjon som er nok til at me får rett  analyse (mange mengder i denne kolonnen vil altså seie at det er  mange måtar å få rett analyse på). Viss eit tal står i parentes har  setningsparet andre problem enn berre LPT-korrespondanse som gjer at  ikkje alt som skal bli lenkja, blir lenkja.}
 \begin{center}
 \begin{tabular}{lrrrll}
  setning          &  l$_s$  &  l$_t$  &  min LPT-par  &  moglege LPT-par                               &          \\
@@ -2903,32 +2899,41 @@ lite testsett.
  sofie 2.pl 0.pl  &      3  &      6  &          (0)  &                                                &  constr  \\
 \end{tabular}
 \end{center}
+\end{table}
 
 
-
-Kommentarar til analysane:
+Nedanfor følgjer eit par utdjupande kommentarar til analysane.
 
 Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning 4
 på georgisk. Det finst ingen 8.pl på georgisk sidan denne (som hadde
 tilsvart 9.pl på norsk) ikkje hadde analyse, difor manglar dette
 setningsparet -- andre som manglar var anten ikkje disambiguerte eller
 hadde ikkje analysar. Eit par som ikkje var disambiguerte har eg sjølv
-manuelt disambiguert:
-\begin{itemize}
-\item mrs/nb/0.pl
-\item mrs/ka/3.pl
-\end{itemize}
-57.pl og 58.pl er eg usikker på kva den rette analysen bør vere (eller
-om har rette LFG-analysar), men fleire LPT-par vil iallfall ikkje
-endre på det.
+manuelt disambiguert (norsk 0.pl og georgisk 3.pl).
 
-67.pl og 68.pl manglar adverbialet frå analysen; \emph{abramsis} er POSS i
-staden for adjunkt/objekt -- me må altså gå frå f-strukturen til
-bilde, sjå på SPEC, og sjå på POSS for å finne \p{Abrams}. Dette bør
-vere mogleg å rette på i programmet
+I setning 57.pl og 58.pl er eg usikker på kva den rette analysen bør
+vere (eller om har rette LFG-analysar), men meir LPT-informasjon vil
+iallfall ikkje endre på det.
 
-71.pl og 72.pl viser at koordinering ikkje fungerer\ldots{} får berre
-\texttt{((mo-svla . ankomme) (pro . pro))} men burde vel få \texttt{((mo-svla . ankomme) (da . og) (Abrams . Abrams) (Browne . Browne))}.  Dette
+Setning 67.pl og 68.pl er vist i \Next nedanfor:
+
+\ex. \a. abramsis suraTi movida.\\
+     $\leftrightarrow$
+     \b. Bildet av Abrams ankom.
+
+Her klarte ikkje \texttt{lfgalign} å lenkje \emph{abramsis} med \emph{av Abrams} sidan
+den georgiske f-strukturen har dette som ein \F{poss} under \F{spec}
+til \emph{suraTi}, i staden for å vere eit adjunkt/argument (f-strukturen
+til \emph{Abrams} står som argument til \p{bilde}). Programmet \texttt{lfgalign}
+finn ikkje f-strukturar via andre stigar enn adjunkt eller argument
+til tidlegare kjende f-strukturar. Det er nok ønskeleg å lenkje
+f-strukturane til desse frasane, så her treng kanskje
+lenkjingsprinsippa litt meir arbeid.
+
+
+
+Setning 71.pl og 72.pl viser at koordinering ikkje fungerer\ldots{} får
+berre \texttt{((mo-svla . ankomme) (pro . pro))} men burde vel få \texttt{((mo-svla . ankomme) (da . og) (Abrams . Abrams) (Browne . Browne))}.  Dette
 skjer fordi koordineringar ikkje har PRED-element i analysane, men i
 staden er representert som \texttt{(("REF-COORD" . "+") ("NUM" . "pl") ("COORD-FORM" . "og") ("CASE" . "nom")) \{1, 2\}} kor det på slutten
 altså er ei \emph{mengd} med 1 og 2 (Abrams og Browne). Me kan t.d. løyse
