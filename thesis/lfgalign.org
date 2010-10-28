@@ -2681,10 +2681,6 @@ lite testsett.
 * Diskusjon
 \label{SEC:diskusjon}
 
-\fxnote{alt i denne delen er uferdig...}
-
-# resultat av å automatisk samanstille norske og georgiske setningar osb
-
  I denne delen gir eg ei evaluering av resultata frå å køyre
  =lfgalign= på LFG-analysar av norske og georgiske parallelle
  setningar. Eg ser på manglar ved implementasjonen i forhold til dei
@@ -2701,16 +2697,16 @@ lite testsett.
  strengt, men som avskjerer ein god del umotiverte lenkjingar. I
  tillegg er c-strukturlenkjinga i implementasjonen direkte avleidd av
  f-strukturlenkjinga; men, som nemnt i del \ref{SEC:fnord} kan det
- finnast c-strukturforhold som bør påverke
- f-strukturlenkjinga. \fxnote[inline,nomargin]{«eg kjem tilbake til
- dette blah»}
+ finnast c-strukturforhold som bør påverke f-strukturlenkjinga. I
+ dette kapittelet diskuterer eg korleis desse og andre føresetnader
+ påverker lenkjinga.
+ 
 
  Kjeldematerialet mitt for denne evalueringa er ei mengd med omtrent
- tredve \fxnote[inline,nomargin]{med mindre det finst fleire?}
- LFG-analyserte testsetningar på norsk og georgisk[fn:33], frå eit
- testsett kor setningane er valde for å illustrere ei vid rekkje ulike
- syntaktiske situasjonar (kalla =mrs= nedanfor), i tillegg til eit par
- setningar frå Jostein Gaarders /Sofies Verden/ (kalla =sofie=
+ tredve LFG-analyserte testsetningar på norsk og georgisk[fn:33], frå
+ eit testsett kor setningane er valde for å illustrere ei vid rekkje
+ ulike syntaktiske situasjonar (kalla =mrs= nedanfor), i tillegg til
+ eit par setningar frå Jostein Gaarders /Sofies Verden/ (kalla =sofie=
  nedanfor). Analysane er manuelt disambiguerte.
 
  Eg har ikkje tilgang på noko større setningssamanstilt georgisk-norsk
@@ -2724,9 +2720,6 @@ lite testsett.
 
 
 ** N-grambaserte metodar
-   \fxnote{Planen er altså å fortelje litt om dei alternative
- metodane, og så samanlikne med dei...er litt usikker på korleis eg
- skal samanlikne då.}
 
  Dei fleste metodane for frasesamanstilling er N-grambaserte; difor er
  det naturleg å samanlikne metoden i =lfgalign= med slike metodar. Eg
