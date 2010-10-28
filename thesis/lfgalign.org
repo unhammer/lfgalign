@@ -705,7 +705,7 @@ at me skal lenkje element av desse typane.
 
 Viss to uttrykk er samanstilt på setningsnivå (slik at me dimed kan gå
 ut frå at dei er omsetjingar av kvarandre), og begge har ein
-LFG-analyse, så har me iallfall tre ulike nivå kor me kan finne
+LFG-analyse, så har me iallfall tri ulike nivå kor me kan finne
 ekvivalensforhold under setningsnivå:
 1. mellom ord i setningane,
 2. mellom f-strukturar, 
@@ -1020,8 +1020,8 @@ argumentstruktur[fn:14]. Det norske /vedde/ har _fire_ argument, medan
 \emph{da-najleveba} har _to_ (/Abrams/ og /Browne/), kor at-setninga på
 norsk og /rom cvimda/ uttrykkjer same proposisjon og speler same rolle
 i verbsituasjonen. Den engelske LFG-parsen av den tilsvarande setninga
-(mine omsetjingar) gir _tre_ argument, /with/ blir her adjunkt, medan
-den tyske grammatikken, som au har _tre_ argument, gjer /at/-setninga
+(mine omsetjingar) gir _tri_ argument, /with/ blir her adjunkt, medan
+den tyske grammatikken, som au har _tri_ argument, gjer /at/-setninga
 til adjunkt. I \Next nedanfor har eg representert dei omsetjingsmessig
 korresponderande frasane i f-strukturane med dei norske omsetjingane
 for å illustrere dette:
@@ -1050,7 +1050,7 @@ Om ein skal ha grammatikkane som datagrunnlag er det altså eit reellt
 problem kva ein skal gjere med mangel på samsvar i
 argumentstruktur. Om det alltid var fullstendig samsvar i
 argumentstruktur, ville det vore trivielt å lenkje argument: viss to
-korresponderande verb hadde tre argument, ville me lenkja det første
+korresponderande verb hadde tri argument, ville me lenkja det første
 med det første, det andre med det andre og det tredje med det
 tredje. Men om me har analysar som dei over, ser det ut til at me er
 avhengig av LPT-kravet frå del \ref{SEC:ordkrav} for å avgjere kva for
@@ -1158,7 +1158,7 @@ f-strukturnivå[fn:32]:
 
 Det \Last[d] seier er at me ikkje lenkjer t.d. to instansar av «hest»
 på det eine språket til éin instans av «horse» på det andre. Krav
-\Last[e] kjem eg tilbake til nedanfor.
+\Last[e] kjem eg tilbake til nedanfor. 
 
 Det går an å gjere \Last strengare, og krevje at argumenta -- i
 tillegg til å ha LPT-korrespondanse -- sjølv er \PRED{}-lenkja. Dette har
@@ -1169,6 +1169,20 @@ botn i f-strukturen blir det mogleg å seie at /setningane/ er
 syntaktisk like, og at kanskje visse overordna frasar er syntaktisk
 like, men visse /delfrasar/ kan likevel vere ulike og dimed ikkje vere
 lenkja.
+
+ Koordineringar har ikkje eit \PRED{}-trekk, men me handsamar dei som
+ om dei hadde det. Alle dei koordinerte elementa er i ei /mengd/ i
+ f-strukturen til koordineringa, og det er sjølvsagt ønskeleg å lenkje
+ desse elementa om dei korresponderer:
+
+ \ex. \label{krav:COORD} Ved lenkjing av f-strukturane til to
+ koordineringar $p$ og $q$, sjå på dei som om elementa i mengdene var
+ argument til eit \PRED{}-element, kor «argumentfølgja» er basert på
+ setningsposisjon; $p$ og $q$ kan då lenkjast om dei oppfyller krav
+ \ref{krav:PRED}.
+
+ Argumentfølgje speler berre ei rolle i rangering, som eg kjem tilbake
+ til i del \ref{SEC:rangering}.
 
 Kva med f-strukturomgivnadene til $p$ og $q$, skal me krevje at dei er
 like?  I \Last[e] har me eit krav om at adjunkt til $p$ ikkje er
@@ -1316,7 +1330,7 @@ Den einaste formelle forskjellen mellom dette og
 substantivinkorporering blir då at substantivet ikkje krev eigne
 argument. Det er au mogleg å tenkje seg ein kausativ med eit
 inkorporert objekt, omsett til /la + hovudverb + objekt/, altså ei
-lenkje frå eitt \PRED{} til tre \PRED{}. Igjen vil me då sjå på dei resterande
+lenkje frå eitt \PRED{} til tri \PRED{}. Igjen vil me då sjå på dei resterande
 ulenkja argumenta på kvar side; kvar av desse må lenkjast med eit
 unikt argument eller adjunkt.
 
@@ -2693,12 +2707,18 @@ lite testsett.
  tredve \fxnote[inline,nomargin]{med mindre det finst fleire?}
  LFG-analyserte testsetningar på norsk og georgisk[fn:33], frå eit
  testsett kor setningane er valde for å illustrere ei vid rekkje ulike
- syntaktiske situasjonar. Analysane er manuelt disambiguerte.  Eg har
- ikkje tilgang på noko større setningssamanstilt georgisk-norsk
- parallelltekst[fn:34], og materialet mitt er sjølvsagt alt for lite
- for statistisk samanstilling, så når eg samanliknar med N-grambaserte
- metodar gir eg desse «perfekte» lenkjer (så gode som det vil vere
- mogleg å få).
+ syntaktiske situasjonar (kalla =mrs= nedanfor), i tillegg til eit par
+ setningar frå Jostein Gaarders /Sofies Verden/ (kalla =sofie=
+ nedanfor). Analysane er manuelt disambiguerte.
+
+ Eg har ikkje tilgang på noko større setningssamanstilt georgisk-norsk
+ parallelltekst[fn:34], og materialet i =mrs= og =sofie= er sjølvsagt
+ alt for lite for statistisk samanstilling, så det vil ikkje vere
+ mogleg å samanlikne presisjon/dekning med N-grambaserte metodar
+ her. I staden har eg prøvd å sjå på kva for fenomen som /kan/ gi
+ problem, og kva for informasjon som for ein spesifikk N-grambasert
+ metode kan vere vanskeleg å hente ut; men dette er ein veikskap med
+ evalueringa.
 
 
 ** N-grambaserte metodar
@@ -2919,11 +2939,11 @@ lite testsett.
 | mrs 38.pl 39.pl |   2 |   5 |       0 |                                          | merge   |
 | mrs 57.pl 58.pl |   3 |   4 |       0 |                                          |         |
 | mrs 63.pl 64.pl |   3 |   4 |       0 |                                          |         |
-| mrs 67.pl 68.pl |   3 |   4 |     (0) |                                          | COORD   |
-| mrs 71.pl 72.pl |   4 |   4 |     0   |                                          | COORD   |
-| mrs 73.pl 74.pl |   4 |   4 |       1 |                                          | COORD   |
+| mrs 67.pl 68.pl |   3 |   4 |     (0) |                                          |         |
+| mrs 71.pl 72.pl |   4 |   4 |       0 |                                          |         |
+| mrs 73.pl 74.pl |   4 |   4 |       0 |                                          |         |
 |                 |     |     |         |                                          |         |
-| sofie 2.pl 0.pl |   4 |   8 |     (1) | {(amundsen,Amundsen)}                    | constr  |
+| sofie 2.pl 0.pl |   4 |   8 |     (2) | {(amundsen,Amundsen),(skola,skole)}      | constr  |
 | sofie 2.pl 0.pl |   3 |   6 |     (0) |                                          | constr  |
 
 Tabell \ref{tbl:LPT} viser, for kvart korresponderande og disambiguert
@@ -2935,10 +2955,15 @@ kva for moglege mengder med minimal LPT-informasjon som er nok for å
 få rett analyse (mange mengder i denne kolonnen vil altså seie at det
 er mange måtar å få rett analyse på).  Der eit tal står i parentes har
 setningsparet andre problem enn berre LPT-korrespondanse som gjer at
-ikkje alt som skal bli lenkja, blir lenkja. Nedanfor følgjer eit par
+ikkje alt som skal bli lenkja, blir lenkja. Neste del gir eit par
 utdjupande kommentarar til analysane.
 
-Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning 4
+** Kommentarar til testsetta
+Testsettet =mrs= har berre konstruerte døme og eit svært lite
+ordforråd. Det illustrerer ei vid rekkje syntaktiske fenomen, men
+omsetjingane er nok svært direkte.
+
+Setning 4.pl og 5.pl på norsk to alternative måtar å seie setning 4.pl
 på georgisk. Det finst ingen 8.pl på georgisk sidan denne (som hadde
 tilsvart 9.pl på norsk) ikkje hadde analyse, difor manglar dette
 setningsparet -- andre som manglar frå tabellen var anten ikkje
@@ -2965,23 +2990,6 @@ stigar enn adjunkt eller argument til tidlegare kjende
 f-strukturar. Det er nok ønskeleg å lenkje f-strukturane til desse
 frasane, så her treng kanskje lenkjingsprinsippa litt meir arbeid.
 
-
-# CURRENT: coord-form er implementert no, manglar berre argfølgje frå
-# setningsposisjon så skal dette gå greit, kan fjerne avsnittet nedanfor.
-
-Setning 71.pl og 72.pl viser at koordinering ikkje fungerer... får
-berre =((mo-svla . ankomme) (pro . pro))= men burde vel få =((mo-svla
-. ankomme) (da . og) (Abrams . Abrams) (Browne . Browne))=.  Dette
-skjer fordi koordineringar ikkje har PRED-element i analysane, men i
-staden er representert som =(("REF-COORD" . "+") ("NUM" . "pl")
-("COORD-FORM" . "og") ("CASE" . "nom")) {1, 2}= kor det på slutten
-altså er ei /mengd/ med 1 og 2 (Abrams og Browne). Me kan t.d. løyse
-dette ved å introdusere eit «falskt PRED» for desse koordineringane
-med så mange argument som det er i mengda. Så for å lenkje ei
-koordinering, må alle element i koordineringa kunne lenkjast (som med
-argument). Same problemet med 73.pl og 74.pl, her får me berre =((da
-. og))= sidan det er ein VP-koordinering.
-
 Dette dømet demonstrerer ein veikskap med =lfgalign=: om ein skal
 nytte =lfgalign= med nye LFG-grammatikkar, som kanskje har andre
 retningslinjer for analyse eller har gjort ting på litt spesielle
@@ -2990,25 +2998,62 @@ analysane før lenkjing). Dette kan forsåvidt vere eit problem med alle
 metodar som er svært kunnskapsbaserte.
 
 
-Setning 2 + 0 i sofie har verb + adverb «være på vei hjem» som blir
-omsett til «bruneba» `dreie'. Lenkjinga gir =((*-bruneba . være)
-(amundsen . Amundsen) (skola . vei))= etter at amundsen/Amundsen står
-i LPT, men me kjem ikkje djupare. Her burde jo anten heile «være på
-vei hjem» lenkjast med «bruneba» (altså ei ein-til-tre-lenkje på
-f-strukturnivå), eller så burde me ha ein måte å hoppe over
-f-strukturar for å prøve å fylle opp med ulenkja adjunkt eller
-liknande. Eg trur det siste er det beste.
+Testsettet =sofie= er frå ein roman, og har difor litt friare
+omsetjingar enn =mrs=.
 
-: [ PRED bruneba<10>
-:   10:[ PRED Amundsen ]
-:   ADJUNCT { 5:[ PRED skola ] } ]
-: [ PRED være<23,24>
-:   23:[ PRED Amundsen ]
-:   24:[ PRED på<64>
-:        64:[ PRED vei
-:             ADJUNCT { 22:[ PRED hjem
-:                            ADJUNCT { 74:[ PRED skole ] } ] } ] ] ]
+I setning 2.pl og 0.pl har konstruksjonen /være på vei hjem/ blitt
+omsett til /bruneba/, direkte omsett `dreie'. F-strukturane i \Next
+illusterer forskjellen (preposisjonar er fjerna for å få plass til
+figuren).
 
+#+BEGIN_LaTeX
+{\avmoptions{}
+\ex. \ag. soPi amundseni skolidan brundeboda.\\
+Sofie Amundsen skole dreie.\\
+\begin{avm}
+\[pred  & `{\bf{}*-bruneba}<\@{10}>' \\
+subj & \@{10} \[pred  & `{\bf{}amundsen}' \] \\
+adjunct & \{ \[pred & `{\bf{}skola}' \] \} \]
+\end{avm} \\
+     $\leftrightarrow$
+\b. Sofie Amundsen var på vei hjem fra skolen.\\
+\begin{avm}
+\[pred  & `{\bf{}være}<\@{23},\@{24}>' \\
+  subj & \@{23} \[pred  & `{\bf{}Amundsen}' \] \\
+  predlink & \@{24} \[pred & `{\bf{}vei}' \\
+		      adjunct & \{ \[ pred  & `{\bf{}hjem}' \\
+		                      adjunct & \[pred & `{\bf{}skole}' \] \] \] \} \]
+\end{avm}
+
+}
+#+END_LaTeX
+
+F-strukturlenkjinga gir 
+
+#+BEGIN_LaTeX
+\ex. \{(\p{*-bruneba} . \p{være}) (\p{*-bruneba} . \p{vei}) (\p{amundsen} . \p{Amundsen})\}
+#+END_LaTeX
+
+etter at /amundsen/Amundsen/ og /skola/skole/ står i LPT-tabellen, men
+me kjem ikkje djupare i lenkjinga. Her burde kanskje heile /være på
+vei hjem/ lenkjast med /bruneba/, altså ei ein-til-tri-lenkje på
+f-strukturnivå. Om det finst mange slike situasjonar bør me kanskje
+opne for meir kompliserte lenkjer på f-strukturnivå. Merk at om me
+ikkje legg til /skola/skole/ i LPT-tabellen får me samanstillinga i
+\Next:
+
+#+BEGIN_LaTeX
+\ex. \{(\p{*-bruneba} . \p{være}) (\p{skola} . \p{vei}) (\p{amundsen} . \p{Amundsen})\}
+#+END_LaTeX
+
+Altså, slik implementasjonen av LPT-kravet fungerer kan positiv
+LPT-informasjon føre til at lenkjer kan fjernast. Så om eit ord har
+eitt oppslag i LPT-tabellen, bør det eigentleg ha alle, for å unngå å
+fjerne for mange gode lenkjer. Eg kjem tilbake til dette i del
+\ref{SEC:opneproblem} nedanfor.
+
+
+#CURRENT
 
 Setning 13 + 10 i sofie har fått =(soPi . hun)= =D har liknande
 problem. For store forskjellar i argumentstruktur gir feil løysing.
@@ -3072,21 +3117,14 @@ språket.
     viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
     i leksikon ikkje er basert på semantikk, men syntaks). Men elles
     er det vel OK.
-** Bruksområde
-*** Oppdage argumentstrukturalternasjon
- I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
- f-strukturar og LPT-korrespondanse ikkje alltid har nok informasjon
- til å kunne handtere ulik følgje i argumentstruktur. Programmet mitt
- vil her gi begge løysingar, ei rangering basert på lik argumentfølgje
- vil gi feil løysing på topp.
-
- Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
- objekt til å lære slike argumentstrukturalternasjonar.  Om me
- observerer /sie gefällt mir/jeg liker henne/ vil me jo ha
- f-strukturinformasjon som kan nyttast til å informere
- argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.), om det
- var substantiv der ville LPT-korrespondanse kunne informere dette.
 ** Opne problem
+   \label{SEC:opneproblem}
+*** LPT-kravet har for mykje å seie
+I implementasjonen bør kanskje kravet
+om LPT-korrespondanse flyttast ut frå f-strukturlenkjinga, og inn i
+rangeringa, for å ikkje stole på at bottom-up-informasjonen vår er
+perfekt.
+
 *** Om global tyding, ikkje-komposisjonell..		     :ROTETE:
 Same globale tyding krev i det minste at, i situasjonen verbet
 denoterer, speler deltakarane same rolle. Men dette er endå meir
@@ -3190,6 +3228,20 @@ problem.
  at dei kan dukke opp.
 *** Koordinering
 \fxnote[inline,nomargin]{Setning ka/71.pl og nb/72.pl}
+** Bruksområde
+*** Oppdage argumentstrukturalternasjon
+ I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
+ f-strukturar og LPT-korrespondanse ikkje alltid har nok informasjon
+ til å kunne handtere ulik følgje i argumentstruktur. Programmet mitt
+ vil her gi begge løysingar, ei rangering basert på lik argumentfølgje
+ vil gi feil løysing på topp.
+
+ Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
+ objekt til å lære slike argumentstrukturalternasjonar.  Om me
+ observerer /sie gefällt mir/jeg liker henne/ vil me jo ha
+ f-strukturinformasjon som kan nyttast til å informere
+ argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.), om det
+ var substantiv der ville LPT-korrespondanse kunne informere dette.
 ** Oppsummering
  - Sidan avbildinga frå c-strukturnodar til f-struktur er
    mange-til-ein, kan me t.d. innanfor eitt tre ha fleire N-gram per
