@@ -233,6 +233,21 @@ add all equivalent variables and their possible expansions."
       (error "Found superfluous, non-equal unravellings of ~A ~A:~%~A~%" val att it))
     (cons att (car it))))
 
+(defun semform-pos (var tab)
+  "According to
+http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html#Prolog_Output
+
+`The [semform] identifiers are ordered based on the string position of
+the places where the semantic forms were instantiated.'  
+
+Thus we can treat this as the SENTENCE POSITION. However, if there is
+no semform id (i.e. the pred was a 'fake' one, see `get-pred'), we
+return -1."
+  (let ((Pr (get-pred var tab)))
+    (aif (third Pr)
+	it
+	-1)))
+
 (defun coord-to-pred (var lemma tab)
   "Turn a coordination into a fake pred like
   `and<>conjunct1,conjunct2,...'
@@ -242,11 +257,14 @@ TODO: order conjuncts by appearance in the sentence."
 	lemma
 	nil				; semform_data?
 	nil				; inside args
-	(mapcar-true			; outside args
-	 ;; For coordinations, the f-structure id, here var, is the set id:
-	 (lambda (pair) (when (eq (cdr pair) var)
-			  (skip-pp (car pair) tab)))
-	 (cdr (gethash '|in_set| tab)))))
+	(sort				; outside args
+	 (mapcar-true
+	  ;; For coordinations, the f-structure id, here var, is the set id:
+	  (lambda (setpair) (when (eq (cdr setpair) var)
+			      (skip-pp (car setpair) tab)))
+	  (cdr (gethash '|in_set| tab)))
+	 #'<
+	 :key (lambda (v) (semform-pos v tab)))))
 
 (defun get-pred (var tab &optional nil-on-none)
   "Use `nil-on-none' to return nil if no PRED was found."
@@ -308,9 +326,9 @@ dyvik2009lmp, with `skip-pp'."
     (if adjvar
 	(if (get-equivs (cdr adjvar) tab)
 	    (error 'unexpected-input "eqvar of ADJUNCT, TODO")
-	    (mapcar-true (lambda (pair) (when (eq (cdr pair) (cdr adjvar))
-					  (skip-pp (car pair) tab)))
-			 (cdr (gethash '|in_set| tab))))
+	  (mapcar-true (lambda (setpair) (when (eq (cdr setpair) (cdr adjvar))
+					   (skip-pp (car setpair) tab)))
+		       (cdr (gethash '|in_set| tab))))
 	(unless no-error (error 'no-adjs-error-todo var)))))
 
 (defun references (parentv childv tab)
