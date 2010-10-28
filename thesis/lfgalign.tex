@@ -1,4 +1,4 @@
-% Created 2010-10-28 to. 13:12
+% Created 2010-10-28 to. 15:03
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -40,6 +40,8 @@
 \newcommand{\XCOMPs}{\F{xcomp~}{}}
 \newcommand{\SUBJ}{\F{subj}{}}
 \newcommand{\SUBJs}{\F{subj~}{}}
+\newcommand{\SPEC}{\F{spec}{}}
+\newcommand{\POSS}{\F{poss}{}}
 \newcommand{\PRED}{\F{pred}{}}
 \newcommand{\TOPIC}{\F{topic}{}}
 \newcommand{\falign}{\ensuremath{\operatorname{\emph{falign}}}}
@@ -2875,7 +2877,7 @@ lite testsett.
  i testsettet mitt\footnote{Tilgjengeleg frå mappa \texttt{eval} i kjeldekoden til \texttt{lfgalign},
         som finst på \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign}. } for å sjå kor mange av dei som krev
  LPT-informasjon for å unngå feil lenkjer mellom argument/adjunkt av
- same predikat. Men merk: sjølv om testsettet viser ei vid rekkje
+ same predikat. Men merk: sjølv om testsettet viser mange ulike
  syntaktiske fenomen, er det langt frå å vere eit representativt
  korpus.
 
@@ -2934,20 +2936,23 @@ setningsparet andre problem enn berre LPT-korrespondanse som gjer at
 ikkje alt som skal bli lenkja, blir lenkja. Neste del gir eit par
 utdjupande kommentarar til analysane.
 
-\section{Kommentarar til testsetta}
-\label{sec-5.3}
+\subsection{Kommentarar og feilanalyse}
+\label{sec-5.2.1}
+
+\label{SEC:feilanalyse}
 
 Testsettet \texttt{mrs} har berre konstruerte døme og eit svært lite
 ordforråd. Det illustrerer ei vid rekkje syntaktiske fenomen, men
 omsetjingane er nok svært direkte.
 
 Setning 4.pl og 5.pl på norsk to alternative måtar å seie setning 4.pl
-på georgisk. Det finst ingen 8.pl på georgisk sidan denne (som hadde
-tilsvart 9.pl på norsk) ikkje hadde analyse, difor manglar dette
-setningsparet -- andre som manglar frå tabellen var anten ikkje
-disambiguerte eller hadde ikkje analysar. Eit par som ikkje var
-disambiguerte har eg sjølv manuelt disambiguert (norsk 0.pl og
-georgisk 3.pl).
+på georgisk (men f-strukturane er like nok til at det ikkje gjer nokon
+forskjell for lenkjinga)\footnote{Det finst ingen 8.pl på georgisk i tabellen sidan denne (som
+        hadde tilsvart 9.pl på norsk) ikkje hadde analyse, difor
+        manglar dette setningsparet -- andre som manglar frå tabellen
+        var anten ikkje disambiguerte eller hadde ikkje analysar. Eit
+        par som ikkje var disambiguerte har eg sjølv manuelt
+        disambiguert (norsk 0.pl og georgisk 3.pl). }.
 
 I setning 57.pl og 58.pl er eg usikker på kva den rette analysen bør
 vere (eller om har rette LFG-analysar), men meir LPT-informasjon vil
@@ -2960,8 +2965,8 @@ Setning 67.pl og 68.pl er vist i \Next nedanfor:
      \b. Bildet av Abrams ankom.
 
 Her klarte ikkje \texttt{lfgalign} å lenkje \emph{abramsis} med \emph{av Abrams} sidan
-den georgiske f-strukturen har dette som ein \F{poss} under \F{spec}
-av f-strukturen til \emph{suraTi}, i staden for å vere eit
+den georgiske f-strukturen har dette som ein \POSS{} under
+\SPEC{} av f-strukturen til \emph{suraTi}, i staden for å vere eit
 adjunkt/argument (f-strukturen til \emph{Abrams} står som argument til
 \p{bilde}). Programmet \texttt{lfgalign} finn ikkje f-strukturar via andre
 stigar enn adjunkt eller argument til tidlegare kjende
@@ -2969,7 +2974,7 @@ f-strukturar. Det er nok ønskeleg å lenkje f-strukturane til desse
 frasane, så her treng kanskje lenkjingsprinsippa litt meir arbeid.
 
 Dette dømet demonstrerer ein veikskap med \texttt{lfgalign}: om ein skal
-nytte \texttt{lfgalign} med nye LFG-grammatikkar, som kanskje har andre
+køyre programmet med andre LFG-grammatikkar, som kanskje har andre
 retningslinjer for analyse eller har gjort ting på litt spesielle
 måtar, må ein kanskje leggje til fleire unntak (evt. preprosessere
 analysane før lenkjing). Dette kan forsåvidt vere eit problem med alle
@@ -2979,14 +2984,15 @@ metodar som er svært kunnskapsbaserte.
 Testsettet \texttt{sofie} er frå ein roman, og har difor litt friare
 omsetjingar enn \texttt{mrs}.
 
-I setning 2.pl og 0.pl har konstruksjonen \emph{være på vei hjem} blitt
-omsett til \emph{bruneba}, direkte omsett `dreie'. F-strukturane i \Next
-illusterer forskjellen (preposisjonar er fjerna for å få plass til
-figuren).
+ I setning 2.pl og 0.pl har konstruksjonen \emph{være på vei hjem} blitt
+ omsett til \emph{bruneba}, direkte omsett `dreie'. F-strukturane i \Next
+ illusterer forskjellen (preposisjonar er fjerna for å få plass til
+ figuren); i \NNext ser me f-struktursamanstillinga som me får etter
+ at \emph{amundsen/Amundsen} og \emph{skola/skole} er lagt til i LPT-tabellen.
 
 {\avmoptions{}
 \ex. \ag. soPi amundseni skolidan brundeboda.\\
-Sofie Amundsen skole dreie.\\
+Sofie Amundsen skole dreide.\\
 \begin{avm}
 \[pred  & `{\bf{}*-bruneba}<\@{10}>' \\
 subj & \@{10} \[pred  & `{\bf{}amundsen}' \] \\
@@ -3004,116 +3010,96 @@ adjunct & \{ \[pred & `{\bf{}skola}' \] \} \]
 
 }
 
-F-strukturlenkjinga gir 
-
 \ex. \{(\p{*-bruneba} . \p{være}) (\p{*-bruneba} . \p{vei}) (\p{amundsen} . \p{Amundsen})\}
 
-etter at \emph{amundsen/Amundsen} og \emph{skola/skole} står i LPT-tabellen, men
-me kjem ikkje djupare i lenkjinga. Her burde kanskje heile \emph{være på vei hjem} lenkjast med \emph{bruneba}, altså ei ein-til-tri-lenkje på
-f-strukturnivå. Om det finst mange slike situasjonar bør me kanskje
-opne for meir kompliserte lenkjer på f-strukturnivå. Merk at om me
-ikkje legg til \emph{skola/skole} i LPT-tabellen får me samanstillinga i
-\Next:
+Samanstillinga kjem ikkje djupare inn i f-strukturane enn dette. Her
+burde kanskje heile \emph{være på vei hjem} lenkjast med \emph{bruneba}, altså
+ei ein-til-tri-lenkje (på tri ulike nivå) på f-strukturnivå, for at me
+skal kunne lenkje \p{skola} og \p{skole}. Om det finst mange slike
+situasjonar bør me kanskje opne for meir kompliserte lenkjer på
+f-strukturnivå. Merk at om me ikkje legg til \emph{skola/skole} i
+LPT-tabellen får me samanstillinga i \Next:
 
 \ex. \{(\p{*-bruneba} . \p{være}) (\p{skola} . \p{vei}) (\p{amundsen} . \p{Amundsen})\}
 
 Altså, slik implementasjonen av LPT-kravet fungerer kan positiv
-LPT-informasjon føre til at lenkjer kan fjernast. Så om eit ord har
-eitt oppslag i LPT-tabellen, bør det eigentleg ha alle, for å unngå å
+LPT-informasjon (det at me veit at eit ordpar har LPT-korrespondanse)
+føre til at lenkjer kan fjernast, medan me tillét lenkjene om me
+manglar informasjon. Så om eit ord har eit oppslag i LPT-tabellen i
+det heile, bør det eigentleg ha alle moglege oppslag, for å unngå å
 fjerne for mange gode lenkjer. Eg kjem tilbake til dette i del
 \ref{SEC:opneproblem} nedanfor.
 
 
-Setning 13 + 10 i sofie har fått \texttt{(soPi . hun)} =D har liknande
-problem. For store forskjellar i argumentstruktur gir feil løysing.
 
-\begin{verbatim}
- [ PRED Se-Hveva<10,17:pro,15:pro>
-   10:[ PRED soPi ]
-   ADJUNCT { 5:[ PRED klevervegeni ] } ]
- [ PRED svinge<18:hun>
-   ADJUNCT { 5:[ PRED inn ], 6:[ PRED _nå ] } ]
-\end{verbatim}
+Setning 13.pl og 10.pl i \texttt{sofie} har liknande problem; for store
+forskjellar i argumentstruktur gir feil løysing. 
+
+{\avmoptions{}
+\ex. \ag. soPim klevervegenisken SeuHvia. \\
+          Sofie Kløverveien svingte. \\
+\begin{avm}
+\[pred  & `{\bf{}Se-Hveva}<\@{10},\@{17}:pro,\@{15}:pro>' \\
+subj & \@{10} \[pred  & `{\bf{}soPi}' \] \\
+adjunct & \{ \[pred & \@{5} `{\bf{}klevervegeni}' \] \} \]
+\end{avm} \\
+     $\leftrightarrow$
+\b. Nå svingte hun inn i Kløverveien.\\
+\begin{avm}
+\[pred  & `{\bf{}svinge}<\@{18}:hun>' \\
+  adjunct & \{ \@{5} \[ pred  & `{\bf{}inn}' \], \@{6} \[ pred  & `{\bf{}nå}' \] \} \]
+\end{avm}
 
 
-Me får her \texttt{((0 . 0) (15 . 18) (17 . 6) (10 . 5))}, dvs. \texttt{((Se-Hveva . svinge) (pro . hun) (pro . \_nå) (soPi . inn))}. Desse pro-elementa
-på georgisk skal sjølvsagt \emph{ikkje} lenkjast med adjunkta på norsk; her
+}
+
+\ex. \{(\p{Se-Hveva} . \p{svinge}) (\p{pro} . \p{hun}) (\p{pro} . \p{nå}) (\p{soPi} . \p{inn})\}
+
+F-strukturane i \LLast gir lenkjinga i \Last. Desse pro-elementa på
+georgisk skal sjølvsagt \emph{ikkje} lenkjast med adjunkta på norsk; her
 har me «overgenerering» av lenkjer pga. me opnar for
 argument-adjunkt-lenkjer. Slik \texttt{lfgalign} fungerer no, kan ein unngå
 at pro blir lenkja til adjunkt ved å leggje inn LPT-informasjon om
 adjunkta (evt. krevje at pro \emph{berre} kan lenkjast til nominalar). Om
-ein legg inn ei omsetjing for \emph{nå}, får ein ut \texttt{((Se-Hveva . svinge) (pro . svinge) (pro . hun) (soPi . inn))}, som kanskje er hakket
-betre, men sidan mange-mange-lenkjing berre er to-til-ein så langt,
-vil LPT-informasjon om både \emph{nå} og \emph{inn} resultere i at denne
-setninga \emph{ikkje får nokon lenkjing}. Dette er kanskje å føretrekkje,
-når me først skal krevje likskap i argumentstruktur for å lenkje; så
-er det opp til grammatikarane om dei vil sjå på omsetjinga som
-argument for at det georgiske verbet har ei alternativ tyding med
-berre eitt argument, og endre grammatikkane til ei seinare utgåve av
-trebanken.
+ein legg inn ei omsetjing for \emph{nå}, får ein samanstillinga i \Next:
 
-\fxnote{TODO: problematiser at N-grambaserte metodar vil få alt for
-mange lenkjer her (og i 2/0-dømet) som ikkje eigentleg høyrer heime.}
+\ex. \{(\p{Se-Hveva} . \p{svinge}) (\p{pro} . \p{svinge}) (\p{pro} . \p{hun}) (\p{soPi} . \p{inn})\}
 
-  
-
-\subsection{Men korleis gjenfinne there is/es gibt?}
-\label{sec-5.3.1}
-
-(og kva skal me med det, viss ikkje me driv med statistisk
-maskinomsetjing?)
-
-\begin{itemize}
-\item N-gram kjem like ofte som heile konstruksjonen, då kan dette
-  gjenfinnast
-
-\begin{itemize}
-\item dvs., \emph{there is NP/es gibt NP}-samanstilling kjem like ofte som
-    \emph{there is} eller \emph{es gibt} førekjem. Eit TigerXML-type søk etter
-    \emph{there is NP/es gibt NP} burde jo vere mogleg, sjekk om dette er
-    delmengd av \emph{there is/es gibt}.
-\end{itemize}
-
-\end{itemize}
-Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
-(\emph{There} never \emph{is}) som opptrer utanfor N-grammet på det andre
-språket.
+Denne er kanskje er hakket betre, men sidan mange-mange-lenkjing berre
+er to-til-ein så langt, vil LPT-informasjon om både \emph{nå} og \emph{inn}
+resultere i at denne setninga \emph{ikkje får nokon lenkjing}. Dette er
+kanskje å føretrekkje, når me først skal krevje likskap i
+argumentstruktur for å lenkje\footnote{Om eit slikt setningspar er gitt til ein N-grambasert metode,
+        vil det sjølvsagt gi evidens for at t.d. \emph{nå} og det georgiske
+        verbet skal lenkjast -- ikkje noko me vil ha i ein
+        trebank. Men, om \emph{nå} sjeldan står i omsetjingar av
+        \p{Se-Hveva} vil det sannsynlegvis aldri bli oppretta slike
+        lenkjer. }. Då er det opp til grammatikarane
+om dei vil sjå på omsetjinga som argument for at det georgiske verbet
+har ei alternativ tyding med berre eitt argument, og endre
+grammatikkane til ei seinare utgåve av trebanken.
 
 
-
-\section{Rangeringsproblem}
-\label{sec-5.4}
-
-\subsection{argument-argument > argument-adjunkt (ikkje implementert!)}
-\label{sec-5.4.1}
-
-    Plusspoeng for argument-argument-lenkjer, burde vere eit bra
-    kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
-    i døme \ref{ex:vedde} med \\
-    \texttt{da-najleveba<Abrams,Browne,regne>} adjunkt: \texttt{sigarett}\\
-    \texttt{bet<Abrams,sigarett,regne>} adjunkt: \texttt{Browne}
-    
-\subsection{arg-følgje}
-\label{sec-5.4.2}
-
-    Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
-    viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
-    i leksikon ikkje er basert på semantikk, men syntaks). Men elles
-    er det vel OK.
 \section{Opne problem}
-\label{sec-5.5}
+\label{sec-5.3}
 
    \label{SEC:opneproblem}
-\subsection{LPT-kravet har for mykje å seie}
-\label{sec-5.5.1}
 
-I implementasjonen bør kanskje kravet
-om LPT-korrespondanse flyttast ut frå f-strukturlenkjinga, og inn i
-rangeringa, for å ikkje stole på at bottom-up-informasjonen vår er
-perfekt.
+I denne delen diskuterer eg nokre opne problem, og moglege måtar
+metoden kan betrast på.
 
-\subsection{Reentrancy og top-down f-strukturlenkjing}
-\label{sec-5.5.2}
+\subsection{Bør LPT-kravet implementerast som eit rangeringskrav?}
+\label{sec-5.3.1}
+
+Som nemnt i del \ref{SEC:feilanalyse} kan ufullstendig informasjon i
+LPT-tabellen føre til at programmet avskjerer feil. 
+
+I implementasjonen bør kanskje kravet om LPT-korrespondanse flyttast
+ut frå f-strukturlenkjinga, og inn i rangeringa, for å ikkje stole på
+at bottom-up-informasjonen vår er perfekt.
+
+\subsection{Top-down-lenkjing av f-strukturar, og problemet med reentrancy}
+\label{sec-5.3.2}
 
       \fxnote{Standarddømet med reentrancy er i mrs/ka/37.pl
       mrs/nb/38.pl; jaGli/hund er subjekt både for \p{ville} og
@@ -3186,15 +3172,32 @@ problem.
  i faktiske analysar, så kan det hende at metoden er god nok. Til no
  har eg ikkje sett slike situasjonar, men det er altså logisk mogleg
  at dei kan dukke opp.
-\subsection{Koordinering}
-\label{sec-5.5.3}
 
-\fxnote[inline,nomargin]{Setning ka/71.pl og nb/72.pl}
+
+\subsection{Rangeringsproblem}
+\label{sec-5.3.3}
+
+\subsubsection{argument-argument > argument-adjunkt (ikkje implementert!)}
+\label{sec-5.3.3.1}
+
+     Plusspoeng for argument-argument-lenkjer, burde vere eit bra
+     kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
+     i døme \ref{ex:vedde} med \\
+     \texttt{da-najleveba<Abrams,Browne,regne>} adjunkt: \texttt{sigarett}\\
+     \texttt{bet<Abrams,sigarett,regne>} adjunkt: \texttt{Browne}
+     
+\subsubsection{arg-følgje}
+\label{sec-5.3.3.2}
+
+     Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
+     viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
+     i leksikon ikkje er basert på semantikk, men syntaks). Men elles
+     er det vel OK.
 \section{Bruksområde}
-\label{sec-5.6}
+\label{sec-5.4}
 
 \subsection{Oppdage argumentstrukturalternasjon}
-\label{sec-5.6.1}
+\label{sec-5.4.1}
 
  I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
  f-strukturar og LPT-korrespondanse ikkje alltid har nok informasjon
@@ -3209,7 +3212,7 @@ problem.
  argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.), om det
  var substantiv der ville LPT-korrespondanse kunne informere dette.
 \section{Oppsummering}
-\label{sec-5.7}
+\label{sec-5.5}
 
 \begin{itemize}
 \item Sidan avbildinga frå c-strukturnodar til f-struktur er
@@ -3238,6 +3241,8 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
+
 
 
 
