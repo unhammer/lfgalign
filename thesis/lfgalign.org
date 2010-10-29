@@ -1203,7 +1203,7 @@ utgangspunktet.
 
 Sjølv om det er logisk mogleg å gjere slike lenkjingar, er det
 vanskeleg å finne ikkje-vilkårlege avgrensingar for når ein skal kunne
-lenkje f-strukturar som står i ulike omgivnader; i implementasjonen
+lenkje f-strukturar som står i ulike omgivnader. I implementasjonen
 min har eg difor følgt eit strengare krav enn \Last[e]:
 
 \ex. \label{krav:PRED-omgivnad} \PRED{}-elementa $p$ og $q$ kan berre
@@ -1212,7 +1212,10 @@ min har eg difor følgt eit strengare krav enn \Last[e]:
 
 Dette er ei tentativ formulering. Til no har eg ikkje sett døme kor
 \Last ikkje bør gjelde, men om det finst slike døme bør sjølvsagt
-kravet modifiserast.
+kravet modifiserast. Sidan LFG tillèt fragmentariske analysar kan det
+vere /fleire/ ytste f-strukturar, alle desse kan då potensielt
+lenkjast med kvarandre, eller stå ulenkja (som om dei var adjunkt av
+eit predikat som sto utanfor dei).
 
 Krav \ref{krav:PRED} og \ref{krav:PRED-omgivnad} bør i enkle
 situasjonar vere tilstrekkelege for lenkjing på f-strukturnivå, men
@@ -2934,7 +2937,7 @@ lite testsett.
 | mrs 38.pl 39.pl |   2 |   5 |       0 |                                          | merge   |
 | mrs 57.pl 58.pl |   3 |   4 |       0 |                                          |         |
 | mrs 63.pl 64.pl |   3 |   4 |       0 |                                          |         |
-| mrs 67.pl 68.pl |   3 |   4 |     (0) |                                          |         |
+| mrs 67.pl 68.pl |   3 |   4 |       (0) |                                          |         |
 | mrs 71.pl 72.pl |   4 |   4 |       0 |                                          |         |
 | mrs 73.pl 74.pl |   4 |   4 |       0 |                                          |         |
 |                 |     |     |         |                                          |         |
@@ -2974,14 +2977,18 @@ Setning 67.pl og 68.pl er vist i \Next nedanfor:
      $\leftrightarrow$
      \b. Bildet av Abrams ankom.
 
-Her klarte ikkje =lfgalign= å lenkje /abramsis/ med /av Abrams/ sidan
-den georgiske f-strukturen har dette som ein \POSS{} under
-\SPEC{} av f-strukturen til /suraTi/, i staden for å vere eit
-adjunkt/argument (f-strukturen til /Abrams/ står som argument til
-\p{bilde}). Programmet =lfgalign= finn ikkje f-strukturar via andre
-stigar enn adjunkt eller argument til tidlegare kjende
-f-strukturar. Det er nok ønskeleg å lenkje f-strukturane til desse
-frasane, så her treng kanskje lenkjingsprinsippa litt meir arbeid.
+ Her er /abramsis/ ein \POSS{} under \SPEC{} av f-strukturen til
+ /suraTi/, i staden for å vere eit adjunkt/argument (f-strukturen til
+ /Abrams/ står som argument til \p{bilde}). Programmet =lfgalign= finn
+ ikkje f-strukturar via andre stigar enn adjunkt eller argument til
+ tidlegare kjende f-strukturar, eller via «ytste» f-strukturar. Sidan
+ /abramsis/ ikkje er mogleg å finne via argument/adjunkt av
+ rotpredikatet, ender det opp i ei eigen liste for fragment ol. som
+ kan lenkjast, men kor me ikkje veit noko om konteksten. Det blir
+ altså handsama som eit av fleire ytste predikat -- men her burde det
+ jo vere mogleg å finne det via /suraTi/. På den norske sida er
+ /Abrams/ mogleg å finne gjennom /bilde/, og er ikkje sett på som noko
+ ytste predikat, så /abramsis/ og /av Abrams/ blir ikkje lenkja.
 
 Dette dømet demonstrerer ein veikskap med =lfgalign=: om ein skal
 køyre programmet med andre LFG-grammatikkar, som kanskje har andre
@@ -3535,3 +3542,5 @@ problem.
         trebank. Men, om /nå/ sjeldan står i omsetjingar av
         \p{Se-Hveva} vil det sannsynlegvis aldri bli oppretta slike
         lenkjer.
+
+

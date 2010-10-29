@@ -1,4 +1,4 @@
-% Created 2010-10-29 fr. 12:20
+% Created 2010-10-29 fr. 15:11
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -1158,7 +1158,7 @@ utgangspunktet.
 
 Sjølv om det er logisk mogleg å gjere slike lenkjingar, er det
 vanskeleg å finne ikkje-vilkårlege avgrensingar for når ein skal kunne
-lenkje f-strukturar som står i ulike omgivnader; i implementasjonen
+lenkje f-strukturar som står i ulike omgivnader. I implementasjonen
 min har eg difor følgt eit strengare krav enn \Last[e]:
 
 \ex. \label{krav:PRED-omgivnad} \PRED{}-elementa $p$ og $q$ kan berre
@@ -1167,7 +1167,10 @@ min har eg difor følgt eit strengare krav enn \Last[e]:
 
 Dette er ei tentativ formulering. Til no har eg ikkje sett døme kor
 \Last ikkje bør gjelde, men om det finst slike døme bør sjølvsagt
-kravet modifiserast.
+kravet modifiserast. Sidan LFG tillèt fragmentariske analysar kan det
+vere \emph{fleire} ytste f-strukturar, alle desse kan då potensielt
+lenkjast med kvarandre, eller stå ulenkja (som om dei var adjunkt av
+eit predikat som sto utanfor dei).
 
 Krav \ref{krav:PRED} og \ref{krav:PRED-omgivnad} bør i enkle
 situasjonar vere tilstrekkelege for lenkjing på f-strukturnivå, men
@@ -2958,14 +2961,18 @@ Setning 67.pl og 68.pl er vist i \Next nedanfor:
      $\leftrightarrow$
      \b. Bildet av Abrams ankom.
 
-Her klarte ikkje \texttt{lfgalign} å lenkje \emph{abramsis} med \emph{av Abrams} sidan
-den georgiske f-strukturen har dette som ein \POSS{} under
-\SPEC{} av f-strukturen til \emph{suraTi}, i staden for å vere eit
-adjunkt/argument (f-strukturen til \emph{Abrams} står som argument til
-\p{bilde}). Programmet \texttt{lfgalign} finn ikkje f-strukturar via andre
-stigar enn adjunkt eller argument til tidlegare kjende
-f-strukturar. Det er nok ønskeleg å lenkje f-strukturane til desse
-frasane, så her treng kanskje lenkjingsprinsippa litt meir arbeid.
+ Her er \emph{abramsis} ein \POSS{} under \SPEC{} av f-strukturen til
+ \emph{suraTi}, i staden for å vere eit adjunkt/argument (f-strukturen til
+ \emph{Abrams} står som argument til \p{bilde}). Programmet \texttt{lfgalign} finn
+ ikkje f-strukturar via andre stigar enn adjunkt eller argument til
+ tidlegare kjende f-strukturar, eller via «ytste» f-strukturar. Sidan
+ \emph{abramsis} ikkje er mogleg å finne via argument/adjunkt av
+ rotpredikatet, ender det opp i ei eigen liste for fragment ol. som
+ kan lenkjast, men kor me ikkje veit noko om konteksten. Det blir
+ altså handsama som eit av fleire ytste predikat -- men her burde det
+ jo vere mogleg å finne det via \emph{suraTi}. På den norske sida er
+ \emph{Abrams} mogleg å finne gjennom \emph{bilde}, og er ikkje sett på som noko
+ ytste predikat, så \emph{abramsis} og \emph{av Abrams} blir ikkje lenkja.
 
 Dette dømet demonstrerer ein veikskap med \texttt{lfgalign}: om ein skal
 køyre programmet med andre LFG-grammatikkar, som kanskje har andre
@@ -3238,6 +3245,8 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
+
 
 
 
