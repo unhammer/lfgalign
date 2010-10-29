@@ -123,10 +123,7 @@
        (let*
 	   ((tab_s (open-and-import (format nil "~A" path_s) 'absolute))
 	    (tab_t (open-and-import (format nil "~A" path_t) 'absolute)))
-	 (out "~A: ~A og ~A~%" path_s
-	      (length (unreferenced-preds tab_s))
-	      (length (unreferenced-preds tab_t)))
-	 (when nil
+	 (when t
 	   (let*
 	       ((aligntab (make-aligntab))
 		(LPTs (make-LPT))
@@ -137,9 +134,9 @@
 		(c-alignments (c-align-ranked best-f-alignment 
 					      tree_s tab_s
 					      tree_t tab_t)))
-	     ;; (out "=================================~% src: ~A trg: ~A~%"
-	     ;;      path_s path_t)
-	     (out "=================================~%~A~% <=> ~A~%"
+	     (out "=================================~% (evaluate \"~A\" \"~A\")~%"
+		  path_s path_t)
+	     (out "~A~% <=> ~A~%"
 		  (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
 	     (let ((allpairs
 		    (if (consp (cdr f-alignments))
