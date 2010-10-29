@@ -3261,10 +3261,14 @@ problem.
    lenkjene er mellom c-strukturnodar kor kvar node dominerer ein
    konstituent, kunne me kalt det ei konstituentsamanstilling.
 
- - I tillegg til at ein kanskje kan få betre skåre på kvantitative mål
-   som presisjon og gjenkjenning, vil lenkjer mellom f-strukturar gi
-   informasjon som er kvalitativt forskjellig frå det ein kan få med å
-   berre sjå på lenkjer mellom ord, n-gram eller konstituentar.
+ - Lenkjer mellom f-strukturar vil gi informasjon som er kvalitativt
+   forskjellig frå det ein kan få med å berre sjå på lenkjer mellom
+   ord, n-gram eller konstituentar.
+
+ - Ein kan kanskje få betre skåre på kvantitative mål som presisjon og
+   gjenkjenning, spesielt kor språkforskjellane er store men analysane
+   tufta på felles prinsipp, men her må det meir testing (og ikkje
+   minst data) til.
 
  - =lfgalign= stiller høge krav til inndata: det må vere ferdig
    disambiguert og setningssamanstilt. I tillegg må grammatikkane som
