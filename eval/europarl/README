@@ -1,0 +1,21 @@
+There is a sample of 1000 parallel German-English sentences parsed
+with LFG at:
+
+http://www.computing.dcu.ie/~ygraham/sample_de.tar.gz
+http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz
+
+The sentences are from Europarl[1], where there is a chance of
+misaligned sentences due to automatic sentence alignment. Europarl is
+available from:
+
+http://www.statmt.org/europarl/
+
+
+Parses were automatically selected using a disambiguation model in
+XLE, so that is also a possible error source.
+
+
+See also the RIA Open Source Rule Induction Tool for the LFG
+f-structures of 4000 aligned Europarl sentences (German-English):
+
+http://www.computing.dcu.ie/~ygraham/software.html
