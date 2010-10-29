@@ -1425,6 +1425,10 @@ respectively.  TODO: cache/memoise maketree"
 (lisp-unit:define-test test-adjalign-p
   (lisp-unit:assert-equality
    #'set-of-set-equal
+   '(((A . 1)) ((B . 1)) ((C . 1)))
+   (adjalign-p nil '(a b c) '(1)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
    '(((A . 2)) ((B . 2)) ((A . 3)) ((B . 3)) ((A . 2) (B . 3)) ((B . 2) (A . 3)))
    (adjalign-p '((c . 1)) '(a b) '(1 2 3)))
   (lisp-unit:assert-equality
