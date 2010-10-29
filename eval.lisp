@@ -116,8 +116,7 @@
      for path_t = (make-pathname
 		   :name (pathname-name path_s)
 		   :type "pl"
-		   :directory
-		   (append (append dir '("en"))))
+		   :directory (append dir '("en")))
        
      do
        (let*
@@ -153,3 +152,75 @@
 	     (out "ranked: ~A~%" (pred-tag-alignment best-f-alignment tab_s tab_t)))))
 
 ))
+
+
+(defun ev-ria (n)
+  "TODO: measure overlap between f-links in the RIA
+testsets (ria/data/sents_000{0,1,2,3}) and those given by `f-align'
+and `rank'. RIA, with the necessary testsets, is available from
+http://www.computing.dcu.ie/~ygraham/software.html 
+
+This function assumes there is a symlink \"ria\" from the eval folder
+to the data folder in RIA."
+  (loop
+   repeat n
+   with dir = (append (pathname-directory
+		       (asdf:component-pathname (asdf:find-system :lfgalign)))
+		      '("eval" "ria"))
+   for path_s in (directory
+		  (make-pathname
+		   :name :wild
+		   :type "pl"
+		   :directory (append dir '("sl_train/sents_0000"))))
+   for path_t = (make-pathname
+		 :name (pathname-name path_s)
+		 :type "pl"
+		 :directory (append dir '("tl_train/sents_0000")))
+   for path_a = (make-pathname
+		 :name (substitute #\A #\S (pathname-name path_s))
+		 :type "pl"
+		 :directory (append dir '("alignments/sents_0000")))
+
+   for ria-ranked = (with-open-file
+		     (stream path_a)
+		     (loop for c = (parse-pred stream)
+			   while c
+			   for link = (cons (parse-integer (car (third c)))
+					    (parse-integer (car (fourth c))))
+			   collect link))
+
+   for tab_s = (open-and-import (format nil "~A" path_s) 'absolute)
+   for tab_t = (open-and-import (format nil "~A" path_t) 'absolute)
+   for f-alignments = (f-align '(-1 . -1) tab_s tab_t (make-LPT))
+   for best-f-alignment = (remove-if
+			   (lambda (link) (equal '(-1 . -1) link))
+			   (rank f-alignments (make-aligntab) tab_s tab_t))
+   for isect = (length (intersection ria-ranked
+				     best-f-alignment
+				     :test #'equal))
+   for union = (length (union ria-ranked
+			      best-f-alignment
+			      :test #'equal))
+   summing isect into isects
+   summing union into unions
+   counting path_s into i
+   when (eq 0 (mod i 10)) do (out ".") end
+   do
+   (when *debug*
+     (out "=================================~% (evaluate \"~A\" \"~A\")~%"
+	  path_s path_t)
+     (out "isect/union ~A~%" (/ isect union))
+     (out "~A~% <=> ~A~%"
+	  (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
+     (let ((allpairs
+	    (if (consp (cdr f-alignments))
+		;; Strangely, mapcan #'append hangs if the list is long enough:
+		(loop for l in (flatten f-alignments) append l)
+	      (list f-alignments))))
+       (flet ((preds (getter tab)
+		     (mapcar (lambda (var)
+			       (get-pred var tab))
+			     (remove-duplicates (mapcar getter allpairs)))))
+	 (out "~%srcs: ~A~%trgs: ~A~%"
+	      (preds #'car tab_s) (preds #'cdr tab_t)))))
+   finally (return (/ isects unions))))
