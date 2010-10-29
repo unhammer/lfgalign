@@ -216,6 +216,8 @@ add all equivalent variables and their possible expansions."
 	  (cons x (unravel-helper att stack seen tab))))))
 
 (defun pred-equal (Pr1 Pr2 tab)
+  "Apparently there was good reason to make pred-equality so
+complicated. Why were eq-vars not enough? TODO remember."
   (labels ((args-equal (args1 args2)
 	    (loop for arg1 in args1
 		  for arg2 in args2
