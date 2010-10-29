@@ -268,10 +268,21 @@ TODO: order conjuncts by appearance in the sentence."
 	 #'<
 	 :key (lambda (v) (semform-pos v tab)))))
 
+(defun outer-pred (tab)
+  "The -1 pred is lfgalign-internal, we use it to collect all the
+`unreferenced-preds' which we can try aligning, since they don't
+appear in as arguments/adjuncts of other preds.
+
+The unreferenced pred's are put into the adjunct list, see
+`get-adjs'."
+  (list -1 "_SENTENCE" nil (list 0) nil))
+
 (defun get-pred (var tab &optional nil-on-none)
   "Use `nil-on-none' to return nil if no PRED was found."
   (if (null-pred? var)
       var
+    (if (eq -1 var)
+	(outer-pred tab)
       (aif (unravel "PRED" var tab)
 	   (cons var (cdr it))
 	   ;; No PRED-value, perhaps make one up...
@@ -280,10 +291,7 @@ TODO: order conjuncts by appearance in the sentence."
 		(unless nil-on-none
 		  (unless *no-warnings*
 		    (warn "No PRED for var ~A, treating it as a pro~%" var))
-		  (list var "pro" nil nil nil))))))
-
-
-
+		  (list var "pro" nil nil nil)))))))
 
 
 (defun predp (Pr)
@@ -295,6 +303,7 @@ TODO: order conjuncts by appearance in the sentence."
        (listp (fifth Pr))
        (null (sixth Pr))
        (eq 5 (length Pr))))
+
 
 (defun get-args (Pr tab &optional no-nulls)
   "The argument `Pr' is either a pred or a variable id that we can
@@ -324,14 +333,17 @@ to be user-configurable."
 TODO: find example to test where we need `unravel' / eq-sets.
 TODO: Skip prepositions, as defined in footnote 3 in
 dyvik2009lmp, with `skip-pp'."
-  (let ((adjvar (assoc "ADJUNCT" (gethash var tab) :test #'equal)))
-    (if adjvar
-	(if (get-equivs (cdr adjvar) tab)
-	    (error 'unexpected-input "eqvar of ADJUNCT, TODO")
-	  (mapcar-true (lambda (setpair) (when (eq (cdr setpair) (cdr adjvar))
-					   (skip-pp (car setpair) tab)))
-		       (cdr (gethash '|in_set| tab))))
-	(unless no-error (error 'no-adjs-error-todo var)))))
+  (mapcar
+   (lambda (v) (skip-pp v tab))
+   (if (eq -1 var)
+       (remove 0 (unreferenced-preds tab))
+     (aif (assoc "ADJUNCT" (gethash var tab) :test #'equal)
+	  (if (get-equivs (cdr it) tab)
+	      (error 'unexpected-input "eqvar of ADJUNCT, TODO")
+	    (mapcar-true (lambda (setpair) (when (eq (cdr setpair) (cdr it))
+					     (car setpair)))
+			 (cdr (gethash '|in_set| tab))))
+	  (unless no-error (error 'no-adjs-error-todo var))))))
 
 (defun references (parentv childv tab)
   "Give a list of attributes of var `parentv' in `tab' which refer to
@@ -384,7 +396,8 @@ or adjuncts of others."
 			      (union
 			       (get-args var tab 'no-nulls)
 			       (get-adjs var tab 'no-error)))))
-	    (all-pred-vars tab))
+	    (mapcar (lambda (v) (skip-pp v tab))
+		    (all-pred-vars tab)))
     
     (remove-if (lambda (v) (intersection (get-equivs v tab 'include-this)
 					 backrefs))
@@ -1171,9 +1184,7 @@ phi's don't match anything in the files)."
 
 (defun align (tab_s tab_t LPT)
   (let* ((aligntab (make-aligntab))
-	 ; TODO: instead of (0 . 0), the topmost LPT-correspondents;
-	 ; they may have to be merged too
-	 (f-alignments (f-align '(0 . 0) tab_s tab_t LPT aligntab))
+	 (f-alignments (f-align '(-1 . -1) tab_s tab_t LPT aligntab))
 	 (best-f-alignment (rank f-alignments aligntab tab_s tab_t))
 	 (tree_s (maketree tab_s))
 	 (tree_t (maketree tab_t))

@@ -8,14 +8,14 @@
        (tab_t (open-and-import path_t absolute))
        (aligntab (make-aligntab))
        (LPTs (or LPTs (make-LPT)))
-       (f-alignments (f-align '(0 . 0) tab_s tab_t LPTs))
+       (f-alignments (f-align '(-1 . -1) tab_s tab_t LPTs))
        (best-f-alignment (rank f-alignments aligntab tab_s tab_t))
        (tree_s (maketree tab_s))
        (tree_t (maketree tab_t))
        (c-alignments (c-align-ranked best-f-alignment 
 				     tree_s tab_s
 				     tree_t tab_t)))
-    (out "=================================~% src: ~A trg: ~A~%"
+    (out "=================================~% (evaluate \"~A\" \"~A\")~%"
 	 path_s path_t)
     (out "~A~% <=> ~A~%"
 	 (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
@@ -130,7 +130,7 @@
 	   (let*
 	       ((aligntab (make-aligntab))
 		(LPTs (make-LPT))
-		(f-alignments (f-align '(0 . 0) tab_s tab_t LPTs))
+		(f-alignments (f-align '(-1 . -1) tab_s tab_t LPTs))
 		(best-f-alignment (rank f-alignments aligntab tab_s tab_t))
 		(tree_s (maketree tab_s))
 		(tree_t (maketree tab_t))
