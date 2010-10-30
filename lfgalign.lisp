@@ -625,6 +625,19 @@ only return those combinations where all pairs are LPT."
 			       (get-pred (car adjs_t) tab_t) tab_t LPTs)))
 	   collect (list (cons src (car adjs_t)))))))
 
+(defun adjalign-p (exclude adjs_s adjs_t &optional tab_s tab_t LPTs)
+  "TODO work-in-progress: test if removing here is slower than in 'inner loop'"
+  (loop for perm in (if (> (length adjs_s) (length adjs_t))
+			(adjalign-p-on-src adjs_s adjs_t)
+			(adjalign-p-on-trg adjs_s adjs_t))
+       collect
+       (remove-if (lambda (link)
+		    (not (and (not (member-either link exclude))
+			      (or (not LPTs)
+				  (LPT? (get-pred     src      tab_s) tab_s
+					(get-pred (car adjs_t) tab_t) tab_t LPTs)))))
+		  perm)))
+
 (defun adjalign-p-on-trg (adjs_s adjs_t) "When trg list is longest"
   (when (and adjs_s adjs_t)
     (if (cdr adjs_s)
@@ -632,11 +645,7 @@ only return those combinations where all pairs are LPT."
 	   for src = (car adjs_s)
 	   for link = (cons src trg)
 	   for perms = (adjalign-p-on-trg (cdr adjs_s) (remove trg adjs_t :count 1))
-	   append
-	   (mapcar-true
-	    (lambda (perm)
-	      (cons link perm))
-	    perms))
+	   append (mapcar (lambda (perm) (cons link perm)) perms))
 	(loop for trg in adjs_t collect (list (cons (car adjs_s) trg))))))
 (defun adjalign-p-on-src (adjs_s adjs_t) "When src list is longest"
   (when (and adjs_s adjs_t)
@@ -645,11 +654,7 @@ only return those combinations where all pairs are LPT."
 	   for trg = (car adjs_t)
 	   for link = (cons src trg)
 	   for perms = (adjalign-p-on-src (remove src adjs_s :count 1) (cdr adjs_t))
-	   append
-	   (mapcar-true
-	    (lambda (perm)
-	      (cons link perm))
-	    perms))
+	   append (mapcar (lambda (perm) (cons link perm)) perms))
 	(loop for src in adjs_s collect (list (cons src (car adjs_t)))))))
 
 (lisp-unit:define-test test-both-adjaligns
