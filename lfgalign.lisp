@@ -625,25 +625,43 @@ only return those combinations where all pairs are LPT."
 			       (get-pred (car adjs_t) tab_t) tab_t LPTs)))
 	   collect (list (cons src (car adjs_t)))))))
 
-(defun adjalign-p-simple (adjs_s adjs_t)
-  "Just the list logic of `adjalign-p' (might want to filter on this
-instead to keep it clean, not sure)"
+(defun adjalign-p-on-trg (adjs_s adjs_t) "When trg list is longest"
   (when (and adjs_s adjs_t)
-    (if (cdr adjs_t)	
+    (if (cdr adjs_s)
 	(loop for trg in adjs_t
 	   for src = (car adjs_s)
-	   for link = (progn (out "~A . ~A~%" src trg) (cons src trg))
-	   for perms = (adjalign2 (cdr adjs_s) (remove trg adjs_t :count 1))
-	   do (out "      ~A . ~A received ~A~%" src trg perms) 
+	   for link = (cons src trg)
+	   for perms = (adjalign-p-on-trg (cdr adjs_s) (remove trg adjs_t :count 1))
 	   append
-	   (append perms		; rest w/o this
-		   (append
-		    (list (list link))	; just this
-		    (mapcar-true
-		     (lambda (perm)	; rest and this
-		       (cons link perm))
-		     perms))))
+	   (mapcar-true
+	    (lambda (perm)
+	      (cons link perm))
+	    perms))
+	(loop for trg in adjs_t collect (list (cons (car adjs_s) trg))))))
+(defun adjalign-p-on-src (adjs_s adjs_t) "When src list is longest"
+  (when (and adjs_s adjs_t)
+    (if (cdr adjs_t)
+	(loop for src in adjs_s
+	   for trg = (car adjs_t)
+	   for link = (cons src trg)
+	   for perms = (adjalign-p-on-src (remove src adjs_s :count 1) (cdr adjs_t))
+	   append
+	   (mapcar-true
+	    (lambda (perm)
+	      (cons link perm))
+	    perms))
 	(loop for src in adjs_s collect (list (cons src (car adjs_t)))))))
+
+(lisp-unit:define-test test-both-adjaligns
+  (lisp-unit:assert-equal
+   '(((A . 1) (B . 2)) ((A . 1) (B . 3)) ((A . 2) (B . 1)) ((A . 2) (B . 3))
+     ((A . 3) (B . 1)) ((A . 3) (B . 2)))
+   (adjalign-p-on-trg '(a b) '(1 2 3)))
+  (lisp-unit:assert-equal
+   '(((A . 1) (B . 2)) ((A . 1) (C . 2)) ((B . 1) (A . 2)) ((B . 1) (C . 2))
+     ((C . 1) (A . 2)) ((C . 1) (B . 2)))
+   (adjalign-p-on-src '(a b c) '(1 2))))
+
 
 (defun make-aligntab () (make-hash-table :test #'equal))
 
