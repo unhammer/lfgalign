@@ -1,6 +1,7 @@
 ;;; quickstart:
 ; (swank:operate-on-system-for-emacs "lfgalign" (quote load-op)) (swank:set-package "LFGALIGN") (lisp-unit:run-tests)
 
+
 ;;; Tell SBCL we want full debugging info (eg. no function inlining),
 ;;; but don't care about speed:
 (declaim (optimize (speed 0) (safety 3) (debug 3)))
@@ -570,7 +571,7 @@ the recursion loops through all possible `srcs'."
 
 (defun adjalign (exclude link mlink tab_s tab_t LPTs)
   "Return all possible combinations of links between adjuncts that use
-id's from `exclude' (a list of links).
+no id's from `exclude' (a list of links).
 
 Return nil if no alignments are possible.
 
@@ -593,28 +594,56 @@ no separate madjalign function."
   "Helper for `adjalign'. If `LPTs', `tab_s' and `tab_t' are supplied,
 only return those combinations where all pairs are LPT."
   (when (and adjs_s adjs_t)
-    (mapcan				; for each target adj
-     (lambda (trg)
-       (let ((link (cons (car adjs_s) trg)) ; "this one"
-	     ;; recursion, w/o this one:
-	     (perms (adjalign-p exclude
-				(cdr adjs_s)
-				(remove trg adjs_t :count 1)
-				tab_s tab_t LPTs)))
-	 (append		; Collecting:
-	  perms			; - all but this one
-	  (when (and
-		 (not (member-either link exclude))
-		 (or (not LPTs)
-		     (LPT? (get-pred (car adjs_s) tab_s) tab_s
-			   (get-pred     trg      tab_t) tab_t LPTs)))
-	    (append
-	     (list (list link))	; - just this one
-	     (mapcar-true       ; - this added to each permuation w/o this
-	      (lambda (perm)
-		(cons link perm))
-	      perms))))))
-     adjs_t)))
+    (if (cdr adjs_t)
+	(loop for trg in adjs_t		; for each target adj
+	   for src = (car adjs_s)
+	   for link = (cons src trg)	; "this one"
+	   ;; recursion, w/o this one:
+	   for perms = (adjalign-p exclude
+				   (cdr adjs_s)
+				   (remove trg adjs_t :count 1)
+				   tab_s tab_t LPTs)
+	   append
+	     (append
+	      perms			; - all but this one
+	      (when (and
+		     (not (member-either link exclude))
+		     (or (not LPTs)
+			 (LPT? (get-pred (car adjs_s) tab_s) tab_s
+			       (get-pred     trg      tab_t) tab_t LPTs)))
+		(append
+		 (list (list link))	; - just this one
+		 (mapcar-true ; - this added to each permuation w/o this
+		  (lambda (perm)
+		    (cons link perm))
+		  perms)))))
+	(loop for src in adjs_s
+	   for link = (cons src (car adjs_t))
+	   when (and (not (member-either link exclude))
+		     (or (not LPTs)
+			 (LPT? (get-pred     src      tab_s) tab_s
+			       (get-pred (car adjs_t) tab_t) tab_t LPTs)))
+	   collect (list (cons src (car adjs_t)))))))
+
+(defun adjalign-p-simple (adjs_s adjs_t)
+  "Just the list logic of `adjalign-p' (might want to filter on this
+instead to keep it clean, not sure)"
+  (when (and adjs_s adjs_t)
+    (if (cdr adjs_t)	
+	(loop for trg in adjs_t
+	   for src = (car adjs_s)
+	   for link = (progn (out "~A . ~A~%" src trg) (cons src trg))
+	   for perms = (adjalign2 (cdr adjs_s) (remove trg adjs_t :count 1))
+	   do (out "      ~A . ~A received ~A~%" src trg perms) 
+	   append
+	   (append perms		; rest w/o this
+		   (append
+		    (list (list link))	; just this
+		    (mapcar-true
+		     (lambda (perm)	; rest and this
+		       (cons link perm))
+		     perms))))
+	(loop for src in adjs_s collect (list (cons src (car adjs_t)))))))
 
 (defun make-aligntab () (make-hash-table :test #'equal))
 
@@ -1423,6 +1452,10 @@ respectively.  TODO: cache/memoise maketree"
    (argalign-p '(a b) '() '(1) '(3))))
 
 (lisp-unit:define-test test-adjalign-p
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((B . 2)) ((C . 2)))
+   (adjalign-p nil '(b c) '(2)))
   (lisp-unit:assert-equality
    #'set-of-set-equal
    '(((A . 1)) ((B . 1)) ((C . 1)))
