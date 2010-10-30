@@ -591,42 +591,12 @@ no separate madjalign function."
     (adjalign-p exclude adjs_s adjs_t tab_s tab_t LPTs)))
 
 (defun adjalign-p (exclude adjs_s adjs_t &optional tab_s tab_t LPTs)
-  "Helper for `adjalign'. If `LPTs', `tab_s' and `tab_t' are supplied,
-only return those combinations where all pairs are LPT."
-  (when (and adjs_s adjs_t)
-    (if (cdr adjs_t)
-	(loop for trg in adjs_t		; for each target adj
-	   for src = (car adjs_s)
-	   for link = (cons src trg)	; "this one"
-	   ;; recursion, w/o this one:
-	   for perms = (adjalign-p exclude
-				   (cdr adjs_s)
-				   (remove trg adjs_t :count 1)
-				   tab_s tab_t LPTs)
-	   append
-	     (append
-	      perms			; - all but this one
-	      (when (and
-		     (not (member-either link exclude))
-		     (or (not LPTs)
-			 (LPT? (get-pred (car adjs_s) tab_s) tab_s
-			       (get-pred     trg      tab_t) tab_t LPTs)))
-		(append
-		 (list (list link))	; - just this one
-		 (mapcar-true ; - this added to each permuation w/o this
-		  (lambda (perm)
-		    (cons link perm))
-		  perms)))))
-	(loop for src in adjs_s
-	   for link = (cons src (car adjs_t))
-	   when (and (not (member-either link exclude))
-		     (or (not LPTs)
-			 (LPT? (get-pred     src      tab_s) tab_s
-			       (get-pred (car adjs_t) tab_t) tab_t LPTs)))
-	   collect (list (cons src (car adjs_t)))))))
+    "Helper for `adjalign'. If `LPTs', `tab_s' and `tab_t' are supplied,
+only return those combinations where all pairs are LPT.
 
-(defun adjalign-p (exclude adjs_s adjs_t &optional tab_s tab_t LPTs)
-  "TODO work-in-progress: test if removing here is slower than in 'inner loop'"
+TODO test if removing here is noticably slower than in 'inner loop' like old adjalign-p
+
+TODO: Could this leave us with duplicate solutions?"
   (loop for perm in (if (> (length adjs_s) (length adjs_t))
 			(adjalign-p-on-src adjs_s adjs_t)
 			(adjalign-p-on-trg adjs_s adjs_t))
@@ -634,28 +604,56 @@ only return those combinations where all pairs are LPT."
        (remove-if (lambda (link)
 		    (not (and (not (member-either link exclude))
 			      (or (not LPTs)
-				  (LPT? (get-pred     src      tab_s) tab_s
-					(get-pred (car adjs_t) tab_t) tab_t LPTs)))))
+				  (LPT? (get-pred (car link) tab_s) tab_s
+					(get-pred (cdr link) tab_t) tab_t LPTs)))))
 		  perm)))
 
 (defun adjalign-p-on-trg (adjs_s adjs_t) "When trg list is longest"
   (when (and adjs_s adjs_t)
     (if (cdr adjs_s)
 	(loop for trg in adjs_t
-	   for src = (car adjs_s)
-	   for link = (cons src trg)
-	   for perms = (adjalign-p-on-trg (cdr adjs_s) (remove trg adjs_t :count 1))
-	   append (mapcar (lambda (perm) (cons link perm)) perms))
+	   append (mapcar (lambda (perm) (cons (cons (car adjs_s) trg)
+					       perm))
+			  (adjalign-p-on-trg (cdr adjs_s) (remove trg adjs_t :count 1))))
 	(loop for trg in adjs_t collect (list (cons (car adjs_s) trg))))))
 (defun adjalign-p-on-src (adjs_s adjs_t) "When src list is longest"
   (when (and adjs_s adjs_t)
     (if (cdr adjs_t)
 	(loop for src in adjs_s
-	   for trg = (car adjs_t)
-	   for link = (cons src trg)
-	   for perms = (adjalign-p-on-src (remove src adjs_s :count 1) (cdr adjs_t))
-	   append (mapcar (lambda (perm) (cons link perm)) perms))
+	   append (mapcar (lambda (perm) (cons (cons src (car adjs_t))
+					       perm))
+			  (adjalign-p-on-src (remove src adjs_s :count 1) (cdr adjs_t))))
 	(loop for src in adjs_s collect (list (cons src (car adjs_t)))))))
+
+
+(lisp-unit:define-test test-adjalign-p
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((B . 2)) ((C . 2)))
+   (adjalign-p nil '(b c) '(2)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((A . 1)) ((B . 1)) ((C . 1)))
+   (adjalign-p nil '(a b c) '(1)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((A . 2)) ((B . 2)) ((A . 3)) ((B . 3)) ((A . 2) (B . 3)) ((B . 2) (A . 3)))
+   (adjalign-p '((c . 1)) '(a b) '(1 2 3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(;((A . 1)) ((B . 1)) ((A . 2)) ((B . 2)) ((A . 3)) ((B . 3))
+     ((A . 1)(B . 2)) ((A . 2)(B . 1))((A . 3)(B . 1))
+     ((A . 1)(B . 3)) ((A . 2)(B . 3))((A . 3)(B . 2)))
+   (adjalign-p nil '(a b) '(1 2 3)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(((A . 2)) ((B . 2)))
+   (adjalign-p '((c . 1)) '(a b) '(1 2)))
+  (lisp-unit:assert-equality
+   #'set-of-set-equal
+   '(;((A . 1))  ((B . 2)) ((A . 2)) ((B . 1))
+     ((A . 1) (B . 2)) ((A . 2) (B . 1)))
+   (adjalign-p nil '(a b) '(1 2))))
 
 (lisp-unit:define-test test-both-adjaligns
   (lisp-unit:assert-equal
@@ -1474,34 +1472,6 @@ respectively.  TODO: cache/memoise maketree"
    '(((A . 1) (B . 3)) ((A . 3) (B . 1)))
    (argalign-p '(a b) '() '(1) '(3))))
 
-(lisp-unit:define-test test-adjalign-p
-  (lisp-unit:assert-equality
-   #'set-of-set-equal
-   '(((B . 2)) ((C . 2)))
-   (adjalign-p nil '(b c) '(2)))
-  (lisp-unit:assert-equality
-   #'set-of-set-equal
-   '(((A . 1)) ((B . 1)) ((C . 1)))
-   (adjalign-p nil '(a b c) '(1)))
-  (lisp-unit:assert-equality
-   #'set-of-set-equal
-   '(((A . 2)) ((B . 2)) ((A . 3)) ((B . 3)) ((A . 2) (B . 3)) ((B . 2) (A . 3)))
-   (adjalign-p '((c . 1)) '(a b) '(1 2 3)))
-  (lisp-unit:assert-equality
-   #'set-of-set-equal
-   '(((A . 1)) ((B . 1)) ((A . 2)) ((B . 2)) ((A . 3)) ((B . 3))
-     ((A . 1)(B . 2)) ((A . 2)(B . 1))((A . 3)(B . 1))
-     ((A . 1)(B . 3)) ((A . 2)(B . 3))((A . 3)(B . 2)))
-   (adjalign-p nil '(a b) '(1 2 3)))
-  (lisp-unit:assert-equality
-   #'set-of-set-equal
-   '(((A . 2)) ((B . 2)))
-   (adjalign-p '((c . 1)) '(a b) '(1 2)))
-  (lisp-unit:assert-equality
-   #'set-of-set-equal
-   '(((A . 1)) ((A . 1) (B . 2)) ((B . 2))
-     ((A . 2)) ((A . 2) (B . 1)) ((B . 1)))
-   (adjalign-p nil '(a b) '(1 2))))
 
 
 (lisp-unit:define-test test-spread
