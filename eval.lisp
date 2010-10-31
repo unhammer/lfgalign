@@ -204,7 +204,7 @@ to the data folder in RIA."
    summing isect into isects
    summing union into unions
    counting path_s into i
-   when (eq 0 (mod i 10)) do (out ".") end
+   do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
    do
    (when *debug*
      (out "=================================~% (evaluate \"~A\" \"~A\")~%"
@@ -223,4 +223,4 @@ to the data folder in RIA."
 			     (remove-duplicates (mapcar getter allpairs)))))
 	 (out "~%srcs: ~A~%trgs: ~A~%"
 	      (preds #'car tab_s) (preds #'cdr tab_t)))))
-   finally (return (/ isects unions))))
+   finally (return (values (/ isects unions) isects unions))))
