@@ -154,7 +154,26 @@
 ))
 
 
-(defun ev-ria (n &optional set)
+
+
+
+(defun random-f-align (link tab_s tab_t LPT)
+  "Create a single random f-alignment (no merges of course), output
+like `flatten' or `rank'"
+  (flet ((shuffle (list)
+	   (loop for item below (length list) do
+		(rotatef
+		 (elt list item)
+		 (elt list (random (length list)))))
+	   list))
+    (loop for src in (all-pred-vars tab_s)
+       for trg in (shuffle (all-pred-vars tab_t))
+       collect (cons src trg))))
+
+(defun random-rank (f-alignments aligntab tab_s tab_t)
+  f-alignments)
+
+(defun ev-ria (n &optional set (aligner #'f-align) (ranker #'rank))
   "TODO: measure overlap between f-links in the RIA
 testsets (ria/data/sents_000{0,1,2,3}) and those given by `f-align'
 and `rank'. RIA, with the necessary testsets, is available from
@@ -192,10 +211,10 @@ to the data folder in RIA."
 
    for tab_s = (open-and-import (format nil "~A" path_s) 'absolute)
    for tab_t = (open-and-import (format nil "~A" path_t) 'absolute)
-   for f-alignments = (f-align '(-1 . -1) tab_s tab_t (make-LPT))
+   for f-alignments = (funcall aligner '(-1 . -1) tab_s tab_t (make-LPT))
    for best-f-alignment = (remove-if
 			   (lambda (link) (equal '(-1 . -1) link))
-			   (rank f-alignments (make-aligntab) tab_s tab_t))
+			   (funcall #'ranker f-alignments (make-aligntab) tab_s tab_t))
 
    for l_best = (length best-f-alignment)
    for l_ria = (length ria-ranked)

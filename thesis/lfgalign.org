@@ -3146,12 +3146,43 @@ vil snittet av dei to vere lik unionen.
  sannsynleg at mange av dei er korrekte, om det er stor forskjell er
  det sannsynleg at =lfgalign= tek feil.
 
+f-align:
 |  set | isect | union | isect/union | # lfgalign | # ria | # srcs | # links |
 |------+-------+-------+-------------+------------+-------+--------+---------|
 | 0000 |  1819 | 11249 |  0.16170326 |       6170 |  6978 |  10131 |  102025 |
 | 0001 |  1880 | 11231 |  0.16739382 |       6049 |  7142 |  10225 |  103798 |
 | 0002 |  1801 | 11000 |  0.16372727 |       5920 |  6945 |   9916 |   97956 |
 | 0003 |  1796 | 11107 |  0.16169982 |       6022 |  6954 |  10071 |  101109 |
+
+random-f-align: TODO
+sents_0000
+isects:622
+(unions:15165)
+lengths_lfgalign:8809
+lengths_ria:6978
+possible srcs:10131
+possible links:102025
+sents_0001
+isects:643
+(unions:15412)
+lengths_lfgalign:8913
+lengths_ria:7142
+possible srcs:10225
+possible links:103798
+sents_0002
+isects:661
+(unions:14874)
+lengths_lfgalign:8590
+lengths_ria:6945
+possible srcs:9916
+possible links:97956
+sents_0003
+isects:618
+(unions:15093)
+lengths_lfgalign:8757
+lengths_ria:6954
+possible srcs:10071
+possible links:101109
 
  Det er tydeleg at overlappet mellom =RIA= og =lfgalign= er svært låg
  på dette materialet[fn:46]. 
