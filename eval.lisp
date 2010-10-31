@@ -199,6 +199,8 @@ to the data folder in RIA."
 
    for l_best = (length best-f-alignment)
    for l_ria = (length ria-ranked)
+   for l_pred_s = (length (all-pred-vars tab_s)) 
+   for l_pred_t = (length (all-pred-vars tab_t)) 
    for isect = (length (intersection ria-ranked
 				     best-f-alignment
 				     :test #'equal))
@@ -209,6 +211,7 @@ to the data folder in RIA."
    summing union into unions
    summing l_best into ls_best
    summing l_ria into ls_ria
+   summing (* l_pred_s l_pred_t) into possible_links
    counting path_s into i
    do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
    do
@@ -229,4 +232,5 @@ to the data folder in RIA."
 			     (remove-duplicates (mapcar getter allpairs)))))
 	 (out "~%srcs: ~A~%trgs: ~A~%"
 	      (preds #'car tab_s) (preds #'cdr tab_t)))))
-   finally (return (values (/ isects unions) isects unions ls_best ls_ria))))
+   finally (out "~%~A~%isects:~A~%(unions:~A)~%lengths_lfgalign:~A~%lengths_ria:~A~%possible links:~A~%"
+		set isects unions ls_best ls_ria possible_links)))
