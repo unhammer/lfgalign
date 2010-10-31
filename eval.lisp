@@ -212,6 +212,7 @@ to the data folder in RIA."
    summing l_best into ls_best
    summing l_ria into ls_ria
    summing (* l_pred_s l_pred_t) into possible_links
+   summing l_pred_s into possible_srcs
    counting path_s into i
    do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
    do
@@ -232,5 +233,5 @@ to the data folder in RIA."
 			     (remove-duplicates (mapcar getter allpairs)))))
 	 (out "~%srcs: ~A~%trgs: ~A~%"
 	      (preds #'car tab_s) (preds #'cdr tab_t)))))
-   finally (out "~%~A~%isects:~A~%(unions:~A)~%lengths_lfgalign:~A~%lengths_ria:~A~%possible links:~A~%"
-		set isects unions ls_best ls_ria possible_links)))
+   finally (out "~%~A~%isects:~A~%(unions:~A)~%lengths_lfgalign:~A~%lengths_ria:~A~%possible srcs:~A~%possible links:~A~%"
+		set isects unions ls_best ls_ria possible_srcs possible_links)))
