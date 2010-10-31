@@ -154,7 +154,7 @@
 ))
 
 
-(defun ev-ria (n)
+(defun ev-ria (n &optional set)
   "TODO: measure overlap between f-links in the RIA
 testsets (ria/data/sents_000{0,1,2,3}) and those given by `f-align'
 and `rank'. RIA, with the necessary testsets, is available from
@@ -167,19 +167,20 @@ to the data folder in RIA."
    with dir = (append (pathname-directory
 		       (asdf:component-pathname (asdf:find-system :lfgalign)))
 		      '("eval" "ria"))
+   with set = (or set "sents_0000")
    for path_s in (directory
 		  (make-pathname
 		   :name :wild
 		   :type "pl"
-		   :directory (append dir '("sl_train/sents_0000"))))
+		   :directory (append dir (list "sl_train" set))))
    for path_t = (make-pathname
 		 :name (pathname-name path_s)
 		 :type "pl"
-		 :directory (append dir '("tl_train/sents_0000")))
+		 :directory (append dir (list "tl_train" set)))
    for path_a = (make-pathname
 		 :name (substitute #\A #\S (pathname-name path_s))
 		 :type "pl"
-		 :directory (append dir '("alignments/sents_0000")))
+		 :directory (append dir (list "alignments" set)))
 
    for ria-ranked = (with-open-file
 		     (stream path_a)
@@ -195,6 +196,9 @@ to the data folder in RIA."
    for best-f-alignment = (remove-if
 			   (lambda (link) (equal '(-1 . -1) link))
 			   (rank f-alignments (make-aligntab) tab_s tab_t))
+
+   for l_best = (length best-f-alignment)
+   for l_ria = (length ria-ranked)
    for isect = (length (intersection ria-ranked
 				     best-f-alignment
 				     :test #'equal))
@@ -203,6 +207,8 @@ to the data folder in RIA."
 			      :test #'equal))
    summing isect into isects
    summing union into unions
+   summing l_best into ls_best
+   summing l_ria into ls_ria
    counting path_s into i
    do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
    do
@@ -223,4 +229,4 @@ to the data folder in RIA."
 			     (remove-duplicates (mapcar getter allpairs)))))
 	 (out "~%srcs: ~A~%trgs: ~A~%"
 	      (preds #'car tab_s) (preds #'cdr tab_t)))))
-   finally (return (values (/ isects unions) isects unions))))
+   finally (return (values (/ isects unions) isects unions ls_best ls_ria))))

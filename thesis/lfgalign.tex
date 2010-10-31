@@ -1,4 +1,4 @@
-% Created 2010-10-29 fr. 15:11
+% Created 2010-10-31 su. 13:37
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -57,7 +57,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{29/10, 2010}
+\date{31/10, 2010}
 
 \begin{document}
 
@@ -2632,35 +2632,38 @@ lite testsett.
 \label{SEC:diskusjon}
 
  I denne delen gir eg ei evaluering av resultata frå å køyre
- \texttt{lfgalign} på LFG-analysar av norske og georgiske parallelle
- setningar. Eg ser på manglar ved implementasjonen i forhold til dei
- ideelle krava frå kapittel \ref{SEC:ideell}, og samanliknar dei
- resultata som er moglege å få frå \texttt{lfgalign} med dei som er mogleg å
- få med andre metodar, då spesielt reint N-grambaserte metodar. I
- tillegg diskuterer eg kort ulike bruksområde for desse
- samanstillingane.
+ \texttt{lfgalign} på LFG-analysar av parallelle setningar. Eg ser på manglar
+ ved implementasjonen i forhold til dei ideelle krava frå kapittel
+ \ref{SEC:ideell}, og samanliknar dei resultata som er moglege å få
+ frå \texttt{lfgalign} med dei som er mogleg å få med andre metodar, då
+ spesielt reint N-grambaserte metodar. I tillegg diskuterer eg kort
+ ulike bruksområde for desse samanstillingane, og problem som enno er
+ uløyste.
 
- Det er visse føresetnader i implementasjonen som er gjort for å
- forenkle metoden, som kan føre til feil i
- samanstillinga. T.d. følgjer implementasjonen krav
- \ref{krav:PRED-omgivnad} i kapittel \ref{SEC:ideell}, som nok er for
- strengt, men som avskjerer ein god del umotiverte lenkjingar. I
+ Allereie utan å sjå på materialet, kan me sjå at det er visse
+ føresetnader i implementasjonen (gjort for å forenkle metoden), som
+ kan føre til feil i samanstillinga. T.d. følgjer implementasjonen
+ krav \ref{krav:PRED-omgivnad} i kapittel \ref{SEC:ideell}, som nok er
+ for strengt, men som avskjerer ein god del umotiverte lenkjingar. I
  tillegg er c-strukturlenkjinga i implementasjonen direkte avleidd av
  f-strukturlenkjinga; men, som nemnt i del \ref{SEC:fnord} kan det
  finnast c-strukturforhold som bør påverke f-strukturlenkjinga. I
- dette kapittelet diskuterer eg korleis desse og andre føresetnader
- påverker lenkjinga.
+ dette kapittelet diskuterer eg korleis slike føresetnader påverker
+ lenkjinga.
  
+\section{Materiale}
+\label{sec-5.1}
 
- Kjeldematerialet mitt for denne evalueringa er ei mengd med omtrent
- tredve LFG-analyserte testsetningar på norsk og georgisk\footnote{Som nemnt er georgisk eitt av språka nytta i Xpar-prosjektet;
+ Hovudkjeldematerialet eg nyttar for evaluering i dette kapittelet er
+ ei mengd med omtrent tredve LFG-analyserte testsetningar på norsk og
+ georgisk\footnote{Som nemnt er georgisk eitt av språka nytta i Xpar-prosjektet;
         og det er nok det som har mest typologisk avstand frå
         norsk. Georgisk-norsk burde difor vere eit passande språkpar
-        for evalueringa. }, frå
- eit testsett kor setningane er valde for å illustrere ei vid rekkje
- ulike syntaktiske situasjonar (kalla \texttt{mrs} nedanfor), i tillegg til
- eit par setningar frå Jostein Gaarders \emph{Sofies Verden} (kalla \texttt{sofie}
- nedanfor). Analysane er manuelt disambiguerte.
+        for evalueringa. }, frå eit testsett kor setningane er valde for å
+ illustrere ei vid rekkje ulike syntaktiske situasjonar (kalla \texttt{mrs}
+ nedanfor), i tillegg til eit par setningar frå Jostein Gaarders
+ \emph{Sofies Verden} (kalla \texttt{sofie} nedanfor) på norsk og
+ georgisk. Analysane er manuelt disambiguerte.
 
  Eg har ikkje tilgang på noko større setningssamanstilt georgisk-norsk
  parallelltekst\footnote{Dette måtte i tillegg vore LFG-analysert og disambiguert for
@@ -2672,9 +2675,16 @@ lite testsett.
  metode kan vere vanskeleg å hente ut; men dette er ein veikskap med
  evalueringa.
 
+ Eg gjer i tillegg ei overflatisk samanlikning med deler av materialet
+ nytta i \citet{graham2009osr,graham2009fts}, kor språka er tysk og
+ engelsk. Setningane, og setningslenkjene, er frå Europarl-korpuset
+ \citep{koehn2005emc}, kalla \texttt{europarl} nedanfor. LFG-analysane er
+ automatisk disambiguerte og setningssamanstilte (og inkluderer ein
+ god del fragmentariske analysar), og er difor ganske ulike det
+ materialet eg elles har sett på.
 
 \section{N-grambaserte metodar}
-\label{sec-5.1}
+\label{sec-5.2}
 
 
  Dei fleste metodane for frasesamanstilling er N-grambaserte; difor er
@@ -2813,19 +2823,27 @@ lite testsett.
  nodar som, for skuld lenkjinga, bør sjåast på som like, bli handsama
  som like ved å vere ein del av same mange-mange-lenkje.
  
- Metoden i \citet{graham2009osr} finn f-strukturlenkjer frå
- ordlenkjer, med formålet å lage overføringsreglar for
+ Metoden i \citet{graham2009osr,graham2009fts} finn f-strukturlenkjer
+ frå ordlenkjer, med formålet å lage overføringsreglar for
  maskinomsetjing. Dei fjernar alle kantar i f-strukturgrafen som kan
  skape sirkularitet eller som deler sluttnode med andre kantar (og
  unngår dimed problemet med \emph{reentrancy}, nemnt
- nedanfor). F-strukturen blir då ekvivalent med ein enkel trestruktur,
- slik at dei kan nytte omtrent same framgangsmåte som
- \citet{samuelsson2007apa}, men misser altså ein del informasjon. Dei
- lenkjer ikkje c-strukturnodar.
+ nedanfor). F-strukturen blir då, i lenkjingsprosessen, ekvivalent med
+ ein enkel trestruktur, slik at dei kan nytte ein liknande
+ framgangsmåte som \citet{samuelsson2007apa}.  Dei nyttar
+ f-strukturhierarkiet til å «normalisere» ordfølgja i setningane, før
+ den automatiske ordlenkjinga. Viss f-strukturane er korrekte og bygd
+ på felles prinsipp, vil altså ordfølgja i inndata til ordlenkjinga
+ bli nokolunde lik (ytre predikat først, så første argument, så andre,
+ osb.), noko som lettar den statistiske ordsamanstillingsprosessen.
+ Dei lenkjer ikkje c-strukturnodar, sidan målet er å lage
+ overføringsreglar på f-strukturnivå. I del \ref{SEC:ria} ser eg på
+ kor stor overlapp det er mellom dei f-strukturlenkjene dei får, og
+ dei \texttt{lfgalign} får.
 
  
 \section{Kor avhengig er \texttt{lfgalign} av LPT-korrespondanse?}
-\label{sec-5.2}
+\label{sec-5.3}
 
  Eitt mål med denne oppgåva er å finne ut av kor lite
  bottom-up-informasjon ein kan klare seg med, når ein har
@@ -2870,13 +2888,13 @@ lite testsett.
  kan vere viktig, viser dette dømet at ein ikkje treng \emph{fullstendig}
  LPT-korrespondanse for å forbetre resultatet.
 
- Sidan dette er ei openberr feilkjelde, går eg her gjennom setningane
- i testsettet mitt\footnote{Tilgjengeleg frå mappa \texttt{eval} i kjeldekoden til \texttt{lfgalign},
-        som finst på \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign}. } for å sjå kor mange av dei som krev
- LPT-informasjon for å unngå feil lenkjer mellom argument/adjunkt av
- same predikat. Men merk: sjølv om testsettet viser mange ulike
- syntaktiske fenomen, er det langt frå å vere eit representativt
- korpus.
+ Sidan dette er ei openberr feilkjelde, går eg her manuelt gjennom
+ setningane i hovudtestsettet mitt\footnote{Tilgjengeleg frå mappa \texttt{eval} i kjeldekoden til \texttt{lfgalign},
+        som finst på \href{http://github.com/unhammer/lfgalign}{http://github.com/unhammer/lfgalign}. } og utdata frå \texttt{lfgalign} for
+ å sjå kor mange av dei som krev LPT-informasjon for å unngå feil
+ lenkjer mellom argument/adjunkt av same predikat. Men merk: sjølv om
+ dette testsettet viser mange ulike syntaktiske fenomen, er det langt
+ frå å vere eit representativt korpus.
 
 
 
@@ -2931,10 +2949,13 @@ få rett analyse (mange mengder i denne kolonnen vil altså seie at det
 er mange måtar å få rett analyse på).  Der eit tal står i parentes har
 setningsparet andre problem enn berre LPT-korrespondanse som gjer at
 ikkje alt som skal bli lenkja, blir lenkja. Neste del gir eit par
-utdjupande kommentarar til analysane.
+utdjupande kommentarar til analysane, medan i del \ref{SEC:ria} ser eg
+på forskjellane mellom f-strukturlenkjene frå \texttt{lfgalign} og dei
+lenkjene ein kan få ved å gå frå ordsamanstillingar frå
+f-strukturnormaliserte setningar.
 
 \subsection{Kommentarar og feilanalyse}
-\label{sec-5.2.1}
+\label{sec-5.3.1}
 
 \label{SEC:feilanalyse}
 
@@ -3080,9 +3101,27 @@ om dei vil sjå på omsetjinga som argument for at det georgiske verbet
 har ei alternativ tyding med berre eitt argument, og endre
 grammatikkane til ei seinare utgåve av trebanken.
 
+\subsection{Overlapp med \texttt{RIA}}
+\label{sec-5.3.2}
+
+\label{SEC:ria}
+
+
+
+0000: (/ 1819 11249.0) 0.16170326
+0001: 
+
+foo\footnote{Prolog-filene med f-strukturar, og lenkjer mellom
+        f-strukturar, for 4000 parallelle setningar finst i
+        kjeldekoden til \texttt{RIA}, tilgjengeleg frå
+        \href{http://www.computing.dcu.ie/~ygraham/software.html}{http://www.computing.dcu.ie/\~ygraham/software.html} under GNU
+        Lesser General Public License. I tillegg finst Prolog-filer
+        som inkluderer c-strukturar for dei første 1000 på
+        \href{http://www.computing.dcu.ie/~ygraham/sample_de.tar.gz}{http://www.computing.dcu.ie/\~ygraham/sample\_de.tar.gz} og
+        \href{http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz}{http://www.computing.dcu.ie/\~ygraham/sample\_en.tar.gz}. }. 
 
 \section{Opne problem}
-\label{sec-5.3}
+\label{sec-5.4}
 
    \label{SEC:opneproblem}
 
@@ -3090,7 +3129,7 @@ I denne delen diskuterer eg nokre opne problem, og moglege måtar
 metoden kan betrast på.
 
 \subsection{Bør LPT-kravet implementerast som eit rangeringskrav?}
-\label{sec-5.3.1}
+\label{sec-5.4.1}
 
 Som nemnt i del \ref{SEC:feilanalyse} kan ufullstendig informasjon i
 LPT-tabellen føre til at programmet avskjerer feil. 
@@ -3100,7 +3139,7 @@ ut frå f-strukturlenkjinga, og inn i rangeringa, for å ikkje stole på
 at bottom-up-informasjonen vår er perfekt.
 
 \subsection{Top-down-lenkjing av f-strukturar, og problemet med reentrancy}
-\label{sec-5.3.2}
+\label{sec-5.4.2}
 
       \fxnote{Standarddømet med reentrancy er i mrs/ka/37.pl
       mrs/nb/38.pl; jaGli/hund er subjekt både for \p{ville} og
@@ -3176,10 +3215,10 @@ problem.
 
 
 \subsection{Rangeringsproblem}
-\label{sec-5.3.3}
+\label{sec-5.4.3}
 
 \subsubsection{argument-argument > argument-adjunkt (ikkje implementert!)}
-\label{sec-5.3.3.1}
+\label{sec-5.4.3.1}
 
      Plusspoeng for argument-argument-lenkjer, burde vere eit bra
      kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
@@ -3188,17 +3227,17 @@ problem.
      \texttt{bet<Abrams,sigarett,regne>} adjunkt: \texttt{Browne}
      
 \subsubsection{arg-følgje}
-\label{sec-5.3.3.2}
+\label{sec-5.4.3.2}
 
      Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
      viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
      i leksikon ikkje er basert på semantikk, men syntaks). Men elles
      er det vel OK.
 \section{Bruksområde}
-\label{sec-5.4}
+\label{sec-5.5}
 
 \subsection{Oppdage argumentstrukturalternasjon}
-\label{sec-5.4.1}
+\label{sec-5.5.1}
 
  I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
  f-strukturar og LPT-korrespondanse ikkje alltid har nok informasjon
@@ -3213,7 +3252,7 @@ problem.
  argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.), om det
  var substantiv der ville LPT-korrespondanse kunne informere dette.
 \section{Oppsummering}
-\label{sec-5.5}
+\label{sec-5.6}
 
 \begin{itemize}
 \item Sidan avbildinga frå c-strukturnodar til f-struktur er
