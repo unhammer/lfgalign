@@ -3641,7 +3641,9 @@ problem.
         lenkjekombinasjonen viss adjunktlistene har over åtte medlem,
         for å i det heile teke kome seg gjennom analysane. Med så
         flate strukturar og ingen LPT-informasjon er det usannsynleg å
-        ende opp med rett kombinasjon uansett.
+        ende opp med rett kombinasjon uansett. Med denne «avskjeringa»
+        på plass tok heile korpuset på 4000 setningspar rett under tri
+        timar å samanstille.
 
 [fn:46] Denne testen blei køyrt på revisjon
         =45feb03e3c2b8eefcad2d995e9f5d779c7264565= av =lfgalign=.
