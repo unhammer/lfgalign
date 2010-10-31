@@ -1,4 +1,4 @@
-% Created 2010-10-31 su. 13:37
+% Created 2010-10-31 su. 17:24
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -2676,12 +2676,12 @@ lite testsett.
  evalueringa.
 
  Eg gjer i tillegg ei overflatisk samanlikning med deler av materialet
- nytta i \citet{graham2009osr,graham2009fts}, kor språka er tysk og
- engelsk. Setningane, og setningslenkjene, er frå Europarl-korpuset
- \citep{koehn2005emc}, kalla \texttt{europarl} nedanfor. LFG-analysane er
- automatisk disambiguerte og setningssamanstilte (og inkluderer ein
- god del fragmentariske analysar), og er difor ganske ulike det
- materialet eg elles har sett på.
+ frå programmet \texttt{RIA} \citep{graham2009osr,graham2009fts}, kor språka
+ er tysk og engelsk. Setningane, og setningslenkjene, er frå
+ Europarl-korpuset \citep{koehn2005emc}. LFG-analysane er automatisk
+ disambiguerte og setningssamanstilte (og inkluderer ein god del
+ fragmentariske analysar), og er difor ganske ulike det materialet eg
+ elles har sett på.
 
 \section{N-grambaserte metodar}
 \label{sec-5.2}
@@ -2823,11 +2823,11 @@ lite testsett.
  nodar som, for skuld lenkjinga, bør sjåast på som like, bli handsama
  som like ved å vere ein del av same mange-mange-lenkje.
  
- Metoden i \citet{graham2009osr,graham2009fts} finn f-strukturlenkjer
- frå ordlenkjer, med formålet å lage overføringsreglar for
- maskinomsetjing. Dei fjernar alle kantar i f-strukturgrafen som kan
- skape sirkularitet eller som deler sluttnode med andre kantar (og
- unngår dimed problemet med \emph{reentrancy}, nemnt
+ Metoden i \texttt{RIA} \citep{graham2009osr,graham2009fts} finn
+ f-strukturlenkjer frå ordlenkjer, med formålet å lage
+ overføringsreglar for maskinomsetjing. Dei fjernar alle kantar i
+ f-strukturgrafen som kan skape sirkularitet eller som deler sluttnode
+ med andre kantar (og unngår dimed problemet med \emph{reentrancy}, nemnt
  nedanfor). F-strukturen blir då, i lenkjingsprosessen, ekvivalent med
  ein enkel trestruktur, slik at dei kan nytte ein liknande
  framgangsmåte som \citet{samuelsson2007apa}.  Dei nyttar
@@ -3106,19 +3106,81 @@ grammatikkane til ei seinare utgåve av trebanken.
 
 \label{SEC:ria}
 
-
-
-0000: (/ 1819 11249.0) 0.16170326
-0001: 
-
-foo\footnote{Prolog-filene med f-strukturar, og lenkjer mellom
+Eg samanliknar her f-strukturlenkjene ein får ved å køyre \texttt{lfgalign}
+på ei mengd med 4000 automatisk disambiguerte og setningslenkja
+setningar på tysk og engelsk, med dei lenkjene som kjem frå
+\texttt{RIA}-metoden\footnote{Prolog-filene med f-strukturar, og lenkjer mellom
         f-strukturar, for 4000 parallelle setningar finst i
         kjeldekoden til \texttt{RIA}, tilgjengeleg frå
         \href{http://www.computing.dcu.ie/~ygraham/software.html}{http://www.computing.dcu.ie/\~ygraham/software.html} under GNU
         Lesser General Public License. I tillegg finst Prolog-filer
-        som inkluderer c-strukturar for dei første 1000 på
+        som inkluderer c-strukturar for 1000 setningar på
         \href{http://www.computing.dcu.ie/~ygraham/sample_de.tar.gz}{http://www.computing.dcu.ie/\~ygraham/sample\_de.tar.gz} og
-        \href{http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz}{http://www.computing.dcu.ie/\~ygraham/sample\_en.tar.gz}. }. 
+        \href{http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz}{http://www.computing.dcu.ie/\~ygraham/sample\_en.tar.gz}. } i \citet{graham2009osr,graham2009fts}. Eg har
+ikkje nytta nokon LPT-tabell her. 
+
+Samanlikninga skjer ved å, for kvar setning i korpuset, telje opp kor
+mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som er
+inndata til \texttt{RIA}, og samanlikne med unionen, og kor mange
+f-strukturar som kan lenkjast. Viss me har to setningar som kvar har
+på tri \PRED{}-element, finst det seks måtar å lenkje desse på slik at
+alle blir lenkja. Viss \texttt{lfgalign} har same samanstilling som \texttt{RIA},
+vil snittet av dei to vere lik unionen.
+
+ Slike tal seier sjølvsagt ingenting om kva for lenkjer som er
+ \emph{korrekte}. Men, lenkjene i testmaterialet kjem via
+ ordsamanstillingsmetoden i \citet{och2003scv}, kor «even on a tiny
+ corpus of only 500 sentences, alignment error rates under 30\% are
+ achieved for all models [for English-German], and the best models
+ have error rates somewhat under 20\%»
+ \citep[s.~36]{och2003scv}. Feilraten til modell 6, som \texttt{RIA} nyttar,
+ går under 10 \% ved korpora på fleire tusen ord. Om f-strukturlenkjene
+ i \texttt{lfgalign} har stor overlapp med dei i testsettet er det altså
+ sannsynleg at mange av dei er korrekte, om det er stor forskjell er
+ det sannsynleg at \texttt{lfgalign} tek feil.
+
+
+\begin{center}
+\begin{tabular}{rrrrrrrr}
+  set  &  isect  &  union  &  isect/union  &  \# lfgalign  &  \# ria  &  \# srcs  &  \# links  \\
+\hline
+ 0000  &   1819  &  11249  &   0.16170326  &         6170  &    6978  &    10131  &    102025  \\
+ 0001  &   1880  &  11231  &   0.16739382  &         6049  &    7142  &    10225  &    103798  \\
+ 0002  &   1801  &  11000  &   0.16372727  &         5920  &    6945  &     9916  &     97956  \\
+ 0003  &   1796  &  11107  &   0.16169982  &         6022  &    6954  &    10071  &    101109  \\
+\end{tabular}
+\end{center}
+
+
+
+ Det er tydeleg at overlappet mellom \texttt{RIA} og \texttt{lfgalign} er svært låg
+ på dette materialet\footnote{Denne testen blei køyrt på revisjon
+        \texttt{45feb03e3c2b8eefcad2d995e9f5d779c7264565} av \texttt{lfgalign}. }. 
+
+ Ved nærare ettersyn viser det seg at dette korpuset har mange
+ fragmentariske analysar, og som oftast er det mange «ytste
+ f-strukturar» (gjerne 10 i kvar setning). Implementasjonen min reknar
+ ein f-struktur for å vere ein av desse ytste om han ikkje er referert
+ til som argument/adjunkt av andre f-strukturar. Ytste f-strukturar
+ blir handsame som om dei er på same nivå i f-strukturen -- viss det
+ eigentleg finst ein intern struktur mellom desse blir det
+ ignorert. Det vil altså seie at for store deler av analysane får
+ \texttt{lfgalign} ingenting ut av f-strukturen (gjennomsnittleg
+ setningslengd i materialet er 9,8 ord).
+
+
+Eit anna problem som blir tydeleg med denne evalueringa er at lange
+lister med argument/adjunkt raskt blir komputasjonelt vanskeleg. For
+«vanlege» lister med argument/adjunkt (t.d. to argument og tri-fire
+adjunkt), er det ikkje merkbart at alle moglege kombinasjonar av
+argument/adjunkt blir prøvd lenkja; men når det er snakk om ti adjunkt
+på kvar side tek det \texttt{adjalign} ca. 46 sekund (på ein vanleg
+datamaskin med 2,1 GHz, 3GB RAM) å finne alle moglege
+lenkjekombinasjonar\footnote{I denne evalueringa vel \texttt{lfgalign} berre første
+        lenkjekombinasjonen viss adjunktlistene har over åtte medlem,
+        for å i det heile teke kome seg gjennom analysane. Med så
+        flate strukturar og ingen LPT-informasjon er det usannsynleg å
+        ende opp med rett kombinasjon uansett. }.
 
 \section{Opne problem}
 \label{sec-5.4}
@@ -3128,8 +3190,16 @@ foo\footnote{Prolog-filene med f-strukturar, og lenkjer mellom
 I denne delen diskuterer eg nokre opne problem, og moglege måtar
 metoden kan betrast på.
 
-\subsection{Bør LPT-kravet implementerast som eit rangeringskrav?}
+\subsection{Fragmentariske analysar}
 \label{sec-5.4.1}
+
+Som nemnt i del \ref{SEC:ria} har \texttt{lfgalign} problem med
+fragmentariske f-strukturanalysar. Her bør det vere mogleg å dele opp
+lenkjingsoppgåva i først å finne fragment som sannsynlegvis
+korresponderar, og så sende kvar av desse til vanleg
+f-strukturlenkjing.
+\subsection{Bør LPT-kravet implementerast som eit rangeringskrav?}
+\label{sec-5.4.2}
 
 Som nemnt i del \ref{SEC:feilanalyse} kan ufullstendig informasjon i
 LPT-tabellen føre til at programmet avskjerer feil. 
@@ -3139,7 +3209,7 @@ ut frå f-strukturlenkjinga, og inn i rangeringa, for å ikkje stole på
 at bottom-up-informasjonen vår er perfekt.
 
 \subsection{Top-down-lenkjing av f-strukturar, og problemet med reentrancy}
-\label{sec-5.4.2}
+\label{sec-5.4.3}
 
       \fxnote{Standarddømet med reentrancy er i mrs/ka/37.pl
       mrs/nb/38.pl; jaGli/hund er subjekt både for \p{ville} og
@@ -3215,10 +3285,10 @@ problem.
 
 
 \subsection{Rangeringsproblem}
-\label{sec-5.4.3}
+\label{sec-5.4.4}
 
 \subsubsection{argument-argument > argument-adjunkt (ikkje implementert!)}
-\label{sec-5.4.3.1}
+\label{sec-5.4.4.1}
 
      Plusspoeng for argument-argument-lenkjer, burde vere eit bra
      kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
@@ -3227,7 +3297,7 @@ problem.
      \texttt{bet<Abrams,sigarett,regne>} adjunkt: \texttt{Browne}
      
 \subsubsection{arg-følgje}
-\label{sec-5.4.3.2}
+\label{sec-5.4.4.2}
 
      Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
      viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
@@ -3284,6 +3354,8 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
+
 
 
 

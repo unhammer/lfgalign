@@ -3124,17 +3124,37 @@ Eg samanliknar her f-strukturlenkjene ein får ved å køyre =lfgalign=
 på ei mengd med 4000 automatisk disambiguerte og setningslenkja
 setningar på tysk og engelsk, med dei lenkjene som kjem frå
 =RIA=-metoden[fn:44] i \citet{graham2009osr,graham2009fts}. Eg har
-ikkje nytta nokon LPT-tabell her.
+ikkje nytta nokon LPT-tabell her. 
 
-|  set | isect | union |    overlap | ls lfgalign | ls ria |
-|------+-------+-------+------------+-------------+--------|
-| 0000 |  1819 | 11249 | 0.16170326 |             |        |
-| 0001 |  1880 | 11231 | 0.16739382 |        6049 |   7142 |
+Samanlikninga skjer ved å, for kvar setning i korpuset, telje opp kor
+mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som er
+inndata til =RIA=, og samanlikne med unionen, og kor mange
+f-strukturar som kan lenkjast. Viss me har to setningar som kvar har
+på tri \PRED{}-element, finst det seks måtar å lenkje desse på slik at
+alle blir lenkja. Viss =lfgalign= har same samanstilling som =RIA=,
+vil snittet av dei to vere lik unionen.
 
+ Slike tal seier sjølvsagt ingenting om kva for lenkjer som er
+ /korrekte/. Men, lenkjene i testmaterialet kjem via
+ ordsamanstillingsmetoden i \citet{och2003scv}, kor «even on a tiny
+ corpus of only 500 sentences, alignment error rates under 30% are
+ achieved for all models [for English-German], and the best models
+ have error rates somewhat under 20%»
+ \citep[s.~36]{och2003scv}. Feilraten til modell 6, som =RIA= nyttar,
+ går under 10 % ved korpora på fleire tusen ord. Om f-strukturlenkjene
+ i =lfgalign= har stor overlapp med dei i testsettet er det altså
+ sannsynleg at mange av dei er korrekte, om det er stor forskjell er
+ det sannsynleg at =lfgalign= tek feil.
 
-Desse tala seier sjølvsagt ingenting om kva for lenkjer som er
-korrekte, men det er tydeleg at /dekningsgraden/ (her: kor mange
-lenkjer som er funne) til =lfgalign= er svært låg på dette materialet.
+|  set | isect | union | isect/union | # lfgalign | # ria | # srcs | # links |
+|------+-------+-------+-------------+------------+-------+--------+---------|
+| 0000 |  1819 | 11249 |  0.16170326 |       6170 |  6978 |  10131 |  102025 |
+| 0001 |  1880 | 11231 |  0.16739382 |       6049 |  7142 |  10225 |  103798 |
+| 0002 |  1801 | 11000 |  0.16372727 |       5920 |  6945 |   9916 |   97956 |
+| 0003 |  1796 | 11107 |  0.16169982 |       6022 |  6954 |  10071 |  101109 |
+
+ Det er tydeleg at overlappet mellom =RIA= og =lfgalign= er svært låg
+ på dette materialet[fn:46]. 
 
  Ved nærare ettersyn viser det seg at dette korpuset har mange
  fragmentariske analysar, og som oftast er det mange «ytste
@@ -3622,4 +3642,7 @@ problem.
         for å i det heile teke kome seg gjennom analysane. Med så
         flate strukturar og ingen LPT-informasjon er det usannsynleg å
         ende opp med rett kombinasjon uansett.
+
+[fn:46] Denne testen blei køyrt på revisjon
+        =45feb03e3c2b8eefcad2d995e9f5d779c7264565= av =lfgalign=.
 
