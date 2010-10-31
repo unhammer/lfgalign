@@ -591,39 +591,57 @@ no separate madjalign function."
     (adjalign-p exclude adjs_s adjs_t tab_s tab_t LPTs)))
 
 (defun adjalign-p (exclude adjs_s adjs_t &optional tab_s tab_t LPTs)
-    "Helper for `adjalign'. If `LPTs', `tab_s' and `tab_t' are supplied,
+  "Helper for `adjalign'. If `LPTs', `tab_s' and `tab_t' are supplied,
 only return those combinations where all pairs are LPT.
 
-TODO test if removing here is noticably slower than in 'inner loop' like old adjalign-p
+This filtering on `LPTs' and `exclude' only increases 9x9 time from
+3.1s to 4.1s where exclude and LPTs are nil. Putting the LPT check in
+the inner loop (ie. `adjalign-p-on-trg' / `adjalign-p-on-src') might
+speed things up if you have a huge LPT table.
 
-TODO: Could this leave us with duplicate solutions?"
-  (loop for perm in (if (> (length adjs_s) (length adjs_t))
-			(adjalign-p-on-src adjs_s adjs_t)
-			(adjalign-p-on-trg adjs_s adjs_t))
-       collect
-       (remove-if (lambda (link)
-		    (not (and (not (member-either link exclude))
-			      (or (not LPTs)
-				  (LPT? (get-pred (car link) tab_s) tab_s
-					(get-pred (cdr link) tab_t) tab_t LPTs)))))
-		  perm)))
+TODO: Could this leave us with duplicate solutions where we exclude?"
+  (let ((l_s (length adjs_s))
+	(l_t (length adjs_t)))
+    (if (or (> l_s 8) (> l_t 8))
+	;; Worst case O(n^2), or a bit less since we reduce both lists
+	;; concurrently. When SBCL is optimising for speed, this takes
+	;; 3.1 secs on 9x9, 46 secs on 10x10 (with 95 page faults) on
+	;; a 2.1 GHz with 3GB real memory.
+	(progn (unless *no-warnings*
+		 (warn "Adjunct list length >8, only trying first solution"))
+	       (list
+		(loop for src in adjs_s for trg in adjs_t collect (cons src trg))))
+      (loop for perm in (if (> l_s l_t)
+			    (adjalign-p-on-src adjs_s adjs_t)
+			  (adjalign-p-on-trg adjs_s adjs_t))
+	    collect
+	    (remove-if (lambda (link)
+			 (not (and (not (member-either link exclude))
+				   (or (not LPTs)
+				       (LPT? (get-pred (car link) tab_s) tab_s
+					     (get-pred (cdr link) tab_t) tab_t LPTs)))))
+		       perm)))))
 
 (defun adjalign-p-on-trg (adjs_s adjs_t) "When trg list is longest"
   (when (and adjs_s adjs_t)
     (if (cdr adjs_s)
 	(loop for trg in adjs_t
-	   append (mapcar (lambda (perm) (cons (cons (car adjs_s) trg)
-					       perm))
-			  (adjalign-p-on-trg (cdr adjs_s) (remove trg adjs_t :count 1))))
-	(loop for trg in adjs_t collect (list (cons (car adjs_s) trg))))))
+	      append (mapcar (lambda (perm) (cons (cons (car adjs_s) trg)
+						  perm))
+			     (adjalign-p-on-trg (cdr adjs_s)
+						(remove trg adjs_t :count 1))))
+      (loop for trg in adjs_t
+	    collect (list (cons (car adjs_s) trg))))))
 (defun adjalign-p-on-src (adjs_s adjs_t) "When src list is longest"
   (when (and adjs_s adjs_t)
     (if (cdr adjs_t)
 	(loop for src in adjs_s
-	   append (mapcar (lambda (perm) (cons (cons src (car adjs_t))
-					       perm))
-			  (adjalign-p-on-src (remove src adjs_s :count 1) (cdr adjs_t))))
-	(loop for src in adjs_s collect (list (cons src (car adjs_t)))))))
+	      append (mapcar (lambda (perm) (cons (cons src (car adjs_t))
+						  perm))
+			     (adjalign-p-on-src (remove src adjs_s :count 1)
+						(cdr adjs_t))))
+	(loop for src in adjs_s
+	      collect (list (cons src (car adjs_t)))))))
 
 
 (lisp-unit:define-test test-adjalign-p
@@ -641,8 +659,7 @@ TODO: Could this leave us with duplicate solutions?"
    (adjalign-p '((c . 1)) '(a b) '(1 2 3)))
   (lisp-unit:assert-equality
    #'set-of-set-equal
-   '(;((A . 1)) ((B . 1)) ((A . 2)) ((B . 2)) ((A . 3)) ((B . 3))
-     ((A . 1)(B . 2)) ((A . 2)(B . 1))((A . 3)(B . 1))
+   '(((A . 1)(B . 2)) ((A . 2)(B . 1))((A . 3)(B . 1))
      ((A . 1)(B . 3)) ((A . 2)(B . 3))((A . 3)(B . 2)))
    (adjalign-p nil '(a b) '(1 2 3)))
   (lisp-unit:assert-equality
@@ -651,8 +668,7 @@ TODO: Could this leave us with duplicate solutions?"
    (adjalign-p '((c . 1)) '(a b) '(1 2)))
   (lisp-unit:assert-equality
    #'set-of-set-equal
-   '(;((A . 1))  ((B . 2)) ((A . 2)) ((B . 1))
-     ((A . 1) (B . 2)) ((A . 2) (B . 1)))
+   '(((A . 1) (B . 2)) ((A . 2) (B . 1)))
    (adjalign-p nil '(a b) '(1 2))))
 
 (lisp-unit:define-test test-both-adjaligns
