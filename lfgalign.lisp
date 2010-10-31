@@ -276,10 +276,14 @@ appear in as arguments/adjuncts of other preds.
 
 The unreferenced pred's are put into the adjunct list, see
 `get-adjs'."
-  (list -1 "_SENTENCE" nil (list 0) nil))
+  (list -1 "_SENTENCE"
+	nil
+	(when (get-pred 0 tab 'nil-on-none) (list 0))
+	nil))
 
 (defun get-pred (var tab &optional nil-on-none)
-  "Use `nil-on-none' to return nil if no PRED was found."
+  "Use `nil-on-none' to return nil if no PRED was found, 
+otherwise a fake one is made up for PRED-less variables."
   (if (null-pred? var)
       var
     (if (eq -1 var)
