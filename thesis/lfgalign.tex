@@ -1,4 +1,4 @@
-% Created 2010-11-01 må. 13:15
+% Created 2010-11-01 må. 13:28
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -3165,21 +3165,28 @@ oppretta, me får ingen mange-mange-lenkjer).
  forholdet var 1,0 ville altså alle lenkjene vore like.  Det er
  tydeleg at overlappet mellom \texttt{RIA} og \texttt{lfgalign} er svært låg på
  dette materialet\footnote{Denne testen blei køyrt på revisjon
-        \texttt{918aeffb515aa79539cbfb0506d8fcd1afddc2ec} av \texttt{lfgalign},
+        \texttt{fd14d902262a9274b42131cf83ade74d51e23863} av \texttt{lfgalign},
         sjå funksjonen \texttt{ev-ria}. }, men iallfall meir enn dobbelt så stort som
  ein ville forvente om det ikkje var nokon likskap. I tillegg har
- \texttt{lfgalign} færrast lenkja \PRED{}-element av alle metodane.
+ \texttt{lfgalign} færrast lenkja \PRED{}-element av alle metodane, som kan
+ tyde på litt lågare dekning.
 
  Ved nærare ettersyn viser det seg at dette korpuset har mange
  fragmentariske analysar, og som oftast er det mange «ytste
- f-strukturar» (gjerne 10 i kvar setning). Implementasjonen min reknar
- ein f-struktur for å vere ein av desse ytste om han ikkje er referert
- til som argument/adjunkt av andre f-strukturar. Ytste f-strukturar
- blir handsame som om dei er på same nivå i f-strukturen -- viss det
- eigentleg finst ein intern struktur mellom desse blir det
- ignorert. Det vil altså seie at for store deler av analysane får
- \texttt{lfgalign} ingenting ut av f-strukturen (gjennomsnittleg
- setningslengd i materialet er 9,8 ord).
+ f-strukturar» (gjerne over ti i kvar setning, i snitt fire per
+ setning). Implementasjonen min reknar ein f-struktur for å vere ein
+ av desse ytste om han ikkje er referert til som argument/adjunkt av
+ andre f-strukturar. Ytste f-strukturar blir handsame som om dei er på
+ same nivå i f-strukturen -- viss det eigentleg finst ein intern
+ struktur mellom desse blir det ignorert. Det vil altså seie at for
+ store deler av analysane får \texttt{lfgalign} ingenting ut av f-strukturen
+ (gjennomsnittleg setningslengd i materialet er 9,8 ord).
+
+ Sidan \texttt{lfgalign} er meint for trebankbygging treng det ikkje vere
+ negativt at dekninga er litt lågare; i tillegg vil me kanskje
+ forvente meir «komplette» analysar enn dei som finst i dette
+ testsettet. Likevel bør det vere mogleg å gjere noko for å betre på
+ yteevna når analysane er fragmentariske.
 
 
 Eit anna problem som blir tydeleg med denne evalueringa er at lange

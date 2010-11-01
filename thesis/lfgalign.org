@@ -3166,18 +3166,25 @@ oppretta, me får ingen mange-mange-lenkjer).
  tydeleg at overlappet mellom =RIA= og =lfgalign= er svært låg på
  dette materialet[fn:46], men iallfall meir enn dobbelt så stort som
  ein ville forvente om det ikkje var nokon likskap. I tillegg har
- =lfgalign= færrast lenkja \PRED{}-element av alle metodane.
+ =lfgalign= færrast lenkja \PRED{}-element av alle metodane, som kan
+ tyde på litt lågare dekning.
 
  Ved nærare ettersyn viser det seg at dette korpuset har mange
  fragmentariske analysar, og som oftast er det mange «ytste
- f-strukturar» (gjerne 10 i kvar setning). Implementasjonen min reknar
- ein f-struktur for å vere ein av desse ytste om han ikkje er referert
- til som argument/adjunkt av andre f-strukturar. Ytste f-strukturar
- blir handsame som om dei er på same nivå i f-strukturen -- viss det
- eigentleg finst ein intern struktur mellom desse blir det
- ignorert. Det vil altså seie at for store deler av analysane får
- =lfgalign= ingenting ut av f-strukturen (gjennomsnittleg
- setningslengd i materialet er 9,8 ord).
+ f-strukturar» (gjerne over ti i kvar setning, i snitt fire per
+ setning). Implementasjonen min reknar ein f-struktur for å vere ein
+ av desse ytste om han ikkje er referert til som argument/adjunkt av
+ andre f-strukturar. Ytste f-strukturar blir handsame som om dei er på
+ same nivå i f-strukturen -- viss det eigentleg finst ein intern
+ struktur mellom desse blir det ignorert. Det vil altså seie at for
+ store deler av analysane får =lfgalign= ingenting ut av f-strukturen
+ (gjennomsnittleg setningslengd i materialet er 9,8 ord).
+
+ Sidan =lfgalign= er meint for trebankbygging treng det ikkje vere
+ negativt at dekninga er litt lågare; i tillegg vil me kanskje
+ forvente meir «komplette» analysar enn dei som finst i dette
+ testsettet. Likevel bør det vere mogleg å gjere noko for å betre på
+ yteevna når analysane er fragmentariske.
 
 # TODO gjennomsnittleg unreferenced-preds-lengd
 
@@ -3658,6 +3665,6 @@ problem.
         timar å samanstille.
 
 [fn:46] Denne testen blei køyrt på revisjon
-        =918aeffb515aa79539cbfb0506d8fcd1afddc2ec= av =lfgalign=,
+        =fd14d902262a9274b42131cf83ade74d51e23863= av =lfgalign=,
         sjå funksjonen =ev-ria=.
 
