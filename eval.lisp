@@ -215,7 +215,7 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
    for f-alignments = (funcall aligner '(-1 . -1) tab_s tab_t (make-LPT))
    for best-f-alignment = (remove-if
 			   (lambda (link) (equal '(-1 . -1) link))
-			   (funcall #'ranker f-alignments (make-aligntab) tab_s tab_t))
+			   (funcall ranker f-alignments (make-aligntab) tab_s tab_t))
 
    for l_best = (length best-f-alignment)
    for l_ria = (length ria-ranked)
