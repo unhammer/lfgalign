@@ -174,13 +174,14 @@ like `flatten' or `rank'"
   f-alignments)
 
 (defun ev-ria (n &optional set (aligner #'f-align) (ranker #'rank))
-  "TODO: measure overlap between f-links in the RIA
+  "Measure overlap between f-links in the RIA
 testsets (ria/data/sents_000{0,1,2,3}) and those given by `f-align'
-and `rank'. RIA, with the necessary testsets, is available from
-http://www.computing.dcu.ie/~ygraham/software.html 
+and `rank', or the random baseline `random-f-align' and `random-rank'.
 
-This function assumes there is a symlink \"ria\" from the eval folder
-to the data folder in RIA."
+RIA, with the necessary testsets, is available from
+http://www.computing.dcu.ie/~ygraham/software.html This function
+assumes there is a symlink \"ria\" from the \"eval\" folder to the
+\"data\" folder in RIA."
   (loop
    repeat n
    with dir = (append (pathname-directory
