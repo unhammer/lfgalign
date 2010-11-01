@@ -834,23 +834,21 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
  (let* ((tab_s (open-and-import "dev/TEST_merge_s.pl"))
         (tab_t (open-and-import "dev/TEST_merge_t.pl"))
 	(LPT (make-LPT))
-	(aligntab (make-aligntab))
-	(f-alignments (f-align '(0 . 0) tab_s tab_t LPT aligntab)))
+	(f-alignments (f-align '(0 . 0) tab_s tab_t LPT)))
    (lisp-unit:assert-equal ; make sure next test doesn't give false negative
     '((0 . 0) ((9 . 0) (10 . 3)) ((10 . 0) (9 . 3)))
     f-alignments)
    (lisp-unit:assert-equality
     #'set-equal
     '((0 . 0) (10 . 0) (9 . 3))	; perf-qePa, bjeffe-qePa, hund-jaGli (correct)
-    (values (rank f-alignments aligntab tab_s tab_t)))))
+    (values (rank f-alignments tab_s tab_t)))))
 
 (lisp-unit:define-test test-rank-argorder
  ;; Should select the alignment where argument orders match
  (let* ((tab_s (open-and-import "dev/TEST_regargadj_s.pl"))
         (tab_t (open-and-import "dev/TEST_regargadj_t.pl"))
 	(LPT (make-LPT))
-	(aligntab (make-aligntab))
-	(f-alignments (f-align '(0 . 0) tab_s tab_t LPT aligntab)))
+	(f-alignments (f-align '(0 . 0) tab_s tab_t LPT)))
    (lisp-unit:assert-equality ; make sure next test doesn't give false negative
     #'set-of-set-equal
     '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
@@ -860,7 +858,7 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
    (lisp-unit:assert-equality
     #'set-equal
     '((0 . 0) (11 . 3) (10 . 9) (9 . 6))
-    (values (rank f-alignments aligntab tab_s tab_t)))))
+    (values (rank f-alignments tab_s tab_t)))))
 
 (lisp-unit:define-test test-rank-recursive
  (lisp-unit:assert-equality
@@ -911,7 +909,7 @@ but meh."
     (mapcar-true (lambda (l) (when (>= (length l) maxlen) l))
 		 lists)))
 
-(defun rank (f-alignments aligntab tab_s tab_t)
+(defun rank (f-alignments tab_s tab_t)
   "This could be done in a million different ways. For now, this is
 the procedure: We start with input like '((0 . 0) branch1 branch2 ...)
 where branch1 is e.g. '((9 . 0) (10 . 3)), 
@@ -925,9 +923,9 @@ that branch.
 
 If there are several with equal rank, choose the first of the longest
 branches (thus trying to align as many adjuncts as possible)."
-  (rank-helper nil f-alignments aligntab tab_s tab_t))
+  (rank-helper nil f-alignments tab_s tab_t))
 
-(defun rank-helper (seen f-alignments &optional aligntab tab_s tab_t)
+(defun rank-helper (seen f-alignments &optional tab_s tab_t)
   (if (f-link? f-alignments)
       (values (list f-alignments)
 	      1)
@@ -941,7 +939,7 @@ branches (thus trying to align as many adjuncts as possible)."
 	    for branch in (cdr f-alignments)
 	    do (setf (values newbranch
 			     rate)
-		     (rank-branch link outer-links branch aligntab tab_s tab_t))
+		     (rank-branch link outer-links branch tab_s tab_t))
 	    if (= rate best-rate)
 	    do (setq best-branches (cons newbranch best-branches))
 	    else if (> rate best-rate)
@@ -954,7 +952,7 @@ branches (thus trying to align as many adjuncts as possible)."
 				  (car (longest-sublists best-branches)))
 			    best-rate))))))
 
-(defun rank-branch (link seen branch &optional aligntab tab_s tab_t)
+(defun rank-branch (link seen branch &optional tab_s tab_t)
   "The individual branch score is the product of
 - `sub-f-rate' which gives how many recursive sub-alignments were
   successful as opposed to simply having LPT-correspondence,
@@ -977,7 +975,7 @@ score."
 	with newsub
 	with sub-rate
 	do (setf (values newsub sub-rate)
-	      (rank-helper seen f-alignment aligntab tab_s tab_t))
+	      (rank-helper seen f-alignment tab_s tab_t))
 	appending newsub into subs
 	summing sub-rate into sub-rate-sum
 	finally
@@ -1253,9 +1251,8 @@ phi's don't match anything in the files)."
        linkable))))
 
 (defun align (tab_s tab_t LPT)
-  (let* ((aligntab (make-aligntab))
-	 (f-alignments (f-align '(-1 . -1) tab_s tab_t LPT aligntab))
-	 (best-f-alignment (rank f-alignments aligntab tab_s tab_t))
+  (let* ((f-alignments (f-align '(-1 . -1) tab_s tab_t LPT))
+	 (best-f-alignment (rank f-alignments tab_s tab_t))
 	 (tree_s (maketree tab_s))
 	 (tree_t (maketree tab_t))
 	 (c-alignments (c-align-ranked best-f-alignment 

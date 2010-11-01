@@ -6,10 +6,9 @@
   (let*
       ((tab_s (open-and-import path_s absolute))
        (tab_t (open-and-import path_t absolute))
-       (aligntab (make-aligntab))
        (LPTs (or LPTs (make-LPT)))
        (f-alignments (f-align '(-1 . -1) tab_s tab_t LPTs))
-       (best-f-alignment (rank f-alignments aligntab tab_s tab_t))
+       (best-f-alignment (rank f-alignments tab_s tab_t))
        (tree_s (maketree tab_s))
        (tree_t (maketree tab_t))
        (c-alignments (c-align-ranked best-f-alignment 
@@ -124,10 +123,9 @@
 	    (tab_t (open-and-import (format nil "~A" path_t) 'absolute)))
 	 (when t
 	   (let*
-	       ((aligntab (make-aligntab))
-		(LPTs (make-LPT))
+	       ((LPTs (make-LPT))
 		(f-alignments (f-align '(-1 . -1) tab_s tab_t LPTs))
-		(best-f-alignment (rank f-alignments aligntab tab_s tab_t))
+		(best-f-alignment (rank f-alignments tab_s tab_t))
 		(tree_s (maketree tab_s))
 		(tree_t (maketree tab_t))
 		(c-alignments (c-align-ranked best-f-alignment 
@@ -170,7 +168,7 @@ like `flatten' or `rank'"
        for trg in (shuffle (all-pred-vars tab_t))
        collect (cons src trg))))
 
-(defun random-rank (f-alignments aligntab tab_s tab_t)
+(defun random-rank (f-alignments tab_s tab_t)
   f-alignments)
 
 (defun ev-ria (n &optional set (aligner #'f-align) (ranker #'rank))
@@ -215,7 +213,7 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
    for f-alignments = (funcall aligner '(-1 . -1) tab_s tab_t (make-LPT))
    for best-f-alignment = (remove-if
 			   (lambda (link) (equal '(-1 . -1) link))
-			   (funcall ranker f-alignments (make-aligntab) tab_s tab_t))
+			   (funcall ranker f-alignments tab_s tab_t))
 
    for l_best = (length best-f-alignment)
    for l_ria = (length ria-ranked)
@@ -257,5 +255,6 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
 	 (out "~%srcs: ~A~%trgs: ~A~%"
 	      (preds #'car tab_s) (preds #'cdr tab_t)))))
    finally (out "~%~A~%isects:~A~%(unions:~A)~%lengths_lfgalign:~A~%lengths_ria:~A~%possible srcs:~A~%possible links:~A~%unref_s:~A~%unref_t:~A~%"
-		set isects unions ls_best ls_ria possible_srcs possible_links
-		unref_s unref_t)))
+   		set isects unions ls_best ls_ria possible_srcs possible_links
+   		unref_s unref_t)
+   ))
