@@ -2312,11 +2312,11 @@ desse f-strukturane med eitt av argumenta til den andre.
 
  Det er mogleg at ei lenkje frå éi samanstilling kan finnast i andre
  samanstillingar, =sub-f= unngår dobbeltarbeid ved å lagre alle
- delvise samanstillingar i tabellen $aligntable$. Dette føreset at
- \texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt; t.d. må
+ delvise samanstillingar i $aligntable$-tabellen[fn:48]. Dette føreset
+ at \texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt; t.d. må
  mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
  mot subjektet til $F_t$ vere uavhengig av om objektet til $F_s$ er
- lenkja mot eit objekt eller eit adjunkt osb. av $F_t$. 
+ lenkja mot eit objekt eller eit adjunkt osb. av $F_t$.
 
 #+BEGIN_LaTeX  
   \begin{algorithm}[]
@@ -2399,7 +2399,7 @@ utelukke lenkjing av f-strukturane $F_s$ og $F_t$ i \Next under:
 Men som del \ref{SEC:rangering} nemner kan det vere at me ikkje /vil/
 krevje dette i alle moglege tilfelle. Ei tryggare løysing er å rangere
 ulike løysingar i etterkant, ved å spørje etter dei
-argumentsamanstillingane som har flest medlem i $aligntable$, dette
+argumentsamanstillingane som har flest lenkja substrukturar, dette
 kjem eg tilbake til i \ref{SEC:impl-f-rangering} nedanfor.
 *** Overflødige adverbial
    \label{SEC:impl-adjalign}
@@ -3180,22 +3180,27 @@ oppretta, me får ingen mange-mange-lenkjer).
  store deler av analysane får =lfgalign= ingenting ut av f-strukturen
  (gjennomsnittleg setningslengd i materialet er 9,8 ord).
 
- Sidan =lfgalign= er meint for trebankbygging treng det ikkje vere
- negativt at dekninga er litt lågare; i tillegg vil me kanskje
- forvente meir «komplette» analysar enn dei som finst i dette
+ Sidan =lfgalign= er meint for trebankbygging med høg presisjon treng
+ det ikkje vere negativt at dekninga er litt lågare; i tillegg vil me
+ kanskje forvente meir «komplette» analysar enn dei som finst i dette
  testsettet. Likevel bør det vere mogleg å gjere noko for å betre på
- yteevna når analysane er fragmentariske.
+ yteevna når analysane er fragmentariske; eg kjem tilbake til dette i
+ del \ref{SEC:opneproblem}.
 
-# TODO gjennomsnittleg unreferenced-preds-lengd
-
-Eit anna problem som blir tydeleg med denne evalueringa er at lange
-lister med argument/adjunkt raskt blir komputasjonelt vanskeleg. For
-«vanlege» lister med argument/adjunkt (t.d. to argument og tri-fire
-adjunkt), er det ikkje merkbart at alle moglege kombinasjonar av
-argument/adjunkt blir prøvd lenkja; men når det er snakk om ti adjunkt
-på kvar side tek det =adjalign= ca. 46 sekund (på ein vanleg
-datamaskin med 2,1 GHz, 3GB RAM) å finne alle moglege
-lenkjekombinasjonar[fn:45].
+ Eit anna problem som blir tydeleg med denne evalueringa er at lange
+ lister med argument/adjunkt raskt blir komputasjonelt vanskeleg. For
+ «vanlege» lister med argument/adjunkt (t.d. to argument og tri-fire
+ adjunkt), er det ikkje merkbart at alle moglege kombinasjonar av
+ argument/adjunkt blir prøvd lenkja; men når det er snakk om ti
+ adjunkt på kvar side tek det =adjalign= ca. 46 sekund (på ein vanleg
+ datamaskin med 2,1 GHz, 3GB RAM) å finne alle moglege
+ lenkjekombinasjonar. For å i det heile teke kome meg gjennom
+ testsettet endra eg på =lfgalign= i denne evalueringa slik at me
+ berre vel første lenkjekombinasjonen viss adjunktlistene har over
+ åtte medlem[fn:45]. Med så flate strukturar og ingen LPT-informasjon
+ er det usannsynleg å ende opp med rett kombinasjon uansett. Med denne
+ «avskjeringa» på plass tok heile korpuset på 4000 setningspar rett
+ under tri timar å samanstille.
 
 *** Men korleis gjenfinne there is/es gibt?			     :ROTETE:
 (og kva skal me med det, viss ikkje me driv med statistisk
@@ -3214,22 +3219,38 @@ språket.
 ** Opne problem 
    \label{SEC:opneproblem}
 
-I denne delen diskuterer eg nokre opne problem, og moglege måtar
-metoden kan betrast på.
+I denne delen diskuterer eg nokre opne problem, og moglege strategiar
+for å betre metoden.
 
 *** Fragmentariske analysar
 Som nemnt i del \ref{SEC:ria} har =lfgalign= problem med
-fragmentariske f-strukturanalysar. Her bør det vere mogleg å dele opp
-lenkjingsoppgåva i først å finne fragment som sannsynlegvis
-korresponderar, og så sende kvar av desse til vanleg
-f-strukturlenkjing.
-*** Bør LPT-kravet implementerast som eit rangeringskrav?
-Som nemnt i del \ref{SEC:feilanalyse} kan ufullstendig informasjon i
-LPT-tabellen føre til at programmet avskjerer feil. 
+fragmentariske f-strukturanalysar. 
 
-I implementasjonen bør kanskje kravet om LPT-korrespondanse flyttast
-ut frå f-strukturlenkjinga, og inn i rangeringa, for å ikkje stole på
-at bottom-up-informasjonen vår er perfekt.
+Ein mogleg strategi for å handsame desse vil vere å dele opp
+lenkjingsoppgåva slik at me først finn fragment som sannsynlegvis
+korresponderar, og så sender kvar av desse til vanleg
+f-strukturlenkjing. Men der fragmenta ikkje overlappar vil me få
+problem. Ein av grunnføresetnadene til =lfgalign= er at analysane har
+ein viss likskap, og er korrekte, så ei god løysing på dette problemet
+vil nok gå utover oppgåva. 
+
+# Dei «flate» f-strukturane førte til at utrekningane blei svært
+# vanskelege
+
+*** «Mjuk» LPT-korrespondanse, og rangering som avskjering
+Ufullstendig informasjon i LPT-tabellen kan, som nemnt i del
+\ref{SEC:feilanalyse}, føre til at programmet avskjerer for
+aggressivt.
+
+I implementasjonen bør kanskje kravet om LPT-korrespondanse difor bli
+eit rangeringskriterium i implementasjonen, slik at me ikkje treng
+stole på at bottom-up-informasjonen vår er perfekt. Eg har ikkje prøvd
+å implementere dette enno. Ved å berre finne dei $k$ beste
+argument-/adjunkt-permutasjonane kan dette kanskje gjere lenkjinga
+litt raskare au[fn:47].
+
+
+
 
 *** Om global tyding, ikkje-komposisjonell..		     :ROTETE:
 Same globale tyding krev i det minste at, i situasjonen verbet
@@ -3332,21 +3353,6 @@ problem.
  i faktiske analysar, så kan det hende at metoden er god nok. Til no
  har eg ikkje sett slike situasjonar, men det er altså logisk mogleg
  at dei kan dukke opp.
-
-
-*** Rangeringsproblem
-**** argument-argument > argument-adjunkt (ikkje implementert!)
-     Plusspoeng for argument-argument-lenkjer, burde vere eit bra
-     kriterium, men me får sjølvsagt problem viss LPT ikkje seier noko
-     i døme \ref{ex:vedde} med \\
-     =da-najleveba<Abrams,Browne,regne>= adjunkt: =sigarett=\\
-     =bet<Abrams,sigarett,regne>= adjunkt: =Browne=
-     
-**** arg-følgje
-     Dette kjem til å gi problem når me vil lenkje «behage» og «like»,
-     viss me ikkje har motstridande LPT-informasjon (og argumentfølgje
-     i leksikon ikkje er basert på semantikk, men syntaks). Men elles
-     er det vel OK.
 ** Bruksområde
 *** Oppdage argumentstrukturalternasjon
  I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
@@ -3656,15 +3662,19 @@ problem.
         http://www.computing.dcu.ie/~ygraham/sample_de.tar.gz og
         http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz.
 
-[fn:45] I denne evalueringa vel =lfgalign= berre første
-        lenkjekombinasjonen viss adjunktlistene har over åtte medlem,
-        for å i det heile teke kome seg gjennom analysane. Med så
-        flate strukturar og ingen LPT-informasjon er det usannsynleg å
-        ende opp med rett kombinasjon uansett. Med denne «avskjeringa»
-        på plass tok heile korpuset på 4000 setningspar rett under tri
-        timar å samanstille.
-
 [fn:46] Denne testen blei køyrt på revisjon
         =fd14d902262a9274b42131cf83ade74d51e23863= av =lfgalign=,
         sjå funksjonen =ev-ria=.
 
+[fn:45] Eg gjorde ingen slike avskjeringar for argumentpermutasjonane.
+
+[fn:47] For å ta dette eit steg vidare kan me flytte sjølve rangeringa
+        inn i f-strukturlenkjinga, for å gjere implementasjonen litt
+        meir effektiv. Dette kan relativt enkelt gjerast ved å endre
+        rekursive kall på =f-align= til kall på =rank(f-align)=, og
+        endre =rank= til å levere ei liste med dei $k$ beste
+        alternativa. Men, det synest som om flaskehalsen er generering
+        av argument-/adjunkt-permutasjonar, så eg veit ikkje kor mykje
+        dette vil ha å seie.
+
+[fn:48] Dette ser ut til å auke den totale farta med ca. 35 %.
