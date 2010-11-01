@@ -280,8 +280,27 @@ med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
 * Bakgrunn og omgrepsavklaring
   \label{SEC:bakgrunn}
+
+#+BEGIN_LaTeX
+  % \begin{quotation}
+  % Syntax, my lad. It has been restored to the highest place in the republic.
+  % \begin{minipage}{0.77\textwidth}
+  % \begin{flushright}
+  % John Steinbeck
+  % \end{flushright}
+  % \end{minipage}
+  % \end{quotation}
+#+END_LaTeX
   
-** Relaterte metodar
+I dette kapittelet gir eg eit oversyn over dei vanlegaste metodane
+innanfor feltet frasesamanstilling, og då spesielt dei som nyttar djup
+syntaktisk analyse eller rettar seg mot trebankar. Eg gir au ein kort
+gjennomgang av nokre teoretiske omgrep og konsept som eg kjem til å
+nytte i resten av oppgåva.
+
+** Metodar for frasesamanstilling
+\fxnote[inline,nomargin]{«State of the art» på norsk?}
+
 Automatisk frasesamanstilling er eit nytt felt. Det finst allereie
 veldig gode system for automatisk setningssamanstilling, og automatisk
 samanstilling av ord har komme langt, men nivåa mellom ord og setning
@@ -455,8 +474,18 @@ this project relates to similar projects in the field.»
 #+END_LaTeX
 
  Konstituentstrukturen liknar på tradisjonelle frasetre, kor dominans
- mellom nodane viser frasehierarkiet i analysen av setninga.  I
- tillegg har kvar node ei kopling til f-strukturen, via
+ mellom nodane viser frasehierarkiet i analysen av
+ setninga. Nodekategoriane er vanlegvis basert på
+ \xbar-prinsipp. Hovudet i ein frase er XP, ein XP kan bestå av ein
+ /spesifikatorfrase/ (valfritt) og ein X' (\xbar). Ein X' kan bestå av
+ ein X' og eit /adjunkt/, eller ein X og eit /komplement/[fn:49]. I
+ figur \ref{fig:f-og-c-struktur} har me t.d. ein VP (her er X=V), med
+ ein spesifikator til venstre (ein ny frase, NP), og V'
+ (dvs. $\rm\overline{V}$) til høgre. V' består av V og kanskje eit
+ komplement til høgre. I dette tilfellet er spesifikator subjekt
+ (kanskje har me eit refleksiv pronomen som komplement).
+
+ I tillegg har kvar node i LFG ei kopling til f-strukturen, via
  *c-struktur-f-strukturavbildinga* $\phi{}$. Nodar i c-strukturen kan
  spesifisere informasjon på ulike stader i f-strukturen (me seier at
  nodane *projiserer* f-strukturar, eller deler av dei).  I dette
@@ -3697,4 +3726,8 @@ problem.
         dette vil ha å seie.
 
 [fn:48] Dette ser ut til å auke den totale farta med ca. 35 %.
+
+[fn:49] I utgangspunktet kan ein tenkje på /spesifikator/, /adjunkt/
+        og /komplement/ som tomme symbol her, definert ved deira
+        posisjon i forhold til XP og X'.
 

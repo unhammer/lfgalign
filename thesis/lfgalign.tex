@@ -1,4 +1,4 @@
-% Created 2010-11-01 må. 19:18
+% Created 2010-11-01 må. 20:02
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -213,9 +213,26 @@ då kva som er ein syntaktisk konstituent.
 \label{sec-2}
 
   \label{SEC:bakgrunn}
+
+  % \begin{quotation}
+  % Syntax, my lad. It has been restored to the highest place in the republic.
+  % \begin{minipage}{0.77\textwidth}
+  % \begin{flushright}
+  % John Steinbeck
+  % \end{flushright}
+  % \end{minipage}
+  % \end{quotation}
   
-\section{Relaterte metodar}
+I dette kapittelet gir eg eit oversyn over dei vanlegaste metodane
+innanfor feltet frasesamanstilling, og då spesielt dei som nyttar djup
+syntaktisk analyse eller rettar seg mot trebankar. Eg gir au ein kort
+gjennomgang av nokre teoretiske omgrep og konsept som eg kjem til å
+nytte i resten av oppgåva.
+
+\section{Metodar for frasesamanstilling}
 \label{sec-2.1}
+
+\fxnote[inline,nomargin]{«State of the art» på norsk?}
 
 Automatisk frasesamanstilling er eit nytt felt. Det finst allereie
 veldig gode system for automatisk setningssamanstilling, og automatisk
@@ -380,8 +397,20 @@ i Xpar-prosjektet, \citet{dyvik2009lmp}.
  \end{figure}
 
  Konstituentstrukturen liknar på tradisjonelle frasetre, kor dominans
- mellom nodane viser frasehierarkiet i analysen av setninga.  I
- tillegg har kvar node ei kopling til f-strukturen, via
+ mellom nodane viser frasehierarkiet i analysen av
+ setninga. Nodekategoriane er vanlegvis basert på
+ \xbar-prinsipp. Hovudet i ein frase er XP, ein XP kan bestå av ein
+ \emph{spesifikatorfrase} (valfritt) og ein X' (\xbar). Ein X' kan bestå av
+ ein X' og eit \emph{adjunkt}, eller ein X og eit \emph{komplement}\footnote{I utgangspunktet kan ein tenkje på \emph{spesifikator}, \emph{adjunkt}
+        og \emph{komplement} som tomme symbol her, definert ved deira
+        posisjon i forhold til XP og X'. }. I
+ figur \ref{fig:f-og-c-struktur} har me t.d. ein VP (her er X=V), med
+ ein spesifikator til venstre (ein ny frase, NP), og V'
+ (dvs. $\rm\overline{V}$) til høgre. V' består av V og kanskje eit
+ komplement til høgre. I dette tilfellet er spesifikator subjekt
+ (kanskje har me eit refleksiv pronomen som komplement).
+
+ I tillegg har kvar node i LFG ei kopling til f-strukturen, via
  \textbf{c-struktur-f-strukturavbildinga} $\phi{}$. Nodar i c-strukturen kan
  spesifisere informasjon på ulike stader i f-strukturen (me seier at
  nodane \textbf{projiserer} f-strukturar, eller deler av dei).  I dette
@@ -3400,6 +3429,7 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
 
 
 
