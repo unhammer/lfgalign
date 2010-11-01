@@ -455,7 +455,7 @@ this project relates to similar projects in the field.»
 #+END_LaTeX
 
  Konstituentstrukturen liknar på tradisjonelle frasetre, kor dominans
- mellom nodane viser frasehierarkiet i analysen av setninga. Men i
+ mellom nodane viser frasehierarkiet i analysen av setninga.  I
  tillegg har kvar node ei kopling til f-strukturen, via
  *c-struktur-f-strukturavbildinga* $\phi{}$. Nodar i c-strukturen kan
  spesifisere informasjon på ulike stader i f-strukturen (me seier at
@@ -492,35 +492,32 @@ this project relates to similar projects in the field.»
  ulike mengder med ord kan projisere same f-struktur; då har me ein
  *diskontinuerleg konstituent*.
 
-  Viss me følgjer avbildinga frå c-struktur til f-struktur tilbake til
-  c-strukturen igjen, finn me det *funksjonelle domenet* til ein
-  f-struktur. Me skriv $\phi^{-1}(f)$ (altså inversen av $\phi$) for
-  det funksjonelle domenet til f-strukturen $f$. Dette tilsvarer dei
-  nodane i c-strukturen som saman projiserer denne 
-  f-strukturen, t.d. ein VP-node med dominerande IP og CP
-  \citep[s.~126]{bresnan2001lfs}. 
-  \fxnote[inline,nomargin]{dette har eg vel sagt allereie:}
-  Sidan dette er inversen av ein
-  funksjon, kan me ha diskontinuerlege konstituentar i same
-  funksjonelle domene (på same måte som ulike argument til ein
-  funksjon kan gi same verdi).
+ Viss me følgjer avbildinga frå c-struktur til f-struktur tilbake til
+ c-strukturen igjen, finn me det *funksjonelle domenet* til ein
+ f-struktur. Me skriv $\phi^{-1}(f)$ (altså inversen av $\phi$) for
+ det funksjonelle domenet til f-strukturen $f$. Dette tilsvarer dei
+ nodane i c-strukturen som saman projiserer denne f-strukturen
+ \citep[s.~126]{bresnan2001lfs}. Sidan dette er inversen av ein
+ funksjon, kan me altså ha diskontinuerlege konstituentar i same
+ funksjonelle domene, på same måte som ulike argument til ein funksjon
+ kan gi same verdi.
 
-- endosentrisitetsprinsippa :: ...
+ - endosentrisitetsprinsippa :: ...
 
-- \xbar :: ...
+ - \xbar :: ...
 
 
-- fraselenkjer vs frasesamanstilling :: Eg nyttar her termane
-  /lenkjing/ og /samanstilling/ i omtrent same tyding som dei engelske
-  termane /link/ og /alignment/, kor ei samanstilling er ei mengd
-  lenkjer. Merk at ei enkeltlenkje treng ikkje å vere ein-til-ein.
-  Lenkjer og samanstillingar er ekvivalensforhold som me kan finne
-  mellom lingvistiske /representasjonar/ (f-struktur, c-struktur)
-  eller /uttrykk/ (ord, setningar). Lenkjing mellom dei siste er meir
-  ateoretisk / datanært -- grunnlaget for å opprette ei lenkje mellom
-  to c-strukturnodar er at uttrykka i kontekst som dei representerer
-  er omsetjingar, og har lik nok syntaks (i følgje dei to grammatiske
-  analysane) til at me kan lenkje nodane.
+ I denne oppgåva nyttar eg termane /lenkjing/ og /samanstilling/ i
+ omtrent same tyding som dei engelske termane /link/ og
+ /alignment/. Ei samanstilling er ei mengd lenkjer. Merk at ei
+ enkeltlenkje treng ikkje å vere ein-til-ein.  Lenkjer og
+ samanstillingar er ekvivalensforhold som me kan finne mellom
+ lingvistiske /representasjonar/ (f-struktur, c-struktur) eller
+ /uttrykk/ (ord, setningar). Lenkjing mellom dei siste er meir
+ ateoretisk/datanært -- grunnlaget for å opprette ei lenkje mellom to
+ c-strukturnodar (representasjonar) er at uttrykka i kontekst som dei
+ representerer er omsetjingar (og har lik nok syntaks i følgje dei to
+ grammatiske analysane til at me kan lenkje nodane).
 
 
 * Krav til frasesamanstilling
@@ -3700,3 +3697,4 @@ problem.
         dette vil ha å seie.
 
 [fn:48] Dette ser ut til å auke den totale farta med ca. 35 %.
+
