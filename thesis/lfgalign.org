@@ -379,11 +379,12 @@ observerte uttrykk. Dei går altså frå ordlenkjer til
 f-strukturlenkjer, motsett retning frå metoden i denne
 oppgåva. Ordlenkjer har au gitt f-strukturlenkjer i transferbasert
 statistisk maskinomsetjing
-\citep{graham2010dsl,graham2009osr,graham2009fts}.
+\citep{graham2010dsl,graham2009osr,graham2009fts}, som eg kjem tilbake
+til i kapittel \ref{SEC:diskusjon}.
 
 Så langt har eg ikkje komme over metodar som prøver å finne eller
-betre på frase- og ordsamanstilling ut frå ein LFG-parse -- det er
-dette som er strategien til programmet =lfgalign= i kapittel
+betre på frase- og ordsamanstilling direkte frå ein LFG-parse -- det
+er dette som er strategien til programmet =lfgalign= i kapittel
 \ref{SEC:implementasjon} -- men det er stor overlapp mellom krava som
 kjem i kapittel \ref{SEC:ideell} og dei gitt i den første publiseringa
 i Xpar-prosjektet, \citet{dyvik2009lmp}.
@@ -398,7 +399,7 @@ equivalent sentences of the two languages. We describe both our
 conceptual decisions and aspects of their technical realisation. We
 discuss some selected problems and conclude with a few remarks on how
 this project relates to similar projects in the field.»
-** SKRIV Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi
+** Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi
  \label{SEC:omgrepsavklaring}
 
  I dei følgjande kapitla nyttar eg ein del terminologi frå LFG,
@@ -483,7 +484,7 @@ this project relates to similar projects in the field.»
  ein spesifikator til venstre (ein ny frase, NP), og V'
  (dvs. $\rm\overline{V}$) til høgre. V' består av V og kanskje eit
  komplement til høgre. I dette tilfellet er spesifikator subjekt
- (kanskje har me eit refleksiv pronomen som komplement).
+ (kanskje har me eit refleksiv pronomen som komplement). 
 
  I tillegg har kvar node i LFG ei kopling til f-strukturen, via
  *c-struktur-f-strukturavbildinga* $\phi{}$. Nodar i c-strukturen kan
@@ -515,6 +516,10 @@ this project relates to similar projects in the field.»
  \p{luske} eitt argument, subjektet (det at argumentet er unifisert
  med \SUBJ{}-trekket er vist ved at dei begge har indeksen \ind{1}).
 
+ Visse /endosentrisitetsprinsipp/ avgrenser avbildinga mellom
+ c-struktur og f-struktur, ved å vise til \xbar-kategoriane; til dømes
+ har me alltid \ua=\da på ein X' som står under XP.
+
  Avbildinga frå c-struktur til f-struktur er mange-til-ein. Som nemnt
  projiserte både NP og N same f-struktur. Desse nodane dominerer same
  ord i c-strukturen, men det går fint an at to nodar som dominerer
@@ -531,22 +536,18 @@ this project relates to similar projects in the field.»
  funksjonelle domene, på same måte som ulike argument til ein funksjon
  kan gi same verdi.
 
- - endosentrisitetsprinsippa :: ...
-
- - \xbar :: ...
-
-
- I denne oppgåva nyttar eg termane /lenkjing/ og /samanstilling/ i
- omtrent same tyding som dei engelske termane /link/ og
- /alignment/. Ei samanstilling er ei mengd lenkjer. Merk at ei
- enkeltlenkje treng ikkje å vere ein-til-ein.  Lenkjer og
- samanstillingar er ekvivalensforhold som me kan finne mellom
- lingvistiske /representasjonar/ (f-struktur, c-struktur) eller
+ I denne oppgåva nyttar eg, i tillegg til LFG-terminologien, orda
+ /lenkjing/ og /samanstilling/ i omtrent same tyding som dei engelske
+ termane /link/ og /alignment/. Ei samanstilling er ei mengd
+ lenkjer. Merk at ei enkeltlenkje treng ikkje å vere ein-til-ein.
+ Lenkjer og samanstillingar er ekvivalensforhold som me kan finne
+ mellom lingvistiske /representasjonar/ (f-struktur, c-struktur) eller
  /uttrykk/ (ord, setningar). Lenkjing mellom dei siste er meir
  ateoretisk/datanært -- grunnlaget for å opprette ei lenkje mellom to
  c-strukturnodar (representasjonar) er at uttrykka i kontekst som dei
  representerer er omsetjingar (og har lik nok syntaks i følgje dei to
- grammatiske analysane til at me kan lenkje nodane).
+ grammatiske analysane til at me kan lenkje nodane). Neste kapittel
+ prøver å avgrense /når/ me ønskjer å lenkje to representasjonar.
 
 
 * Krav til frasesamanstilling
@@ -3730,4 +3731,6 @@ problem.
 [fn:49] I utgangspunktet kan ein tenkje på /spesifikator/, /adjunkt/
         og /komplement/ som tomme symbol her, definert ved deira
         posisjon i forhold til XP og X'.
+
+
 

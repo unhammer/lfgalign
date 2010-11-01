@@ -1,4 +1,4 @@
-% Created 2010-11-01 må. 20:02
+% Created 2010-11-01 må. 21:43
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -313,11 +313,12 @@ observerte uttrykk. Dei går altså frå ordlenkjer til
 f-strukturlenkjer, motsett retning frå metoden i denne
 oppgåva. Ordlenkjer har au gitt f-strukturlenkjer i transferbasert
 statistisk maskinomsetjing
-\citep{graham2010dsl,graham2009osr,graham2009fts}.
+\citep{graham2010dsl,graham2009osr,graham2009fts}, som eg kjem tilbake
+til i kapittel \ref{SEC:diskusjon}.
 
 Så langt har eg ikkje komme over metodar som prøver å finne eller
-betre på frase- og ordsamanstilling ut frå ein LFG-parse -- det er
-dette som er strategien til programmet \texttt{lfgalign} i kapittel
+betre på frase- og ordsamanstilling direkte frå ein LFG-parse -- det
+er dette som er strategien til programmet \texttt{lfgalign} i kapittel
 \ref{SEC:implementasjon} -- men det er stor overlapp mellom krava som
 kjem i kapittel \ref{SEC:ideell} og dei gitt i den første publiseringa
 i Xpar-prosjektet, \citet{dyvik2009lmp}.
@@ -408,7 +409,7 @@ i Xpar-prosjektet, \citet{dyvik2009lmp}.
  ein spesifikator til venstre (ein ny frase, NP), og V'
  (dvs. $\rm\overline{V}$) til høgre. V' består av V og kanskje eit
  komplement til høgre. I dette tilfellet er spesifikator subjekt
- (kanskje har me eit refleksiv pronomen som komplement).
+ (kanskje har me eit refleksiv pronomen som komplement). 
 
  I tillegg har kvar node i LFG ei kopling til f-strukturen, via
  \textbf{c-struktur-f-strukturavbildinga} $\phi{}$. Nodar i c-strukturen kan
@@ -440,6 +441,10 @@ i Xpar-prosjektet, \citet{dyvik2009lmp}.
  \p{luske} eitt argument, subjektet (det at argumentet er unifisert
  med \SUBJ{}-trekket er vist ved at dei begge har indeksen \ind{1}).
 
+ Visse \emph{endosentrisitetsprinsipp} avgrenser avbildinga mellom
+ c-struktur og f-struktur, ved å vise til \xbar-kategoriane; til dømes
+ har me alltid \ua=\da på ein X' som står under XP.
+
  Avbildinga frå c-struktur til f-struktur er mange-til-ein. Som nemnt
  projiserte både NP og N same f-struktur. Desse nodane dominerer same
  ord i c-strukturen, men det går fint an at to nodar som dominerer
@@ -456,10 +461,6 @@ i Xpar-prosjektet, \citet{dyvik2009lmp}.
  funksjonelle domene, på same måte som ulike argument til ein funksjon
  kan gi same verdi.
 
-\begin{description}
-\item [endosentrisitetsprinsippa] \ldots{}
-\item [\xbar] \ldots{}
-\end{description}
  I denne oppgåva nyttar eg termane \emph{lenkjing} og \emph{samanstilling} i
  omtrent same tyding som dei engelske termane \emph{link} og
  \emph{alignment}. Ei samanstilling er ei mengd lenkjer. Merk at ei
@@ -3429,6 +3430,8 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
+
 
 
 
