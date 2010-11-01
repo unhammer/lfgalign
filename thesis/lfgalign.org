@@ -3354,6 +3354,7 @@ problem.
  har eg ikkje sett slike situasjonar, men det er altså logisk mogleg
  at dei kan dukke opp.
 ** Bruksområde
+\fxnote[inline,nomargin]{dette blei tynt; flytte til oppsummering kanskje?}
 *** Oppdage argumentstrukturalternasjon
  I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
  f-strukturar og LPT-korrespondanse ikkje alltid har nok informasjon
