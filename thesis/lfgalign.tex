@@ -1,4 +1,4 @@
-% Created 2010-11-01 må. 14:04
+% Created 2010-11-01 må. 17:55
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -29,6 +29,7 @@
 %\SetAlgoFuncName{Funksjon}{} % for some reason gets no numbering TODO
 
 \newcommand{\xbar}{$\rm\overline{X}$}
+\newcommand{\ind}[1]{{\avmoptions{}\begin{avm}\@{#1}\end{avm}}}
 \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
 \newcommand{\OBLben}{\F{obl}{ben}}
 \newcommand{\OBJben}{\F{obj}{ben}}
@@ -42,6 +43,8 @@
 \newcommand{\SUBJs}{\F{subj~}{}}
 \newcommand{\SPEC}{\F{spec}{}}
 \newcommand{\POSS}{\F{poss}{}}
+\newcommand{\GEND}{\F{gend}{}}
+\newcommand{\NUM}{\F{num}{}}
 \newcommand{\PRED}{\F{pred}{}}
 \newcommand{\TOPIC}{\F{topic}{}}
 \newcommand{\falign}{\ensuremath{\operatorname{\emph{falign}}}}
@@ -315,8 +318,9 @@ i Xpar-prosjektet, \citet{dyvik2009lmp}.
 
  LFG er eit \textbf{modellteoretisk}, ikkje-derivasjonelt, rammeverk for
  grammatikk.  \citet{pullum2001dbm} gir ein god gjennomgang av
- forskjellen mellom derivasjonelle (au kalla enumerative) grammatikkar
- og modellteoretiske grammatikkar. Derivasjonelle grammatikkar, som
+ forskjellen mellom dei meir tradisjonelle derivasjonelle (au kalla
+ enumerative) grammatikkane og modellteoretiske
+ grammatikkar. Derivasjonelle grammatikkar, som
  transformasjonsgrammatikkane til Chomsky, definerer eit språk som \emph{ei  mengd av uttrykk} ved avleiing frå eit startsymbol. Ein
  modellteoretisk grammatikk, derimot, gir skildringar av
  \emph{enkeltuttrykk}, kor eitt uttrykk kan ha fleire moglege skildringar
@@ -333,14 +337,15 @@ i Xpar-prosjektet, \citet{dyvik2009lmp}.
  ikkje-vilkårleg måte) skildre subtreet utanfor fragmentet heilt fram
  til terminal- eller startsymbol.
 
- I LFG har analysane ulike \emph{nivå}, \emph{strukturar}. Konstituentforhold er
- skildra i \textbf{c-strukturen} («constituent structure»), medan forhold
- mellom syntaktiske funksjonar og grammatiske trekk kjem til syne i
- \textbf{f-strukturen} («functional structure»), ein trekkstruktur. Ein
- trekkstruktur er ei mengd attributt og verdiar, kor ein verdi kan
- vere atomær eller peike på ein ny trekkstruktur.  Figur
- \ref{fig:f-og-c-struktur} illusterer eit enkelt døme for eit
- fragment.
+ I LFG har analysane ulike \emph{nivå}, eller \emph{strukturar} (dette er ein av
+ hovudforskjellane frå rammeverket HPSG \citep{swb-hpsg}, som LFG
+ elles kan likne på). Konstituentforhold er skildra i \textbf{c-strukturen}
+ («constituent structure»), medan forhold mellom syntaktiske
+ funksjonar og grammatiske trekk kjem til syne i \textbf{f-strukturen}
+ («functional structure»), ein trekkstruktur. Ein trekkstruktur er ei
+ mengd attributt og verdiar, kor ein verdi kan vere atomær eller peike
+ på ein ny trekkstruktur.  Figur \ref{fig:f-og-c-struktur} illusterer
+ eit enkelt døme for eit fragment.
 
  \begin{figure}[htp]
     \centering
@@ -349,7 +354,9 @@ i Xpar-prosjektet, \citet{dyvik2009lmp}.
     {\avmoptions{}
      \node(f){
         \begin{avm}
-          $f$ \[ subj & \[pred  & `{\bf{}hund}' \\
+          $f$ \[ pred  & `{\bf{}luske<\@{1}>}' \\
+          tense & pres \\
+          subj & \@{1} \[pred  & `{\bf{}hund}' \\
                 num & sg \\
                 gend & masc \\
                 def & + \\
@@ -361,10 +368,10 @@ i Xpar-prosjektet, \citet{dyvik2009lmp}.
 
       \begin{scope}[shift={(-5cm,2cm)}]
      \Tree  [.\node(VP){VP}; [.\proj{\ua SUBJ=\da}{NP}
-                                       [.\node(N){\proj{\ua = \da}{N}};
-                                           \node(hunden){hunden};  ] ] 
-                             \proj{}{...}
-                                                       ]
+                                       [.\node(N){\proj{\ua = \da}{N}}; \node(hunden){hunden};  ] ] 
+                             [.\proj{\ua=\da}{V'}
+                                       [.\proj{\ua=\da}{V} luskar ]
+                                       {\proj{...}{}} ] ]
       \end{scope}
    \end{tikzpicture}
 
@@ -375,7 +382,7 @@ i Xpar-prosjektet, \citet{dyvik2009lmp}.
  Konstituentstrukturen liknar på tradisjonelle frasetre, kor dominans
  mellom nodane viser frasehierarkiet i analysen av setninga. Men i
  tillegg har kvar node ei kopling til f-strukturen, via
- c-struktur-f-strukturavbildinga $\phi{}$. Nodar i c-strukturen kan
+ \textbf{c-struktur-f-strukturavbildinga} $\phi{}$. Nodar i c-strukturen kan
  spesifisere informasjon på ulike stader i f-strukturen (me seier at
  nodane \textbf{projiserer} f-strukturar, eller deler av dei).  I dette
  tilfellet går $\phi$ av VP her til f-strukturen $f$, VP projiserer
@@ -383,32 +390,49 @@ i Xpar-prosjektet, \citet{dyvik2009lmp}.
  «denne noden projiserer subjektet til $\phi$ av mornoden», altså
  projiserer NP-en \SUBJ{} av $f$. NP er ikkje åleine om å gjere dette,
  N-noden har \ua{}=\da{} som vil seie at N projiserer same f-struktur
- som NP. Dette subjektet har fleire trekk i f-strukturen,
- t.d. \F{num}\{\} og \F{gend}\{\} som har atomære verdiar og seier at
- dette er i eintal og maskulinum. Viss eit anna ord i setninga må
- samsvare med dette for å vere grammatisk, kan me krevje i
- grammatikken at me kan \textbf{unifisere} visse trekk; for atomære trekk som
- dette kan me alltid unifisere dei viss atomet er formmessig likt. Me kan au
- unifisere heile trekkstrukturar så lenge dei ikkje har trekk som
- ikkje kan unifiserast; dei unifiserte strukturane er då blitt \emph{ein}
- struktur, og alle referansar til dei to peiker no på same struktur. 
+ som NP. Dette subjektet har fleire trekk i f-strukturen, t.d. \NUM{}
+ og \GEND{} som har atomære verdiar og seier at dette er i eintal og
+ maskulinum. Viss eit anna ord i setninga må samsvare med dette for å
+ vere grammatisk, kan me krevje i grammatikken at me kan \textbf{unifisere}
+ visse trekk; for atomære trekk som dette kan me alltid unifisere dei
+ viss atomet er formmessig likt. Me kan au unifisere heile
+ trekkstrukturar så lenge dei ikkje har trekk som ikkje kan
+ unifiserast; dei unifiserte strukturane er då blitt \emph{ein} struktur,
+ og alle referansar til dei to peiker no på same struktur. Slik er det
+ mogleg å få \emph{sykliske} strukturar -- ein f-struktur er ein
+ \emph{graf}. Det er altså ikkje mogleg å gjere om ein f-struktur til ein
+ trestruktur utan å miste informasjon.
 
- \PRED{} er eit spesielt trekk, verdien her er ein \emph{semantisk  form}. Desse er alltid \emph{unike}, og kan ikkje unifiserast sjølv om dei
- har lik form.
+ I figur \ref{fig:f-og-c-struktur} er verdien av \PRED{}-trekket til
+ subjektet \p{hund}. \PRED{} er eit spesielt trekk, verdien her er ein
+ \emph{semantisk form}. Desse er alltid \emph{unike}, og kan ikkje unifiserast
+ sjølv om dei har lik form. I tillegg viser dei \emph{argumentstrukturen}
+ til predikatet. I figur \ref{fig:f-og-c-struktur} har predikatet
+ \p{luske} eitt argument, subjektet (det at argumentet er unifisert
+ med \SUBJ{}-trekket er vist ved at dei begge har indeksen \ind{1}).
+
+ Avbildinga frå c-struktur til f-struktur er mange-til-ein. Som nemnt
+ projiserte både NP og N same f-struktur. Desse nodane dominerer same
+ ord i c-strukturen, men det går fint an at to nodar som dominerer
+ ulike mengder med ord kan projisere same f-struktur; då har me ein
+ \textbf{diskontinuerleg konstituent}.
+
+  Viss me følgjer avbildinga frå c-struktur til f-struktur tilbake til
+  c-strukturen igjen, finn me det \textbf{funksjonelle domenet} til ein
+  f-struktur. Me skriv $\phi^{-1}(f)$ (altså inversen av $\phi$) for
+  det funksjonelle domenet til f-strukturen $f$. Dette tilsvarer dei
+  nodane i c-strukturen som saman projiserer denne 
+  f-strukturen, t.d. ein VP-node med dominerande IP og CP
+  \citep[s.~126]{bresnan2001lfs}. 
+  \fxnote[inline,nomargin]{dette har eg vel sagt allereie:}
+  Sidan dette er inversen av ein
+  funksjon, kan me ha diskontinuerlege konstituentar i same
+  funksjonelle domene (på same måte som ulike argument til ein
+  funksjon kan gi same verdi).
 
 \begin{description}
 \item [endosentrisitetsprinsippa] \ldots{}
 \item [\xbar] \ldots{}
-\item [diskontinuerlege konstituentar] \ldots{}
-\item [$\phi$] c-struktur-f-strukturavbildinga $\phi$ \ldots{}
-\item [$\phi^{-1}$] Det funksjonelle domenet til ein f-struktur er gitt
-  ved $\phi^{-1}$, inversen av c-til-f-strukturavbildinga, og
-  tilsvarer dei nodane i c-strukturen som projiserer denne
-  f-strukturen, t.d. ein VP-node med dominerande IP og CP
-  \citep[s.~126]{bresnan2001lfs}. Sidan dette er inversen av ein
-  funksjon, kan me ha diskontinuerlege konstituentar i same
-  funksjonelle domene (på same måte som ulike argument til ein
-  funksjon kan gi same verdi).
 \item [fraselenkjer vs frasesamanstilling] Eg nyttar her termane
   \emph{lenkjing} og \emph{samanstilling} i omtrent same tyding som dei engelske
   termane \emph{link} og \emph{alignment}, kor ei samanstilling er ei mengd
