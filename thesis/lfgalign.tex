@@ -1,4 +1,4 @@
-% Created 2010-11-02 ty. 14:54
+% Created 2010-11-02 ty. 17:04
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -1204,7 +1204,7 @@ med argument/adjunkt i $p$, men det treng ikkje vere lenkja -- viss
 det er ulenkja gjeld ikkje krav \Last for $a_q$, så \Last hindrar
 ikkje ei lenkje mellom $a_p$ og døtre av $a_q$. 
 
-I tillegg vil ikkje \Last hindre at t.d. den ytste f-strukturen i
+I tillegg vil ikkje \Last hindre at t.d. den yttarste f-strukturen i
 kjeldespråket er lenkja til eit \XCOMP{}-argument på målspråket; men i
 dette tilfellet bør kanskje ikkje \emph{setningane} vere lenkja i
 utgangspunktet.
@@ -1215,13 +1215,13 @@ lenkje f-strukturar som står i ulike omgivnader. I implementasjonen
 min har eg difor følgt eit strengare krav enn \Last[e]:
 
 \ex. \label{krav:PRED-omgivnad} \PRED{}-elementa $p$ og $q$ kan berre
-     lenkjast om dei er ytste f-strukturar i lenkja setningar, eller
+     lenkjast om dei er yttarste f-strukturar i lenkja setningar, eller
      er argument/adjunkt til lenkja f-strukturar.
 
 Dette er ei tentativ formulering. Til no har eg ikkje sett døme kor
 \Last ikkje bør gjelde, men om det finst slike døme bør sjølvsagt
 kravet modifiserast. Sidan LFG tillèt fragmentariske analysar kan det
-vere \emph{fleire} ytste f-strukturar, alle desse kan då potensielt
+vere \emph{fleire} yttarste f-strukturar, alle desse kan då potensielt
 lenkjast med kvarandre, eller stå ulenkja (som om dei var adjunkt av
 eit predikat som sto utanfor dei).
 
@@ -3061,15 +3061,15 @@ Men setning 67.pl og 68.pl, vist i \Next nedanfor, er problematiske:
  \emph{suraTi}, i staden for å vere eit adjunkt/argument (f-strukturen til
  \emph{Abrams} står som argument til \p{bilde}). Programmet finn ikkje
  f-strukturar via andre stigar enn adjunkt eller argument til
- tidlegare kjende f-strukturar, eller via «ytste» f-strukturar --
+ tidlegare kjende f-strukturar, eller via «yttarste» f-strukturar --
  dette er krav \ref{krav:PRED-omgivnad} frå kapittel
  \ref{SEC:ideell}. Sidan \emph{abramsis} ikkje er mogleg å finne via
  argument/adjunkt av rotpredikatet, ender det opp i ei eiga liste for
  fragment ol. som kan lenkjast, men kor me ikkje veit noko om
- konteksten. Det blir altså handsama som eit av fleire ytste predikat
+ konteksten. Det blir altså handsama som eit av fleire yttarste predikat
  -- men her burde det jo vere mogleg å finne det via \emph{suraTi}. På den
  norske sida er \emph{Abrams} mogleg å finne gjennom \emph{bilde}, og er ikkje
- sett på som noko ytste predikat, så \emph{abramsis} og \emph{av Abrams} blir
+ sett på som noko yttarste predikat, så \emph{abramsis} og \emph{av Abrams} blir
  ikkje lenkja.
 
 Dette dømet demonstrerer ein veikskap med \texttt{lfgalign}: om ein skal
@@ -3251,21 +3251,21 @@ modellen har ingen mange-mange-lenkjer).
         sjå funksjonen \texttt{ev-ria}. }, men iallfall meir enn dobbelt så stort som
  ein ville forvente om det ikkje var nokon likskap. Ved manuelt
  gjennomsyn ser det ut til at der dei har ulike lenkjer, er det
- \texttt{lfgalign} (eller begge) som tek feil. 
+ \texttt{lfgalign} (av og til begge) som tek feil. 
 
  I tillegg har \texttt{lfgalign} færrast lenkja \PRED{}-element av alle
- metodane, som kan tyde på litt lågare dekning (sjølv om \texttt{lfgalign}
+ metodane, som kan tyde på litt lågare dekning (trass i at \texttt{lfgalign}
  kan føye saman eitt predikat og argument i lenkjinga, noko \texttt{RIA} og
  baseline-modellen ikkje gjer).
 
  Ved nærare ettersyn viser det seg at dette korpuset har mange
- fragmentariske analysar, og som oftast er det mange «ytste
+ fragmentariske analysar, og som oftast er det mange «yttarste
  f-strukturar» (gjerne over ti i kvar setning, i snitt fire per
  setning; gjennomsnittleg setningslengd i materialet er 9,8
  ord). Implementasjonen min reknar ein f-struktur for å vere ein av
- desse ytste om han ikkje er referert til som argument/adjunkt av
- andre f-strukturar. Ytste f-strukturar blir handsame som om dei er på
- same nivå i f-strukturen -- viss det eigentleg finst ein intern
+ desse yttarste om han ikkje er referert til som argument/adjunkt av
+ andre f-strukturar. Yttarste f-strukturar blir handsama som om dei er
+ på same nivå i f-strukturen -- viss det eigentleg finst ein intern
  struktur mellom desse blir det ignorert. Det vil altså seie at for
  store deler av analysane får \texttt{lfgalign} ingenting ut av f-strukturen.
 
@@ -3281,15 +3281,19 @@ modellen har ingen mange-mange-lenkjer).
  «vanlege» lister med argument/adjunkt (t.d. to argument og tri-fire
  adjunkt), er det ikkje merkbart at alle moglege kombinasjonar av
  argument/adjunkt blir prøvd lenkja; men når det er snakk om ti
- adjunkt på kvar side tek det \texttt{adjalign} ca. 46 sekund (på ein vanleg
- datamaskin med 2,1 GHz, 3GB RAM) å finne alle moglege
- lenkjekombinasjonar. For å i det heile teke kome meg gjennom
- testsettet endra eg på \texttt{lfgalign} i denne evalueringa slik at me
- berre vel første lenkjekombinasjonen viss adjunktlistene har over
- åtte medlem\footnote{Eg gjorde ingen slike avskjeringar for argumentpermutasjonane. }. Med så flate strukturar og ingen LPT-informasjon
- er det usannsynleg å ende opp med rett kombinasjon uansett. Med denne
- «avskjeringa» på plass tok heile korpuset på 4000 setningspar rett
- under tri timar å samanstille.
+ «adjunkt» (her: yttarste f-strukturar) på kvar side tek det
+ \texttt{adjalign} ca. 46 sekund (på ein vanleg datamaskin med 2,1 GHz, 3GB
+ RAM) å finne alle moglege lenkjekombinasjonar. For å i det heile teke
+ komme meg gjennom testsettet måtte eg setje ei grense på \texttt{lfgalign} i
+ denne evalueringa slik at me berre vel første lenkjekombinasjonen
+ viss adjunktlistene har over åtte medlem\footnote{Eg gjorde ingen slike avskjeringar for argumentpermutasjonane. }. Med så flate
+ strukturar og ingen LPT-informasjon er det nok usannsynleg å ende opp
+ med rett kombinasjon uansett. Med denne «avskjeringa» på plass tok
+ heile testsettet på 4000 setningspar rett under tri timar å
+ samanstille. Det kan hende at lenkjeoverlappet hadde vore litt høgare
+ med eit fullstendig søk, men avskjeringa skjer berre på omtrent kvart
+ tiande setningspar, så den endelege verknaden på resultata i tabell
+ \ref{tbl:RIA} er nok ikkje stor.
 
 \section{Opne problem}
 \label{sec-5.4}
@@ -3305,13 +3309,16 @@ for å betre metoden.
 Som nemnt i del \ref{SEC:ria} har \texttt{lfgalign} problem med
 fragmentariske f-strukturanalysar. 
 
+\fxnote{veit ikkje kor mykje meir eg skal seie
+her...} 
+
 Ein mogleg strategi for å handsame desse vil vere å dele opp
 lenkjingsoppgåva slik at me først finn fragment som sannsynlegvis
-korresponderar, og så sender kvar av desse til vanleg
-f-strukturlenkjing. Men der fragmenta ikkje overlappar vil me få
-problem. Ein av grunnføresetnadene til \texttt{lfgalign} er at analysane har
-ein viss likskap, og er korrekte, så ei god løysing på dette problemet
-vil nok gå utover oppgåva. 
+korresponderar (ein god heuristikk er ganske enkelt følgje), og så
+sender kvar av desse til vanleg f-strukturlenkjing. Men der fragmenta
+ikkje overlappar vil me få problem. Ein av grunnføresetnadene til
+\texttt{lfgalign} er at analysane har ein viss likskap, og er korrekte; ei
+god løysing på dette problemet vil nok gå utover oppgåva.
 
 
 \subsection{«Mjuk» LPT-korrespondanse, og rangering som avskjering}
