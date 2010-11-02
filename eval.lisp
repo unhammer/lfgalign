@@ -243,6 +243,10 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
      (out "isect/union ~A~%" (/ isect union))
      (out "~A~% <=> ~A~%"
 	  (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
+     (out "                ria: ~A~%~A: ~A~%"
+	  (pred-tag-alignment ria-ranked tab_s tab_t)
+	  aligner
+	  (pred-tag-alignment best-f-alignment tab_s tab_t))
      (let ((allpairs
 	    (if (consp (cdr f-alignments))
 		;; Strangely, mapcan #'append hangs if the list is long enough:
