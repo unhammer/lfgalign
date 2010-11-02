@@ -9,6 +9,7 @@
 #+OPTIONS: H:4 toc:t f:t skip:nil num:t
 #+LaTeX_CLASS: masterdraft
 #+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
+#+LaTeX_HEADER: \newcommand{\ind}[1]{{\avmoptions{}\begin{avm}\@{#1}\end{avm}}}
 #+LaTeX_HEADER: \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
 #+LaTeX_HEADER: \newcommand{\OBLben}{\F{obl}{ben}}
 #+LaTeX_HEADER: \newcommand{\OBJben}{\F{obj}{ben}}
@@ -22,6 +23,8 @@
 #+LaTeX_HEADER: \newcommand{\SUBJs}{\F{subj~}{}}
 #+LaTeX_HEADER: \newcommand{\SPEC}{\F{spec}{}}
 #+LaTeX_HEADER: \newcommand{\POSS}{\F{poss}{}}
+#+LaTeX_HEADER: \newcommand{\GEND}{\F{gend}{}}
+#+LaTeX_HEADER: \newcommand{\NUM}{\F{num}{}}
 #+LaTeX_HEADER: \newcommand{\PRED}{\F{pred}{}}
 #+LaTeX_HEADER: \newcommand{\TOPIC}{\F{topic}{}}
 #+LaTeX_HEADER: \newcommand{\falign}{\ensuremath{\operatorname{\emph{falign}}}}
@@ -277,8 +280,27 @@ med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
 * Bakgrunn og omgrepsavklaring
   \label{SEC:bakgrunn}
+
+#+BEGIN_LaTeX
+  % \begin{quotation}
+  % Syntax, my lad. It has been restored to the highest place in the republic.
+  % \begin{minipage}{0.77\textwidth}
+  % \begin{flushright}
+  % John Steinbeck
+  % \end{flushright}
+  % \end{minipage}
+  % \end{quotation}
+#+END_LaTeX
   
-** Relaterte metodar
+I dette kapittelet gir eg eit oversyn over dei vanlegaste metodane
+innanfor feltet frasesamanstilling, og då spesielt dei som nyttar djup
+syntaktisk analyse eller rettar seg mot trebankar. Eg gir au ein kort
+gjennomgang av nokre teoretiske omgrep og konsept som eg kjem til å
+nytte i resten av oppgåva.
+
+** Metodar for frasesamanstilling
+\fxnote[inline,nomargin]{«State of the art» på norsk?}
+
 Automatisk frasesamanstilling er eit nytt felt. Det finst allereie
 veldig gode system for automatisk setningssamanstilling, og automatisk
 samanstilling av ord har komme langt, men nivåa mellom ord og setning
@@ -357,11 +379,12 @@ observerte uttrykk. Dei går altså frå ordlenkjer til
 f-strukturlenkjer, motsett retning frå metoden i denne
 oppgåva. Ordlenkjer har au gitt f-strukturlenkjer i transferbasert
 statistisk maskinomsetjing
-\citep{graham2010dsl,graham2009osr,graham2009fts}.
+\citep{graham2010dsl,graham2009osr,graham2009fts}, som eg kjem tilbake
+til i kapittel \ref{SEC:diskusjon}.
 
 Så langt har eg ikkje komme over metodar som prøver å finne eller
-betre på frase- og ordsamanstilling ut frå ein LFG-parse -- det er
-dette som er strategien til programmet =lfgalign= i kapittel
+betre på frase- og ordsamanstilling direkte frå ein LFG-parse -- det
+er dette som er strategien til programmet =lfgalign= i kapittel
 \ref{SEC:implementasjon} -- men det er stor overlapp mellom krava som
 kjem i kapittel \ref{SEC:ideell} og dei gitt i den første publiseringa
 i Xpar-prosjektet, \citet{dyvik2009lmp}.
@@ -376,7 +399,7 @@ equivalent sentences of the two languages. We describe both our
 conceptual decisions and aspects of their technical realisation. We
 discuss some selected problems and conclude with a few remarks on how
 this project relates to similar projects in the field.»
-** SKRIV Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi
+** Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi
  \label{SEC:omgrepsavklaring}
 
  I dei følgjande kapitla nyttar eg ein del terminologi frå LFG,
@@ -387,8 +410,9 @@ this project relates to similar projects in the field.»
 
  LFG er eit *modellteoretisk*, ikkje-derivasjonelt, rammeverk for
  grammatikk.  \citet{pullum2001dbm} gir ein god gjennomgang av
- forskjellen mellom derivasjonelle (au kalla enumerative) grammatikkar
- og modellteoretiske grammatikkar. Derivasjonelle grammatikkar, som
+ forskjellen mellom dei meir tradisjonelle derivasjonelle (au kalla
+ enumerative) grammatikkane og modellteoretiske
+ grammatikkar. Derivasjonelle grammatikkar, som
  transformasjonsgrammatikkane til Chomsky, definerer eit språk som /ei
  mengd av uttrykk/ ved avleiing frå eit startsymbol. Ein
  modellteoretisk grammatikk, derimot, gir skildringar av
@@ -406,14 +430,15 @@ this project relates to similar projects in the field.»
  ikkje-vilkårleg måte) skildre subtreet utanfor fragmentet heilt fram
  til terminal- eller startsymbol.
 
- I LFG har analysane ulike /nivå/, /strukturar/. Konstituentforhold er
- skildra i *c-strukturen* («constituent structure»), medan forhold
- mellom syntaktiske funksjonar og grammatiske trekk kjem til syne i
- *f-strukturen* («functional structure»), ein trekkstruktur. Ein
- trekkstruktur er ei mengd attributt og verdiar, kor ein verdi kan
- vere atomær eller peike på ein ny trekkstruktur.  Figur
- \ref{fig:f-og-c-struktur} illusterer eit enkelt døme for eit
- fragment.
+ I LFG har analysane ulike /nivå/, eller /strukturar/ (dette er ein av
+ hovudforskjellane frå rammeverket HPSG \citep{swb-hpsg}, som LFG
+ elles kan likne på). Konstituentforhold er skildra i *c-strukturen*
+ («constituent structure»), medan forhold mellom syntaktiske
+ funksjonar og grammatiske trekk kjem til syne i *f-strukturen*
+ («functional structure»), ein trekkstruktur. Ein trekkstruktur er ei
+ mengd attributt og verdiar, kor ein verdi kan vere atomær eller peike
+ på ein ny trekkstruktur.  Figur \ref{fig:f-og-c-struktur} illusterer
+ eit enkelt døme for eit fragment.
 
 #+BEGIN_LaTeX
  \begin{figure}[htp]
@@ -423,7 +448,9 @@ this project relates to similar projects in the field.»
     {\avmoptions{}
      \node(f){
         \begin{avm}
-          $f$ \[ subj & \[pred  & `{\bf{}hund}' \\
+          $f$ \[ pred  & `{\bf{}luske<\@{1}>}' \\
+	  tense & pres \\
+	  subj & \@{1} \[pred  & `{\bf{}hund}' \\
                 num & sg \\
                 gend & masc \\
                 def & + \\
@@ -435,10 +462,10 @@ this project relates to similar projects in the field.»
 
       \begin{scope}[shift={(-5cm,2cm)}]
      \Tree  [.\node(VP){VP}; [.\proj{\ua SUBJ=\da}{NP}
-                                       [.\node(N){\proj{\ua = \da}{N}};
-                                           \node(hunden){hunden};  ] ] 
-		             \proj{}{...}
-						       ]
+                                       [.\node(N){\proj{\ua = \da}{N}}; \node(hunden){hunden};  ] ] 
+		             [.\proj{\ua=\da}{V'}
+			               [.\proj{\ua=\da}{V} luskar ]
+				       {\proj{...}{}} ] ]
       \end{scope}
    \end{tikzpicture}
 
@@ -448,9 +475,19 @@ this project relates to similar projects in the field.»
 #+END_LaTeX
 
  Konstituentstrukturen liknar på tradisjonelle frasetre, kor dominans
- mellom nodane viser frasehierarkiet i analysen av setninga. Men i
- tillegg har kvar node ei kopling til f-strukturen, via
- c-struktur-f-strukturavbildinga $\phi{}$. Nodar i c-strukturen kan
+ mellom nodane viser frasehierarkiet i analysen av
+ setninga. Nodekategoriane er vanlegvis basert på
+ \xbar-prinsipp. Hovudet i ein frase er XP, ein XP kan bestå av ein
+ /spesifikatorfrase/ (valfritt) og ein X' (\xbar). Ein X' kan bestå av
+ ein X' og eit /adjunkt/, eller ein X og eit /komplement/[fn:49]. I
+ figur \ref{fig:f-og-c-struktur} har me t.d. ein VP (her er X=V), med
+ ein spesifikator til venstre (ein ny frase, NP), og V'
+ (dvs. $\rm\overline{V}$) til høgre. V' består av V og kanskje eit
+ komplement til høgre. I dette tilfellet er spesifikator subjekt
+ (kanskje har me eit refleksiv pronomen som komplement). 
+
+ I tillegg har kvar node i LFG ei kopling til f-strukturen, via
+ *c-struktur-f-strukturavbildinga* $\phi{}$. Nodar i c-strukturen kan
  spesifisere informasjon på ulike stader i f-strukturen (me seier at
  nodane *projiserer* f-strukturar, eller deler av dei).  I dette
  tilfellet går $\phi$ av VP her til f-strukturen $f$, VP projiserer
@@ -458,48 +495,59 @@ this project relates to similar projects in the field.»
  «denne noden projiserer subjektet til $\phi$ av mornoden», altså
  projiserer NP-en \SUBJ{} av $f$. NP er ikkje åleine om å gjere dette,
  N-noden har \ua{}=\da{} som vil seie at N projiserer same f-struktur
- som NP. Dette subjektet har fleire trekk i f-strukturen,
- t.d. \F{num}{} og \F{gend}{} som har atomære verdiar og seier at
- dette er i eintal og maskulinum. Viss eit anna ord i setninga må
- samsvare med dette for å vere grammatisk, kan me krevje i
- grammatikken at me kan *unifisere* visse trekk; for atomære trekk som
- dette kan me alltid unifisere dei viss atomet er formmessig likt. Me kan au
- unifisere heile trekkstrukturar så lenge dei ikkje har trekk som
- ikkje kan unifiserast; dei unifiserte strukturane er då blitt /ein/
- struktur, og alle referansar til dei to peiker no på same struktur. 
+ som NP. Dette subjektet har fleire trekk i f-strukturen, t.d. \NUM{}
+ og \GEND{} som har atomære verdiar og seier at dette er i eintal og
+ maskulinum. Viss eit anna ord i setninga må samsvare med dette for å
+ vere grammatisk, kan me krevje i grammatikken at me kan *unifisere*
+ visse trekk; for atomære trekk som dette kan me alltid unifisere dei
+ viss atomet er formmessig likt. Me kan au unifisere heile
+ trekkstrukturar så lenge dei ikkje har trekk som ikkje kan
+ unifiserast; dei unifiserte strukturane er då blitt /ein/ struktur,
+ og alle referansar til dei to peiker no på same struktur. Slik er det
+ mogleg å få /sykliske/ strukturar -- ein f-struktur er ein
+ /graf/. Det er altså ikkje mogleg å gjere om ein f-struktur til ein
+ trestruktur utan å miste informasjon.
 
- \PRED{} er eit spesielt trekk, verdien her er ein /semantisk
- form/. Desse er alltid /unike/, og kan ikkje unifiserast sjølv om dei
- har lik form.
+ I figur \ref{fig:f-og-c-struktur} er verdien av \PRED{}-trekket til
+ subjektet \p{hund}. \PRED{} er eit spesielt trekk, verdien her er ein
+ /semantisk form/. Desse er alltid /unike/, og kan ikkje unifiserast
+ sjølv om dei har lik form. I tillegg viser dei /argumentstrukturen/
+ til predikatet. I figur \ref{fig:f-og-c-struktur} har predikatet
+ \p{luske} eitt argument, subjektet (det at argumentet er unifisert
+ med \SUBJ{}-trekket er vist ved at dei begge har indeksen \ind{1}).
 
-- endosentrisitetsprinsippa :: ...
+ Visse /endosentrisitetsprinsipp/ avgrenser avbildinga mellom
+ c-struktur og f-struktur, ved å vise til \xbar-kategoriane; til dømes
+ har me alltid \ua=\da på ein X' som står under XP.
 
-- \xbar :: ...
+ Avbildinga frå c-struktur til f-struktur er mange-til-ein. Som nemnt
+ projiserte både NP og N same f-struktur. Desse nodane dominerer same
+ ord i c-strukturen, men det går fint an at to nodar som dominerer
+ ulike mengder med ord kan projisere same f-struktur; då har me ein
+ *diskontinuerleg konstituent*.
 
-- diskontinuerlege konstituentar :: ...
+ Viss me følgjer avbildinga frå c-struktur til f-struktur tilbake til
+ c-strukturen igjen, finn me det *funksjonelle domenet* til ein
+ f-struktur. Me skriv $\phi^{-1}(f)$ (altså inversen av $\phi$) for
+ det funksjonelle domenet til f-strukturen $f$. Dette tilsvarer dei
+ nodane i c-strukturen som saman projiserer denne f-strukturen
+ \citep[s.~126]{bresnan2001lfs}. Sidan dette er inversen av ein
+ funksjon, kan me altså ha diskontinuerlege konstituentar i same
+ funksjonelle domene, på same måte som ulike argument til ein funksjon
+ kan gi same verdi.
 
-- $\phi$ :: c-struktur-f-strukturavbildinga $\phi$ ...
-	    
-- $\phi^{-1}$ :: Det funksjonelle domenet til ein f-struktur er gitt
-  ved $\phi^{-1}$, inversen av c-til-f-strukturavbildinga, og
-  tilsvarer dei nodane i c-strukturen som projiserer denne
-  f-strukturen, t.d. ein VP-node med dominerande IP og CP
-  \citep[s.~126]{bresnan2001lfs}. Sidan dette er inversen av ein
-  funksjon, kan me ha diskontinuerlege konstituentar i same
-  funksjonelle domene (på same måte som ulike argument til ein
-  funksjon kan gi same verdi).
-
-- fraselenkjer vs frasesamanstilling :: Eg nyttar her termane
-  /lenkjing/ og /samanstilling/ i omtrent same tyding som dei engelske
-  termane /link/ og /alignment/, kor ei samanstilling er ei mengd
-  lenkjer. Merk at ei enkeltlenkje treng ikkje å vere ein-til-ein.
-  Lenkjer og samanstillingar er ekvivalensforhold som me kan finne
-  mellom lingvistiske /representasjonar/ (f-struktur, c-struktur)
-  eller /uttrykk/ (ord, setningar). Lenkjing mellom dei siste er meir
-  ateoretisk / datanært -- grunnlaget for å opprette ei lenkje mellom
-  to c-strukturnodar er at uttrykka i kontekst som dei representerer
-  er omsetjingar, og har lik nok syntaks (i følgje dei to grammatiske
-  analysane) til at me kan lenkje nodane.
+ I denne oppgåva nyttar eg, i tillegg til LFG-terminologien, orda
+ /lenkjing/ og /samanstilling/ i omtrent same tyding som dei engelske
+ termane /link/ og /alignment/. Ei samanstilling er ei mengd
+ lenkjer. Merk at ei enkeltlenkje treng ikkje å vere ein-til-ein.
+ Lenkjer og samanstillingar er ekvivalensforhold som me kan finne
+ mellom lingvistiske /representasjonar/ (f-struktur, c-struktur) eller
+ /uttrykk/ (ord, setningar). Lenkjing mellom dei siste er meir
+ ateoretisk/datanært -- grunnlaget for å opprette ei lenkje mellom to
+ c-strukturnodar (representasjonar) er at uttrykka i kontekst som dei
+ representerer er omsetjingar (og har lik nok syntaks i følgje dei to
+ grammatiske analysane til at me kan lenkje nodane). Neste kapittel
+ prøver å avgrense /når/ me ønskjer å lenkje to representasjonar.
 
 
 * Krav til frasesamanstilling
@@ -2916,7 +2964,7 @@ lite testsett.
 
  som jo er feil (me får då au feil c-struktursamanstilling). Dette
  skjer pga. argumentstrukturane til dei to verba /ikkje/ er
- parallelle[fn:49] -- \p{mi-codeba} har <\p{Abrams}, \p{sigareti},
+ parallelle[fn:51] -- \p{mi-codeba} har <\p{Abrams}, \p{sigareti},
  \p{Browne}>, medan \p{rekke-hand} har <\p{Abrams}, \p{Browne},
  \p{sigarett}>, og me har eit rangeringskriterium som føretrekkjer lik
  følgje over ulik. Men ved å t.d. leggje til informasjonen om at
@@ -3720,3 +3768,11 @@ problem.
         berre lenkje \p{være} med \p{*-bruneba} og \p{skole} med
         \p{skole} -- men noko slikt ville involvert store endringar i
         krava for f-strukturlenkjing.
+
+[fn:51] I utgangspunktet kan ein tenkje på /spesifikator/, /adjunkt/
+        og /komplement/ som tomme symbol her, definert ved deira
+        posisjon i forhold til XP og X'.
+
+
+
+
