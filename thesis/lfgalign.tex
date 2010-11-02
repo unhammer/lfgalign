@@ -1,4 +1,4 @@
-% Created 2010-11-02 ty. 14:26
+% Created 2010-11-02 ty. 14:51
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -3175,11 +3175,11 @@ modellen har ingen mange-mange-lenkjer).
 \begin{table}[htb]
 \caption{\label{tbl:RIA}Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida.}
 \begin{center}
-\begin{tabular}{lrrrrl}
+\begin{tabular}{lrrrrr}
  metode              &  snitt  &  union  &  lenkjer  &  RIA-lenkjer  &  snitt / RIA-lenkjer  \\
 \hline
- \texttt{lfgalign}   &   7296  &  44587  &    24161  &        28019  &  0,2603               \\
- \texttt{tilfeldig}  &   2544  &  60544  &    35069  &        28019  &  0,0907               \\
+ \texttt{lfgalign}   &   7296  &  44587  &    24161  &        28019  &  26,03 \%             \\
+ \texttt{tilfeldig}  &   2544  &  60544  &    35069  &        28019  &  09,07 \%             \\
 \end{tabular}
 \end{center}
 \end{table}
@@ -3188,27 +3188,32 @@ modellen har ingen mange-mange-lenkjer).
  Resultatet av samanlikninga står i tabell \ref{tbl:RIA}. Kolonnen
  \emph{snitt} viser summen av kor mange lenkjer som var felles for kvart
  setningspar, mellom \texttt{RIA} og dei to testmetodane (\texttt{lfgalign} og ein
- tilfeldig baseline). Ved å dele dette talet på kor mang lenkjer \texttt{RIA}
- hadde, får me ein enkel samanlikning av dei to testmetodane -- viss
- forholdet var 1,0 ville altså alle lenkjene vore like.  Det er
- tydeleg at overlappet mellom \texttt{RIA} og \texttt{lfgalign} er svært låg på
+ tilfeldig baseline). Ved å dele dette talet på kor mange lenkjer
+ \texttt{RIA} hadde, får me ein enkel samanlikning av dei to testmetodane --
+ viss forholdet var 100 \% ville altså alle lenkjene vore like.  Det er
+ tydeleg at overlappet mellom \texttt{RIA} og \texttt{lfgalign} er svært lågt på
  dette materialet\footnote{Denne testen blei køyrt på revisjon
         \texttt{fd14d902262a9274b42131cf83ade74d51e23863} av \texttt{lfgalign},
         sjå funksjonen \texttt{ev-ria}. }, men iallfall meir enn dobbelt så stort som
- ein ville forvente om det ikkje var nokon likskap. I tillegg har
- \texttt{lfgalign} færrast lenkja \PRED{}-element av alle metodane, som kan
- tyde på litt lågare dekning.
+ ein ville forvente om det ikkje var nokon likskap. Ved manuelt
+ gjennomsyn ser det ut til at der dei har ulike lenkjer, er det
+ \texttt{lfgalign} (eller begge) som tek feil. 
+
+ I tillegg har \texttt{lfgalign} færrast lenkja \PRED{}-element av alle
+ metodane, som kan tyde på litt lågare dekning (sjølv om \texttt{lfgalign}
+ kan føye saman eitt predikat og argument i lenkjinga, noko \texttt{RIA} og
+ baseline-modellen ikkje gjer).
 
  Ved nærare ettersyn viser det seg at dette korpuset har mange
  fragmentariske analysar, og som oftast er det mange «ytste
  f-strukturar» (gjerne over ti i kvar setning, i snitt fire per
- setning). Implementasjonen min reknar ein f-struktur for å vere ein
- av desse ytste om han ikkje er referert til som argument/adjunkt av
+ setning; gjennomsnittleg setningslengd i materialet er 9,8
+ ord). Implementasjonen min reknar ein f-struktur for å vere ein av
+ desse ytste om han ikkje er referert til som argument/adjunkt av
  andre f-strukturar. Ytste f-strukturar blir handsame som om dei er på
  same nivå i f-strukturen -- viss det eigentleg finst ein intern
  struktur mellom desse blir det ignorert. Det vil altså seie at for
- store deler av analysane får \texttt{lfgalign} ingenting ut av f-strukturen
- (gjennomsnittleg setningslengd i materialet er 9,8 ord).
+ store deler av analysane får \texttt{lfgalign} ingenting ut av f-strukturen.
 
  Sidan \texttt{lfgalign} er meint for trebankbygging med høg presisjon treng
  det ikkje vere negativt at dekninga er litt lågare; i tillegg vil me

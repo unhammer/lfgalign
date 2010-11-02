@@ -3176,33 +3176,39 @@ modellen har ingen mange-mange-lenkjer).
 
 #+LABEL: tbl:RIA
 #+CAPTION: Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida.
+#+ATTR_LaTeX: align=lrrrrr
 | metode             | snitt | union | lenkjer | RIA-lenkjer | snitt / RIA-lenkjer |
 |--------------------+-------+-------+---------+-------------+---------------------|
-| \texttt{lfgalign}  |  7296 | 44587 |   24161 |       28019 | 0,2603              |
-| \texttt{tilfeldig} |  2544 | 60544 |   35069 |       28019 | 0,0907              |
+| \texttt{lfgalign}  |  7296 | 44587 |   24161 |       28019 | 26,03 %             |
+| \texttt{tilfeldig} |  2544 | 60544 |   35069 |       28019 | 09,07 %             |
 
  Resultatet av samanlikninga står i tabell \ref{tbl:RIA}. Kolonnen
  /snitt/ viser summen av kor mange lenkjer som var felles for kvart
  setningspar, mellom =RIA= og dei to testmetodane (=lfgalign= og ein
- tilfeldig baseline). Ved å dele dette talet på kor mang lenkjer =RIA=
- hadde, får me ein enkel samanlikning av dei to testmetodane -- viss
- forholdet var 1,0 ville altså alle lenkjene vore like.  Det er
- tydeleg at overlappet mellom =RIA= og =lfgalign= er svært låg på
+ tilfeldig baseline). Ved å dele dette talet på kor mange lenkjer
+ =RIA= hadde, får me ein enkel samanlikning av dei to testmetodane --
+ viss forholdet var 100 % ville altså alle lenkjene vore like.  Det er
+ tydeleg at overlappet mellom =RIA= og =lfgalign= er svært lågt på
  dette materialet[fn:46], men iallfall meir enn dobbelt så stort som
- ein ville forvente om det ikkje var nokon likskap. I tillegg har
- =lfgalign= færrast lenkja \PRED{}-element av alle metodane, som kan
- tyde på litt lågare dekning.
+ ein ville forvente om det ikkje var nokon likskap. Ved manuelt
+ gjennomsyn ser det ut til at der dei har ulike lenkjer, er det
+ =lfgalign= (eller begge) som tek feil. 
+
+ I tillegg har =lfgalign= færrast lenkja \PRED{}-element av alle
+ metodane, som kan tyde på litt lågare dekning (sjølv om =lfgalign=
+ kan føye saman eitt predikat og argument i lenkjinga, noko =RIA= og
+ baseline-modellen ikkje gjer).
 
  Ved nærare ettersyn viser det seg at dette korpuset har mange
  fragmentariske analysar, og som oftast er det mange «ytste
  f-strukturar» (gjerne over ti i kvar setning, i snitt fire per
- setning). Implementasjonen min reknar ein f-struktur for å vere ein
- av desse ytste om han ikkje er referert til som argument/adjunkt av
+ setning; gjennomsnittleg setningslengd i materialet er 9,8
+ ord). Implementasjonen min reknar ein f-struktur for å vere ein av
+ desse ytste om han ikkje er referert til som argument/adjunkt av
  andre f-strukturar. Ytste f-strukturar blir handsame som om dei er på
  same nivå i f-strukturen -- viss det eigentleg finst ein intern
  struktur mellom desse blir det ignorert. Det vil altså seie at for
- store deler av analysane får =lfgalign= ingenting ut av f-strukturen
- (gjennomsnittleg setningslengd i materialet er 9,8 ord).
+ store deler av analysane får =lfgalign= ingenting ut av f-strukturen.
 
  Sidan =lfgalign= er meint for trebankbygging med høg presisjon treng
  det ikkje vere negativt at dekninga er litt lågare; i tillegg vil me
