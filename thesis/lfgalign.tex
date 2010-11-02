@@ -1,4 +1,4 @@
-% Created 2010-11-01 må. 14:04
+% Created 2010-11-02 ty. 13:22
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -57,7 +57,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{01/11, 2010}
+\date{02/11, 2010}
 
 \begin{document}
 
@@ -2636,20 +2636,22 @@ lite testsett.
  ved implementasjonen i forhold til dei ideelle krava frå kapittel
  \ref{SEC:ideell}, og samanliknar dei resultata som er moglege å få
  frå \texttt{lfgalign} med dei som er mogleg å få med andre metodar, då
- spesielt reint N-grambaserte metodar. I tillegg diskuterer eg kort
- ulike bruksområde for desse samanstillingane, og problem som enno er
- uløyste.
+ spesielt metodar som nyttar N-gramtabellar som kjelde til
+ lenkjingsinformasjon. I tillegg diskuterer eg kort ulike bruksområde
+ for samanstillingane, og problem som enno er uløyste.
 
  Allereie utan å sjå på materialet, kan me sjå at det er visse
  føresetnader i implementasjonen (gjort for å forenkle metoden), som
  kan føre til feil i samanstillinga. T.d. følgjer implementasjonen
- krav \ref{krav:PRED-omgivnad} i kapittel \ref{SEC:ideell}, som nok er
- for strengt, men som avskjerer ein god del umotiverte lenkjingar. I
+ krav \ref{krav:PRED-omgivnad} i kapittel \ref{SEC:ideell} (og lenkjar
+ altså berre f-strukturar som er argument/adjunkt av lenkja
+ f-strukturar, eller ikkje er argument/adjunkt av noko). Dette er nok
+ for strengt, men det avskjerer ein god del umotiverte lenkjingar. I
  tillegg er c-strukturlenkjinga i implementasjonen direkte avleidd av
  f-strukturlenkjinga; men, som nemnt i del \ref{SEC:fnord} kan det
  finnast c-strukturforhold som bør påverke f-strukturlenkjinga. I
- dette kapittelet diskuterer eg korleis slike føresetnader påverker
- lenkjinga.
+ dette kapittelet ser eg på korleis føresetnadene ved implementasjonen
+ påverkar kva for samanstillingar me får.
  
 \section{Materiale}
 \label{sec-5.1}
@@ -2663,7 +2665,7 @@ lite testsett.
  illustrere ei vid rekkje ulike syntaktiske situasjonar (kalla \texttt{mrs}
  nedanfor), i tillegg til eit par setningar frå Jostein Gaarders
  \emph{Sofies Verden} (kalla \texttt{sofie} nedanfor) på norsk og
- georgisk. Analysane er manuelt disambiguerte.
+ georgisk. Analysane er manuelt disambiguerte og setningssamanstilte.
 
  Eg har ikkje tilgang på noko større setningssamanstilt georgisk-norsk
  parallelltekst\footnote{Dette måtte i tillegg vore LFG-analysert og disambiguert for
@@ -2697,21 +2699,24 @@ lite testsett.
  konstruere ein parallell, fraselenkja trebank.
 
  \citet[s.~20--21]{och2003scv} gir eit grundig oversyn over ulike
- samanstillingsmetodar, først og fremst statistiske. Dei definerer ei
- samanstilling på det mest generelle som ei delmengd av det kartesiske
- produktet av ordposisjonane i to setningar. Viss
- $f_{1}^{J}=f_1,...,f_j,...,f_J$ er orda i setninga på kjeldespråket
- og $e_{1}^{I}=e_1,...,e_i,...,e_I$ er orda i setninga på
+ samanstillingsmetodar, først og fremst statistiske (og helst med
+ maskinomsetjing som formål). Dei definerer ei samanstilling på det
+ mest generelle som ei delmengd av det kartesiske produktet av
+ ordposisjonane i to setningar. Viss $f_{1}^{J}=f_1,...,f_j,...,f_J$
+ er orda i setninga på kjeldespråket og
+ $e_{1}^{I}=e_1,...,e_i,...,e_I$ er orda i setninga på
  målspråket\footnote{Kor $e$ står for engelsk og $f$ for fransk, sjølvsagt. }, er ei samanstilling $\mathcal{A}$ gitt ved
  $\mathcal{A}\subseteq \{(j,i): j=1,...,J;i=1,...,I\}$. Eitt kjeldeord
  kan altså vere lenkja til eitt eller fleire målord, og omvendt.
 
- I praksis vil spesifikke modellar prøve å avgrense dette, t.d. ved å
- krevje maksimalt eitt målord per kjeldeord, kor ein nyttar «det tomme
- ordet» for kjeldeord som ikkje er lenkja med noko målord. I
- litteraturen om statistiske metodar er ei slik
- mange-ein-samanstilling ei \emph{ordsamanstilling}; når
- mange-mange-lenkjer er med har me ei \emph{frasesamanstilling}.
+ Å finne alle slike delmengder er ein komputasjonelt tung jobb, og
+ ikkje eigentleg handterbart for vanlege setningslengder.  I praksis
+ vil spesifikke modellar prøve å avgrense dette, t.d. ved å krevje
+ maksimalt eitt målord per kjeldeord, kor ein nyttar «det tomme ordet»
+ for kjeldeord som ikkje er lenkja med noko målord. I litteraturen om
+ statistiske metodar er ei slik mange-ein-samanstilling ei
+ \emph{ordsamanstilling}; når mange-mange-lenkjer er med har me ei
+ \emph{frasesamanstilling}.
 
  Ei samanstilling er her altså ei mengd par av ordposisjonar. Det
  finst mange ulike måtar å komme fram til samanstillinga på; men
@@ -2744,32 +2749,31 @@ lite testsett.
  N-grambasert modell.
  
  Ein av dei vanlegaste treningsmetodane er \emph{sannsynsmaksimering}
- \citep[utførleg skildra i][]{prescher-em}, som lèt ein rekne ut elles
- uhandterlege sannsynsproblem ved å iterativt endre modellparametrane
- slik at skårene blir betre. Eg gir her eit \emph{svært forenkla} oversyn
- over korleis dette går føre seg. Me byrjar med å setje $p_0$ for alle
- moglege samanstillingar og ordpar til ein viss verdi, kanskje på ein
- tilfeldig måte. Så genererer me alle moglege samanstillingar til
- målkorpuset basert på kjeldekorpuset, kor kvar
+ \citep[utførleg forklart i][]{prescher-em}, som lèt ein rekne ut
+ elles uhandterlege sannsynsproblem ved å iterativt endre
+ modellparametrane slik at skårene blir betre. Eg gir her eit \emph{svært  forenkla} oversyn over korleis dette går føre seg. Me byrjar med å
+ setje $p_0$ for alle moglege samanstillingar og ordpar til ein viss
+ verdi, kanskje på ein tilfeldig måte. Så genererer me alle moglege
+ samanstillingar til målkorpuset basert på kjeldekorpuset, kor kvar
  samanstillingsførekomst førekjem med ein frekvens som er vekta ved
  hjelp av $p_0$. Me tel opp samanstillingsførekomstene her i ein
  tabell; når me ser ordet \emph{Es} i ei setning omsett til \emph{There is}, vil
  tabellraden med \emph{Es} få auka frekvensskåre i kolonnane til \emph{There} og
  \emph{is} -- men sidan dette var vekta på $p_0$ treng ikkje dette talet
- vere 1 eller 0. Så går ein gjennom korpuset slik og gir skårar for
+ vere 1 eller 0. Så går me gjennom korpuset slik og gir skårar for
  alle moglege ordomsetjingar, til slutt vil sannsynlegvis raden til
  \emph{es} og \emph{there} ha høgare skåre enn \emph{es} og \emph{is}. Me reknar så ut ein
  ny $p_1$ ved å telje opp dei relative frekvensane til alle
  tabellradene; dette blir nytta i neste iterasjon for å generere den
- neste mengda med samanstillingar. Det totale korpussannsynet vil auke
- for kvar iterasjon, og til slutt flate ut. Som med fjellklatringssøk
- er me ikkje garantert å finne den beste løysinga med denne metoden
- (verdiane me har i $p_0$ har ofte mykje å seie), men me \emph{er}
- garantert at korpussannsynet\footnote{Korpussannsynet er produktet av $p$ for alle setningane i
+ neste mengda med samanstillingar. Det totale korpussannsynet\footnote{Korpussannsynet er produktet av $p$ for alle setningane i
         heile korpuset, kor $p$ for ei setning er summen av $p$ for
         kvar samanstilling i setninga. Om modellen er god, vil auka
         sannsyn over heile korpuset seie at parametrane gir eit betre
-        estimat av dei faktiske samanstillingane. } aldri vil bli mindre i neste
+        estimat av dei «faktiske» samanstillingane. }
+ vil auke for kvar iterasjon, og til slutt flate ut. Som med
+ fjellklatringssøk er me ikkje garantert å finne den beste løysinga
+ med denne metoden (verdiane me har i $p_0$ har ofte mykje å seie),
+ men me \emph{er} garantert at korpussannsynet aldri vil bli mindre i neste
  iterasjon.
 
  Om ein har funne mange-ein-lenkjene mellom ord frå begge sider av eit
@@ -2781,25 +2785,24 @@ lite testsett.
  \{(Es,is),(gibt,is),(gibt,There)\}, som representerer ei
  mange-mange-lenkje mellom \emph{Es gibt} og \emph{There is}. Me kan au nytte
  berre snittet, som gir høgare presisjon, men lågare dekning.
- \citet{koehn2003spb}, allereie nemnt i kapittel \ref{SEC:bakgrunn}
+ \citet{koehn2003spb}, allereie nemnt i kapittel \ref{SEC:bakgrunn},
  finn mange-mange-lenkjer for frasebasert statistisk maskinomsetjing
  ved å først ta snittet, og så leggje til frå unionen ved hjelp av
  ulike heuristikkar.
 
  I \citet{samuelsson2007apa} nyttar dei liknande metodar for å finne
  ein N-gramtabell, altså ein tabell med kjelde-N-gram, mål-N-gram og
- sannsyn; saman med to frasestrukturannoterte einspråklege trebankar
- blir denne tabellen sendt gjennom eit lingvistisk
- samanstillingsfilter for å opprette ein frasesamanstilt parallell
+ sannsyn. Denne sender dei, saman med to frasestrukturannoterte
+ einspråklege trebankar, gjennom eit \emph{lingvistisk  samanstillingsfilter} for å opprette ein frasesamanstilt parallell
  trebank. Viss ein frasestrukturnode i kjeldetrebanken svarer til ein
  frase i tabellen, og målfrasen i tabellen au er dekkja av ein node på
- målspråket, kan ein opprette ei lenkje mellom nodane.  N-gramtabellen
- er ikkje kopla til setningane, så teoretisk sett kan ein opprette
- lenkjer mellom alle moglege nodepar\footnote{Ein kan sjølvsagt enkelt unngå lenkjing frå to søsternodar på
-        kjeldesida til høvesvis mor og dotter på målsida -- noko som
-        ikkje ville ha gitt meining -- ved å krevje at viss ein node
-        $n_s$ er lenkja til $n_t$, og er dominert av $m_s$ som er
-        lenkja til $m_t$, må $m_t$ dominere $n_t$. }. 
+ målspråket, vil filteret opprette ei lenkje mellom nodane.
+ N-gramtabellen er ikkje kopla til setningane, så teoretisk sett kan
+ ein opprette lenkjer mellom alle moglege nodepar\footnote{Altså kunne ein ha lenkja frå to søsternodar på kjeldesida til
+        høvesvis mor og dotter på målsida -- noko som ikkje ville ha
+        gitt meining. Men dette er lett å unngå ved å krevje at viss
+        ein node $n_s$ er lenkja til $n_t$, og er dominert av $m_s$
+        som er lenkja til $m_t$, må $m_t$ dominere $n_t$. }.
 
  Lenkjene mellom frasestrukturtre i \citet{samuelsson2007apa} er
  ein-til-ein; dei skil seg slik formelt frå lenkjene i
@@ -2811,10 +2814,10 @@ lite testsett.
  saman to nodar i ei mange-mange-lenkje (uansett om dei har dominans
  mellom seg, eller er diskontinuerlege\footnote{Sjølve trebanken \citep{samuelsson2006pap} og
         annotasjonsverktøyet for TreeAligner (tilgjengeleg frå
-        \href{http://kitt.cl.uzh.ch/kitt/treealigner}{http://kitt.cl.uzh.ch/kitt/treealigner}) opnar for manuelle
-        mange-mange-lenkjer, men det er klart at når me går frå par av
-        N-gram til par av frasestrukturnodar som dominerer same N-gram
-        kan me ikkje få mange-mange-lenkjer. }). Dette står i kontrast
+        \href{http://kitt.cl.uzh.ch/kitt/treealigner}{http://kitt.cl.uzh.ch/kitt/treealigner} under GNU GPL) opnar
+        for manuelle mange-mange-lenkjer, men det er klart at når me
+        går frå par av N-gram til par av frasestrukturnodar som
+        dominerer same N-gram kan me ikkje få mange-mange-lenkjer. }). Dette står i kontrast
  til c-strukturlenkjing basert på f-strukturforhold -- her gir dei
  funksjonelle domena (saman med dominans) evidens for når ein skal sjå
  på to nodar som del av same mange-mange-lenkje.  Med desse
@@ -2837,12 +2840,16 @@ lite testsett.
  bli nokolunde lik (ytre predikat først, så første argument, så andre,
  osb.), noko som lettar den statistiske ordsamanstillingsprosessen.
  Dei lenkjer ikkje c-strukturnodar, sidan målet er å lage
- overføringsreglar på f-strukturnivå. I del \ref{SEC:ria} ser eg på
- kor stor overlapp det er mellom dei f-strukturlenkjene dei får, og
- dei \texttt{lfgalign} får.
+ overføringsreglar på f-strukturnivå.
+
+ I del \ref{SEC:ria} ser eg på kor stor overlapp det er mellom dei
+ f-strukturlenkjene metoden i \texttt{RIA} får, og dei \texttt{lfgalign} får. Kva
+ f-strukturlenkjer \texttt{lfgalign} får er direkte avhengig av informasjonen
+ me har om LPT-korrespondansar, så eg byrjar med å sjå på kor viktig
+ denne avhengnaden er.
 
  
-\section{Kor avhengig er \texttt{lfgalign} av LPT-korrespondanse?}
+\section{Kor avhengig er \texttt{lfgalign} av bottom-up-informasjon?}
 \label{sec-5.3}
 
  Eitt mål med denne oppgåva er å finne ut av kor lite
@@ -2850,7 +2857,14 @@ lite testsett.
  LFG-analysane å stø seg på. Viss analysane er korrekte, og prinsippa
  for samanstilling er dekkjande, og implementasjonen av prinsippa er
  korrekt, er det berre LPT-informasjonen som avgjer om samanstillinga
- blir korrekt eller ikkje.
+ blir korrekt eller ikkje. Sidan c-struktursamanstillinga i \texttt{lfgalign}
+ er avleidd av f-struktursamanstillinga, utan påverknad i andre
+ retninga, vil det få følgjer for \emph{heile} samanstillinga dersom
+ manglar i bottom-up-informasjonen gir feil
+ argument/adjunkt-lenkjing. Feil i c-struktursamanstillinga, derimot,
+ vil ikkje få følgjer andre stader (gitt ei viss
+ f-struktursamanstilling har me heller ingen «val» å ta for lenkjinga
+ her).
 
  Setningsparet i \Next illustrerer problemet.
 
@@ -2859,7 +2873,7 @@ lite testsett.
      \b. Abrams rakte Browne sigaretten.
      
  Om me ikkje har LPT-informasjon, blir den urangerte
- f-struktursamanstillinga
+ f-struktursamanstillinga:
 
 \ex. \{(\p{mi-codeba} . \p{rekke-hand}) \\
  \{(\p{Browne} . \p{Abrams}) (\p{sigareti} . \p{Browne}) (\p{Abrams} . \p{sigarett})\} \\
@@ -2873,12 +2887,14 @@ lite testsett.
 
 \ex. \{(\p{mi-codeba} . \p{rekke-hand}) (\p{Browne} . \p{sigarett}) (\p{sigareti} . \p{Browne}) (\p{Abrams} . \p{Abrams})\} 
 
- som jo er feil. Dette skjer pga. argumentstrukturane til dei to verba
- \emph{ikkje} er parallelle -- \p{mi-codeba} har <\p{Abrams}, \p{sigareti},
+ som jo er feil (me får då au feil c-struktursamanstilling). Dette
+ skjer pga. argumentstrukturane til dei to verba \emph{ikkje} er
+ parallelle\footnote{Det kan sjølvsagt vere gode grunnar (frå evidens på kvart av
+        dei to språka) til at argumentstrukturane er ulike. } -- \p{mi-codeba} har <\p{Abrams}, \p{sigareti},
  \p{Browne}>, medan \p{rekke-hand} har <\p{Abrams}, \p{Browne},
  \p{sigarett}>, og me har eit rangeringskriterium som føretrekkjer lik
- følgje over ulik. Men ved å t.d. leggje til informasjonen om at \emph{brouns}
- og \emph{Browne} har LPT-korrespondanse, får me
+ følgje over ulik. Men ved å t.d. leggje til informasjonen om at
+ \emph{brouns} og \emph{Browne} har LPT-korrespondanse, får me:
 
 \ex. \{(\p{mi-codeba} . \p{rekke-hand})
  (\p{Browne} . \p{Browne}) (\p{sigareti} . \p{sigarett}) (\p{Abrams} . \p{Abrams})\}
@@ -2886,7 +2902,7 @@ lite testsett.
  Me kunne au klart oss med berre informasjonen om at \emph{sigareti} og
  \emph{sigaretten} har LPT-korrespondanse -- så sjølv om LPT-korrespondanse
  kan vere viktig, viser dette dømet at ein ikkje treng \emph{fullstendig}
- LPT-korrespondanse for å forbetre resultatet.
+ LPT-korrespondanse for å forbetre resultatet i enkelttilfelle.
 
  Sidan dette er ei openberr feilkjelde, går eg her manuelt gjennom
  setningane i hovudtestsettet mitt\footnote{Tilgjengeleg frå mappa \texttt{eval} i kjeldekoden til \texttt{lfgalign},
@@ -2901,39 +2917,39 @@ lite testsett.
 \begin{table}[htb]
 \caption{\label{tbl:LPT}Kor mykje bottom-up-informasjon treng me for å lenkje argument/adjunkt korrekt?}
 \begin{center}
-\begin{tabular}{lrrrll}
- setning          &  l$_s$  &  l$_t$  &  min LPT  &  moglege LPT-par                               &  merknad  \\
+\begin{tabular}{lrrrl}
+ setning          &  l$_s$  &  l$_t$  &  min. LPT  &  moglege LPT-par                               \\
 \hline
- mrs 0.pl 0.pl    &      1  &      2  &        0  &                                                &           \\
- mrs 1.pl 1.pl    &      2  &      2  &        0  &                                                &           \\
- mrs 2.pl 2.pl    &      3  &      2  &        1  &  \{(ga-Geba,pro)\}, \{(PanJara,vindu)\}        &  merge    \\
- mrs 3.pl 3.pl    &      3  &      3  &        0  &                                                &           \\
- mrs 4.pl 4.pl    &      4  &      4  &        1  &  \{(Browne,Browne)\}, \{(sigareti,sigarett)\}  &           \\
- mrs 4.pl 5.pl    &      4  &      5  &        1  &  \{(Browne,Browne)\}, \{(sigareti,sigarett)\}  &           \\
- mrs 5.pl 6.pl    &      6  &     10  &        1  &  \{(Abrams,Abrams)\}, \{(sigareti,sigarett)\}  &           \\
- mrs 6.pl 7.pl    &      4  &      5  &        0  &                                                &           \\
- mrs 7.pl 8.pl    &      3  &      4  &        0  &                                                &           \\
- mrs 9.pl 10.pl   &      3  &      3  &        0  &                                                &           \\
- mrs 10.pl 11.pl  &      5  &      5  &        0  &                                                &           \\
- mrs 11.pl 12.pl  &      3  &      3  &        0  &                                                &           \\
- mrs 12.pl 13.pl  &      2  &      2  &        0  &                                                &           \\
- mrs 16.pl 17.pl  &      2  &      2  &        0  &                                                &           \\
- mrs 19.pl 20.pl  &      2  &      2  &        0  &                                                &           \\
- mrs 22.pl 23.pl  &      3  &      3  &        0  &                                                &           \\
- mrs 23.pl 24.pl  &      2  &      2  &        0  &                                                &           \\
- mrs 24.pl 25.pl  &      3  &      3  &        0  &                                                &           \\
- mrs 25.pl 26.pl  &      3  &      4  &        0  &                                                &           \\
- mrs 26.pl 27.pl  &      2  &      2  &        0  &                                                &           \\
- mrs 34.pl 35.pl  &      2  &      3  &        0  &                                                &  merge    \\
- mrs 37.pl 38.pl  &      3  &      3  &        0  &                                                &           \\
- mrs 38.pl 39.pl  &      2  &      5  &        0  &                                                &  merge    \\
- mrs 57.pl 58.pl  &      3  &      4  &        0  &                                                &           \\
- mrs 63.pl 64.pl  &      3  &      4  &        0  &                                                &           \\
- mrs 67.pl 68.pl  &      3  &      4  &      (0)  &                                                &           \\
- mrs 71.pl 72.pl  &      4  &      4  &        0  &                                                &           \\
- mrs 73.pl 74.pl  &      4  &      4  &        0  &                                                &           \\
- sofie 2.pl 0.pl  &      4  &      8  &      (2)  &  \{(amundsen,Amundsen),(skola,skole)\}         &  constr   \\
- sofie 2.pl 0.pl  &      3  &      6  &      (0)  &                                                &  constr   \\
+ mrs 0.pl 0.pl    &      1  &      2  &         0  &                                                \\
+ mrs 1.pl 1.pl    &      2  &      2  &         0  &                                                \\
+ mrs 2.pl 2.pl    &      3  &      2  &         1  &  \{(ga-Geba,pro)\}, \{(PanJara,vindu)\}        \\
+ mrs 3.pl 3.pl    &      3  &      3  &         0  &                                                \\
+ mrs 4.pl 4.pl    &      4  &      4  &         1  &  \{(Browne,Browne)\}, \{(sigareti,sigarett)\}  \\
+ mrs 4.pl 5.pl    &      4  &      5  &         1  &  \{(Browne,Browne)\}, \{(sigareti,sigarett)\}  \\
+ mrs 5.pl 6.pl    &      6  &     10  &         1  &  \{(Abrams,Abrams)\}, \{(sigareti,sigarett)\}  \\
+ mrs 6.pl 7.pl    &      4  &      5  &         0  &                                                \\
+ mrs 7.pl 8.pl    &      3  &      4  &         0  &                                                \\
+ mrs 9.pl 10.pl   &      3  &      3  &         0  &                                                \\
+ mrs 10.pl 11.pl  &      5  &      5  &         0  &                                                \\
+ mrs 11.pl 12.pl  &      3  &      3  &         0  &                                                \\
+ mrs 12.pl 13.pl  &      2  &      2  &         0  &                                                \\
+ mrs 16.pl 17.pl  &      2  &      2  &         0  &                                                \\
+ mrs 19.pl 20.pl  &      2  &      2  &         0  &                                                \\
+ mrs 22.pl 23.pl  &      3  &      3  &         0  &                                                \\
+ mrs 23.pl 24.pl  &      2  &      2  &         0  &                                                \\
+ mrs 24.pl 25.pl  &      3  &      3  &         0  &                                                \\
+ mrs 25.pl 26.pl  &      3  &      4  &         0  &                                                \\
+ mrs 26.pl 27.pl  &      2  &      2  &         0  &                                                \\
+ mrs 34.pl 35.pl  &      2  &      3  &         0  &                                                \\
+ mrs 37.pl 38.pl  &      3  &      3  &         0  &                                                \\
+ mrs 38.pl 39.pl  &      2  &      5  &         0  &                                                \\
+ mrs 57.pl 58.pl  &      3  &      4  &         0  &                                                \\
+ mrs 63.pl 64.pl  &      3  &      4  &         0  &                                                \\
+ mrs 67.pl 68.pl  &      3  &      4  &       (0)  &                                                \\
+ mrs 71.pl 72.pl  &      4  &      4  &         0  &                                                \\
+ mrs 73.pl 74.pl  &      4  &      4  &         0  &                                                \\
+ sofie 2.pl 0.pl  &      4  &      8  &       (2)  &  \{(amundsen,Amundsen),(skola,skole)\}         \\
+ sofie 2.pl 0.pl  &      3  &      6  &       (0)  &                                                \\
 \end{tabular}
 \end{center}
 \end{table}
@@ -2942,7 +2958,7 @@ lite testsett.
 Tabell \ref{tbl:LPT} viser, for kvart korresponderande og disambiguert
 setningspar i testsettet, kor mange ord setningane hadde og kor mange
 LPT-korrespondansar som måtte til for å ikkje få feil i
-argument/adjunkt-lenkjinga (kolonnen «min LPT»). For dei setningane
+argument/adjunkt-lenkjinga (kolonnen «min. LPT»). For dei setningane
 der LPT-korrespondansar måtte til, viser kolonnen «moglege LPT-par»
 kva for moglege mengder med minimal LPT-informasjon som er nok for å
 få rett analyse (mange mengder i denne kolonnen vil altså seie at det
@@ -2961,22 +2977,27 @@ f-strukturnormaliserte setningar.
 
 Testsettet \texttt{mrs} har berre konstruerte døme og eit svært lite
 ordforråd. Det illustrerer ei vid rekkje syntaktiske fenomen, men
-omsetjingane er nok svært direkte.
+omsetjingane er nok svært direkte. 
 
-Setning 4.pl og 5.pl på norsk to alternative måtar å seie setning 4.pl
+Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning 4.pl
 på georgisk (men f-strukturane er like nok til at det ikkje gjer nokon
 forskjell for lenkjinga)\footnote{Det finst ingen 8.pl på georgisk i tabellen sidan denne (som
         hadde tilsvart 9.pl på norsk) ikkje hadde analyse, difor
         manglar dette setningsparet -- andre som manglar frå tabellen
         var anten ikkje disambiguerte eller hadde ikkje analysar. Eit
         par som ikkje var disambiguerte har eg sjølv manuelt
-        disambiguert (norsk 0.pl og georgisk 3.pl). }.
+        disambiguert (norsk 0.pl og georgisk 3.pl). I setning 57.pl og
+        58.pl er eg usikker på kva den rette analysen bør vere (eller
+        om har rette LFG-analysar), men meir LPT-informasjon vil
+        iallfall ikkje endre på det. }.
 
-I setning 57.pl og 58.pl er eg usikker på kva den rette analysen bør
-vere (eller om har rette LFG-analysar), men meir LPT-informasjon vil
-iallfall ikkje endre på det.
+Berre tri setningspar fekk mange-ein-lenkjer på f-strukturnivå
+(2.pl/2.pl, 34.pl/35.pl og 38.pl/39.pl); dette skjedde i omsetjing frå
+verb til hovudverb+hjelpeverb, eller frå verb til verb+refleksivt
+pronomen. Mange-ein-lenkjene ser ikkje ut til å ha vore noko problem i
+dette testsettet.
 
-Setning 67.pl og 68.pl er vist i \Next nedanfor:
+Men setning 67.pl og 68.pl, vist i \Next nedanfor, er problematiske:
 
 \ex. \a. abramsis suraTi movida.\\
      $\leftrightarrow$
@@ -2984,23 +3005,26 @@ Setning 67.pl og 68.pl er vist i \Next nedanfor:
 
  Her er \emph{abramsis} ein \POSS{} under \SPEC{} av f-strukturen til
  \emph{suraTi}, i staden for å vere eit adjunkt/argument (f-strukturen til
- \emph{Abrams} står som argument til \p{bilde}). Programmet \texttt{lfgalign} finn
- ikkje f-strukturar via andre stigar enn adjunkt eller argument til
- tidlegare kjende f-strukturar, eller via «ytste» f-strukturar. Sidan
- \emph{abramsis} ikkje er mogleg å finne via argument/adjunkt av
- rotpredikatet, ender det opp i ei eigen liste for fragment ol. som
- kan lenkjast, men kor me ikkje veit noko om konteksten. Det blir
- altså handsama som eit av fleire ytste predikat -- men her burde det
- jo vere mogleg å finne det via \emph{suraTi}. På den norske sida er
- \emph{Abrams} mogleg å finne gjennom \emph{bilde}, og er ikkje sett på som noko
- ytste predikat, så \emph{abramsis} og \emph{av Abrams} blir ikkje lenkja.
+ \emph{Abrams} står som argument til \p{bilde}). Programmet finn ikkje
+ f-strukturar via andre stigar enn adjunkt eller argument til
+ tidlegare kjende f-strukturar, eller via «ytste» f-strukturar --
+ dette er krav \ref{krav:PRED-omgivnad} frå kapittel
+ \ref{SEC:ideell}. Sidan \emph{abramsis} ikkje er mogleg å finne via
+ argument/adjunkt av rotpredikatet, ender det opp i ei eiga liste for
+ fragment ol. som kan lenkjast, men kor me ikkje veit noko om
+ konteksten. Det blir altså handsama som eit av fleire ytste predikat
+ -- men her burde det jo vere mogleg å finne det via \emph{suraTi}. På den
+ norske sida er \emph{Abrams} mogleg å finne gjennom \emph{bilde}, og er ikkje
+ sett på som noko ytste predikat, så \emph{abramsis} og \emph{av Abrams} blir
+ ikkje lenkja.
 
 Dette dømet demonstrerer ein veikskap med \texttt{lfgalign}: om ein skal
 køyre programmet med andre LFG-grammatikkar, som kanskje har andre
 retningslinjer for analyse eller har gjort ting på litt spesielle
-måtar, må ein kanskje leggje til fleire unntak (evt. preprosessere
-analysane før lenkjing). Dette kan forsåvidt vere eit problem med alle
-metodar som er svært kunnskapsbaserte.
+måtar, må ein kanskje leggje til fleire unntak eller meir «kunnskap»
+(evt. preprosessere analysane før lenkjing). Generelt kan dette
+forsåvidt vere eit problem med alle metodar som er svært
+kunnskapsbaserte.
 
 
 Testsettet \texttt{sofie} er frå ein roman, og har difor litt friare
@@ -3377,6 +3401,8 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
+
 
 
 
