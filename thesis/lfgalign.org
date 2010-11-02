@@ -1253,7 +1253,7 @@ ser eg på del \ref{SEC:f-mange-mange}.
 
  Løysinga valt i \citet[s.~75,~fotnote~3]{dyvik2009lmp}, som eg
  følgjer i implementasjonen, er å berre hoppe over slike
- preposisjonar. Ved lenkjing av \p{vedde} og \p{da-najleveba} ser me
+ adposisjonar. Ved lenkjing av \p{vedde} og \p{da-najleveba} ser me
  då på f-strukturane i \Last som om dei var som i \Next nedanfor.
 
 #+BEGIN_LaTeX
@@ -2425,9 +2425,9 @@ Viss $F_s$ og $F_t$ ikkje hadde argument i det heile teke, går
 måte.
 *** Når f-strukturlenkjene ikkje er ein-til-ein
  Som nemnt i del \ref{SEC:adposisjonsobjekt} hoppar me over
- preposisjonar som plukkar ut adjunkt/argument, dette skjer t.d. i
+ adposisjonar som plukkar ut adjunkt/argument, dette skjer t.d. i
  =adjalign= ved at funksjonen som henter ut f-strukturen til
- adjunkt-døtre av ein f-struktur hoppar over preposisjonar.
+ adjunkt-døtre av ein f-struktur hoppar over adposisjonar.
 
  Der det er umogleg å finne ein kombinasjon av argument- og
  adjunkt-lenkjer slik at alle argument har LPT-korrespondanse med ein
@@ -3043,14 +3043,14 @@ omsetjingar enn =mrs=.
 
  I setning 2.pl og 0.pl har konstruksjonen /være på vei hjem/ blitt
  omsett til /bruneba/, direkte omsett `dreie'. F-strukturane i \Next
- illusterer forskjellen (preposisjonar er fjerna for å få plass til
+ illusterer forskjellen (adposisjonane er fjerna for å få plass til
  figuren); i \NNext ser me f-struktursamanstillinga som me får etter
  at /amundsen/Amundsen/ og /skola/skole/ er lagt til i LPT-tabellen.
 
 #+BEGIN_LaTeX
 {\avmoptions{}
 \ex. \ag. soPi amundseni skolidan brundeboda.\\
-Sofie Amundsen skole dreide.\\
+Sofie Amundsen skole.fra dreie.3SG.IMP.\\
 \begin{avm}
 \[pred  & `{\bf{}*-bruneba}<\@{10}>' \\
 subj & \@{10} \[pred  & `{\bf{}amundsen}' \] \\
@@ -3074,8 +3074,8 @@ adjunct & \{ \[pred & `{\bf{}skola}' \] \} \]
 Samanstillinga kjem ikkje djupare inn i f-strukturane enn dette. Her
 burde kanskje heile /være på vei hjem/ lenkjast med /bruneba/, altså
 ei ein-til-tri-lenkje (på tri ulike nivå) på f-strukturnivå, for at me
-skal kunne lenkje \p{skola} og \p{skole}. Om det finst mange slike
-situasjonar bør me kanskje opne for meir kompliserte lenkjer på
+skal kunne lenkje \p{skola} og \p{skole}[fn:50]. Om det finst mange
+slike situasjonar bør me kanskje opne for meir kompliserte lenkjer på
 f-strukturnivå. Merk at om me ikkje legg til /skola/skole/ i
 LPT-tabellen får me samanstillinga i \Next:
 
@@ -3100,7 +3100,7 @@ forskjellar i argumentstruktur gir feil løysing.
 #+BEGIN_LaTeX
 {\avmoptions{}
 \ex. \ag. soPim klevervegenisken SeuHvia. \\
-          Sofie Kløverveien svingte. \\
+          Sofie Kløverveien.mot svinge.3SG.PERF. \\
 \begin{avm}
 \[pred  & `{\bf{}Se-Hveva}<\@{10},\@{17}:pro,\@{15}:pro>' \\
 subj & \@{10} \[pred  & `{\bf{}soPi}' \] \\
@@ -3125,18 +3125,18 @@ har me «overgenerering» av lenkjer pga. me opnar for
 argument-adjunkt-lenkjer. Slik =lfgalign= fungerer no, kan ein unngå
 at pro blir lenkja til adjunkt ved å leggje inn LPT-informasjon om
 adjunkta (evt. krevje at pro /berre/ kan lenkjast til nominalar). Om
-ein legg inn ei omsetjing for /nå/, får ein samanstillinga i \Next:
+me legg inn ei omsetjing for /nå/, får me samanstillinga i \Next:
 
 \ex. \{(\p{Se-Hveva} . \p{svinge}) (\p{pro} . \p{svinge}) (\p{pro} . \p{hun}) (\p{soPi} . \p{inn})\}
 
-Denne er kanskje er hakket betre, men sidan mange-mange-lenkjing berre
-er to-til-ein så langt, vil LPT-informasjon om både /nå/ og /inn/
-resultere i at denne setninga /ikkje får nokon lenkjing/. Dette er
-kanskje å føretrekkje, når me først skal krevje likskap i
-argumentstruktur for å lenkje[fn:43]. Då er det opp til grammatikarane
-om dei vil sjå på omsetjinga som argument for at det georgiske verbet
-har ei alternativ tyding med berre eitt argument, og endre
-grammatikkane til ei seinare utgåve av trebanken.
+Denne samanstillinga er kanskje er hakket betre, men sidan
+mange-mange-lenkjing berre er to-til-ein så langt, vil LPT-informasjon
+om /både/ \p{nå} og \p{inn} resultere i at denne setninga /ikkje får
+nokon lenkjing/. Dette er kanskje å føretrekkje, når me først skal
+krevje likskap i argumentstruktur for å lenkje[fn:43]. Då er det opp
+til grammatikarane om dei vil sjå på omsetjinga som argument for at
+det georgiske verbet har ei alternativ tyding med berre eitt argument,
+og endre grammatikkane til ei seinare utgåve av trebanken.
 
 *** Overlapp med =RIA=
 \label{SEC:ria}
@@ -3149,15 +3149,17 @@ ikkje nytta nokon LPT-tabell her.
 
 Samanlikninga skjer ved å, for kvar setning i korpuset, telje opp kor
 mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som er
-inndata til =RIA=, og samanlikne med unionen, og kor mange
-f-strukturar som kan lenkjast. Viss me har to setningar som kvar har
-på tri \PRED{}-element, finst det seks måtar å lenkje desse på slik at
-alle blir lenkja. Viss =lfgalign= har same samanstilling som =RIA=,
-vil snittet av dei to vere lik unionen. For å få ein peikepinn på kor
-mykje likskapen har å seie, har eg au køyrt ein baseline-modell på
-testsettet, som berre opprettar tilfeldige lenkjer mellom lenkbare
-\PRED{}-element (slik at flest mogleg ein-til-ein-lenkjer blir
-oppretta, me får ingen mange-mange-lenkjer).
+i =RIA= og dei som =lfgalign= gir. Dette kan me samanlikne med kor
+mange f-strukturlenkjer =RIA= har i det heile.
+
+Viss me har to setningar som kvar har tri \PRED{}-element, finst det
+seks måtar å lenkje desse på slik at alle blir lenkja. Viss =lfgalign=
+har same samanstilling som =RIA=, vil snittet av dei to ha like mange
+lenkjer som =RIA= har. For å få ein peikepinn på kor mykje likskapen
+har å seie, har eg au køyrt ein baseline-modell på testsettet, som
+berre opprettar tilfeldige lenkjer mellom lenkbare \PRED{}-element
+(slik at flest mogleg ein-til-ein-lenkjer blir oppretta; denne
+modellen har ingen mange-mange-lenkjer).
 
  Slike tal seier sjølvsagt ingenting om kva for lenkjer som er
  /korrekte/. Men, lenkjene i testmaterialet kjem via
@@ -3675,9 +3677,8 @@ problem.
 [fn:43] Om eit slikt setningspar er gitt til ein N-grambasert metode,
         vil det sjølvsagt gi evidens for at t.d. /nå/ og det georgiske
         verbet skal lenkjast -- ikkje noko me vil ha i ein
-        trebank. Men, om /nå/ sjeldan står i omsetjingar av
-        \p{Se-Hveva} vil det sannsynlegvis aldri bli oppretta slike
-        lenkjer.
+        trebank. Men, om /nå/ sjeldan står i omsetjingar av /SeuHvia/
+        vil det sannsynlegvis aldri bli oppretta slike lenkjer.
 
 [fn:44] Prolog-filene med f-strukturar, og lenkjer mellom
         f-strukturar, for 4000 parallelle setningar finst i
@@ -3708,3 +3709,8 @@ problem.
 [fn:49] Det kan sjølvsagt vere gode grunnar (frå evidens på kvart av
         dei to språka) til at argumentstrukturane er ulike.
 
+[fn:50] Eller så kunne ein tenkje seg å «hoppe over» mellomliggande
+        argument for å komme fram til det lenkbare argumentet, altså
+        berre lenkje \p{være} med \p{*-bruneba} og \p{skole} med
+        \p{skole} -- men noko slikt ville involvert store endringar i
+        krava for f-strukturlenkjing.

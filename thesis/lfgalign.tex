@@ -1,4 +1,4 @@
-% Created 2010-11-02 ty. 13:22
+% Created 2010-11-02 ty. 14:26
 \documentclass[11pt,a4paper,oneside,draft]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -1208,7 +1208,7 @@ ser eg på del \ref{SEC:f-mange-mange}.
 
  Løysinga valt i \citet[s.~75,~fotnote~3]{dyvik2009lmp}, som eg
  følgjer i implementasjonen, er å berre hoppe over slike
- preposisjonar. Ved lenkjing av \p{vedde} og \p{da-najleveba} ser me
+ adposisjonar. Ved lenkjing av \p{vedde} og \p{da-najleveba} ser me
  då på f-strukturane i \Last som om dei var som i \Next nedanfor.
 
 {\avmoptions{}
@@ -2362,9 +2362,9 @@ måte.
 \label{sec-4.1.2}
 
  Som nemnt i del \ref{SEC:adposisjonsobjekt} hoppar me over
- preposisjonar som plukkar ut adjunkt/argument, dette skjer t.d. i
+ adposisjonar som plukkar ut adjunkt/argument, dette skjer t.d. i
  \texttt{adjalign} ved at funksjonen som henter ut f-strukturen til
- adjunkt-døtre av ein f-struktur hoppar over preposisjonar.
+ adjunkt-døtre av ein f-struktur hoppar over adposisjonar.
 
  Der det er umogleg å finne ein kombinasjon av argument- og
  adjunkt-lenkjer slik at alle argument har LPT-korrespondanse med ein
@@ -3032,13 +3032,13 @@ omsetjingar enn \texttt{mrs}.
 
  I setning 2.pl og 0.pl har konstruksjonen \emph{være på vei hjem} blitt
  omsett til \emph{bruneba}, direkte omsett `dreie'. F-strukturane i \Next
- illusterer forskjellen (preposisjonar er fjerna for å få plass til
+ illusterer forskjellen (adposisjonane er fjerna for å få plass til
  figuren); i \NNext ser me f-struktursamanstillinga som me får etter
  at \emph{amundsen/Amundsen} og \emph{skola/skole} er lagt til i LPT-tabellen.
 
 {\avmoptions{}
 \ex. \ag. soPi amundseni skolidan brundeboda.\\
-Sofie Amundsen skole dreide.\\
+Sofie Amundsen skole.fra dreie.3SG.IMP.\\
 \begin{avm}
 \[pred  & `{\bf{}*-bruneba}<\@{10}>' \\
 subj & \@{10} \[pred  & `{\bf{}amundsen}' \] \\
@@ -3061,8 +3061,12 @@ adjunct & \{ \[pred & `{\bf{}skola}' \] \} \]
 Samanstillinga kjem ikkje djupare inn i f-strukturane enn dette. Her
 burde kanskje heile \emph{være på vei hjem} lenkjast med \emph{bruneba}, altså
 ei ein-til-tri-lenkje (på tri ulike nivå) på f-strukturnivå, for at me
-skal kunne lenkje \p{skola} og \p{skole}. Om det finst mange slike
-situasjonar bør me kanskje opne for meir kompliserte lenkjer på
+skal kunne lenkje \p{skola} og \p{skole}\footnote{Eller så kunne ein tenkje seg å «hoppe over» mellomliggande
+        argument for å komme fram til det lenkbare argumentet, altså
+        berre lenkje \p{være} med \p{*-bruneba} og \p{skole} med
+        \p{skole} -- men noko slikt ville involvert store endringar i
+        krava for f-strukturlenkjing. }. Om det finst mange
+slike situasjonar bør me kanskje opne for meir kompliserte lenkjer på
 f-strukturnivå. Merk at om me ikkje legg til \emph{skola/skole} i
 LPT-tabellen får me samanstillinga i \Next:
 
@@ -3083,7 +3087,7 @@ forskjellar i argumentstruktur gir feil løysing.
 
 {\avmoptions{}
 \ex. \ag. soPim klevervegenisken SeuHvia. \\
-          Sofie Kløverveien svingte. \\
+          Sofie Kløverveien.mot svinge.3SG.PERF. \\
 \begin{avm}
 \[pred  & `{\bf{}Se-Hveva}<\@{10},\@{17}:pro,\@{15}:pro>' \\
 subj & \@{10} \[pred  & `{\bf{}soPi}' \] \\
@@ -3107,23 +3111,21 @@ har me «overgenerering» av lenkjer pga. me opnar for
 argument-adjunkt-lenkjer. Slik \texttt{lfgalign} fungerer no, kan ein unngå
 at pro blir lenkja til adjunkt ved å leggje inn LPT-informasjon om
 adjunkta (evt. krevje at pro \emph{berre} kan lenkjast til nominalar). Om
-ein legg inn ei omsetjing for \emph{nå}, får ein samanstillinga i \Next:
+me legg inn ei omsetjing for \emph{nå}, får me samanstillinga i \Next:
 
 \ex. \{(\p{Se-Hveva} . \p{svinge}) (\p{pro} . \p{svinge}) (\p{pro} . \p{hun}) (\p{soPi} . \p{inn})\}
 
-Denne er kanskje er hakket betre, men sidan mange-mange-lenkjing berre
-er to-til-ein så langt, vil LPT-informasjon om både \emph{nå} og \emph{inn}
-resultere i at denne setninga \emph{ikkje får nokon lenkjing}. Dette er
-kanskje å føretrekkje, når me først skal krevje likskap i
-argumentstruktur for å lenkje\footnote{Om eit slikt setningspar er gitt til ein N-grambasert metode,
+Denne samanstillinga er kanskje er hakket betre, men sidan
+mange-mange-lenkjing berre er to-til-ein så langt, vil LPT-informasjon
+om \emph{både} \p{nå} og \p{inn} resultere i at denne setninga \emph{ikkje får nokon lenkjing}. Dette er kanskje å føretrekkje, når me først skal
+krevje likskap i argumentstruktur for å lenkje\footnote{Om eit slikt setningspar er gitt til ein N-grambasert metode,
         vil det sjølvsagt gi evidens for at t.d. \emph{nå} og det georgiske
         verbet skal lenkjast -- ikkje noko me vil ha i ein
-        trebank. Men, om \emph{nå} sjeldan står i omsetjingar av
-        \p{Se-Hveva} vil det sannsynlegvis aldri bli oppretta slike
-        lenkjer. }. Då er det opp til grammatikarane
-om dei vil sjå på omsetjinga som argument for at det georgiske verbet
-har ei alternativ tyding med berre eitt argument, og endre
-grammatikkane til ei seinare utgåve av trebanken.
+        trebank. Men, om \emph{nå} sjeldan står i omsetjingar av \emph{SeuHvia}
+        vil det sannsynlegvis aldri bli oppretta slike lenkjer. }. Då er det opp
+til grammatikarane om dei vil sjå på omsetjinga som argument for at
+det georgiske verbet har ei alternativ tyding med berre eitt argument,
+og endre grammatikkane til ei seinare utgåve av trebanken.
 
 \subsection{Overlapp med \texttt{RIA}}
 \label{sec-5.3.2}
@@ -3145,15 +3147,17 @@ ikkje nytta nokon LPT-tabell her.
 
 Samanlikninga skjer ved å, for kvar setning i korpuset, telje opp kor
 mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som er
-inndata til \texttt{RIA}, og samanlikne med unionen, og kor mange
-f-strukturar som kan lenkjast. Viss me har to setningar som kvar har
-på tri \PRED{}-element, finst det seks måtar å lenkje desse på slik at
-alle blir lenkja. Viss \texttt{lfgalign} har same samanstilling som \texttt{RIA},
-vil snittet av dei to vere lik unionen. For å få ein peikepinn på kor
-mykje likskapen har å seie, har eg au køyrt ein baseline-modell på
-testsettet, som berre opprettar tilfeldige lenkjer mellom lenkbare
-\PRED{}-element (slik at flest mogleg ein-til-ein-lenkjer blir
-oppretta, me får ingen mange-mange-lenkjer).
+i \texttt{RIA} og dei som \texttt{lfgalign} gir. Dette kan me samanlikne med kor
+mange f-strukturlenkjer \texttt{RIA} har i det heile.
+
+Viss me har to setningar som kvar har tri \PRED{}-element, finst det
+seks måtar å lenkje desse på slik at alle blir lenkja. Viss \texttt{lfgalign}
+har same samanstilling som \texttt{RIA}, vil snittet av dei to ha like mange
+lenkjer som \texttt{RIA} har. For å få ein peikepinn på kor mykje likskapen
+har å seie, har eg au køyrt ein baseline-modell på testsettet, som
+berre opprettar tilfeldige lenkjer mellom lenkbare \PRED{}-element
+(slik at flest mogleg ein-til-ein-lenkjer blir oppretta; denne
+modellen har ingen mange-mange-lenkjer).
 
  Slike tal seier sjølvsagt ingenting om kva for lenkjer som er
  \emph{korrekte}. Men, lenkjene i testmaterialet kjem via
