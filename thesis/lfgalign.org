@@ -290,18 +290,18 @@ Automatisk frasesamanstilling er eit nytt felt.  Det finst allereie
 veldig gode system for automatisk lenkjing av setningar; her har ein
 fått svært gode resultat ved å nytte ein statistisk omsetjingsmodell
 \citep{chen1993asb}; andre metodar har nytta avstand eller
-delstrengoverlapp \citep[s.~467--484 gir eit oversyn]{manning99foundations}.  
-Automatisk samanstilling av ord har
-au komme langt (dei klassiske «IBM-modellane» står i
-\citet{brown1990sam}; \citet{och2003scv} gir eit godt oversyn over
-ytinga til leiande metodar).  Men på nivåa mellom ord og setning er
-det vanskelegare å vurdere feltet.  Det finst fleire moglege einingar
-å lenkje -- kontinuerlege N-gram, kontinuerlege eller diskontinuerlege
-konstituentar, dependensstrukturar, syntaktiske funksjonar -- og i
-motsetning til einingar som /ord/ eller /setning/, er einingane i ein
-frasesamanstilling sjeldan teoretisk ukontroversielle[fn:35].  Dei ulike
-tilnærmingane som finst, og einingane dei lenkjer, er prega av formåla
-til utviklarane.
+delstrengoverlapp
+\citep[s.~467--484~gir~eit~oversyn]{manning99foundations}.  Automatisk
+samanstilling av ord har au komme langt (dei klassiske «IBM-modellane»
+står i \citet{brown1993msm}; \citet{och2003scv} gir eit godt oversyn
+over ytinga til leiande metodar).  Men på nivåa mellom ord og setning
+er det vanskelegare å vurdere feltet.  Det finst fleire moglege
+einingar å lenkje -- kontinuerlege N-gram, kontinuerlege eller
+diskontinuerlege konstituentar, dependensstrukturar, syntaktiske
+funksjonar -- og i motsetning til einingar som /ord/ eller /setning/,
+er einingane i ein frasesamanstilling sjeldan teoretisk
+ukontroversielle[fn:35].  Dei ulike tilnærmingane som finst, og
+einingane dei lenkjer, er prega av formåla til utviklarane.
 
 Eit av dei tidlegaste forsøka på å lenkje frasar var
 \citet{kupiec1993afn}, som lenkja nominalfrasar. Metoden besto i å
