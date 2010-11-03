@@ -1,5 +1,5 @@
-% Created 2010-11-02 ty. 17:04
-\documentclass[11pt,a4paper,oneside,draft]{book}
+% Created 2010-11-03 on. 09:52
+\documentclass[11pt,a4paper,oneside,draft]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{xcolor}                 % needs to be before hyperref when using fixme
@@ -60,7 +60,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{02/11, 2010}
+\date{03/11, 2010}
 
 \begin{document}
 
@@ -178,12 +178,13 @@ lenkjast.
 \section{Vegkart}
 \label{sec-1.1}
 
-I neste kapittel ser eg på andre metodar for frasesamanstilling.
+I neste kapittel gir eg eit oversyn over feltet \emph{frasesamanstilling},
+i tillegg til ein kort introduksjon til LFG.
 
 I kapittel \ref{SEC:ideell} går eg gjennom kva me ønskjer av ei
 frasesamanstilling når formålet m.a. er å oppdage relasjonane mellom
 syntaktiske funksjonar, kasusmarkering og tematiske roller med hjelp
-av ein parallell trebank. Dette ender opp i ei liste med «krav» som
+av ein parallell trebank. Dette ender opp i ei mengd med «krav» som
 samanstillingane må fylle for å vere lovlege, og som implementasjonen
 av den automatiske frasesamanstillinga (kapittel
 \ref{SEC:implementasjon}) må følgje.
@@ -191,22 +192,13 @@ av den automatiske frasesamanstillinga (kapittel
 Eg evaluerer samanstillingane som kjem ut av denne metoden i kapittel
 \ref{SEC:diskusjon}, og samanliknar dei med det som er mogleg der me
 berre har konstituentstruktur (syntaktiske tre) i tillegg til
-ordsamanstilling.
+N-grambasert ordsamanstilling. Her nyttar eg dei typologisk svært
+ulike språka georgisk og norsk i eit lite testsett kor eg går gjennom
+lenkjingane manuelt. I tillegg ser eg på forskjellane mellom
+f-strukturlenkjingane frå min implementasjonen og dei som kjem frå ein
+N-grambasert metode for lenkjing av f-strukturar, på eit større,
+tysk-engelsk testsett.
 
-Eg nyttar språka georgisk og norsk i evalueringa, hovudsakleg fordi
-dei er svært ulike syntaktisk og morfologisk; Georgisk er mellom anna
-eit pro-drop-språk, med friare ordfølgje og rikare morfologi enn
-norsk.
-
-Sidan eg ikkje har tilgang på ferdig setningssamanstilt georgisk-norsk
-parallelltekst, blir det vanskeleg å køyre den statistiske
-ordsamanstillinga som er vanleg som første steg i N-grambaserte
-metodar (utan ein god del forarbeid). Difor konsentrerer eg meg i
-evalueringa om eit testkorpus kor eg manuelt gjer
-ordsamanstillinga. Eg veit heller ikkje enno om nokon statistisk
-parsar av høg kvalitet for georgisk, men testkorpuset er ferdig parsa
-med LFG-parsaren frå \citet{meurer2008cgg}, c-strukturnodane avgrenser
-då kva som er ein syntaktisk konstituent.
 
 
 \chapter{Bakgrunn og omgrepsavklaring}
@@ -2687,8 +2679,9 @@ lite testsett.
  I denne delen gir eg ei evaluering av resultata frå å køyre
  \texttt{lfgalign} på LFG-analysar av parallelle setningar. Eg ser på manglar
  ved implementasjonen i forhold til dei ideelle krava frå kapittel
- \ref{SEC:ideell}, og samanliknar dei resultata som er moglege å få
- frå \texttt{lfgalign} med dei som er mogleg å få med andre metodar, då
+ \ref{SEC:ideell}; og kor avhengig \texttt{lfgalign} er av
+ bottom-up-informasjon; og samanliknar dei resultata som er moglege å
+ få frå \texttt{lfgalign} med dei som er mogleg å få med andre metodar, då
  spesielt metodar som nyttar N-gramtabellar som kjelde til
  lenkjingsinformasjon. I tillegg diskuterer eg kort ulike bruksområde
  for samanstillingane, og problem som enno er uløyste.
@@ -2704,38 +2697,55 @@ lite testsett.
  f-strukturlenkjinga; men, som nemnt i del \ref{SEC:fnord} kan det
  finnast c-strukturforhold som bør påverke f-strukturlenkjinga. I
  dette kapittelet ser eg på korleis føresetnadene ved implementasjonen
- påverkar kva for samanstillingar me får.
+ påverkar kva for samanstillingar me får, og kjem fram til at svært
+ ulike eller fragmentariske f-strukturar fører til store feil i
+ lenkjingane.
  
 \section{Materiale}
 \label{sec-5.1}
 
- Hovudkjeldematerialet eg nyttar for evaluering i dette kapittelet er
- ei mengd med omtrent tredve LFG-analyserte testsetningar på norsk og
- georgisk\footnote{Som nemnt er georgisk eitt av språka nytta i Xpar-prosjektet;
-        og det er nok det som har mest typologisk avstand frå
-        norsk. Georgisk-norsk burde difor vere eit passande språkpar
-        for evalueringa. }, frå eit testsett kor setningane er valde for å
- illustrere ei vid rekkje ulike syntaktiske situasjonar (kalla \texttt{mrs}
- nedanfor), i tillegg til eit par setningar frå Jostein Gaarders
- \emph{Sofies Verden} (kalla \texttt{sofie} nedanfor) på norsk og
- georgisk. Analysane er manuelt disambiguerte og setningssamanstilte.
+ Eg nyttar språka georgisk og norsk i evalueringa, hovudsakleg fordi
+ dei er svært ulike syntaktisk og morfologisk. Som nemnt er georgisk
+ eitt av språka nytta i Xpar-prosjektet; og det er nok det som har
+ mest typologisk avstand frå norsk av språka i prosjektet.  Georgisk
+ er mellom anna eit pro-drop-språk, med friare ordfølgje og rikare
+ morfologi enn norsk. Georgisk-norsk burde difor vere eit passande
+ språkpar for evalueringa.
 
- Eg har ikkje tilgang på noko større setningssamanstilt georgisk-norsk
- parallelltekst\footnote{Dette måtte i tillegg vore LFG-analysert og disambiguert for
-        at eg skulle kunne samanlikne med \texttt{lfgalign}. }, og materialet i \texttt{mrs} og \texttt{sofie} er sjølvsagt
- alt for lite for statistisk samanstilling, så det vil ikkje vere
- mogleg å samanlikne presisjon/dekning med N-grambaserte metodar
- her. I staden har eg prøvd å sjå på kva for fenomen som \emph{kan} gi
- problem, og kva for informasjon som for ein spesifikk N-grambasert
- metode kan vere vanskeleg å hente ut; men dette er ein veikskap med
- evalueringa.
+ Kjeldematerialet mitt for dette språkparet er ei mengd med
+ omtrent tredve LFG-analyserte testsetningar på norsk og georgisk, frå
+ eit testsett kor setningane er valde for å illustrere ei vid rekkje
+ ulike syntaktiske situasjonar (kalla \texttt{mrs} nedanfor), i tillegg til
+ eit par setningar frå Jostein Gaarders \emph{Sofies Verden} (kalla \texttt{sofie}
+ nedanfor) på norsk og georgisk. Analysane er manuelt disambiguerte og
+ setningssamanstilte.
 
- Eg gjer i tillegg ei overflatisk samanlikning med deler av materialet
- frå programmet \texttt{RIA} \citep{graham2009osr,graham2009fts}, kor språka
- er tysk og engelsk. Setningane, og setningslenkjene, er frå
+ Sidan eg ikkje har tilgang på nokon større ferdig setningssamanstilt
+ georgisk-norsk parallelltekst, blir det vanskeleg (utan ein god del
+ forarbeid) å køyre den statistiske ordsamanstillinga som er vanleg
+ som første steg i N-grambaserte metodar\footnote{Korpuset måtte i tillegg vore LFG-analysert og disambiguert
+        for at eg skulle kunne samanlikne med \texttt{lfgalign}. Eg veit
+        heller ikkje enno om nokon statistisk frasestrukturparsar av
+        høg kvalitet for georgisk; testsettet mitt derimot er ferdig
+        parsa med LFG-parsaren frå \citet{meurer2008cgg},
+        c-strukturnodane avgrenser då kva som er ein syntaktisk
+        konstituent. }.  Materialet i \texttt{mrs}
+ og \texttt{sofie} er sjølvsagt alt for lite for statistisk samanstilling, så
+ det vil ikkje vere mogleg å empirisk samanlikne presisjon/dekning med
+ N-grambaserte metodar her. I staden har eg prøvd å sjå på kva for
+ fenomen som \emph{kan} gi problem, og kva for informasjon som for ein
+ spesifikk N-grambasert metode kan vere vanskeleg å hente ut; men
+ dette er ein veikskap med evalueringa.
+
+ Eg gjer i tillegg ei overflatisk samanlikning med materialet nytta i
+ \texttt{RIA Open Source Rule Induction Tool}
+ \citep{graham2009osr,graham2009fts}, kor språka er tysk og
+ engelsk. Dette materialet inkluderer f-strukturlenkjer for 4000
+ setningspar, fått via ein N-grambasert metode; her samanliknar eg
+ overlapp i samanstillingane.  Setningane, og setningslenkjene, er frå
  Europarl-korpuset \citep{koehn2005emc}. LFG-analysane er automatisk
  disambiguerte og setningssamanstilte (og inkluderer ein god del
- fragmentariske analysar), og er difor ganske ulike det materialet eg
+ fragmentariske analysar); det er difor ganske ulikt det materialet eg
  elles har sett på.
 
 \section{N-grambaserte metodar}
@@ -3471,7 +3481,6 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
-
 
 
 
