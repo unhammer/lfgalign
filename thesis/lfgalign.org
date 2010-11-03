@@ -56,18 +56,18 @@ nyttig sparse tree: SKRIV
 \fxnote{TODO: abstract/samandrag}
 
 Denne masteroppgåva utforskar kva det vil seie at to uttrykk er
-omsetjingar av kvarandre, og korleis me automatisk kan generere og
-evaluere samanstilling (/alignment/) av uttrykk som
-står i eit slikt omsetjingsforhold. 
+omsetjingar av kvarandre, og korleis me automatisk kan generere
+samanstillingar (/alignments/) av uttrykk som står i eit slikt
+omsetjingsforhold.
 
-Omsetjingsforhold finn me mellom setningar i kontekst på ulike språk,
-men me kan au finne ulike typar ekvivalensforhold (samanstillingar)
-mellom frasar innanfor setningane, og mellom lingvistiske
-skildringar av setningane. I samanheng med Xpar-prosjektet
-\citep{xpar2008rcn} har eg sett på metodar for automatisk
-frasesamanstilling – å finne omsetjingsforhold mellom grupper av
-fleire ord. Resultatet blir ein /annotasjon/, endå ei lingvistisk
-skildring av tekstene.
+Omsetjingsforhold finn me mellom ord og setningar i kontekst på ulike
+språk, men me kan au finne ulike typar ekvivalensforhold
+(samanstillingar) mellom frasar innanfor setningane, og mellom
+lingvistiske skildringar av setningane. I samanheng med
+Xpar-prosjektet \citep{xpar2008rcn,dyvik2009lmp} har eg sett på metodar for
+automatisk frasesamanstilling – å finne omsetjingsforhold mellom
+grupper av fleire ord. Resultatet blir ein /annotasjon/, endå ei
+lingvistisk skildring av tekstene.
 
 
 # to situerte setningar er omsetjingar av kvarandre, mellom
@@ -75,27 +75,28 @@ skildring av tekstene.
 # forhold til omsetjing...
 
 Det at me kan finne korrespondansar mellom lingvistiske skildringar
-(t.d. trekkstrukturane til dei grammatiske rammeverka HPSG eller LFG)
-gjer det tydeleg at me arbeider med ein /modell/ av språket; ulike
-skildringar kan vere sanne innanfor modellen, utan at modellen er lik
-språket. Sjølve omsetjingsforholdet er au ein teoretisk storleik, og
-me kan leggje ulike kriterium til grunn for å kalle to uttrykk
+(t.d. frasestrukturannotasjonar, eller trekkstrukturane til dei
+grammatiske rammeverka HPSG eller LFG) gjer det tydeleg at me arbeider
+med ein /modell/ av språket; ulike skildringar kan vere sanne innanfor
+modellen, utan at modellen er lik språket. Korrespondansane er au
+teoretiske storleikar, og me kan leggje ulike kriterium til grunn for
+å seie at to representasjonar korresponderer; på same måte som me kan
+leggje ulike kriterium til grunn for å seie at to ulike uttrykk er
 omsetjingar av kvarandre.
 
 Kriteria avheng av formålet. Samanstillingsannotasjon kan t.d. nyttast
 som grunnlag for statistisk eller eksempelbasert maskinomsetjing, i
-tillegg til oppbygging av parallelle korpora for meir teoretiske
-språkstudium.  For statistisk maskinomsetjing vil alle uttrykk vere
-omsetjingar av kvarandre med eit visst sannsyn (kanskje null), ein
-har vanlegvis ikkje kriterium som krev lingvistisk analyse. Når
-samanstillinga skal nyttast i parallelle korpora for lingvistiske
-undersøkingar vil ein kanskje ha krav om at uttrykk som skal lenkjast
-er «like» på eit eller anna mål, utover at dei har opptredt saman
-ofte; i den manuelle samanstillinga i \citet{samuelsson2006pap} har
-dei t.d. ein del reint semantiske kriterium for å opprette
-fraselenkjer i ein parallell trebank, men dei har ikkje krav om
-syntaktisk likskap.
+tillegg til oppbygging av parallelle korpora for språkstudium.  For
+statistisk maskinomsetjing vil alle uttrykk vere omsetjingar av
+kvarandre med eit visst sannsyn (kanskje null), ein har vanlegvis
+ikkje kriterium som krev lingvistisk analyse. Når samanstillinga skal
+nyttast i parallelle korpora for lingvistiske undersøkingar vil ein
+kanskje ha krav om at uttrykk som skal lenkjast er «like» på eit eller
+anna mål, utover at dei har opptredt saman ofte.
 
+I den manuelle samanstillinga i \citet{samuelsson2006pap} har dei
+t.d. ein del reint semantiske kriterium for å opprette fraselenkjer i
+ein parallell trebank, men dei har ikkje krav om syntaktisk likskap.
 Xpar-prosjektet, som denne masteroppgåva er ein del av, har mellom
 anna som mål å oppdage forhold mellom grammatiske funksjonar,
 tematiske roller og kasusmarkering, ved hjelp av parallelle trebankar
@@ -103,10 +104,12 @@ annotert med djupe grammatiske analysar. Trebankane vil innehalde
 parallell tekst på norsk, georgisk, tigrinya og nederlandsk.  For å
 lenkje to frasar i dette prosjektet krev me ein viss syntaktisk
 likskap i omgivnadene til frasane, sjølv om frasane internt kanskje er
-syntaktisk ulike.  Grammatikkane som gir analysane er utvikla med
-tanke på at /like syntaktiske fenomen på ulike språk skal få like
-analysar/, frasesamanstillinga bør då kunne tene på at omsetjingar som
-har ein syntaktisk likskap vil få liknande analysar.
+syntaktisk ulike.  
+
+Grammatikkane som gir analysane er utvikla med tanke på at /like
+syntaktiske fenomen på ulike språk skal få like analysar/,
+frasesamanstillinga bør då kunne tene på at omsetjingar som har ein
+syntaktisk likskap vil få liknande analysar.
 
 Dei grammatiske analysane er gjort i leksikalsk-funksjonell
 grammatikk, LFG \citep{bresnan2001lfs}. Ei grammatisk analyse i LFG
@@ -143,132 +146,117 @@ kvantitative måla, vil lenkjer mellom f-strukturar gi informasjon som
 er kvalitativt forskjellig frå det ein kan få med å berre sjå på
 lenkjer mellom ord, N-gram eller konstituentar.
 
-I denne masteroppgåva spesifiserer eg kva for lenkjer mellom
-f-strukturar og c-strukturnodar me ønskjer, implementerer eit program
-=lfgalign= som automatisk finn samanstillingar med slike lenkjer,
-evaluerer resultatet av å køyre programmet mitt, og samanliknar dette
-med kva me kan få frå andre metodar.
 
-Programmet =lfgalign= opprettar frasesamanstillingar med hjelp av
-f-strukturinformasjonen gitt av dei parallelle grammatikkane, og
-bottom-up-informasjon om kva for ordsamanstillingar som er
-moglege. F-strukturane avgrensar igjen kva for ordsamanstillingar som
-er moglege, og kva for c-strukturnodar (syntaktiske frasar) som kan
-lenkjast.
+Og sidan f-strukturane er meint å skildre informasjon på eit meir
+«språkuavhengig» nivå enn t.d. konstituentstruktur, bør f-strukturane
+vere gode kandidatar for å finne informasjon som korresponderer på dei
+to språka. Tanken er at me frå to f-strukturar
+som skildrar omsette setningar, kan
+1. lage ei samanstilling mellom relevante deler av f-strukturane,
+2. nytte denne funksjonelle samanstillinga til å finne ei
+   frasesamanstilling, ved å følgje avbildinga frå f-struktur til
+   c-struktur.
+
+
+Eitt problem som byr seg er hypotesemangfaldet: kva for «deler av
+f-strukturane»? Korleis kan me avgrense søkjerommet? I det minste må
+me kunne kople dei lenkja f-strukturane opp mot c-strukturnodar; her
+er \PRED{}-elementet ein god kandidat.
+
+Vidare må me vite /korleis/ me samanstiller desse delene. Me kan
+t.d. byrje med å lenkje dei yttarste f-strukturane frå kvart språk, og
+så rekursivt lenkje visse relevante substrukturar[fn:52].  Eit naivt
+førsteutkast til ei /f-samanstilling/, samanstilling på
+f-strukturnivå, kan då sjå slik ut:
+
+
+\[
+\falign(f_{1}, f_{2}) =
+\{ (f_{1}(\PRED), f_{2}(\PRED)) \}
+\cup
+\bigcup_{g_{1},g_{2}\in \fpairs(f_{1},f_{2})} \falign(g_{1}, g_{2})
+\]
+
+Funksjonen \falign{} vil gi ei mengd av par av f-strukturar, kor kvart
+par altså er samanstilt. Problemet er då å finne ut kva for par av
+substrukturar som er «relevante», her representert ved
+$\fpairs(f_{1},f_{2})$.
+
+
+Sjølv om f-strukturar abstraherer frå skilnadene i korleis ulike språk
+nyttar ordgruppering og ordform til å kode syntaktiske forhold
+\citep[s.~14]{bresnan2001lfs}, vil det  oppstå forskjellar i
+f-strukturane til to parallellstilte setningar i eit korpus; både
+pga. «omsetjarfridom», ulikskap i argumentstrukturar og det at ulike
+språk nyttar ulike syntaktiske funksjonar til å uttrykkje det same
+konseptet. Det kan t.d. godt hende at me bør lenkje eit objekt på eitt
+språk til eit setningskomplement på eit anna språk. Skal ein algoritme
+gå frå f-strukturar til frasesamanstilling må han i det minste vere
+robust nok til å takle slik mangel på samsvar. Til å byrje med kan me
+tenkje oss at \fpairs{} gir alle par av grammatiske funksjonar som har
+same plass i argumentstrukturen til predikatet. Så viss predikatet
+\p{sein} i $f_1$ har eit subjekt på førsteplass i strukturen, og så
+eit setningskomplement, medan \p{have} i $f_2$ har eit subjekt og så
+eit objekt, vil \fpairs{} i det minste returnere
+$\{(f_{1}(\SUBJ),f_{2}(\SUBJ)),(f_{1}(\XCOMP),f_{2}(\OBJ))\}$.  Ved å
+nytte argumentplass kan me då enkelt få til lenkjer mellom grammatiske
+funksjonar med ulike namn.  Men der me ikkje har slikt samsvar i
+argumentstrukturar, vil \fpairs{} ha ein vanskelegare jobb.
+
+Og sidan me gjerne au vil lenkje adverbial, som er representert som
+uordna mengder i f-strukturane, er det klart at \fpairs{} ikkje er
+triviell å definere. Ein del av denne oppgåva vil altså vere å komme
+med forslag til funksjonen \fpairs{}.
+
+Om to f-strukturar er lenkja, har me grunn til å lenkje
+c-strukturnodane som projiserer dei. Men her er det ikkje sikkert me
+vil lenkje /alle/ nodane; intuitivt vil me berre at nodar som
+dominerer korresponderande innhald skal lenkjast.  Ein formalisering
+dette steget, med diskusjon rundt problema, inngår au i denne oppgåva.
+
+I første omgang spesifiserer eg kva for lenkjer mellom f-strukturar og
+ c-strukturnodar me /ønskjer/. Eg implementerer så eit program
+ =lfgalign= som automatisk finn samanstillingar med slike lenkjer.
+ Dette programmet opprettar frasesamanstillingar med hjelp av
+ f-strukturinformasjonen gitt av grammatikkar som er skrivne på felles
+ prinsipp, i tillegg til å kunne avgrense lenkjingar med hjelp av
+ bottom-up-informasjon om kva for ordlenkjer som er
+ moglege. F-strukturane avgrensar igjen kva for ordsamanstillingar som
+ er moglege, og kva for c-strukturnodar (syntaktiske frasar) som kan
+ lenkjast. Til sist evaluerer eg resultatet av å køyre programmet
+ mitt, og samanliknar dette med kva for samanstillingar me kan få frå
+ andre metodar.
+
 
 
 ** Vegkart
 I neste kapittel gir eg eit oversyn over feltet /frasesamanstilling/,
-i tillegg til ein kort introduksjon til LFG.
+i tillegg til ein kort introduksjon til terminologi og konseptar frå
+LFG som blir nytta i resten av teksta.
 
 I kapittel \ref{SEC:ideell} går eg gjennom kva me ønskjer av ei
 frasesamanstilling når formålet m.a. er å oppdage relasjonane mellom
 syntaktiske funksjonar, kasusmarkering og tematiske roller med hjelp
 av ein parallell trebank. Dette ender opp i ei mengd med «krav» som
 samanstillingane må fylle for å vere lovlege, og som implementasjonen
-av den automatiske frasesamanstillinga (kapittel
-\ref{SEC:implementasjon}) må følgje.
+av den automatiske frasesamanstillinga må følgje. Eg gir i tillegg
+nokre heuristiske rangeringskriterium for dei tilfella der me har
+ulike konkurrerande f-struktursamanstillingar. Eit oversyn over
+implementasjonen kjem i kapittel \ref{SEC:implementasjon}.
 
 Eg evaluerer samanstillingane som kjem ut av denne metoden i kapittel
-\ref{SEC:diskusjon}, og samanliknar dei med det som er mogleg der me
-berre har konstituentstruktur (syntaktiske tre) i tillegg til
-N-grambasert ordsamanstilling. Her nyttar eg dei typologisk svært
-ulike språka georgisk og norsk i eit lite testsett kor eg går gjennom
-lenkjingane manuelt. I tillegg ser eg på forskjellane mellom
+\ref{SEC:diskusjon}. Her samanliknar eg desse samanstillingane med det
+som er mogleg der me berre har konstituentstruktur (syntaktiske tre) i
+tillegg til N-grambasert ordsamanstilling. Eg nyttar dei typologisk
+svært ulike språka georgisk og norsk i eit lite testsett kor eg går
+gjennom lenkjingane manuelt. I tillegg ser eg på forskjellane mellom
 f-strukturlenkjingane frå min implementasjonen og dei som kjem frå ein
 N-grambasert metode for lenkjing av f-strukturar, på eit større,
 tysk-engelsk testsett.
 
 
 
-** SKRIV Frasesamanstilling frå f-struktur			     :ROTETE:
-   \fxnote{limt inn frå prosjektskildringa, dette må omskrivast
-   totalt/fjernast. Kan kanskje ta eit par setningar inn i kap.3, men
-   innleiinga bør iallfall ha eit kort oversyn over metoden}
 
-Om me har f-strukturane til to omsette setningar, burde det kanskje
-vere mogleg å finne ei f-struktursamanstilling først og så finne
-ordsamanstillinga ut frå denne. Tanken er at me frå to f-strukturar
-som skildrar omsette setningar, kan
-1. lage ei samanstilling mellom relevante deler av f-strukturane,
-2. nytte denne funksjonelle samanstillinga til å finne ei
-   frasesamanstilling, ved å følgje avbildinga frå f-struktur til
-   c-struktur ($\phi{}^{-1}$).
-
-Eitt problem som byr seg er hypotesemangfaldet: kva for «deler av
-f-strukturane»? Korleis kan me avgrense søkjerommet? I det minste må
-me kunne kople det opp mot c-strukturnodar; så \PRED-element bør i det
-minste ha lenkjer, medan t.d. tempus og aspektuell informasjon kanskje
-er mindre viktig. Men kva kan ignorerast? Vil det oppstå tilfelle då
-me bør vekte visse element? (Dvs., må me nokon gong disambiguere med
-slike andre element?)
-# todo 
-
-Vidare må me vite /korleis/ me samanstiller desse delene. Me kan
-t.d. byrje med å kople ytterste \PRED{} frå kvart språk, og så
-rekursivt kople \PRED{} i dei relevante
-substrukturane\footnote{Dette~krev~sjølvsagt~at~ytre~\PRED{}~faktisk~korresponderer~i~samanstilte~setningar,~ein~ikkje-triviell~påstand.}. Gitt
-ein funksjon $i$ som returnerer indeksen til ein f-(sub)struktur, kan
-eit førsteutkast til ei /f-samanstilling/, samanstilling på
-f-strukturnivå, sjå slik ut:
-
-\[
-\falign(f_{1}, f_{2}) =
-\{ (i(f_{1}(\PRED)), i(f_{2}(\PRED))) \}
-\cup
-\bigcup_{g_{1},g_{2}\in \fpairs(f_{1},f_{2})} \falign(g_{1}, g_{2})
-\]
-# må eg skrive f_1(g_1) etc.?
-
-\falign{} vil gi ei mengd av par av indeksar, kor kvart par altså er
-samanstilt. Ein føresetnad her er at me i tillegg veit kva for par av
-substrukturar som er «relevante» ($\fpairs(f_{1},f_{2})$).
-
-#+BEGIN_LaTeX
-Sjølv om f-strukturar abstraherer frå skilnadene i korleis ulike språk
-nyttar ordgruppering og ordform til å kode syntaktiske forhold
-\citep[s.~14]{bresnan2001lfs}, vil det likevel oppstå forskjellar i
-f-strukturane til to parallellstilte setningar i eit korpus; både
-pga. «omsetjarfridom» og det at ulike språk nyttar ulike syntaktiske
-funksjonar til å uttrykkje det same konseptet. I
-f-struktursamanstillinga til \citet[s.~40]{riezler2006gmt} får dei
-t.d. ei lenkje frå ein \XCOMP{} på tysk til eit \OBJ{} på
-engelsk. Skal ein algoritme gå frå f-strukturar til frasesamanstilling
-må han i det minste vere robust nok til å takle slik mangel på
-samsvar. Til å byrje med kan me tenkje oss at \fpairs{} gir alle par
-av GF-ar som har same plass i
-argumentstrukturen\footnote{Ved~å~nytte~argumentplass~kan~me~enkelt~få~til~lenkjer~mellom~GF-ar~med~ulike~namn,~som~vist~i~dømet.}
-til predikatet, så viss 'sein$\langle$\SUBJ,\XCOMP$\rangle$' står i
-$f_{1}$ og 'have$\langle$\SUBJ,\OBJ$\rangle$' i $f_{2}$, vil \fpairs{}
-i det minste returnere
-$\{(f_{1}(\SUBJ),f_{2}(\SUBJ)),(f_{1}(\XCOMP),f_{2}(\OBJ)),...\}$.
-Men om me ikkje har slikt samsvar i argumentstrukturar, vil \fpairs{}
-ha ein vanskelegare jobb.
-#+END_LaTeX
-
-Eit større problem er nok adverbial (elementa i \F{adjunct}{}), kor
-f-strukturane ikkje gir like greie hint om kva for substrukturar som
-høyrer
-saman\footnote{Det~er~mogleg~at~f-samanstillinga~av~adverbial~kan~tene~på~informasjon~frå~(og~difor~bør~skje~etter)~samanstillinga~av~frasane~som~projiserer~argumentfunksjonane.}. Ein
-del av masteroppgåva vil altså vere å komme med forslag til funksjonen
-\fpairs{}.
-
-
-f-samanstillinga kan nyttast til å gi ein samanstilling av frasane dei
-representerer. $\phi^{-1}$ gir no ei samanstilling mellom funksjonelle
-domene i c-strukturane, me har t.d. ei lenkje mellom domenet
-$d_{1}=\{X, Y, Z\}$ på språk 1 og $d_{2}=\{U, V, W\}$ på språk 2. Kvar
-node frå $d_{1}$ vil kunne (symmetrisk) samanstillast med ein (eller
-ingen) frå $d_{2}$.
-
-Her kan me utnytte det at frasestrukturane i dei ulike grammatikkane
-er tufta på same X-bar-prinsipp. Ein $XP\in d_{1}$ skal sannsynlegvis
-samanstillast med ein $YP\in d_{2}$ (der $X$ og $Y$ gjerne er same
-symbol, men au kan vere t.d. $V$ og $I$). I tillegg skal høge nodar
-sannsynlegvis samanstillast med andre høge nodar, der alt anna er
-likt, medan mangel på samsvar i samanstillinga til døtre kan føre til
-at mornodar ikkje skal samanstillast; ein formalisering dette steget,
-med diskusjon rundt problema, vil au inngå i masteroppgåva.
 
 * Bakgrunn og omgrepsavklaring
   \label{SEC:bakgrunn}
@@ -293,15 +281,20 @@ nytte i resten av oppgåva.
 ** Metodar for frasesamanstilling
 \fxnote[inline,nomargin]{«State of the art» på norsk?}
 
+\fxnote{citet s.~470{manning99foundations} gjer eit skilje mellom
+samanstillingsproblem og korrespondanseproblem, der berre det siste
+kan involvere kryssande avhengnader.}
+
 Automatisk frasesamanstilling er eit nytt felt. Det finst allereie
-veldig gode system for automatisk setningssamanstilling, og automatisk
-samanstilling av ord har komme langt, men nivåa mellom ord og setning
-ser ut til å by på fleire problem. \fxnote[inline,nomargin]{«by på
-fleire problem» -- weasel wording, TODO omskriv.} Dei ulike tilnærmingane
-som finst er prega av formåla til utviklarane. Det er verdt å merkje
-seg at ordet «frase» ofte blir nytta i litteraturen om strenger av ord
-(N-gram) som ikkje treng vere syntaktiske konstituentar, igjen
-avhengig av formålet med metoden.
+veldig gode system for automatisk setningssamanstilling
+\citep[t.d.~][]{chen1993asb}, og automatisk samanstilling av ord har
+komme langt, men nivåa mellom ord og setning ser ut til å by på fleire
+problem. \fxnote[inline,nomargin]{«by på fleire problem» -- weasel
+wording, TODO omskriv.} Dei ulike tilnærmingane som finst er prega av
+formåla til utviklarane. Det er verdt å merkje seg at ordet «frase»
+ofte blir nytta i litteraturen om strenger av ord (N-gram) som ikkje
+treng vere syntaktiske konstituentar, igjen avhengig av formålet med
+metoden.
 
 Innanfor korpuslingvistikken har t.d. \citet{piao2001mwu} nytta enkel
 kollokasjonsinformasjon for å først finne sannsynlege nominale frasar
@@ -2008,7 +2001,7 @@ reknast som predikatet for dette leddet. Ei utfordring for
 har fleire grammatiske element innanfor same ledd som alle bidrar med
 «a non-trivial part of the information of the complex predicate»
 \citep{alsina1997cp}. I LFG er det ein føresetnad at me berre har éin
-\textsc{pred} ytterst i kvar f-struktur; ulike mekanismar har blitt
+\textsc{pred} yttarst i kvar f-struktur; ulike mekanismar har blitt
 føreslått for å handsame dette fenomenet.
 # \citep[eg~gir~ein~gjennomgang~i][]{unhammer2008cps}
 
@@ -2353,10 +2346,10 @@ desse f-strukturane med eitt av argumenta til den andre.
  Det er mogleg at ei lenkje frå éi samanstilling kan finnast i andre
  samanstillingar, =sub-f= unngår dobbeltarbeid ved å lagre alle
  delvise samanstillingar i $aligntable$-tabellen[fn:48]. Dette føreset
- at \texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt; t.d. må
- mengda av samanstillingar som kjem ved å lenkje subjektet til $F_s$
- mot subjektet til $F_t$ vere uavhengig av om objektet til $F_s$ er
- lenkja mot eit objekt eller eit adjunkt osb. av $F_t$.
+ at \texttt{f-align}$(s,t)$ er uavhengig av konteksten rundt[fn:33];
+ t.d. må mengda av samanstillingar som kjem ved å lenkje subjektet til
+ $F_s$ mot subjektet til $F_t$ vere uavhengig av om objektet til $F_s$
+ er lenkja mot eit objekt eller eit adjunkt osb. av $F_t$.
 
 #+BEGIN_LaTeX  
   \begin{algorithm}[]
@@ -3321,14 +3314,19 @@ her...}
 
 Ein mogleg strategi for å handsame desse vil vere å dele opp
 lenkjingsoppgåva slik at me først finn fragment som sannsynlegvis
-korresponderar (ein god heuristikk er ganske enkelt følgje), og så
+korresponderar (ein god heuristikk er ganske enkelt ordfølgje), og så
 sender kvar av desse til vanleg f-strukturlenkjing. Men der fragmenta
 ikkje overlappar vil me få problem. Ein av grunnføresetnadene til
 =lfgalign= er at analysane har ein viss likskap, og er korrekte; ei
 god løysing på dette problemet vil nok gå utover oppgåva.
 
-# Dei «flate» f-strukturane førte til at utrekningane blei svært
-# vanskelege
+Ein annan strategi, som iallfall løyser problemet med effektivitet, er
+å gjere eit ufullstendig søk etter adjunktpermutasjonar. Det å finne
+alle kombinasjonar av lenkjer mellom «flate» f-strukturar der me har
+over åtte ord på kvar side tek for lang tid til at det blir
+nyttig. Ein filtrering av moglege lenkjer basert på
+t.d. LPT-korrespondanse kan gjere ei betre avskjering enn me får med
+berre ordfølgje.
 
 *** «Mjuk» LPT-korrespondanse, og rangering som avskjering
 Ufullstendig informasjon i LPT-tabellen kan, som nemnt i del
@@ -3667,11 +3665,13 @@ problem.
         ei mange-mange-lenkje mellom /ride/ + /bike/ og /sykle/; for
         skuld argumentet ser me berre på ein-til-ein-lenkjer her.
 
-[fn:29] Sidan det ikkje er meininga å nytte denne skåringa i
-        maskinlæring har eg ikkje undersøkt om dette kan gjerast til
-        ein stringent sannsynsmodell (der summen av skårar for alle
-        moglege samanstillingar aldri går over 1); men det bør vere
-        mogleg å gjere noko slikt ut av det.
+[fn:29] Dette er ganske /ad hoc/ skåringsfunksjon, og det er ikkje
+        sikkert at alle kriteria bør ha lik vekting.  Sidan det ikkje
+        er meininga å nytte denne skåringa i maskinlæring har eg ikkje
+        undersøkt om dette kan gjerast til ein stringent
+        sannsynsmodell (der summen av skårar for alle moglege
+        samanstillingar aldri går over 1); men det bør vere mogleg å
+        gjere noko slikt ut av det.
 
 [fn:30] Det kan godt hende me har fleire greiner med same skåre --
         kodefiguren viser ikkje dette, men me samlar opp alle med
@@ -3787,6 +3787,17 @@ problem.
 [fn:51] I utgangspunktet kan ein tenkje på /spesifikator/, /adjunkt/
         og /komplement/ som tomme symbol her, definert ved deira
         posisjon i forhold til XP og X'.
+
+[fn:33] I programmeringsterminologi: at problemet har /optimal
+        substruktur/ -- den optimale løysinga må vere mogleg å finne
+        frå optimale delløysingar for at me skal kunne nytte slik
+        dynamisk programmering.
+
+[fn:52] Dette krev sjølvsagt at dei yttarste f-strukturane faktisk
+        korresponderer i lenkja setningar, noko me ikkje alltid kan ta
+        for gitt.
+
+
 
 
 
