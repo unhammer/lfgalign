@@ -279,35 +279,54 @@ gjennomgang av nokre teoretiske omgrep og konsept som eg kjem til å
 nytte i resten av oppgåva.
 
 ** Metodar for frasesamanstilling
-\fxnote[inline,nomargin]{«State of the art» på norsk?}
+Frasesamanstilling vil seie lenkjing av ulike deler av setningar som
+har ein omsetjingsmessig korrespondanse. Merk at ordet «frase» ofte
+blir nytta i litteraturen om kontinuerlege strenger av ord (N-gram)
+som ikkje treng vere syntaktiske konstituentar. I vid forstand kan me
+au inkludere lenkjing av deler av dependensstrukturar eller
+syntaktiske funksjonar, som begge representerer mengder med ord.
 
-\fxnote{citet s.~470{manning99foundations} gjer eit skilje mellom
-samanstillingsproblem og korrespondanseproblem, der berre det siste
-kan involvere kryssande avhengnader.}
+Automatisk frasesamanstilling er eit nytt felt.  Det finst allereie
+veldig gode system for automatisk lenkjing av setningar; her har ein
+fått svært gode resultat ved å nytte ein statistisk omsetjingsmodell
+\citep{chen1993asb}; andre metodar har nytta avstand eller
+delstrengoverlapp \citep[s.~467--484 gir eit oversyn]{manning99foundations}.  
+Automatisk samanstilling av ord har
+au komme langt (dei klassiske «IBM-modellane» står i
+\citet{brown1990sam}; \citet{och2003scv} gir eit godt oversyn over
+ytinga til leiande metodar).  Men på nivåa mellom ord og setning er
+det vanskelegare å vurdere feltet.  Det finst fleire moglege einingar
+å lenkje -- kontinuerlege N-gram, kontinuerlege eller diskontinuerlege
+konstituentar, dependensstrukturar, syntaktiske funksjonar -- og i
+motsetning til einingar som /ord/ eller /setning/, er einingane i ein
+frasesamanstilling sjeldan teoretisk ukontroversielle[fn:35].  Dei ulike
+tilnærmingane som finst, og einingane dei lenkjer, er prega av formåla
+til utviklarane.
 
-Automatisk frasesamanstilling er eit nytt felt. Det finst allereie
-veldig gode system for automatisk setningssamanstilling
-\citep[t.d.~][]{chen1993asb}, og automatisk samanstilling av ord har
-komme langt, men nivåa mellom ord og setning ser ut til å by på fleire
-problem. \fxnote[inline,nomargin]{«by på fleire problem» -- weasel
-wording, TODO omskriv.} Dei ulike tilnærmingane som finst er prega av
-formåla til utviklarane. Det er verdt å merkje seg at ordet «frase»
-ofte blir nytta i litteraturen om strenger av ord (N-gram) som ikkje
-treng vere syntaktiske konstituentar, igjen avhengig av formålet med
-metoden.
+Eit av dei tidlegaste forsøka på å lenkje frasar var
+\citet{kupiec1993afn}, som lenkja nominalfrasar. Metoden besto i å
+først køyre ein statistisk ordklassetaggar, så finne sannsynlege
+nominalfrasar på kvart språk (dvs. «chunking») med reine regulære
+uttrykk, og så lenkjing av slike kontinuerlege ordstrengar basert på
+sannsynsmaksimering[fn:53]. Resultata var relativt gode for enkle
+frasar (nitti av dei hundre høgast rangerte korrespondansane var
+gode), men modellen var svært enkel og involverte ikkje nokon kontekst
+rundt frasane.
 
-Innanfor korpuslingvistikken har t.d. \citet{piao2001mwu} nytta enkel
-kollokasjonsinformasjon for å først finne sannsynlege nominale frasar
-på engelsk og kinesisk (dvs. «chunking»), og så samanstille desse; her
-er evalueringsgrunnlaget rett og slett ein manuell gjennomgang av dei
-mest sannsynlege omsetjingane dei får. \fxnote{fleire slike? meir om
-dette, algoritmen}
+Innanfor korpuslingvistikken har \citet{piao2001mwu} nytta enkel
+kollokasjonsinformasjon og ordklasseheuristikkar for å først finne
+sannsynlege nominale frasar på engelsk og kinesisk, og så lenkje desse
+ved hjelp av sannsynsheuristikkar som t-skåre og /Mutual
+Information/. Dei køyrer fleire runder med lenkjing av lengre og
+lengre N-gram.  Her, som i \citet{kupiec1993afn}, er
+evalueringsgrunnlaget rett og slett ein manuell gjennomgang av dei
+mest sannsynlege omsetjingane dei får.
 
-Den manuelle frasesamanstillinga i \citet{samuelsson2006pap}, nemnt
-over, blei nytta som evalueringsstandard for den automatiske metoden i
-\citet{samuelsson2007apa}.  Her kjem frasesamanstillinga frå ei
-ordsamanstilling, der berre N-gram som svarer til ein syntaktisk node
-blir lenkja som frasar (meir om denne metoden nedanfor). Formålet er å
+Den manuelle frasesamanstillinga i \citet{samuelsson2006pap}, nemnt i
+introduksjonen, blei nytta som evalueringsstandard for den automatiske
+metoden i \citet{samuelsson2007apa}.  Her finn dei ei
+konstituentsamanstilling frå ei ordsamanstilling, der berre N-gram som
+svarer til ein syntaktisk node blir lenkja som frasar. Formålet er å
 lage ein parallell trebank, kor det altså er unyttig å lenkje «frasar»
 som /ikkje/ er konstituentar. Eg kjem tilbake til denne metoden i
 kapittel \ref{SEC:diskusjon}.
@@ -321,15 +340,15 @@ rangere resultata
 \citep[Papineni~et~al.,~2001,~i][s.~51]{koehn2003spb}, som gir ei
 rangering ved (N-grambasert) samanlikning med ferdig omsett tekst.
 
-Den første metoden, /AP/, er reint N-grambasert[fn:35]. Dei nyttar
-verktøyet Giza++ \citep[Och~og~Ney,~2000,~i][s.~50]{koehn2003spb} til
-å indusere ordsamanstilling frå eit setningssamanstilt korpus
-(vha. «modell 4» for ordsamanstilling, utvikla ved IBM av
-\citet{brown1993msm}). Denne samanstillinga er 1-til-n (t.d. eitt
-engelsk ord til to franske), så dei finn ordsamanstilling for begge
-retningar og tek så snittet av alle moglege N-gramsamanstillingar som
-ikkje er i konflikt med ordsamanstillingane. Dei føyer så på ord frå
-unionen av desse vha. nokre enkle heuristikkar.
+Den første metoden, /AP/, er reint N-grambasert. Dei nyttar verktøyet
+Giza++ \citep[Och~og~Ney,~2000,~i][s.~50]{koehn2003spb} til å indusere
+ordsamanstilling frå eit setningssamanstilt korpus (vha. «modell 4»
+for ordsamanstilling, utvikla ved IBM av \citet{brown1993msm}). Denne
+samanstillinga er 1-til-n (t.d. eitt engelsk ord til to franske), så
+dei finn ordsamanstilling for begge retningar og tek så snittet av
+alle moglege N-gramsamanstillingar som ikkje er i konflikt med
+ordsamanstillingane. Dei føyer så på ord frå unionen av desse
+vha. nokre enkle heuristikkar.
 
 Den andre metoden, /Syn/, tek berre med dei frasane som står under
 syntaktiske nodar i eit parsa korpus; frasesamanstillinga til /Syn/ er
@@ -3694,8 +3713,6 @@ problem.
         c-strukturnodane avgrenser då kva som er ein syntaktisk
         konstituent.
 
-[fn:35] Eg går grundigare gjennom korleis N-grambaserte metodar
-        fungerer i kapittel \ref{SEC:diskusjon}.
 
 [fn:36] Det finst au /heuristiske/ metodar, t.d. basert på
         strenglikskap, eller på mål som /Mutual Information/ eller
@@ -3796,6 +3813,17 @@ problem.
 [fn:52] Dette krev sjølvsagt at dei yttarste f-strukturane faktisk
         korresponderer i lenkja setningar, noko me ikkje alltid kan ta
         for gitt.
+
+[fn:53] Dette er ein av dei vanlegaste metodane for iterativ
+        reestimering av parametre i ein statistisk modell; eg kjem
+        tilbake til sannsynsmaksimering i kapittel
+        \ref{SEC:diskusjon}.
+
+[fn:35] \citet[s.~470]{manning99foundations} gjer eit skilje mellom
+        /samanstillingsproblem/ og /korrespondanseproblem/, der berre
+        det siste kan involvere kryssande avhengnader.
+
+
 
 
 
