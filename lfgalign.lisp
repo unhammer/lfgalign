@@ -15,6 +15,7 @@
 (defvar *no-warnings* t)
 (defvar *debug* nil)
 (defvar *pro-affects-c-linking* t)
+(defvar *max-adjs* 9)			; maximum amount of adjs to try to match in `adjalign'
 
 ;;;;;;;; C-STRUCTURE TREE:
 ;;;;;;;; -----------------
@@ -606,13 +607,13 @@ speed things up if you have a huge LPT table.
 TODO: Could this leave us with duplicate solutions where we exclude?"
   (let ((l_s (length adjs_s))
 	(l_t (length adjs_t)))
-    (if (or (> l_s 8) (> l_t 8))
+    (if (or (> l_s *max-adjs*) (> l_t *max-adjs*))
 	;; Worst case O(n^2), or a bit less since we reduce both lists
 	;; concurrently. When SBCL is optimising for speed, this takes
 	;; 3.1 secs on 9x9, 46 secs on 10x10 (with 95 page faults) on
 	;; a 2.1 GHz with 3GB real memory.
 	(progn (unless *no-warnings*
-		 (warn "Adjunct list length >8, only trying first solution"))
+		 (warn "Adjunct list length >~A, only trying first solution" *max-adjs*))
 	       (list
 		(loop for src in adjs_s for trg in adjs_t collect (cons src trg))))
       (loop for perm in (if (> l_s l_t)

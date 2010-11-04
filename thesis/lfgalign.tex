@@ -1,4 +1,4 @@
-% Created 2010-11-04 to. 19:19
+% Created 2010-11-04 to. 20:17
 \documentclass[11pt,a4paper,oneside,draft]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -3361,8 +3361,15 @@ setningar på tysk og engelsk, med dei lenkjene som kjem frå
         Lesser General Public License. I tillegg finst Prolog-filer
         som inkluderer c-strukturar for 1000 setningar på
         \href{http://www.computing.dcu.ie/~ygraham/sample_de.tar.gz}{http://www.computing.dcu.ie/\~ygraham/sample\_de.tar.gz} og
-        \href{http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz}{http://www.computing.dcu.ie/\~ygraham/sample\_en.tar.gz}. } i \citet{graham2009osr,graham2009fts}. Eg har
-ikkje nytta nokon LPT-tabell her. 
+        \href{http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz}{http://www.computing.dcu.ie/\~ygraham/sample\_en.tar.gz}. } i \citet{graham2009osr,graham2009fts}. Eg prøvde
+både utan nokon informasjon i LPT-tabellen, og med ein ganske stor
+LPT-tabell med alle oppslaga frå Ding-ordboka\footnote{Tilgjengeleg frå \href{http://www-user.tu-chemnitz.de/~fri/ding/}{http://www-user.tu-chemnitz.de/\~fri/ding/}
+        under GNU GPL, konvertert til Prolog-format med skriptet
+        \texttt{dev/ding-to-LPT.py} (i kjeldekoden til \texttt{lfgalign}).  Ordboka
+        har omtrent 270 000 oppslag; men sidan ein del av dei
+        involverer alternative omsetjingar tok eg det kartesiske
+        produktet av alle slike alternativ, og endte opp med 418 492
+        par av token. }.
 
 Samanlikninga skjer ved å, for kvar setning i korpuset, telje opp kor
 mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som er
@@ -3395,35 +3402,54 @@ modellen har ingen mange-mange-lenkjer).
 \caption{\label{tbl:RIA}Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida.}
 \begin{center}
 \begin{tabular}{lrrrrr}
- metode                    &  snitt  &  union  &  lenkjer  &  RIA-lenkjer  &  snitt / RIA-lenkjer  \\
+ metode                         &  snitt  &  union  &  lenkjer  &  RIA-lenkjer  &  snitt / RIA-lenkjer  \\
 \hline
- \texttt{tilfeldig}        &   2544  &  60544  &    35069  &        28019  &  09,07 \%             \\
- \texttt{lfgalign}         &   7296  &  44587  &    24161  &        28019  &  26,03 \%             \\
- \texttt{lfgalign} + Ding  &   3382  &  31970  &     7375  &        28019  &  12,07 \%             \\
+ \texttt{tilfeldig}             &   2544  &  60544  &    35069  &        28019  &  09,07 \%             \\
+ \texttt{lfgalign} utan ordbok  &   7296  &  44587  &    24161  &        28019  &  26,03 \%             \\
+ \texttt{lfgalign} med ordbok   &   3382  &  31970  &     7375  &        28019  &  12,07 \%             \\
 \end{tabular}
 \end{center}
 \end{table}
 
-\fxnote{ Ding-resultatet er med avskjering på >8, prøv utan! TODO}
+
 
  Resultatet av samanlikninga står i tabell \ref{tbl:RIA}. Kolonnen
  \emph{snitt} viser summen av kor mange lenkjer som var felles for kvart
- setningspar, mellom \texttt{RIA} og dei to testmetodane (\texttt{lfgalign} og ein
- tilfeldig baseline). Ved å dele dette talet på kor mange lenkjer
- \texttt{RIA} hadde, får me ein enkel samanlikning av dei to testmetodane --
- viss forholdet var 100 \% ville altså alle lenkjene vore like.  Det er
- tydeleg at overlappet mellom \texttt{RIA} og \texttt{lfgalign} er svært lågt på
- dette materialet\footnote{Denne testen blei køyrt på revisjon
+ setningspar, mellom \texttt{RIA} og dei tri testmetodane (\texttt{lfgalign} med og
+ utan informasjon i LPT-tabellen, og ein tilfeldig baseline). Ved å
+ dele dette talet på kor mange lenkjer \texttt{RIA} hadde, får me ein enkel
+ samanlikning av dei to testmetodane -- viss forholdet var 100 \% ville
+ altså alle lenkjene vore like.  Det er tydeleg at overlappet mellom
+ \texttt{RIA} og \texttt{lfgalign} er svært lågt på dette materialet\footnote{Testen utan ordbok blei køyrt på revisjon
         \texttt{fd14d902262a9274b42131cf83ade74d51e23863} av \texttt{lfgalign},
-        sjå funksjonen \texttt{ev-ria}. }, men iallfall meir enn dobbelt så stort som
- ein ville forvente om det ikkje var nokon likskap. Ved manuelt
- gjennomsyn ser det ut til at der dei har ulike lenkjer, er det
- \texttt{lfgalign} (av og til begge) som tek feil. 
+        testen med ordbok blei køyrt på revisjon
+        \texttt{a92646e4673dc839488fe4f50f739c8d5e45dc2e}.  Sjå funksjonen
+        \texttt{ev-ria}. }, men
+ iallfall meir enn dobbelt så stort som ein ville forvente om det
+ ikkje var nokon likskap. Ved manuelt gjennomsyn ser det ut til at der
+ dei har ulike lenkjer, er det \texttt{lfgalign} (av og til begge) som tek
+ feil. Det som au er slåande er kor negativt ordboka speler inn.
 
  I tillegg har \texttt{lfgalign} færrast lenkja \PRED{}-element av alle
  metodane, som kan tyde på litt lågare dekning (trass i at \texttt{lfgalign}
  kan føye saman eitt predikat og argument i lenkjinga, noko \texttt{RIA} og
- baseline-modellen ikkje gjer).
+ baseline-modellen ikkje gjer). 
+
+ Tidlegare nemnte eg at positiv LPT-informasjon kan føre til at
+ lenkjer blir fjerna -- dette blir ganske tydeleg her. Når ordboka er
+ med, får \texttt{lfgalign} berre ein fjerdedel så mange lenkjer som \texttt{RIA}.
+ Det er kanskje ein del feil blant lenkjene i \texttt{RIA}-testsettet; men
+ sjølv om halvparten av lenkjene til \texttt{RIA} var feil, burde me sjå
+ høgare snitt mellom \texttt{lfgalign} og \texttt{RIA} viss ordboka førte til betre
+ lenkjer. Det viser seg allereie med første ord i testsettet kvifor
+ dette skjer: ordboka omset engelsk \emph{adoption} med tysk \emph{Adoption} (og
+ gir ingen andre omsetjingar), medan \emph{adoption} i denne setninga er
+ nytta i ei anna tyding og blir omsett til \emph{Genehmigung} (som har ti
+ andre omsetjingar i Ding, men altså ikkje den me er ute etter).  Det
+ er sannsynleg at dei gjenståande lenkjene er av høg presisjon, men ei
+ så låg dekning (12 \% viss \texttt{RIA} har rett, 8 \% viss me ser på alle
+ lenkbare predikat) er nok ikkje veldig nyttig. Eg diskuterer ei
+ mogleg løysing på dette problemet i del \ref{SEC:opneproblem}.
 
  Ved nærare ettersyn viser det seg at dette korpuset har mange
  fragmentariske analysar, og som oftast er det mange «yttarste
@@ -3435,13 +3461,12 @@ modellen har ingen mange-mange-lenkjer).
  på same nivå i f-strukturen -- viss det eigentleg finst ein intern
  struktur mellom desse blir det ignorert. Det vil altså seie at for
  store delar av analysane får \texttt{lfgalign} ingenting ut av f-strukturen.
-
- Sidan \texttt{lfgalign} er meint for trebankbygging med høg presisjon treng
- det ikkje vere negativt at dekninga er litt lågare; i tillegg vil me
- kanskje forvente meir «komplette» analysar enn dei som finst i dette
- testsettet. Likevel bør det vere mogleg å gjere noko for å betre på
- yteevna når analysane er fragmentariske; eg kjem tilbake til dette i
- del \ref{SEC:opneproblem}.
+ Sidan programmet er meint for trebankbygging med høg presisjon treng
+ det ikkje vere negativt at dekninga er \emph{litt} lågare; i tillegg vil
+ me kanskje forvente meir «komplette» analysar enn dei som finst i
+ dette testsettet. Likevel bør det vere mogleg å gjere noko for å
+ betre på yteevna når analysane er fragmentariske; eg kjem tilbake til
+ dette nedanfor.
 
  Eit anna problem som blir tydeleg med denne evalueringa er at lange
  lister med argument/adjunkt raskt blir komputasjonelt vanskeleg. For
@@ -3457,14 +3482,13 @@ modellen har ingen mange-mange-lenkjer).
  strukturar og ingen LPT-informasjon er det nok usannsynleg å ende opp
  med rett kombinasjon uansett. Med denne «avskjeringa» på plass tok
  heile testsettet på 4000 setningspar rett under tri timar å
- samanstille. Det kan hende at lenkjeoverlappet hadde vore litt høgare
- med eit fullstendig søk, men avskjeringa skjer berre på omtrent kvart
- tiande setningspar, så den endelege verknaden på resultata i tabell
- \ref{tbl:RIA} er nok ikkje stor.
+ samanstille når eg ikkje hadde nokon informasjon i LPT-tabellen med
+ (med ordboka tok det under eitt minutt, her blir altså \emph{svært mange}
+ løysingar avskjert). Det kan hende at lenkjeoverlappet hadde vore
+ litt høgare med eit fullstendig søk, men avskjeringa skjer berre på
+ omtrent kvart tiande setningspar, så den endelege verknaden på
+ resultata i tabell \ref{tbl:RIA} er nok ikkje stor.
 
- Men når me har med ein full LPT-tabell, tek heile testsettet omtrent
- eitt minutt, \texttt{a92646e4673dc839488fe4f50f739c8d5e45dc2e}. \fxnote{TODO
- ferdig}
 
 \section{Opne problem}
 \label{sec-5.4}
@@ -3503,8 +3527,9 @@ berre ordfølgje.
 \label{sec-5.4.2}
 
 Ufullstendig informasjon i LPT-tabellen kan, som nemnt i del
-\ref{SEC:feilanalyse}, føre til at programmet avskjerer for
-aggressivt.
+\ref{SEC:feilanalyse} og \ref{SEC:ria}, føre til at programmet
+avskjerer for aggressivt. Jo friare omsetjingane er, jo større blir
+dette problemet.
 
 I implementasjonen bør kanskje kravet om LPT-korrespondanse difor bli
 eit rangeringskriterium i implementasjonen, slik at me ikkje treng
@@ -3649,6 +3674,7 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+
 
 
 
