@@ -38,6 +38,26 @@
 #+LaTeX_HEADER:  \SetKwComment{Comment}{ // }{}
 #+LaTeX_HEADER:  \SetKwInOut{Input}{usage}
 
+ 
+#+BEGIN_LaTeX
+\begin{abstract}
+\noindent
+
+ \fxnote{fylle ut, og så skrive på norsk..}
+
+This thesis describes the development of an automatic phrase alignment
+ method using as input parallel sentences parsed in Lexical-Functional
+ Grammar, where similarity in analyses is used as evidence that
+ constituents (syntactic phrases) or functional elements (predicates,
+ arguments, adjuncts) may be linked. A set of principles for phrase
+ alignment are formulated, with the goal of annotating a parallel
+ treebank for linguistic research.  An implementation is given and
+ evaluated and compared with methods based on N-gram tables.
+
+\end{abstract}
+
+#+END_LaTeX
+
 
 * COMMENT Generell TODO
 Nytt denne før INNLEVERING:
@@ -52,8 +72,6 @@ nyttig sparse tree: SKRIV
 
 * Innleiing
 \label{SEC:innleiing}
-
-\fxnote{TODO: abstract/samandrag}
 
 Denne masteroppgåva utforskar kva det vil seie at to uttrykk er
 omsetjingar av kvarandre, og korleis me automatisk kan generere
