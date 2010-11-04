@@ -73,6 +73,26 @@ nyttig sparse tree: SKRIV
 * Innleiing
 \label{SEC:innleiing}
 
+#+BEGIN_LaTeX
+  % \begin{quotation}
+  % I begynnelsen var ordet -- på slutten, frasen. % vel, klisjeen 
+  % \begin{minipage}{0.77\textwidth}
+  % \begin{flushright}
+  % (Stanisław Jerzy Lec)
+  % \end{flushright}
+  % \end{minipage}
+  % \end{quotation}
+
+  % \begin{quotation}
+% El original es infiel a la traducción.
+  % \begin{minipage}{0.77\textwidth}
+  % \begin{flushright}
+% (Jorge Luis Borges)
+  % \end{flushright}
+  % \end{minipage}
+  % \end{quotation}
+#+END_LaTeX
+
 Denne masteroppgåva utforskar kva det vil seie at to uttrykk er
 omsetjingar av kvarandre, og korleis me automatisk kan generere
 samanstillingar (/alignments/) av uttrykk som står i eit slikt
@@ -170,13 +190,13 @@ Og sidan f-strukturane er meint å skildre informasjon på eit meir
 vere gode kandidatar for å finne informasjon som korresponderer på dei
 to språka. Tanken er at me frå to f-strukturar
 som skildrar omsette setningar, kan
-1. lage ei samanstilling mellom relevante deler av f-strukturane,
+1. lage ei samanstilling mellom relevante delar av f-strukturane,
 2. nytte denne funksjonelle samanstillinga til å finne ei
    frasesamanstilling, ved å følgje avbildinga frå f-struktur til
    c-struktur.
 
 
-Eitt problem som byr seg er hypotesemangfaldet: kva for «deler av
+Eitt problem som byr seg er hypotesemangfaldet: kva for «delar av
 f-strukturane»? Korleis kan me avgrense søkjerommet? I det minste må
 me kunne kople dei lenkja f-strukturane opp mot c-strukturnodar; her
 er \PRED{}-elementet ein god kandidat.
@@ -297,12 +317,13 @@ gjennomgang av nokre teoretiske omgrep og konsept som eg kjem til å
 nytte i resten av oppgåva.
 
 ** Metodar for frasesamanstilling
-Frasesamanstilling vil seie lenkjing av ulike deler av setningar som
-har ein omsetjingsmessig korrespondanse. Merk at ordet «frase» ofte
-blir nytta i litteraturen om kontinuerlege strenger av ord (N-gram)
-som ikkje treng vere syntaktiske konstituentar. I vid forstand kan me
-au inkludere lenkjing av deler av dependensstrukturar eller
-syntaktiske funksjonar, som begge representerer mengder med ord.
+Frasesamanstilling vil seie lenkjing av (representasjonar av) delar av
+setningar som (representerer ord som) har ein omsetjingsmessig
+korrespondanse. Merk at ordet «frase» ofte blir nytta i litteraturen
+om kontinuerlege strenger av ord (N-gram) som ikkje treng vere
+syntaktiske konstituentar. I vid forstand kan me au inkludere lenkjing
+av delar av dependensstrukturar, eller av syntaktiske funksjonar, som
+begge representerer mengder med ord.
 
 Automatisk frasesamanstilling er eit nytt felt.  Det finst allereie
 veldig gode system for automatisk lenkjing av setningar; her har ein
@@ -310,8 +331,8 @@ fått svært gode resultat ved å nytte ein statistisk omsetjingsmodell
 \citep{chen1993asb}; andre metodar har nytta avstand eller
 delstrengoverlapp
 \citep[s.~467--484~gir~eit~oversyn]{manning99foundations}.  Automatisk
-samanstilling av ord har au komme langt (dei klassiske «IBM-modellane»
-står i \citet{brown1993msm}; \citet{och2003scv} gir eit godt oversyn
+samanstilling av ord har au komme langt (sjå \citet{brown1993msm} for
+dei klassiske «IBM-modellane»; \citet{och2003scv} gir eit godt oversyn
 over ytinga til leiande metodar).  Men på nivåa mellom ord og setning
 er det vanskelegare å vurdere feltet.  Det finst fleire moglege
 einingar å lenkje -- kontinuerlege N-gram, kontinuerlege eller
@@ -322,7 +343,7 @@ ukontroversielle[fn:35].  Dei ulike tilnærmingane som finst, og
 einingane dei lenkjer, er prega av formåla til utviklarane.
 
 Eit av dei tidlegaste forsøka på å lenkje frasar var
-\citet{kupiec1993afn}, som lenkja nominalfrasar. Metoden besto i å
+\citet{kupiec1993afn}, her berre nominalfrasar. Metoden besto i å
 først køyre ein statistisk ordklassetaggar, så finne sannsynlege
 nominalfrasar på kvart språk (dvs. «chunking») med reine regulære
 uttrykk, og så lenkjing av slike kontinuerlege ordstrengar basert på
@@ -511,7 +532,7 @@ this project relates to similar projects in the field.»
  I tillegg har kvar node i LFG ei kopling til f-strukturen, via
  *c-struktur-f-strukturavbildinga* $\phi{}$. Nodar i c-strukturen kan
  spesifisere informasjon på ulike stader i f-strukturen (me seier at
- nodane *projiserer* f-strukturar, eller deler av dei).  I dette
+ nodane *projiserer* f-strukturar, eller delar av dei).  I dette
  tilfellet går $\phi$ av VP her til f-strukturen $f$, VP projiserer
  $f$. NP-noden er annotert med \ua{}SUBJ=\da{}, dette les me som at
  «denne noden projiserer subjektet til $\phi$ av mornoden», altså
@@ -1949,7 +1970,7 @@ Desse ønskene kan me formalisere slik:
 
 Om \Last[a] er oppfylt, kan me få samanstillinga vist i figur
 \ref{fig:fnord}. Her vil dei funksjonelle domena til CP og CP
-kvar kunne delast opp i to deler, kor den funksjonelle delen har
+kvar kunne delast opp i to delar, kor den funksjonelle delen har
 LPT-korrespondanse medan komplementa er lenkja på
 f-strukturnivå. Lenkjemengdene under CP-nodane er like, og dei under
 C-nodane er like.
@@ -2754,6 +2775,18 @@ lite testsett.
 * Diskusjon
 \label{SEC:diskusjon}
 
+#+BEGIN_LaTeX
+  %     \begin{quotation}
+  %   Nawet w jego milczeniu były błędy językowe. \\
+  %  There were grammatical errors even in his silence.\\
+  % \begin{minipage}{0.8\textwidth}
+  % \begin{flushright}
+  %        (Stanisław Jerzy Lec)
+  % \end{flushright}
+  % \end{minipage}
+  %    \end{quotation}
+#+END_LaTeX
+
  I denne delen gir eg ei evaluering av resultata frå å køyre
  =lfgalign= på LFG-analysar av parallelle setningar. Eg ser på manglar
  ved implementasjonen i forhold til dei ideelle krava frå kapittel
@@ -3294,7 +3327,7 @@ modellen har ingen mange-mange-lenkjer).
  andre f-strukturar. Yttarste f-strukturar blir handsama som om dei er
  på same nivå i f-strukturen -- viss det eigentleg finst ein intern
  struktur mellom desse blir det ignorert. Det vil altså seie at for
- store deler av analysane får =lfgalign= ingenting ut av f-strukturen.
+ store delar av analysane får =lfgalign= ingenting ut av f-strukturen.
 
  Sidan =lfgalign= er meint for trebankbygging med høg presisjon treng
  det ikkje vere negativt at dekninga er litt lågare; i tillegg vil me
@@ -3837,7 +3870,7 @@ problem.
         tilbake til sannsynsmaksimering i kapittel
         \ref{SEC:diskusjon}.
 
-[fn:35] \citet[s.~470]{manning99foundations} gjer eit skilje mellom
+[fn:35] \citet[s.~470]{manning99foundations} skil i tillegg mellom
         /samanstillingsproblem/ og /korrespondanseproblem/, der berre
         det siste kan involvere kryssande avhengnader.
 
