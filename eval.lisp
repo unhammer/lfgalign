@@ -171,7 +171,24 @@ like `flatten' or `rank'"
 (defun random-rank (f-alignments tab_s tab_t)
   f-alignments)
 
-(defun ev-ria (n &optional set (aligner #'f-align) (ranker #'rank))
+
+(defun ding-LPT ()
+  (let ((LPT (make-LPT)))
+    (with-open-file
+	(stream (make-pathname 
+		 :name "dev/de-en-LPT.pl"
+		 :directory 
+		 (pathname-directory
+		  (asdf:component-pathname (asdf:find-system :lfgalign)))))
+      (loop 
+	 for c = (parse-pred stream)
+	 while c
+	 do (add-to-LPT (car (third c))
+			(car (fourth c))
+			LPT)))
+    LPT))
+
+(defun ev-ria (n &optional set (aligner #'f-align) (ranker #'rank) LPT)
   "Measure overlap between f-links in the RIA
 testsets (ria/data/sents_000{0,1,2,3}) and those given by `f-align'
 and `rank', or the random baseline `random-f-align' and `random-rank'.
@@ -181,84 +198,85 @@ http://www.computing.dcu.ie/~ygraham/software.html This function
 assumes there is a symlink \"ria\" from the \"eval\" folder to the
 \"data\" folder in RIA."
   (loop
-   repeat n
-   with dir = (append (pathname-directory
-		       (asdf:component-pathname (asdf:find-system :lfgalign)))
-		      '("eval" "ria"))
-   with set = (or set "sents_0000")
-   for path_s in (directory
-		  (make-pathname
-		   :name :wild
+     repeat n
+     with LPT = (or LPT (make-LPT))
+     with dir = (append (pathname-directory
+			 (asdf:component-pathname (asdf:find-system :lfgalign)))
+			'("eval" "ria"))
+     with set = (or set "sents_0000")
+     for path_s in (directory
+		    (make-pathname
+		     :name :wild
+		     :type "pl"
+		     :directory (append dir (list "sl_train" set))))
+     for path_t = (make-pathname
+		   :name (pathname-name path_s)
 		   :type "pl"
-		   :directory (append dir (list "sl_train" set))))
-   for path_t = (make-pathname
-		 :name (pathname-name path_s)
-		 :type "pl"
-		 :directory (append dir (list "tl_train" set)))
-   for path_a = (make-pathname
-		 :name (substitute #\A #\S (pathname-name path_s))
-		 :type "pl"
-		 :directory (append dir (list "alignments" set)))
+		   :directory (append dir (list "tl_train" set)))
+     for path_a = (make-pathname
+		   :name (substitute #\A #\S (pathname-name path_s))
+		   :type "pl"
+		   :directory (append dir (list "alignments" set)))
 
-   for ria-ranked = (with-open-file
-		     (stream path_a)
-		     (loop for c = (parse-pred stream)
+     for ria-ranked = (with-open-file
+			  (stream path_a)
+			(loop for c = (parse-pred stream)
 			   while c
 			   for link = (cons (parse-integer (car (third c)))
 					    (parse-integer (car (fourth c))))
 			   collect link))
 
-   for tab_s = (open-and-import (format nil "~A" path_s) 'absolute)
-   for tab_t = (open-and-import (format nil "~A" path_t) 'absolute)
-   for f-alignments = (funcall aligner '(-1 . -1) tab_s tab_t (make-LPT))
-   for best-f-alignment = (remove-if
-			   (lambda (link) (equal '(-1 . -1) link))
-			   (funcall ranker f-alignments tab_s tab_t))
+     for tab_s = (open-and-import (format nil "~A" path_s) 'absolute)
+     for tab_t = (open-and-import (format nil "~A" path_t) 'absolute)
+     for f-alignments = (funcall aligner '(-1 . -1) tab_s tab_t LPT)
+     for best-f-alignment = (remove-if
+			     (lambda (link) (equal '(-1 . -1) link))
+			     (funcall ranker f-alignments tab_s tab_t))
 
-   for l_best = (length best-f-alignment)
-   for l_ria = (length ria-ranked)
-   for l_pred_s = (length (all-pred-vars tab_s)) 
-   for l_pred_t = (length (all-pred-vars tab_t))
-   for isect = (length (intersection ria-ranked
-				     best-f-alignment
-				     :test #'equal))
-   for union = (length (union ria-ranked
-			      best-f-alignment
-			      :test #'equal))
-   summing isect into isects
-   summing union into unions
-   summing l_best into ls_best
-   summing l_ria into ls_ria
-   summing (* l_pred_s l_pred_t) into possible_links
-   summing l_pred_s into possible_srcs
-   summing (length (unreferenced-preds tab_s)) into unref_s
-   summing (length (unreferenced-preds tab_t)) into unref_t
+     for l_best = (length best-f-alignment)
+     for l_ria = (length ria-ranked)
+     for l_pred_s = (length (all-pred-vars tab_s)) 
+     for l_pred_t = (length (all-pred-vars tab_t))
+     for isect = (length (intersection ria-ranked
+				       best-f-alignment
+				       :test #'equal))
+     for union = (length (union ria-ranked
+				best-f-alignment
+				:test #'equal))
+     summing isect into isects
+     summing union into unions
+     summing l_best into ls_best
+     summing l_ria into ls_ria
+     summing (* l_pred_s l_pred_t) into possible_links
+     summing l_pred_s into possible_srcs
+     summing (length (unreferenced-preds tab_s)) into unref_s
+     summing (length (unreferenced-preds tab_t)) into unref_t
 
-   counting path_s into i
-   do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
-   do
-   (when *debug*
-     (out "=================================~% (evaluate \"~A\" \"~A\")~%"
-	  path_s path_t)
-     (out "isect/union ~A~%" (/ isect union))
-     (out "~A~% <=> ~A~%"
-	  (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
-     (out "                ria: ~A~%~A: ~A~%"
-	  (pred-tag-alignment ria-ranked tab_s tab_t)
-	  aligner
-	  (pred-tag-alignment best-f-alignment tab_s tab_t))
-     (let ((allpairs
-	    (if (consp (cdr f-alignments))
-		;; Strangely, mapcan #'append hangs if the list is long enough:
-		(loop for l in (flatten f-alignments) append l)
-	      (list f-alignments))))
-       (flet ((preds (getter tab)
-		     (mapcar (lambda (var)
-			       (get-pred var tab))
-			     (remove-duplicates (mapcar getter allpairs)))))
-	 (out "~%srcs: ~A~%trgs: ~A~%"
-	      (preds #'car tab_s) (preds #'cdr tab_t)))))
-   finally (out "~%~A~%isects:~A~%(unions:~A)~%lengths_lfgalign:~A~%lengths_ria:~A~%possible srcs:~A~%possible links:~A~%unref_s:~A~%unref_t:~A~%"
-   		set isects unions ls_best ls_ria possible_srcs possible_links
-   		unref_s unref_t)
-   ))
+     counting path_s into i
+     do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
+     do
+     (when *debug*
+       (out "=================================~% (evaluate \"~A\" \"~A\")~%"
+	    path_s path_t)
+       (out "isect/union ~A~%" (/ isect union))
+       (out "~A~% <=> ~A~%"
+	    (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
+       (out "                ria: ~A~%~A: ~A~%"
+	    (pred-tag-alignment ria-ranked tab_s tab_t)
+	    aligner
+	    (pred-tag-alignment best-f-alignment tab_s tab_t))
+       (let ((allpairs
+	      (if (consp (cdr f-alignments))
+		  ;; Strangely, mapcan #'append hangs if the list is long enough:
+		  (loop for l in (flatten f-alignments) append l)
+		  (list f-alignments))))
+	 (flet ((preds (getter tab)
+		  (mapcar (lambda (var)
+			    (get-pred var tab))
+			  (remove-duplicates (mapcar getter allpairs)))))
+	   (out "~%srcs: ~A~%trgs: ~A~%"
+		(preds #'car tab_s) (preds #'cdr tab_t)))))
+     finally (out "~%~A~%isects:~A~%(unions:~A)~%lengths_lfgalign:~A~%lengths_ria:~A~%possible srcs:~A~%possible links:~A~%unref_s:~A~%unref_t:~A~%"
+		  set isects unions ls_best ls_ria possible_srcs possible_links
+		  unref_s unref_t)
+     ))
