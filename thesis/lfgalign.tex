@@ -1,4 +1,4 @@
-% Created 2010-11-04 to. 16:03
+% Created 2010-11-04 to. 19:19
 \documentclass[11pt,a4paper,oneside,draft]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -3395,14 +3395,16 @@ modellen har ingen mange-mange-lenkjer).
 \caption{\label{tbl:RIA}Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida.}
 \begin{center}
 \begin{tabular}{lrrrrr}
- metode              &  snitt  &  union  &  lenkjer  &  RIA-lenkjer  &  snitt / RIA-lenkjer  \\
+ metode                    &  snitt  &  union  &  lenkjer  &  RIA-lenkjer  &  snitt / RIA-lenkjer  \\
 \hline
- \texttt{lfgalign}   &   7296  &  44587  &    24161  &        28019  &  26,03 \%             \\
- \texttt{tilfeldig}  &   2544  &  60544  &    35069  &        28019  &  09,07 \%             \\
+ \texttt{tilfeldig}        &   2544  &  60544  &    35069  &        28019  &  09,07 \%             \\
+ \texttt{lfgalign}         &   7296  &  44587  &    24161  &        28019  &  26,03 \%             \\
+ \texttt{lfgalign} + Ding  &   3382  &  31970  &     7375  &        28019  &  12,07 \%             \\
 \end{tabular}
 \end{center}
 \end{table}
 
+\fxnote{ Ding-resultatet er med avskjering på >8, prøv utan! TODO}
 
  Resultatet av samanlikninga står i tabell \ref{tbl:RIA}. Kolonnen
  \emph{snitt} viser summen av kor mange lenkjer som var felles for kvart
@@ -3459,6 +3461,10 @@ modellen har ingen mange-mange-lenkjer).
  med eit fullstendig søk, men avskjeringa skjer berre på omtrent kvart
  tiande setningspar, så den endelege verknaden på resultata i tabell
  \ref{tbl:RIA} er nok ikkje stor.
+
+ Men når me har med ein full LPT-tabell, tek heile testsettet omtrent
+ eitt minutt, \texttt{a92646e4673dc839488fe4f50f739c8d5e45dc2e}. \fxnote{TODO
+ ferdig}
 
 \section{Opne problem}
 \label{sec-5.4}

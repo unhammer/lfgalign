@@ -3298,46 +3298,10 @@ modellen har ingen mange-mange-lenkjer).
 #+ATTR_LaTeX: align=lrrrrr
 | metode                   | snitt | union | lenkjer | RIA-lenkjer | snitt / RIA-lenkjer |
 |--------------------------+-------+-------+---------+-------------+---------------------|
-| \texttt{lfgalign}        |  7296 | 44587 |   24161 |       28019 | 26,03 %             |
-| \texttt{lfgalign} + Ding |       |       |         |             |                     |
 | \texttt{tilfeldig}       |  2544 | 60544 |   35069 |       28019 | 09,07 %             |
-
-sents_0000
-isects:835
-(unions:7936)
-lengths_lfgalign:1805
-lengths_ria:6978
-possible srcs:10131
-possible links:102025
-unref_s:4553
-unref_t:3160
-sents_0001
-isects:846
-(unions:8180)
-lengths_lfgalign:1894
-lengths_ria:7142
-possible srcs:10225
-possible links:103798
-unref_s:4612
-unref_t:3154
-sents_0002
-isects:865
-(unions:7899)
-lengths_lfgalign:1824
-lengths_ria:6945
-possible srcs:9916
-possible links:97956
-unref_s:4365
-unref_t:3092
-sents_0003
-isects:836
-(unions:7955)
-lengths_lfgalign:1852
-lengths_ria:6954
-possible srcs:10071
-possible links:101109
-unref_s:4467
-unref_t:3085
+| \texttt{lfgalign}        |  7296 | 44587 |   24161 |       28019 | 26,03 %             |
+| \texttt{lfgalign} + Ding |  3382 | 31970 |    7375 |       28019 | 12,07 %             |
+\fxnote{ Ding-resultatet er med avskjering på >8, prøv utan! TODO}
 
  Resultatet av samanlikninga står i tabell \ref{tbl:RIA}. Kolonnen
  /snitt/ viser summen av kor mange lenkjer som var felles for kvart
