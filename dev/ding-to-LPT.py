@@ -29,9 +29,14 @@ def outprod(xprod):
 	# simplest to write them out in Prolog form for now, since we already read ria-alignments etc. in that form anyway
 	for pair in xprod:
 		sys.stdout.write("LPT( '")
-		sys.stdout.write(string.strip(string.replace(pair[0],"'", "\\'")))
+		sys.stdout.write(
+			string.strip(
+				string.replace(pair[0],"'", "\\'")))
 		sys.stdout.write("', '")
-		sys.stdout.write(string.strip(string.replace(pair[1],"'", "\\'")))
+		sys.stdout.write(
+			string.strip(
+				re.sub("^ *to ", "",
+				       string.replace(pair[1],"'", "\\'"))))
 		sys.stdout.write("').\n")
 
 def splitsenses(lsenses, rsenses, nline):
@@ -57,7 +62,8 @@ while True:
 	# Remove comments, grammatical taggings, etc.
 	line = re.sub("{[^}]*}", "",
 		      re.sub("\([^\)]*\)", "",
-			     re.sub("\[[^\]]*\]", "", line)))
+			     re.sub(" /[^/]*/", "",
+				    re.sub("\[[^\]]*\]", "", line))))
 
 	# Languages are on each side of ::
 	both = string.split(line,"::")
