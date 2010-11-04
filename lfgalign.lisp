@@ -984,7 +984,9 @@ score."
 		 ;; Multiply this branch with those from children:
 		 (* (sub-f-rate seen branch tab_s tab_t)
 		    (arg-order-rate link seen branch tab_s tab_t)
-		    (/ sub-rate-sum (length subs)))))))
+		    (if (> (length subs) 0)
+			(/ sub-rate-sum (length subs))
+		      0))))))
 
 (defun argpos (var args tab)
   "Return the position of `var' in an argument list `args'. Also
@@ -1026,8 +1028,10 @@ TODO: How should merges score here? For now, just bail out and return
 			0)
 	      into matches
 	      counting sub into total
-	      finally (return (/ matches
-				 total))))
+	      finally (return (if (> total 0)
+				  (/ matches
+				     total)
+				0))))
     1))
 
 (defun sub-f-rate (seen branch &optional tab_s tab_t)
@@ -1046,8 +1050,10 @@ TODO: differentiate between how many of the args were sub-aligned."
     (loop for sub in branch
 	  counting (not (failed-sub sub)) into sub-f
 	  counting sub into total
-	  finally (return (/ sub-f
-			     total)))))
+	  finally (return (if (> total 0)
+				  (/ sub-f
+				     total)
+				0)))))
 
 (defun spread (flatperm)
   "See `test-spread'."

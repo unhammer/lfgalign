@@ -259,7 +259,9 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
      (when *debug*
        (out "=================================~% (evaluate \"~A\" \"~A\")~%"
 	    path_s path_t)
-       (out "isect/union ~A~%" (/ isect union))
+       (if (> union 0)
+	   (out "isect/union ~A~%" (/ isect union))
+	   (out "isect: ~A union: ~A~%" isect union))
        (out "~A~% <=> ~A~%"
 	    (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
        (out "                ria: ~A~%~A: ~A~%"
