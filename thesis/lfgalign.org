@@ -3905,12 +3905,8 @@ problem.
         har omtrent 270 000 oppslag; men sidan ein del av dei
         involverer alternative omsetjingar tok eg det kartesiske
         produktet av alle slike alternativ, og endte opp med 418 492
-        par av token.
-
-
-
-
-
+        par av token (men 190 284 av desse har mellomrom i seg, og
+        fungerer sannsynlegvis ikkje som LPT-omsetjingar).
 
 
 
