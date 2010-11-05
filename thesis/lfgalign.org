@@ -2775,6 +2775,10 @@ lite testsett.
 * Diskusjon
 \label{SEC:diskusjon}
 
+\fxnote{burde skrive noko om c-strukturlenkjinga; men den ser jo grei
+ut... kan evt. sjekke kor mange lenkjingar som blir ulike når me endrar
+på variabelen \texttt{pro-affects-c-linking}} 
+
 #+BEGIN_LaTeX
   %     \begin{quotation}
   %   Nawet w jego milczeniu były błędy językowe. \\
@@ -3258,6 +3262,7 @@ krevje likskap i argumentstruktur for å lenkje[fn:43]. Då er det opp
 til grammatikarane om dei vil sjå på omsetjinga som argument for at
 det georgiske verbet har ei alternativ tyding med berre eitt argument,
 og endre grammatikkane til ei seinare utgåve av trebanken.
+
 
 *** Overlapp med =RIA=
 \label{SEC:ria}

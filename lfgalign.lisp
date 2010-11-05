@@ -14,7 +14,7 @@
 
 (defvar *no-warnings* t)
 (defvar *debug* nil)
-(defvar *pro-affects-c-linking* t)
+(defvar *pro-affects-c-linking* t)	; Whether unlinked pro-elements may hinder linking c-structure nodes of two predicates
 (defvar *max-adjs* 8)			; maximum amount of adjs to try to match in `adjalign'
 
 ;;;;;;;; C-STRUCTURE TREE:
