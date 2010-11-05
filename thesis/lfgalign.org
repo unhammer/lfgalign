@@ -2794,7 +2794,8 @@ lite testsett.
  bottom-up-informasjon; og samanliknar dei resultata som er moglege å
  få frå =lfgalign= med dei som er mogleg å få med andre metodar, då
  spesielt metodar som nyttar N-gramtabellar som kjelde til
- lenkjingsinformasjon. I tillegg diskuterer eg kort ulike bruksområde
+ lenkjingsinformasjon -- altså kor fraselenkjer hovudsakleg kjem frå
+ bottom-up-informasjon. I tillegg diskuterer eg kort ulike bruksområde
  for samanstillingane, og problem som enno er uløyste.
 
  Allereie utan å sjå på materialet, kan me sjå at det er visse
@@ -2853,9 +2854,10 @@ lite testsett.
 
 ** N-grambaserte metodar
 
- Dei fleste metodane for frasesamanstilling er N-grambaserte; difor er
- det naturleg å samanlikne metoden i =lfgalign= med slike metodar. Eg
- gir først ein kort introduksjon til korleis N-grambaserte metodar gir
+ Dei fleste metodane for frasesamanstilling er N-grambaserte, dvs. at
+ hovudkjelda for lenkjing er bottom-up-informasjon; difor er det
+ naturleg å samanlikne metoden i =lfgalign= med slike metodar. Eg gir
+ først ein kort introduksjon til korleis N-grambaserte metodar gir
  ordlenkjer og fraselenkjer, og ser så på kva slags lenkjer dette
  fører til. Det finst sjølvsagt svært mange ulike moglege metodar og
  variasjonar på temaet; for å avgrense diskusjonen konsentrerer eg meg

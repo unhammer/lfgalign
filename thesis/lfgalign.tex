@@ -1,4 +1,4 @@
-% Created 2010-11-04 to. 20:17
+% Created 2010-11-05 fr. 11:21
 \documentclass[11pt,a4paper,oneside,draft]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -60,7 +60,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{04/11, 2010}
+\date{05/11, 2010}
 
 \begin{document}
 
@@ -2838,7 +2838,8 @@ lite testsett.
  bottom-up-informasjon; og samanliknar dei resultata som er moglege å
  få frå \texttt{lfgalign} med dei som er mogleg å få med andre metodar, då
  spesielt metodar som nyttar N-gramtabellar som kjelde til
- lenkjingsinformasjon. I tillegg diskuterer eg kort ulike bruksområde
+ lenkjingsinformasjon -- altså kor fraselenkjer hovudsakleg kjem frå
+ bottom-up-informasjon. I tillegg diskuterer eg kort ulike bruksområde
  for samanstillingane, og problem som enno er uløyste.
 
  Allereie utan å sjå på materialet, kan me sjå at det er visse
@@ -2907,9 +2908,10 @@ lite testsett.
 \label{sec-5.2}
 
 
- Dei fleste metodane for frasesamanstilling er N-grambaserte; difor er
- det naturleg å samanlikne metoden i \texttt{lfgalign} med slike metodar. Eg
- gir først ein kort introduksjon til korleis N-grambaserte metodar gir
+ Dei fleste metodane for frasesamanstilling er N-grambaserte, dvs. at
+ hovudkjelda for lenkjing er bottom-up-informasjon; difor er det
+ naturleg å samanlikne metoden i \texttt{lfgalign} med slike metodar. Eg gir
+ først ein kort introduksjon til korleis N-grambaserte metodar gir
  ordlenkjer og fraselenkjer, og ser så på kva slags lenkjer dette
  fører til. Det finst sjølvsagt svært mange ulike moglege metodar og
  variasjonar på temaet; for å avgrense diskusjonen konsentrerer eg meg
@@ -3369,7 +3371,8 @@ LPT-tabell med alle oppslaga frå Ding-ordboka\footnote{Tilgjengeleg frå \href{
         har omtrent 270 000 oppslag; men sidan ein del av dei
         involverer alternative omsetjingar tok eg det kartesiske
         produktet av alle slike alternativ, og endte opp med 418 492
-        par av token. }.
+        par av token (men 190 284 av desse har mellomrom i seg, og
+        fungerer sannsynlegvis ikkje som LPT-omsetjingar). }.
 
 Samanlikninga skjer ved å, for kvar setning i korpuset, telje opp kor
 mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som er
@@ -3674,11 +3677,6 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
-
-
-
-
-
 
 
 
