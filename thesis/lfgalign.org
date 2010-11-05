@@ -69,6 +69,15 @@ nyttig sparse tree: SKRIV
 
 [[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
 
+** SKRIV med argumenter meiner eg her arg + andre subkat.ledd
+  
+
+** SKRIV men kanskje me burde ha fordi/whether for å finne dei
+** SKRIV bleu + koehn del 3.2 er ikkje klart
+  PCFG-parsar
+  høgare bleu = betre
+** TODO finn alle ufragmenterte RIA-setningar
+
 
 * Innleiing
 \label{SEC:innleiing}
@@ -1362,6 +1371,7 @@ ser eg på del \ref{SEC:f-mange-mange}.
 
 *** Kausativar og inkorporering
 \label{SEC:f-mange-mange}
+\fxnote{TODO: dette gjeld mange andre fenomen au, fryse ned, }
 
 Til no har me føresett at eit \PRED{}-element anten er ulenkja, eller
 er lenkja til eitt og berre eitt anna \PRED{}-element. Men i visse
@@ -1535,6 +1545,7 @@ korresponderer.
    \caption{Enkel lenkjing av c-strukturnodar mellom norsk og
    nederlandsk; IP til IP, I' til I' og I til I.}
    \label{fig:enkel-c-lenkje}
+  \fxnote{TODO: lenkjene!}
   \end{figure}
 #+END_LaTeX
 
@@ -1567,6 +1578,8 @@ står dei lenkja objekta under I', medan dei lenkja subjekta er
 utanfor.) Men merk at IP-nodane likevel kan lenkjast, dei dominerer
 begge både subjekt og objekt, sjølv om dei kjem i ulik følgje under.
 I-nodane dominerer berre verba, og kan au lenkjast.
+
+\fxnote{nederlandsk kunne hatt inversion au!}
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
