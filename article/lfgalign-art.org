@@ -251,8 +251,9 @@ By the same logic, on the f-structure level we allow adjuncts
  target word $W_t$ if ``$W_t$ can in general (out of context) be taken
  to be among the semantically plausible translations of $W_s$''
  \cite[p.~74]{dyvik2009lmp}. Nouns and pronominal forms are also
- considered LPT-correspondent.
+ considered LPT-correspondent.[fn:17]
 
+** Function alignment
 The argument structure of LFG predicates is ordered; the order
  typically reflects the semantic role hierarchy (agents before themes,
  etc.). However, we do not require that linked arguments occupy the
@@ -304,7 +305,7 @@ If any of the arguments of two otherwise linkable predicates do not
 Thus we have to allow linking arguments to adjuncts; the monolingual
  evidence which informed the individual grammars may have suggested
  that a certain participant of a verbal situation should be analysed
- as an argument in one language, but as an adjunct in the other --- in
+ as an argument in one language, but as an adjunct in the other---in
  a particular translation, however, they may still correspond
  semantically.
 
@@ -338,7 +339,7 @@ And for adjuncts of $p$ we do not even require that they
  versa, but \Last[e] ensures that they are not /linked/ outside of
  their predicates, which would imply that $p$ and $q$ did not contain
  corresponding linked material.
-
+** Constituent alignment
 In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
  defines the term /linked lexical nodes/, $LL$, where $LL(n)$ is the
  set of \emph{word-linked} nodes[fn:12] dominated by $n$. So:
@@ -347,10 +348,9 @@ In order to link two c-structure nodes, \cite[p.~77]{dyvik2009lmp}
  f-structures must be linked), all nodes in $LL(n_s)$ must be linked
  to nodes in $LL(n_t)$. 
 
-Unlinked nodes dominated by $n_s$ or $n_t$ are not an obstacle to
- linking these nodes. Thus in figure \ref{fig:simple-links}, if the NP
- nodes are not linked to nodes outside these trees, we may link IP and
- S.
+Unlinked nodes dominated by $n_s$ or $n_t$ are no obstacle to linking
+ these nodes. If the NP's in figure \ref{fig:simple-links} are not
+ linked to nodes outside these trees, IP and S may link.
 
 The Norwegian Bokmål and Georgian sentences in \ref{ex:roboter}, with
  c-structures in figure \ref{fig:roboter}, illustrate a much more
@@ -370,6 +370,10 @@ Georgian being a pro-drop language, the argument expressed by /de/ in
 
 
 #+BEGIN_LaTeX
+    \begin{figure}[htp]
+    \centering     
+
+
 {\small
     \ex. \label{ex:roboter} \ag. \textbf{roboter} \textbf{hadde} \textbf{de} \textbf{snakket} \textbf{om} \\
      robots had they talked about  \\
@@ -380,8 +384,7 @@ Georgian being a pro-drop language, the argument expressed by /de/ in
 
 }
 
-    \begin{figure}[htp]
-    \centering     
+
       \begin{tikzpicture}
       \tikzset{level distance=1.4cm,sibling distance=0.1pt}
       \Tree  [.\node(IPs){IP};  [.\node(roboter){\proj{\ua{}\TOPIC{}=\da}{NP}}; \edge[roof]; {roboter} ]
@@ -405,6 +408,7 @@ Georgian being a pro-drop language, the argument expressed by /de/ in
 %  \draw[dashed,-] (VPs)..controls +(east:1) and +(west:1) .. node[above,sloped]{?} (I't) ;
     
     \end{tikzpicture}
+
        \caption{C-structure links must dominate the same set of links}
        \label{fig:roboter}
       \end{figure}
@@ -421,22 +425,20 @@ By criterion \ref{krav:LL}, we may also link the Norwegian VP and
  exclude this kind of link by adding to $LL(n)$ any linked f-structure
  arguments (of the f-structure projected by $n$) that are not overtly
  expressed.[fn:7]
-
+** Many-to-many relations
 Several nodes may have equal $LL$, thus the c-structure links are
- often /many-to-many/. 
-
-In addition, the f-structure \PRED{} links are not always one-to-one,
- but this is a more involved problem.  The f-structures of figure
- \ref{fig:f-roboter} need a many-to-one \PRED{} link from \p{perf} and
- \p{snakke*om} to \p{la\d{p}ara\d{k}i}, since the grammars analyse
- \p{la\d{p}ara\d{k}i} as a single predicate, while treating \p{perf} and
- \p{snakke*om} as two separate predicates. One might argue that then such
- phenomena should be analysed similarly, but as it is the goal of the
- aligner to help in discovering cross-language differences, all the
- while assuming that similar grammatical phenomena have similar
- grammatical analyses, grammars cannot be changed just to make the
- alignment easier --- we have to treat this as a many-to-one \PRED{}
- link.[fn:10]
+ often /many-to-many/.  In addition, the f-structure \PRED{} links are
+ not always one-to-one, but this is a more involved problem.  The
+ f-structures of figure \ref{fig:f-roboter} need a many-to-one \PRED{}
+ link from \p{perf} and \p{snakke*om} to \p{la\d{p}ara\d{k}i}, since
+ the grammars analyse \p{la\d{p}ara\d{k}i} as a single predicate,
+ while treating \p{perf} and \p{snakke*om} as two separate
+ predicates. Perhaps these phenomena could have more similar analyses,
+ but as it is the goal of the aligner to help in discovering
+ cross-language differences, all the while assuming that similar
+ grammatical phenomena have similar grammatical analyses, grammars
+ cannot be changed just to make the alignment easier---we have to
+ treat this as a many-to-one \PRED{} link.[fn:10]
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -500,17 +502,17 @@ merits with those of other alignment methods.
 \label{SEC:implementation}
 
 This section covers a work-in-progress implementation of the above
- alignment principles.[fn:4] The program takes as input LFG-analyses
- of two sentences which we consider as translations of each other for
- independent reasons. The analyses must be disambiguated and in the
+ alignment principles.[fn:4] The program takes as input LFG analyses
+ of two sentences which we consider as translations of each other (for
+ independent reasons). The analyses must be disambiguated and in the
  XLE-format.[fn:8] One may optionally supply information about which
  word-translations are considered LPT (e.g.  from automatic
  word-alignments or translational dictionaries).
 
-The program begins by linking f-structures, where an f-structure
+The program begins by linking f-structures, where an
  /alignment/ is a set of /links/ between individual f-structures. The
- result of linking on this level may be ambiguous. Since there are
- often several ways of linking arguments and adjuncts given
+ result of linking on this level may be ambiguous. As there are
+ often many ways of linking arguments and adjuncts given
  insufficient LPT-information, we may end up with several possible
  f-structure alignments.
 
@@ -556,19 +558,18 @@ The f-structure aligner, algorithm \ref{algo:f-align}, starts with the
 #+END_LaTeX
 
 If we find no way of fulfilling the requirements in \ref{krav:pred}
- for $F_s$ and $F_t$, we may try many-to-one links by merging argument
- lists as discussed in the previous section. Since this is not tried
- until there are no other possibilities, solutions involving
- many-to-one links of \PRED{} elements are implicitly ranked lower
- than those where we can assume that translations corresponded better
- (a natural assumption since the sentences were aligned in the first
- place).
+ for $F_s$ and $F_t$, we may try many-to-one links (currently just
+ two-to-one) by merging argument lists as discussed in the previous
+ section. As this is not tried until there are no other possibilities,
+ solutions involving many-to-one links of \PRED{} elements are
+ implicitly ranked lower than those where we can assume that
+ translations corresponded better (a natural assumption since the
+ sentences were aligned in the first place).
 
 Since f-align may give several solutions, we rank the
- f-alignments. There are several possible ranking criteria; as
- mentioned above we use similarity in order of arguments to rank
- different possible f-structure alignments, when the LPT-information
- is not sufficient.
+ f-alignments. There are several possible ranking criteria; we use
+ depth of alignments and similarity in order of arguments, when the
+ LPT-information is not sufficient.
 
 A single f-structure alignment is sent to the c-structure aligner,
  which by following the principles of section \ref{SEC:principles}
@@ -681,7 +682,7 @@ A top-down method of alignment such as this may be quite
 
 [fn:4] All code available from http://github.com/unhammer/lfgalign
        under the GNU General Public License, version 2 or later, along
-       with some example input parses.
+       with the available disambiguated LFG parses.
 
 [fn:5] The pro-subjects will be linked in f-structure, however. 
 
@@ -703,12 +704,13 @@ A top-down method of alignment such as this may be quite
  only emphasising f-structure parallelism.
 
 [fn:10] In this particular case we might be able to align only the
- content verbs /snakket/ and \emph{la\d{p}ara\d{k}obdnen} by excluding auxiliary
- verbs from f-structure alignment, as we do with
+ content verbs /snakket/ and \emph{la\d{p}ara\d{k}obdnen} by excluding
+ auxiliary verbs from f-structure alignment, as we do with
  prepositions. However, there are other situations where we cannot
  avoid non-one-to-one links in a non-arbitrary fashion, e.g. lexical
  causatives linking to periphrastic causatives, argument
- incorporation, etc.
+ incorporation, idiomatic expressions that have not been added to the
+ grammars, etc.
 
 [fn:11] We allow \PRED{} elements $p$ and $q$ to be linked even though
  some of their arguments cannot be recursively \PRED{}-linked, as long
@@ -724,13 +726,19 @@ A top-down method of alignment such as this may be quite
  order to increase recall) may hurt precision severely
  \cite[p.~149]{samuelsson2007apa}.
 
-[fn:15] Additionally, the program expects disambiguated analyses, and
- many sentences in the larger test sets have not seen manual
- disambiguation yet.
+[fn:15] Additionally, the program expects sentence-aligned,
+ disambiguated analyses, and many sentences in the larger test sets
+ have not seen manual disambiguation yet.
 
 [fn:16] The sentences are from a book translation, but the Norwegian
  sentence has been topicalised to illustrate the c-structure
  constraint.
 
+# TODO kan fjerne fn:16 («book translation»)
+
 [fn:12] In the current implementation, word-links are defined by the
- \PRED{} links of the f-structures they project.
+ \PRED{} links of their projections.
+
+[fn:17] This is an ideal description of LPT-correspondence; in
+ practice, evidence about possible LPT-correspondence may also come from
+ word alignments, translational dictionaries, etc.
