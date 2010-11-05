@@ -64,7 +64,9 @@ Progress
 
 lfgalign
 ----------
+
 lfgalign.lisp currently does the following:
+
 - collect c-structure trees: `maketree`
 
 - find the topmost c-node in an f-domain: `topnode`
@@ -84,6 +86,11 @@ lfgalign.lisp currently does the following:
   target args/adjuncts, and target arguments with source args/adjuncts
   (excluding adj-adj links): `argalign` (if given LPT tables, this
   removes combinations where at least one link is non-LPT)
+  
+- `outer-pred` creates a fake "sentence pred" with id -1, that has 0
+  as an argument and, as adjuncts: any unreferenced preds in the
+  f-structure (preds that are not arguments/adjuncts reachable through
+  0)
  
 - `f-align` combines the above and recursively tries to align all
   arguments in all permutations of argument-argument/adjunct pairs,
@@ -159,19 +166,11 @@ and `disambiguated?`).
 TODO
 ====
 
-- Try calling f-align on all unreferenced preds, not just `'(0 . 0)`.
-  Generalising this: if recursive f-alignment stops anywhere in the
-  f-structure, we could try skipping a step in either source or
-  target, and re-try f-align; eventually trying all possible
-  pairs... However, this will allow aligning f-structures that are not
-  in «similar contexts». Hmm.
+- Use LPT-check as a k-best ranking criterion rather than a binary
+  cut-off.
 
-- Run Giza++ to get LPT-correspondence (criterion i in
-   http://tlt8.unicatt.it/allegati/Proceedings_TLT8.pdf p.71--82, our
-   Prolog files should have the information to use criterion ii).
-
-- Just using dset3 of the dsets, rename it (make a class?) and
-  deprecate the others.
+- The program just uses dset3 of the dsets, rename it (make a class?)
+  and deprecate the others.
 
 - Could perhaps make argument calls a bit more concise by making a
   class `alignment`, containing constants `tab_s`, `tab_t`, creating
