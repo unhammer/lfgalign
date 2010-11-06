@@ -101,6 +101,10 @@
   (evaluate "eval/sulis/de/D0000.pl" "eval/sulis/en/E0000.pl"))
 
 
+
+;;;;;;;; EUROPARL WITH C-STRUCTURES
+;;;;;;;; --------------------------
+
 (defun ev-europarl (n)
   (loop
      repeat n
@@ -154,6 +158,8 @@
 
 
 
+;;;;;;;; FOR COMPARISON WITH RIA
+;;;;;;;; -----------------------
 
 (defun random-f-align (link tab_s tab_t LPT)
   "Create a single random f-alignment (no merges of course), output
@@ -189,7 +195,48 @@ like `flatten' or `rank'"
 		       LPT)))
     LPT))
 
-(defun ev-ria (n &optional set (aligner #'f-align) (ranker #'rank) LPT)
+
+(defun unfragmented-ria (&optional n (max-frag 0))
+  "Find analyses in the RIA-testset that are not fragmented (neither
+source nor target), or, optionally, that have a maximum amount of
+`max-frag' unreferenced preds (use nil if no maximum). Optional
+argument `n' is a maximum of analyses to return (since returning all
+takes half a minute)."
+  (loop for set in '("sents_0000" "sents_0001" "sents_0002" "sents_0003")
+       with i = 0
+       append
+       (loop
+	  while (or (not n) (< i n))
+	  with dir = (append (pathname-directory
+			      (asdf:component-pathname (asdf:find-system :lfgalign)))
+			     '("eval" "ria"))
+	  for path_s in (directory
+			 (make-pathname
+			  :name :wild
+			  :type "pl"
+			  :directory (append dir (list "sl_train" set))))
+	  for path_t = (make-pathname
+			:name (pathname-name path_s)
+			:type "pl"
+			:directory (append dir (list "tl_train" set)))
+          for path_a = (make-pathname
+			:name (substitute #\A #\S (pathname-name path_s))
+			:type "pl"
+			:directory (append dir (list "alignments" set)))
+
+	  for tab_s = (open-and-import (format nil "~A" path_s) 'absolute)
+	  for tab_t = (open-and-import (format nil "~A" path_t) 'absolute)
+	  for unref_s = (remove-if (lambda (v) (eq 0 v)) (unreferenced-preds tab_s))
+	  for unref_t = (remove-if (lambda (v) (eq 0 v)) (unreferenced-preds tab_t))
+	  do (incf i)
+	  when (or (not max-frag)
+		   (and (<= (length unref_s) max-frag)
+			(<= (length unref_t) max-frag)))
+	  collect (list path_s path_t path_a)
+	  end)))
+
+
+(defun ev-ria (sentpairs &optional (aligner #'f-align) (ranker #'rank) LPT)
   "Measure overlap between f-links in the RIA
 testsets (ria/data/sents_000{0,1,2,3}) and those given by `f-align'
 and `rank', or the random baseline `random-f-align' and `random-rank'.
@@ -199,26 +246,8 @@ http://www.computing.dcu.ie/~ygraham/software.html This function
 assumes there is a symlink \"ria\" from the \"eval\" folder to the
 \"data\" folder in RIA."
   (loop
-     repeat n
      with LPT = (or LPT (make-LPT))
-     with dir = (append (pathname-directory
-			 (asdf:component-pathname (asdf:find-system :lfgalign)))
-			'("eval" "ria"))
-     with set = (or set "sents_0000")
-     for path_s in (directory
-		    (make-pathname
-		     :name :wild
-		     :type "pl"
-		     :directory (append dir (list "sl_train" set))))
-     for path_t = (make-pathname
-		   :name (pathname-name path_s)
-		   :type "pl"
-		   :directory (append dir (list "tl_train" set)))
-     for path_a = (make-pathname
-		   :name (substitute #\A #\S (pathname-name path_s))
-		   :type "pl"
-		   :directory (append dir (list "alignments" set)))
-
+     for ((path_s path_t path_a)) on sentpairs
      for ria-ranked = (with-open-file
 			  (stream path_a)
 			(loop for c = (parse-pred stream)
@@ -279,7 +308,22 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
 			  (remove-duplicates (mapcar getter allpairs)))))
 	   (out "~%srcs: ~A~%trgs: ~A~%"
 		(preds #'car tab_s) (preds #'cdr tab_t)))))
-     finally (out "~%~A~%isects:~A~%(unions:~A)~%lengths_lfgalign:~A~%lengths_ria:~A~%possible srcs:~A~%possible links:~A~%unref_s:~A~%unref_t:~A~%"
-		  set isects unions ls_best ls_ria possible_srcs possible_links
+     finally (out "~%isects:~A~%(unions:~A)~%lengths_lfgalign:~A~%lengths_ria:~A~%possible srcs:~A~%possible links:~A~%unref_s:~A~%unref_t:~A~%"
+		  isects unions ls_best ls_ria possible_srcs possible_links
 		  unref_s unref_t)
+       (return (list isects unions ls_best ls_ria possible_srcs possible_links unref_s unref_t))
      ))
+
+
+(lisp-unit:define-test test-ria
+  ;; Mostly just to show how to use ev-ria and unfragmented-ria
+  (lisp-unit:assert-equal
+   '(18 195 102 112 190 1716 82 66)
+   (ev-ria (unfragmented-ria 20 nil)))
+  (lisp-unit:assert-equal
+   '(16 164 85 96 157 1341 67 52)
+   (ev-ria (unfragmented-ria 20 5)))
+  (lisp-unit:assert-true
+   (ev-ria (unfragmented-ria 20 2) #'random-f-align #'random-rank)))
+
+
