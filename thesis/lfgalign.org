@@ -3078,7 +3078,7 @@ på variabelen \texttt{pro-affects-c-linking}}
 
 
 #+LABEL: tbl:LPT
-#+CAPTION: Kor mykje bottom-up-informasjon treng me for å lenkje argument/adjunkt korrekt?
+#+CAPTION: Kor mykje bottom-up-informasjon treng me for å lenkje argument/adjunkt korrekt? Kolonnane $l_s$ og $l_t$ er lengd på setningane.
 | setning           | l_s | l_t | min. LPT | moglege LPT-par                          |
 |-------------------+-----+-----+----------+------------------------------------------|
 | mrs 0.pl 0.pl     |   1 |   2 |        0 |                                          |
