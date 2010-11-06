@@ -18,6 +18,8 @@
 #+LaTeX_HEADER: \newcommand{\OBJ}{\F{obj}{}}
 #+LaTeX_HEADER: \newcommand{\OBJs}{\F{obj~}{}}
 #+LaTeX_HEADER: \newcommand{\ADJ}{\F{adj}{}}
+#+LaTeX_HEADER: \newcommand{\SPEC}{\F{spec}{}}
+#+LaTeX_HEADER: \newcommand{\POSS}{\F{poss}{}}
 #+LaTeX_HEADER: \newcommand{\ASPECT}{\F{aspect}{}}
 #+LaTeX_HEADER: \newcommand{\ADJUNCT}{\F{adjunct}{}}
 #+LaTeX_HEADER: \newcommand{\ADJs}{\F{adj~}{}}
@@ -729,11 +731,13 @@ A top-down method of alignment such as this may be quite
  order to increase recall) may hurt precision severely
  \cite[p.~149]{samuelsson2007apa}.
 
-[fn:15] In particular: the current implementation uses LPT information
- to completely cut off possibilities; a ranking would be more robust
- if we have partial information. Also, the program expects
- sentence-aligned, disambiguated analyses, and many sentences in the
- larger test sets have not seen manual disambiguation yet.
+[fn:15] In particular: we don't yet align features like \SPEC{} and
+ \POSS{} unless they are also in the arguments/adjuncts; also the
+ current implementation uses LPT information to completely cut off
+ possibilities---a ranking would be more robust if we have partial
+ information. Additionally, the program expects sentence-aligned,
+ disambiguated analyses, and many sentences in the larger test sets
+ have not seen manual disambiguation yet.
 
 [fn:16] The sentences are from a book translation, but the Norwegian
  sentence has been topicalised to illustrate the c-structure
