@@ -16,6 +16,7 @@
 (defvar *debug* nil)
 (defvar *pro-affects-c-linking* t)	; Whether unlinked pro-elements may hinder linking c-structure nodes of two predicates
 (defvar *max-adjs* 8)			; maximum amount of adjs to try to match in `adjalign'
+(defvar *include-unreferenced-preds* t)	; Whether we add all unreferenced PRED f-structures to adjuncts of SENTENCE (with f-structure id -1)
 
 ;;;;;;;; C-STRUCTURE TREE:
 ;;;;;;;; -----------------
@@ -342,7 +343,7 @@ dyvik2009lmp, with `skip-pp'."
   (mapcar
    (lambda (v) (skip-pp v tab))
    (if (eq -1 var)
-       (remove 0 (unreferenced-preds tab))
+       (when *include-unreferenced-preds* (remove 0 (unreferenced-preds tab)))
      (aif (assoc "ADJUNCT" (gethash var tab) :test #'equal)
 	  (if (get-equivs (cdr it) tab)
 	      (error 'unexpected-input "eqvar of ADJUNCT, TODO")

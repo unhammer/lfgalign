@@ -3316,25 +3316,25 @@ modellen har ingen mange-mange-lenkjer).
 
 #+LABEL: tbl:RIA
 #+CAPTION: Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Det fulle testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida; 337 når alle setningspar med fleire yttarste pred er fjerna.
-#+ATTR_LaTeX: align=lcrrrrr
-| metode                     | maks. yttarst | snitt | union | lenkjer | \texttt{RIA}-lenkjer | snitt / \texttt{RIA} |
-|----------------------------+---------------+-------+-------+---------+----------------------+----------------------|
-| \texttt{tilfeldig}         |             0 |    43 |   526 |     307 |                  262 | 16,41 %              |
-| \texttt{lfgalign} u/ordbok |             0 |   142 |   386 |     272 |                  262 | 54,20 %              |
-| \texttt{lfgalign} m/ordbok |             0 |    51 |   302 |      91 |                  262 | 19,47 %              |
-|----------------------------+---------------+-------+-------+---------+----------------------+----------------------|
-| \texttt{tilfeldig}         |             1 |   292 |  4151 |    2426 |                 2017 | 14,48 %              |
-| \texttt{lfgalign} u/ordbok |             1 |  1066 |  3029 |    2127 |                 2017 | 52,85 %              |
-| \texttt{lfgalign} m/ordbok |             1 |   409 |  2327 |     725 |                 2017 | 20,28 %              |
-|----------------------------+---------------+-------+-------+---------+----------------------+----------------------|
-| \texttt{tilfeldig}         |             2 |   682 | 12153 |    7005 |                 5830 | 11,70 %              |
-| \texttt{lfgalign} u/ordbok |             2 |  2586 |  9028 |    5890 |                 5830 | 44,36 %              |
-| \texttt{lfgalign} m/ordbok |             2 |   985 |  6684 |    1856 |                 5830 | 16,90 %              |
-|----------------------------+---------------+-------+-------+---------+----------------------+----------------------|
-| \texttt{tilfeldig}         |      $\infty$ |  2544 | 60544 |   35069 |                28019 | 9,08 %               |
-| \texttt{lfgalign} u/ordbok |      $\infty$ |  7296 | 44587 |   24161 |                28019 | 26,04 %              |
-| \texttt{lfgalign} m/ordbok |      $\infty$ |  3382 | 31970 |    7375 |                28019 | 12,07 %              |
-#+TBLFM: $7='(replace-regexp-in-string "[.]" "," (format "%.2f %%" (* 100 (/ $3 (* 1.0 $6)))));N
+#+ATTR_LaTeX: align=lcrrrrrr
+| metode                     | maks. yttarst | snitt | union | lenkjer | \texttt{RIA}-lenkjer | snitt / denne | snitt / \texttt{RIA} |
+|----------------------------+---------------+-------+-------+---------+----------------------+---------------+----------------------|
+| \texttt{tilfeldig}         |             0 |    43 |   526 |     307 |                  262 | 14,01 %       | 16,41 %              |
+| \texttt{lfgalign} u/ordbok |             0 |   142 |   386 |     272 |                  262 | 52,21 %       | 54,20 %              |
+| \texttt{lfgalign} m/ordbok |             0 |    51 |   302 |      91 |                  262 | 56,04 %       | 19,47 %              |
+|----------------------------+---------------+-------+-------+---------+----------------------+---------------+----------------------|
+| \texttt{tilfeldig}         |             1 |   292 |  4151 |    2426 |                 2017 | 12,04 %       | 14,48 %              |
+| \texttt{lfgalign} u/ordbok |             1 |  1066 |  3029 |    2127 |                 2017 | 50,12 %       | 52,85 %              |
+| \texttt{lfgalign} m/ordbok |             1 |   409 |  2327 |     725 |                 2017 | 56,41 %       | 20,28 %              |
+|----------------------------+---------------+-------+-------+---------+----------------------+---------------+----------------------|
+| \texttt{tilfeldig}         |             2 |   682 | 12153 |    7005 |                 5830 | 9,74 %        | 11,70 %              |
+| \texttt{lfgalign} u/ordbok |             2 |  2586 |  9028 |    5890 |                 5830 | 43,90 %       | 44,36 %              |
+| \texttt{lfgalign} m/ordbok |             2 |   985 |  6684 |    1856 |                 5830 | 53,07 %       | 16,90 %              |
+|----------------------------+---------------+-------+-------+---------+----------------------+---------------+----------------------|
+| \texttt{tilfeldig}         |      $\infty$ |  2544 | 60544 |   35069 |                28019 | 7,25 %        | 9,08 %               |
+| \texttt{lfgalign} u/ordbok |      $\infty$ |  7296 | 44587 |   24161 |                28019 | 30,20 %       | 26,04 %              |
+| \texttt{lfgalign} m/ordbok |      $\infty$ |  3382 | 31970 |    7375 |                28019 | 45,86 %       | 12,07 %              |
+#+TBLFM: $7='(replace-regexp-in-string "[.]" "," (format "%.2f %%" (* 100 (/ $3 (* 1.0 $5)))));N::$8='(replace-regexp-in-string "[.]" "," (format "%.2f %%" (* 100 (/ $3 (* 1.0 $6)))));N
 
 ### Code to re-run analyses, one line per row:
 # (ev-ria (ria-analyses nil 0)   #'random-f-align #'random-rank nil)
@@ -3391,22 +3391,24 @@ modellen har ingen mange-mange-lenkjer).
  lenkbare predikat) er nok ikkje veldig nyttig. Eg diskuterer ei
  mogleg løysing på dette problemet i del \ref{SEC:opneproblem}.
 
- Ved nærare ettersyn viser det seg at dette korpuset har mange
- fragmentariske analysar, og som oftast er det mange «yttarste
- f-strukturar» (gjerne over ti i kvar setning, i snitt fire per
- setning; gjennomsnittleg setningslengd i materialet er 9,8
+ Ved nærare ettersyn viser det seg at dette korpuset har svært mange
+ «yttarste f-strukturar» (gjerne over ti i kvar setning, i snitt fire
+ per setning; gjennomsnittleg setningslengd i materialet er 9,8
  ord). Implementasjonen min reknar ein f-struktur for å vere ein av
  desse yttarste om han ikkje er referert til som argument/adjunkt av
- andre f-strukturar. Yttarste f-strukturar blir handsama som om dei er
- på same nivå i f-strukturen -- viss det eigentleg finst ein intern
- struktur mellom desse blir det ignorert. Det vil altså seie at for
- store delar av analysane får =lfgalign= ingenting ut av f-strukturen.
- Sidan programmet er meint for trebankbygging med høg presisjon treng
- det ikkje vere negativt at dekninga er /litt/ lågare; i tillegg vil
- me kanskje forvente meir «komplette» analysar enn dei som finst i
- dette testsettet. Likevel bør det vere mogleg å gjere noko for å
- betre på yteevna når analysane er fragmentariske; eg kjem tilbake til
- dette nedanfor.
+ andre f-strukturar; dette kan vere fordi analysane er fragmentariske,
+ eller analysane rett og slett ikkje har ein sti til desse
+ \PRED{}-elementa som går via argument/adjunkt. Det siste gjeld t.d.
+ \POSS{}- og \SPEC{}-element, som nemnt over.  Yttarste f-strukturar
+ blir handsama som om dei er på same nivå i f-strukturen -- viss det
+ eigentleg finst ein intern struktur mellom desse blir det
+ ignorert. Det vil altså seie at for store delar av analysane får
+ =lfgalign= ingenting ut av f-strukturen.  Sidan programmet er meint
+ for trebankbygging med høg presisjon treng det ikkje vere negativt at
+ dekninga er /litt/ lågare; i tillegg vil me kanskje forvente meir
+ «komplette» analysar enn dei som finst i dette testsettet. Likevel
+ bør det vere mogleg å gjere noko for å betre på yteevna når analysane
+ er fragmentariske; eg kjem tilbake til dette nedanfor.
 
  Eit anna problem som blir tydeleg med denne evalueringa er at lange
  lister med argument/adjunkt raskt blir komputasjonelt vanskeleg. For
