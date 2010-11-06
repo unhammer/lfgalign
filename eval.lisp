@@ -196,12 +196,17 @@ like `flatten' or `rank'"
     LPT))
 
 
-(defun unfragmented-ria (&optional n (max-frag 0))
-  "Find analyses in the RIA-testset that are not fragmented (neither
-source nor target), or, optionally, that have a maximum amount of
-`max-frag' unreferenced preds (use nil if no maximum). Optional
-argument `n' is a maximum of analyses to return (since returning all
-takes half a minute)."
+(defun ria-analyses (&optional n (max-frag 0))
+  "Return paths to analyses in the RIA-testset. Defaults to filtering
+out analyses that are have no `unreferenced-preds' (neither source nor
+target). Optional argument `n' is a maximum of analyses to
+return (returning all takes half a minute). Optional argument
+`max-frag' may be used to increase the maximum allowed
+`unreferenced-preds' (use nil for no maximum).
+
+TODO: There are 2527 sentence pairs in RIA that do not have 'Fragment'
+any where in their analyses -- why do so many of these have
+unreferenced-preds then?"
   (loop for set in '("sents_0000" "sents_0001" "sents_0002" "sents_0003")
        with i = 0
        append
@@ -316,14 +321,14 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
 
 
 (lisp-unit:define-test test-ria
-  ;; Mostly just to show how to use ev-ria and unfragmented-ria
+  ;; Mostly just to show how to use ev-ria and ria-analyses
   (lisp-unit:assert-equal
    '(18 195 102 112 190 1716 82 66)
-   (ev-ria (unfragmented-ria 20 nil)))
+   (ev-ria (ria-analyses 20 nil)))
   (lisp-unit:assert-equal
    '(16 164 85 96 157 1341 67 52)
-   (ev-ria (unfragmented-ria 20 5)))
+   (ev-ria (ria-analyses 20 5)))
   (lisp-unit:assert-true
-   (ev-ria (unfragmented-ria 20 2) #'random-f-align #'random-rank)))
+   (ev-ria (ria-analyses 20 2) #'random-f-align #'random-rank)))
 
 
