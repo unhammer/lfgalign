@@ -3315,14 +3315,43 @@ modellen har ingen mange-mange-lenkjer).
 
 
 #+LABEL: tbl:RIA
-#+CAPTION: Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida.
-#+ATTR_LaTeX: align=lrrrrr
-| metode                        | snitt | union | lenkjer | RIA-lenkjer | snitt / RIA-lenkjer |
-|-------------------------------+-------+-------+---------+-------------+---------------------|
-| \texttt{tilfeldig}            |  2544 | 60544 |   35069 |       28019 | 09,07 %             |
-| \texttt{lfgalign} utan ordbok |  7296 | 44587 |   24161 |       28019 | 26,03 %             |
-| \texttt{lfgalign} med ordbok  |  3382 | 31970 |    7375 |       28019 | 12,07 %             |
+#+CAPTION: Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Det fulle testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida; 337 når alle setningspar med fragmentariske analysar er fjerna.
+#+ATTR_LaTeX: align=lcrrrrr
+| metode                     | maks.frag. | snitt | union | lenkjer | \texttt{RIA}-lenkjer | snitt / \texttt{RIA} |
+|----------------------------+------------+-------+-------+---------+----------------------+----------------------|
+| \texttt{tilfeldig}         |          0 |    43 |   526 |     307 |                  262 | 16,41 %              |
+| \texttt{lfgalign} u/ordbok |          0 |   142 |   386 |     272 |                  262 | 54,20 %              |
+| \texttt{lfgalign} m/ordbok |          0 |    51 |   302 |      91 |                  262 | 19,47 %              |
+|----------------------------+------------+-------+-------+---------+----------------------+----------------------|
+| \texttt{tilfeldig}         |          1 |   292 |  4151 |    2426 |                 2017 | 14,48 %              |
+| \texttt{lfgalign} u/ordbok |          1 |  1066 |  3029 |    2127 |                 2017 | 52,85 %              |
+| \texttt{lfgalign} m/ordbok |          1 |   409 |  2327 |     725 |                 2017 | 20,28 %              |
+|----------------------------+------------+-------+-------+---------+----------------------+----------------------|
+| \texttt{tilfeldig}         |          2 |   682 | 12153 |    7005 |                 5830 | 11,70 %              |
+| \texttt{lfgalign} u/ordbok |          2 |  2586 |  9028 |    5890 |                 5830 | 44,36 %              |
+| \texttt{lfgalign} m/ordbok |          2 |   985 |  6684 |    1856 |                 5830 | 16,90 %              |
+|----------------------------+------------+-------+-------+---------+----------------------+----------------------|
+| \texttt{tilfeldig}         |   $\infty$ |  2544 | 60544 |   35069 |                28019 | 9,08 %               |
+| \texttt{lfgalign} u/ordbok |   $\infty$ |  7296 | 44587 |   24161 |                28019 | 26,04 %              |
+| \texttt{lfgalign} m/ordbok |   $\infty$ |  3382 | 31970 |    7375 |                28019 | 12,07 %              |
+#+TBLFM: $7='(replace-regexp-in-string "[.]" "," (format "%.2f %%" (* 100 (/ $3 (* 1.0 $6)))));N
 
+### Code to re-run analyses, one line per row:
+# (ev-ria (ria-analyses nil 0)   #'random-f-align #'random-rank nil)
+# (ev-ria (ria-analyses nil 0)   #'f-align        #'rank        nil)
+# (ev-ria (ria-analyses nil 0)   #'f-align        #'rank        (ding-LPT))
+# 
+# (ev-ria (ria-analyses nil 1)   #'random-f-align #'random-rank nil)
+# (ev-ria (ria-analyses nil 1)   #'f-align        #'rank        nil)
+# (ev-ria (ria-analyses nil 1)   #'f-align        #'rank        (ding-LPT))
+# 
+# (ev-ria (ria-analyses nil 2)   #'random-f-align #'random-rank nil)
+# (ev-ria (ria-analyses nil 2)   #'f-align        #'rank        nil)
+# (ev-ria (ria-analyses nil 2)   #'f-align        #'rank        (ding-LPT))
+# 
+# (ev-ria (ria-analyses nil nil) #'random-f-align #'random-rank nil)
+# (ev-ria (ria-analyses nil nil) #'f-align        #'rank        nil)
+# (ev-ria (ria-analyses nil nil) #'f-align        #'rank        (ding-LPT))
 
  Resultatet av samanlikninga står i tabell \ref{tbl:RIA}. Kolonnen
  /snitt/ viser summen av kor mange lenkjer som var felles for kvart
