@@ -586,17 +586,20 @@ A single f-structure alignment is sent to the c-structure aligner,
 
 The current implementation is, as mentioned, a work in progress,
  making it difficult to do a complete evaluation at this point.[fn:15]
- In particular: discontinuous constituents have not been fully tested,
- and the implementation currently uses bottom-up information as
- cut-offs instead of ranking. However, tests conducted on a set of
- example sentences, chosen to illustrate a wide variety of grammatical
- phenomena, seem promising.
+ However, tests conducted on a set of example sentences, chosen to
+ illustrate a wide variety of grammatical phenomena, seem
+ promising. E.g. two-to-one f-structure links occur in the right
+ places (such as with auxiliary merging as shown in example
+ \ref{ex:roboter}).
 
 Of course, the alignments will only be as good as the grammatical
  analyses that gave rise to them, so this is an important possible
- source of errors. Building high-quality, wide-coverage grammars
- requires manual work; however, without these, a large, informative
- and consistent treebank may require even more manual work.
+ source of errors. E.g. where an idiom is missing from the grammar,
+ the f-structure on one side may be too deep, leading to mismatches;
+ also, fragmentary analyses contain very little useful information.
+ Building high-quality, wide-coverage grammars requires manual work;
+ however, without these, a large, informative and consistent treebank
+ may require even more manual work.
 
 A top-down method of alignment such as this may be quite
  useful for language pairs with few parallel resources, where there
@@ -726,9 +729,11 @@ A top-down method of alignment such as this may be quite
  order to increase recall) may hurt precision severely
  \cite[p.~149]{samuelsson2007apa}.
 
-[fn:15] Additionally, the program expects sentence-aligned,
- disambiguated analyses, and many sentences in the larger test sets
- have not seen manual disambiguation yet.
+[fn:15] In particular: the current implementation uses LPT information
+ to completely cut off possibilities; a ranking would be more robust
+ if we have partial information. Also, the program expects
+ sentence-aligned, disambiguated analyses, and many sentences in the
+ larger test sets have not seen manual disambiguation yet.
 
 [fn:16] The sentences are from a book translation, but the Norwegian
  sentence has been topicalised to illustrate the c-structure
@@ -742,3 +747,5 @@ A top-down method of alignment such as this may be quite
 [fn:17] This is an ideal description of LPT-correspondence; in
  practice, evidence about possible LPT-correspondence may also come from
  word alignments, translational dictionaries, etc.
+
+
