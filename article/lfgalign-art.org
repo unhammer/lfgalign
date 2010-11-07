@@ -590,14 +590,14 @@ The current implementation is, as mentioned, a work in progress,
  making it difficult to do a complete evaluation at this point.[fn:15]
  However, tests conducted on a set of example sentences, chosen to
  illustrate a wide variety of grammatical phenomena, seem
- promising. E.g. two-to-one f-structure links occur in the right
- places (such as with auxiliary merging as shown in example
+ promising. E.g. two-to-one f-structure links seem to occur in the
+ right places (such as with auxiliary merging as shown in example
  \ref{ex:roboter}).
 
 Of course, the alignments will only be as good as the grammatical
  analyses that gave rise to them, so this is an important possible
  source of errors. E.g. where an idiom is missing from the grammar,
- the f-structure on one side may be too deep, leading to mismatches;
+ the f-structure on one side may be too deep, leading to mismatches[fn:18];
  also, fragmentary analyses contain very little useful information.
  Building high-quality, wide-coverage grammars requires manual work;
  however, without these, a large, informative and consistent treebank
@@ -731,13 +731,13 @@ A top-down method of alignment such as this may be quite
  order to increase recall) may hurt precision severely
  \cite[p.~149]{samuelsson2007apa}.
 
-[fn:15] In particular: we don't yet align features like \SPEC{} and
- \POSS{} unless they are also in the arguments/adjuncts; also the
- current implementation uses LPT information to completely cut off
- possibilities---a ranking would be more robust if we have partial
- information. Additionally, the program expects sentence-aligned,
- disambiguated analyses, and many sentences in the larger test sets
- have not seen manual disambiguation yet.
+[fn:15] In particular: we don't yet have a way to align features like
+ \SPEC{} and \POSS{} unless they are also in the arguments/adjuncts;
+ also the current implementation uses LPT information to completely
+ cut off possibilities---a ranking would be more robust if we have
+ partial information. Additionally, the program expects
+ sentence-aligned, disambiguated analyses, and many sentences in the
+ larger test sets have not seen manual disambiguation yet.
 
 [fn:16] The sentences are from a book translation, but the Norwegian
  sentence has been topicalised to illustrate the c-structure
@@ -751,5 +751,8 @@ A top-down method of alignment such as this may be quite
 [fn:17] This is an ideal description of LPT-correspondence; in
  practice, evidence about possible LPT-correspondence may also come from
  word alignments, translational dictionaries, etc.
+
+[fn:18] An example of this would be where /be on one's way home/
+ translates into a single predicate.
 
 
