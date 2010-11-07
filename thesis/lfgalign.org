@@ -429,8 +429,8 @@ kombinerte systemet betre resultat på langdistanseavhengnader og
 generalisering til nye uttrykk med strukturell likskap til tidlegare
 observerte uttrykk. Dei går altså frå ordlenkjer til
 f-strukturlenkjer, motsett retning frå metoden i denne
-oppgåva. Ordlenkjer har au gitt f-strukturlenkjer i transferbasert
-statistisk maskinomsetjing
+oppgåva. Ordlenkjer har au gitt f-strukturlenkjer i overføringsbasert
+(transferbasert) statistisk maskinomsetjing
 \citep{graham2010dsl,graham2009osr,graham2009fts}, som eg kjem tilbake
 til i kapittel \ref{SEC:diskusjon}.
 
@@ -607,70 +607,82 @@ this project relates to similar projects in the field.»
 
 ** Innleiing
 I denne delen prøver eg å finne fram til kva som er den best moglege
-frasesamanstillinga. Eg argumenterer for at «best» her må tolkast i
-forhold til eit formål, her å finne samsvar mellom kasusmarkering og
-semantisk rolletildeling. Som utgangspunkt har eg visse krav for
-ordsamanstilling gitt i \citet{thunes2003eal}, saman med krava for
-frasesamanstilling i \citet{dyvik2009lmp}. Eg viser kvifor ein, for
-våre formål, må revidere kravet til Thunes om likskap i
-argumentstruktur. Eg gir nokre døme for å grunngje krava i
-\citet{dyvik2009lmp}, i tillegg til å utdjupe dei for å gjere dei
-enklare å implementere i kapittel \ref{SEC:implementasjon}. Dette
-involverer au å omformulere krava for c-struktursamanstilling slik at
-dei ikkje refererer til ordlenkjer, berre f-strukturlenkjer. Sidan eit
-av måla med Xpar-prosjektet er å finne ut kor mykje
-frasesamanstillingsinformasjon me kan få ut av parallellismen i
-f-strukturane (eller, sett frå den andre sida, kor uavhengig ein kan
-gjere seg av den bottom-up-informasjonen ei ordlenkje gir), blir det
-eit avleidd mål å formulere frasesamanstillingskrava med referanse til
-f-strukturane der det går an.
+ frasesamanstillinga. Eg argumenterer for at «best» her må tolkast i
+ forhold til eit formål; her er formålet å annotere ein trebank for
+ lingvistiske studium, m.a. for å undersøkje ulike samsvar mellom
+ kasusmarkering og semantisk rolletildeling.  Som utgangspunkt har eg
+ visse krav for ordsamanstilling gitt i \citet{thunes2003eal}, saman
+ med krava for frasesamanstilling i \citet{dyvik2009lmp}. Eg viser
+ kvifor ein, for våre formål, må revidere kravet til Thunes om likskap
+ i argumentstruktur. Eg gir nokre døme for å grunngje krava i
+ \citet{dyvik2009lmp}, i tillegg til å utdjupe dei for å gjere dei
+ enklare å implementere i kapittel \ref{SEC:implementasjon}. Dette
+ involverer au å omformulere krava for c-struktursamanstilling slik at
+ dei ikkje refererer til ordlenkjer, berre f-strukturlenkjer. Sidan
+ eit av måla med Xpar-prosjektet er å finne ut kor mykje
+ frasesamanstillingsinformasjon me kan få ut av parallellismen i
+ f-strukturane (eller, sett frå den andre sida, kor uavhengig ein kan
+ gjere seg av den bottom-up-informasjonen ei ordlenkje gir), blir det
+ eit avleidd mål å formulere frasesamanstillingskrava med referanse
+ til f-strukturane der det går an.
 
 ** Formål med frasesamanstilling
 \label{SEC:formaal}
 
 Ei frasesamanstilling er ein slag annotasjon av eit korpus. På same
-måte som oppbygginga av eit korpus avheng av formålet til korpuset,
-kan ein ikkje definere den ideelle annotasjonen av eit korpus utan å
-ta høgd for kva ein skal nytte annotasjonen til.
+ måte som oppbygginga av eit korpus avheng av formålet til korpuset,
+ kan ein ikkje definere den ideelle annotasjonen av eit korpus utan å
+ ta høgd for kva ein skal nytte annotasjonen til.
 
 Me kan illustrere dette med eit enkelt, praktisk døme: ved automatisk
-ordklassetagging må ein gjerne avvege mellom dekning (å finne flest
-moglege analysar for flest mogleg ord) og presisjon (å berre ende opp
-med korrekte analysar).  Viss formålet er å annotere ein
-leksikografisk ressurs, vil det vere viktigare med høg dekning på
-bekostning av presisjon, sidan leksikografen gjerne leiter etter
-nye/kreative bruksområde av ord. Skal taggaren nyttast til
-maskinomsetjing i staden, kan ein ikkje nytte meir enn éin analyse til
-slutt, så her er presisjon viktigast.
+ ordklassetagging må ein gjerne avvege mellom dekning (å finne flest
+ moglege analysar for flest mogleg ord) og presisjon (å berre ende opp
+ med korrekte analysar).  Viss formålet er å annotere ein
+ leksikografisk ressurs, vil det vere viktigare med høg dekning på
+ bekostning av presisjon, sidan leksikografen gjerne leiter etter
+ nye/kreative bruksområde av ord. Skal taggaren nyttast til
+ maskinomsetjing i staden, kan ein ikkje nytte meir enn éin analyse
+ til slutt, så her er presisjon viktigast.
 
 Sjølvsagt kan ein her seie at den /ideelle/ annotasjonen vil vere å
-berre ha korrekte analysar, men sjølv ved ideelle krav er formålet
-viktig: er ein ute etter å finne N-gram som ofte blir omsett med
-kvarande, men som /ikkje/ er syntaktiske konstituentar, er det klart
-at retningslinjene nedanfor ikkje er så nyttige[fn:38].
+ berre ha korrekte analysar, men sjølv ved ideelle krav er formålet
+ viktig: er ein ute etter å finne N-gram som ofte blir omsett med
+ kvarande, men som /ikkje/ er syntaktiske konstituentar, er det klart
+ at retningslinjene nedanfor ikkje er så nyttige[fn:38]. I tillegg kan
+ ein sjå på kva slags setningspar som er relevante å kunne handtere --
+ skal me annotere setningar som er klart ugrammatiske, som inneheld
+ openberre skrivefeil eller liknande? \citet[s.~158]{rosen2007tmt}
+ skriv i denne samanhengen at «building a treebank is not just a
+ matter of assigning some analysis to everything, but also of making
+ grammaticality judgments»; og å analysere alt berre for å analysere
+ det kan gå mot sitt formål -- dette gjeld særleg når ein er ute etter
+ å undersøkje eit /språk/, og ikkje berre eit /korpus/. Analogen til
+ frasesamanstilling blir då at ufullstendige analysar er mindre
+ viktige å handtere, når me er ute etter å byggje ein parallell
+ trebank for språkstudium.
 
 Sidan utviklinga av automatisk frasesamanstilling hovudsakleg har
-skjedd innanfor frasebasert statistisk maskinomsetjing (PBSMT), kjem
-me ikkje utanom ei samanlikning her. I PBSMT er formålet med ei
-fraselenkje å betre maskinomsetjing på eitt eller anna mål,
-t.d. \Bleu-skåren. \Bleu-skåren samanliknar ferdig omsett tekst (ein
-gullstandard) med det automatisk omsette, ved å sjekke kor mykje
-N-gram-overlapp det er mellom tekstene. Ei fraselenkje mellom
-N-grammet /es gibt/ og /there is/ (dvs. eit auka sannsyn for å nytte
-slike par i omsetjinga) kan gi ein høgare endeleg skåre i \Bleu. Som
-vist i \citet{koehn2003spb} fekk dei ein lågare \Bleu-skåre når dei
-\fxnote{todo: referere til den faktiske parsaren? det var Bikel
-kanskje?}  fjerna lenkjer mellom nodar som, i følgje ein robust
-statistisk PCFG-parsar, ikkje var syntaktiske frasar
-(konstituentar). Dvs. at i figur \ref{fig:ikkjenode} vil lenkja vist
-ved den prikkete linja bli fjerna frå mengda over moglege lenkjer om
-ein berre held seg til syntaktiske konstituentar, og
-$p(es~gibt,~there~is)$ vil ikkje bli tilsvarande auka i den
-statistiske omsetjingsmodellen. Sidan PBSMT, som skildra i
-\citet{koehn2003spb}, er agnostisk til syntaktiske høve i
-omsetjingssteget[fn:1] er det for dei ingen grunn til å berre halde
-seg til samanstilling mellom syntaktiske konstituentar; dei har i
-utgangspunktet meir nytte av kollokasjonsinformasjon.
+ skjedd innanfor frasebasert statistisk maskinomsetjing (PBSMT), kjem
+ me ikkje utanom ei samanlikning her. I PBSMT er formålet med ei
+ fraselenkje å betre maskinomsetjing på eitt eller anna mål,
+ t.d. \Bleu-skåren. \Bleu-skåren samanliknar ferdig omsett tekst (ein
+ gullstandard) med det automatisk omsette, ved å sjekke kor mykje
+ N-gram-overlapp det er mellom tekstene. Ei lenkje mellom N-grammet
+ /es gibt/ og /there is/ (dvs. eit auka sannsyn for å nytte slike par
+ i omsetjinga) kan gi ein høgare (betre) endeleg skåre i \Bleu. Som
+ vist i \citet{koehn2003spb} fekk dei ein /lågare/ \Bleu-skåre når dei
+ \fxnote{todo: referere til den faktiske parsaren?  det var Bikel
+ kanskje?}  fjerna lenkjer mellom N-gram som, i følgje ein robust
+ statistisk frasestrukturparsar, ikkje var syntaktiske frasar
+ (konstituentar). Dvs. at i figur \ref{fig:ikkjenode} vil lenkja vist
+ ved den prikkete linja bli fjerna frå mengda over moglege lenkjer om
+ ein berre held seg til syntaktiske konstituentar, og
+ $p(es~gibt,~there~is)$ vil ikkje bli tilsvarande auka i den
+ statistiske omsetjingsmodellen. Sidan PBSMT, som skildra i
+ \citet{koehn2003spb}, er agnostisk til syntaktiske høve i
+ omsetjingssteget[fn:1] er det for dei ingen grunn til å berre halde
+ seg til samanstilling mellom syntaktiske konstituentar; dei har i
+ utgangspunktet meir nytte av kollokasjonsinformasjon.
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -696,43 +708,44 @@ utgangspunktet meir nytte av kollokasjonsinformasjon.
 # es gibt Frost an meiner Tür
 
 Men sett no at me ikkje har som formål å nytte frasesamanstillinga til
-reint N-grambasert omsetjing. Kva for /lingvistiske/ krav kan me
-stille til å kalle to frasar samanstilte? Me må i alle fall tillate
-ein del skilnad.  I alle større parallelltekster vil parallellstilte
-setningar ha visse syntaktiske og semantiske[fn:6] omsetjingsskifte,
-t.d. leksikalisering av syntaktiske konstruksjonar eller omvendt,
-endring av ordklasse, presisering/depresisering, endringar i leksikalske
-trekk (t.d. telleleg/utelleleg),
-osb. \citep[s.~56--62]{munday2001its}, slik at den einaste
-fullstendige, «perfekte» samanstillinga vil vere
-identitetsfunksjonen. Kor mykje mangel på samsvar me godtek blir då
-avgjort av formålet med samanstillinga.
+ reint N-grambasert omsetjing. Kva for /lingvistiske/ krav kan me
+ stille til å kalle to frasar samanstilte? Me må i alle fall tillate
+ ein del skilnad.  I alle større parallelltekster vil parallellstilte
+ setningar ha visse syntaktiske og semantiske[fn:6] omsetjingsskifte,
+ t.d. leksikalisering av syntaktiske konstruksjonar eller omvendt,
+ endring av ordklasse, presisering/depresisering, endringar i
+ leksikalske trekk (t.d. telleleg/utelleleg),
+ osb. \citep[s.~56--62]{munday2001its}, slik at den einaste
+ fullstendige, «perfekte» samanstillinga vil vere
+ identitetsfunksjonen. Kor mykje mangel på samsvar me godtek blir då
+ avgjort av formålet med samanstillinga.
 
 Eitt av formåla med samanstillinga i denne oppgåva er å kunne oppdage
-korleis ulike språk realiserer semantiske roller syntaktisk; då
-spesielt i forhold til hypotesane gitt i \citet[s.~7]{xpar2008rcn},
-t.d. at «case marking might be useful to further determine a given
-argument's semantic role». Skal me finne det siste, må me altså kunne
-lenkje frasar med ulik kasusmarkering, men ha krav om lik tildeling av
-semantiske roller; samtidig skal me sjå at me ikkje kan ha krav om lik
-syntaktisk funksjon. I tillegg vil me sjølvsagt ikkje lenkje på tvers
-av konstituentgrenser, sidan det er fullstendige konstituentar[fn:11]
-som fyller dei semantiske rollene.
+ korleis ulike språk realiserer semantiske roller syntaktisk; då
+ spesielt i forhold til hypotesane gitt i \citet[s.~7]{xpar2008rcn},
+ t.d. at «case marking might be useful to further determine a given
+ argument's semantic role». Skal me finne det siste, må me altså kunne
+ lenkje frasar med ulik kasusmarkering, men ha krav om lik tildeling
+ av semantiske roller; samtidig skal me sjå at me ikkje kan ha krav om
+ lik syntaktisk funksjon. I tillegg vil me sjølvsagt ikkje lenkje på
+ tvers av konstituentgrenser, sidan det er fullstendige
+ konstituentar[fn:11] som fyller dei semantiske rollene.
 
 Eit anna mogleg formål er å nytte desse frasesamanstillingane til
-maskinomsetjing. \citet{riezler2006gmt} nyttar ein stokastisk
-frasesamanstilling til å oppdage transfer-reglar for bruk i LFG-basert
-generering i maskinomsetjing. Dette er reglar som omsett fragment av
-ein f-struktur på kjeldespråket til f-strukturfragment på
-målspråket. (Eit krav på utforminga av moglege transfer-reglar hindrar
-at ein får reglar som lenkjar ikkje-konstituentar, eg kjem tilbake til
-dette nedanfor.)  Samanstillinga utvikla her burde au kunne nyttast
-til å finne slike transfer-reglar, men dette er ikkje noko eg har lagt
-vekt på.
+ maskinomsetjing. \citet{riezler2006gmt} nyttar ein frasesamanstilling
+ (fått ved hjelp av N-gramtabellar) til å oppdage overføringsreglar
+ for bruk i LFG-basert generering i maskinomsetjing. Dette er reglar
+ som omsett fragment av ein f-struktur på kjeldespråket til
+ f-strukturfragment på målspråket. (Eit krav på utforminga av moglege
+ overføringsreglar hindrar at ein får reglar som lenkjar
+ ikkje-konstituentar, eg kjem tilbake til dette nedanfor.) Ein
+ liknande metode er \citet{graham2010dsl,graham2009fts}.
+ Samanstillinga utvikla her burde au kunne nyttast til å finne slike
+ overføringsreglar, men dette er ikkje noko eg har lagt vekt på.
 
-Nedanfor gir eg eit forslag til krav for frasesamanstilling, med desse
-formåla i tankane. Om alle krava er moglege å implementere, er eit
-separat problem.
+Nedanfor gir eg eit forslag til krav for frasesamanstilling, med
+ formåla nemnt her i tankane. Om alle krava er moglege å implementere,
+ er eit separat problem.
 
 ** Frasesamanstilling i ein LFG-trebank
 
@@ -3661,7 +3674,7 @@ problem.
 ** Oppsummering
  - Sidan avbildinga frå c-strukturnodar til f-struktur er
    mange-til-ein, kan me t.d. innanfor eitt tre ha fleire N-gram per
-   f-strukturhovud; ein metode som berre ser på enkle N-gramlenkjer
+   f-strukturhovud; ein metode som berre ser på enkle N-gram-lenkjer
    vil ikkje registrere desse relasjonane (t.d. metoden i
    \citet{samuelsson2007apa}).
 
