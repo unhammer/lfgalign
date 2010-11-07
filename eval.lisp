@@ -313,8 +313,8 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
 			  (remove-duplicates (mapcar getter allpairs)))))
 	   (out "~%srcs: ~A~%trgs: ~A~%"
 		(preds #'car tab_s) (preds #'cdr tab_t)))))
-     finally (out "~%isects:~A~%(unions:~A)~%lengths_lfgalign:~A~%lengths_ria:~A~%possible srcs:~A~%possible links:~A~%unref_s:~A~%unref_t:~A~%"
-		  isects unions ls_best ls_ria possible_srcs possible_links
+     finally (out "~%Intersections: ~A~%Unions: ~A~%links made by ~A: ~A~%links in RIA: ~A~%Linkable source PRED's: ~A~%Link possibilities (linkable srcs * linkable trgs): ~A~%Unreferenced sources: ~A~%Unreferenced targets: ~A~%"
+		  isects unions aligner ls_best ls_ria possible_srcs possible_links
 		  unref_s unref_t)
        (return (list isects unions ls_best ls_ria possible_srcs possible_links unref_s unref_t))
      ))
