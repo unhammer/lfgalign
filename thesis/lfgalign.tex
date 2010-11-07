@@ -1,4 +1,4 @@
-% Created 2010-11-07 su. 15:29
+% Created 2010-11-07 su. 18:49
 \documentclass[11pt,a4paper,oneside,draft]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -29,7 +29,7 @@
 %\SetAlgoFuncName{Funksjon}{} % for some reason gets no numbering TODO
 
 \newcommand{\xbar}{$\rm\overline{X}$}
-\newcommand{\ind}[1]{{\avmoptions{}\begin{avm}\@{#1}\end{avm}}}
+\newcommand{\ind}[1]{{\avmoptions{center}\begin{avm}\@{#1}\end{avm}}}
 \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
 \newcommand{\OBLben}{\F{obl}{ben}}
 \newcommand{\OBJben}{\F{obj}{ben}}
@@ -1123,7 +1123,13 @@ Den enklaste lenkjingssituasjonen, f-strukturmessig, er der
 rotpredikata kan lenkjast, og første argument av predikatet på
 kjeldespråket kan lenkjast til første argument på målspråket, andre
 argument til andre argument, osb., og lenkjinga kan fortsetje slik
-rekursivt inn i f-strukturane. I ein slik situasjon er det fullstendig
+rekursivt inn i f-strukturane\footnote{Når eg her skriv \emph{argument}, meiner eg eigentleg alle
+        subkategoriserte ledd, både innanfor og utanfor sjølve
+        argumentlista. I analysen av «eska opna seg» vil \emph{eske} stå
+        innanfor argumentlista, medan refleksiven står utanfor:
+        ${\avmoptions{center}\begin{avm}`{\bf{}opne}<eske>seg'\end{avm}}$.
+        Begge er likevel subkategorisert for; begge er krevd av (den
+        tydinga av) predikatet. }. I ein slik situasjon er det fullstendig
 samsvar mellom kor mange argument det finst på kvar side, og
 fullstendig samsvar i det tematiske rollehierarkiet (dvs. kva for
 posisjon kvar rolle har i argumentstrukturen), i heile strukturen.
@@ -3861,6 +3867,7 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
  kor mange \PRED{}-element på kjeldesida som kunne vore lenkja,
  \texttt{Unreferenced sources/targets} er kor mange «yttarste \PRED{}» me
  fann.
+
 
 
 

@@ -9,7 +9,7 @@
 #+OPTIONS: H:4 toc:t f:t skip:nil num:t
 #+LaTeX_CLASS: masterdraft
 #+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
-#+LaTeX_HEADER: \newcommand{\ind}[1]{{\avmoptions{}\begin{avm}\@{#1}\end{avm}}}
+#+LaTeX_HEADER: \newcommand{\ind}[1]{{\avmoptions{center}\begin{avm}\@{#1}\end{avm}}}
 #+LaTeX_HEADER: \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
 #+LaTeX_HEADER: \newcommand{\OBLben}{\F{obl}{ben}}
 #+LaTeX_HEADER: \newcommand{\OBJben}{\F{obj}{ben}}
@@ -69,13 +69,7 @@ nyttig sparse tree: SKRIV
 
 [[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
 
-** SKRIV med argumenter meiner eg her arg + andre subkat.ledd
-  
-
 ** SKRIV men kanskje me burde ha fordi/whether for å finne dei
-** SKRIV bleu + koehn del 3.2 er ikkje klart
-  PCFG-parsar
-  høgare bleu = betre
 ** TODO finn alle ufragmenterte RIA-setningar
 
 
@@ -1085,7 +1079,7 @@ Den enklaste lenkjingssituasjonen, f-strukturmessig, er der
 rotpredikata kan lenkjast, og første argument av predikatet på
 kjeldespråket kan lenkjast til første argument på målspråket, andre
 argument til andre argument, osb., og lenkjinga kan fortsetje slik
-rekursivt inn i f-strukturane. I ein slik situasjon er det fullstendig
+rekursivt inn i f-strukturane[fn:56]. I ein slik situasjon er det fullstendig
 samsvar mellom kor mange argument det finst på kvar side, og
 fullstendig samsvar i det tematiske rollehierarkiet (dvs. kva for
 posisjon kvar rolle har i argumentstrukturen), i heile strukturen.
@@ -4097,5 +4091,13 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
         100 1) #'f-align #'rank (ding-lpt))=; kor 100 og 1 vil seie
         «berre dei 100 første analysane, med maksimalt 1 yttarste
         \PRED{} (utanom 0)».
+
+[fn:56] Når eg her skriv /argument/, meiner eg eigentleg alle
+        subkategoriserte ledd, både innanfor og utanfor sjølve
+        argumentlista. I analysen av «eska opna seg» vil /eske/ stå
+        innanfor argumentlista, medan refleksiven står utanfor:
+        ${\avmoptions{center}\begin{avm}`{\bf{}opne}<eske>seg'\end{avm}}$.
+        Begge er likevel subkategorisert for; begge er krevd av (den
+        tydinga av) predikatet.
 
 
