@@ -3281,28 +3281,36 @@ og endre grammatikkane til ei seinare utgåve av trebanken.
 \label{SEC:ria}
 
 Eg samanliknar her f-strukturlenkjene ein får ved å køyre =lfgalign=
-på ei mengd med 4000 automatisk disambiguerte og setningslenkja
-setningar på tysk og engelsk, med dei lenkjene som kjem frå
-=RIA=-metoden[fn:44] i \citet{graham2009osr,graham2009fts}. Eg prøvde
-både utan nokon informasjon i LPT-tabellen, og med ein ganske stor
-LPT-tabell med alle oppslaga frå Ding-ordboka[fn:54].
+ på ei mengd med 4000 automatisk disambiguerte og setningslenkja
+ setningar på tysk og engelsk, med dei lenkjene som kjem frå
+ =RIA=-metoden[fn:44] i \citet{graham2009osr,graham2009fts}. Eg prøvde
+ både utan nokon informasjon i LPT-tabellen, og med ein ganske stor
+ LPT-tabell med alle oppslaga frå Ding-ordboka[fn:54]. I tillegg
+ prøvde eg med delmengder av testsettet kor eg filtrerte ut analysar
+ med mange «yttarste f-strukturar».
 
 Samanlikninga skjer ved å, for kvar setning i korpuset, telje opp kor
-mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som er
-i =RIA= og dei som =lfgalign= gir. Dette kan me samanlikne med kor
-mange f-strukturlenkjer =RIA= har i det heile.
+ mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som
+ er i =RIA= og dei som =lfgalign= gir. Dette kan me samanlikne med kor
+ mange f-strukturlenkjer =RIA= har i det heile for å få ein slags
+ «dekning», og med kor mange lenkjer =lfgalign= har for å få ein slags
+ «presisjon» -- dette føreset sjølvsagt at =RIA=-lenkjene er korrekte.
 
 Viss me har to setningar som kvar har tri \PRED{}-element, finst det
-seks måtar å lenkje desse på slik at alle blir lenkja. Viss =lfgalign=
-har same samanstilling som =RIA=, vil snittet av dei to ha like mange
-lenkjer som =RIA= har. For å få ein peikepinn på kor mykje likskapen
-har å seie, har eg au køyrt ein baseline-modell på testsettet, som
-berre opprettar tilfeldige lenkjer mellom lenkbare \PRED{}-element
-(slik at flest mogleg ein-til-ein-lenkjer blir oppretta; denne
-modellen har ingen mange-mange-lenkjer).
+ seks måtar å lenkje desse på slik at alle blir lenkja. Viss
+ =lfgalign= har same samanstilling som =RIA=, vil snittet av dei to ha
+ like mange lenkjer som =RIA= har, og like mange som =lfgalign= har
+ (medan viss det er eitt av desse orda som =lfgalign= ikkje har
+ lenkja, vil snitt / =RIA= gå ned, medan snitt / =lfgalign= held seg
+ likt). For å få ein peikepinn på kor mykje likskapen har å seie (ein
+ slags indikasjon på effektstyrke), har eg au køyrt ein
+ baseline-modell på testsettet, som berre opprettar tilfeldige lenkjer
+ mellom lenkbare \PRED{}-element (slik at flest mogleg
+ ein-til-ein-lenkjer blir oppretta; denne modellen har ingen
+ mange-mange-lenkjer).
 
- Slike tal seier sjølvsagt ingenting om kva for lenkjer som er
- /korrekte/. Men, lenkjene i testmaterialet kjem via
+Desse tala seier sjølvsagt ingenting om kva for lenkjer som er
+ /korrekte/. Men, lenkjene i =RIA=-testmaterialet kjem via
  ordsamanstillingsmetoden i \citet{och2003scv}, kor «even on a tiny
  corpus of only 500 sentences, alignment error rates under 30% are
  achieved for all models [for English-German], and the best models
@@ -3315,79 +3323,65 @@ modellen har ingen mange-mange-lenkjer).
 
 
 #+LABEL: tbl:RIA
-#+CAPTION: Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Det fulle testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida; 337 når alle setningspar med fleire yttarste pred er fjerna.
+#+CAPTION: Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Det fulle testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida; 337 når alle setningspar med fleire yttarste \PRED{} er fjerna.
 #+ATTR_LaTeX: align=lcrrrrrr
 | metode                     | maks. yttarst | snitt | union | lenkjer | \texttt{RIA}-lenkjer | snitt / denne | snitt / \texttt{RIA} |
 |----------------------------+---------------+-------+-------+---------+----------------------+---------------+----------------------|
 | \texttt{tilfeldig}         |             0 |    43 |   526 |     307 |                  262 | 14,01 %       | 16,41 %              |
-| \texttt{lfgalign} u/ordbok |             0 |   142 |   386 |     272 |                  262 | 52,21 %       | 54,20 %              |
+| \texttt{lfgalign} u/ordbok |             0 |   142 |   386 |     272 |                  262 | 52,21 %       | *54,20 %*            |
 | \texttt{lfgalign} m/ordbok |             0 |    51 |   302 |      91 |                  262 | 56,04 %       | 19,47 %              |
 |----------------------------+---------------+-------+-------+---------+----------------------+---------------+----------------------|
 | \texttt{tilfeldig}         |             1 |   292 |  4151 |    2426 |                 2017 | 12,04 %       | 14,48 %              |
 | \texttt{lfgalign} u/ordbok |             1 |  1066 |  3029 |    2127 |                 2017 | 50,12 %       | 52,85 %              |
-| \texttt{lfgalign} m/ordbok |             1 |   409 |  2327 |     725 |                 2017 | 56,41 %       | 20,28 %              |
+| \texttt{lfgalign} m/ordbok |             1 |   409 |  2327 |     725 |                 2017 | *56,41 %*     | 20,28 %              |
 |----------------------------+---------------+-------+-------+---------+----------------------+---------------+----------------------|
 | \texttt{tilfeldig}         |             2 |   682 | 12153 |    7005 |                 5830 | 9,74 %        | 11,70 %              |
 | \texttt{lfgalign} u/ordbok |             2 |  2586 |  9028 |    5890 |                 5830 | 43,90 %       | 44,36 %              |
 | \texttt{lfgalign} m/ordbok |             2 |   985 |  6684 |    1856 |                 5830 | 53,07 %       | 16,90 %              |
+|----------------------------+---------------+-------+-------+---------+----------------------+---------------+----------------------|
+| \texttt{tilfeldig}         |             3 |  1191 | 23789 |   13765 |                11215 | 8,65 %        | 10,62 %              |
+| \texttt{lfgalign} u/ordbok |             3 |  4262 | 17700 |   10949 |                11215 | 38,93 %       | 38,00 %              |
+| \texttt{lfgalign} m/ordbok |             3 |  1652 | 12796 |    3261 |                11215 | 50,66 %       | 14,73 %              |
 |----------------------------+---------------+-------+-------+---------+----------------------+---------------+----------------------|
 | \texttt{tilfeldig}         |      $\infty$ |  2544 | 60544 |   35069 |                28019 | 7,25 %        | 9,08 %               |
 | \texttt{lfgalign} u/ordbok |      $\infty$ |  7296 | 44587 |   24161 |                28019 | 30,20 %       | 26,04 %              |
 | \texttt{lfgalign} m/ordbok |      $\infty$ |  3382 | 31970 |    7375 |                28019 | 45,86 %       | 12,07 %              |
 #+TBLFM: $7='(replace-regexp-in-string "[.]" "," (format "%.2f %%" (* 100 (/ $3 (* 1.0 $5)))));N::$8='(replace-regexp-in-string "[.]" "," (format "%.2f %%" (* 100 (/ $3 (* 1.0 $6)))));N
 
-### Code to re-run analyses, one line per row:
-# (ev-ria (ria-analyses nil 0)   #'random-f-align #'random-rank nil)
-# (ev-ria (ria-analyses nil 0)   #'f-align        #'rank        nil)
-# (ev-ria (ria-analyses nil 0)   #'f-align        #'rank        (ding-LPT))
-# 
-# (ev-ria (ria-analyses nil 1)   #'random-f-align #'random-rank nil)
-# (ev-ria (ria-analyses nil 1)   #'f-align        #'rank        nil)
-# (ev-ria (ria-analyses nil 1)   #'f-align        #'rank        (ding-LPT))
-# 
-# (ev-ria (ria-analyses nil 2)   #'random-f-align #'random-rank nil)
-# (ev-ria (ria-analyses nil 2)   #'f-align        #'rank        nil)
-# (ev-ria (ria-analyses nil 2)   #'f-align        #'rank        (ding-LPT))
-# 
-# (ev-ria (ria-analyses nil nil) #'random-f-align #'random-rank nil)
-# (ev-ria (ria-analyses nil nil) #'f-align        #'rank        nil)
-# (ev-ria (ria-analyses nil nil) #'f-align        #'rank        (ding-LPT))
-
-# TODO: berre 52 med 0 unreferenced preds, men 2527 par har ikkje
-# eksplisitt 'Fragment' i analysane -- kva er det me ikkje får med oss
-# her?
-
- Resultatet av samanlikninga står i tabell \ref{tbl:RIA}. Kolonnen
+Resultatet av samanlikninga står i tabell \ref{tbl:RIA}. Kolonnen
  /snitt/ viser summen av kor mange lenkjer som var felles for kvart
  setningspar, mellom =RIA= og dei tri testmetodane (=lfgalign= med og
  utan informasjon i LPT-tabellen, og ein tilfeldig baseline). Ved å
  dele dette talet på kor mange lenkjer =RIA= hadde, får me ein enkel
  samanlikning av dei to testmetodane -- viss forholdet var 100 % ville
- altså alle lenkjene vore like.  Det er tydeleg at overlappet mellom
- =RIA= og =lfgalign= er svært lågt på dette materialet[fn:46], men
- iallfall meir enn dobbelt så stort som ein ville forvente om det
+ altså alle lenkjene vore like, og testmetoden ville ha funne alle
+ lenkjene som =RIA= fann (dekning). Viss forholdet mellom snittet og
+ lenkjene i testmetoden var 100 % ville alle lenkjene i testmetoden ha
+ vore inkludert i =RIA= (presisjon).  Det er tydeleg at overlappet
+ mellom =RIA= og =lfgalign= er svært lågt på dette materialet[fn:46],
+ men iallfall meir enn dobbelt så stort som ein ville forvente om det
  ikkje var nokon likskap. Ved manuelt gjennomsyn ser det ut til at der
  dei har ulike lenkjer, er det =lfgalign= (av og til begge) som tek
  feil. Det som au er slåande er kor negativt ordboka speler inn.
 
- I tillegg har =lfgalign= færrast lenkja \PRED{}-element av alle
+I tillegg har =lfgalign= færrast lenkja \PRED{}-element av alle
  metodane, som kan tyde på litt lågare dekning (trass i at =lfgalign=
  kan føye saman eitt predikat og argument i lenkjinga, noko =RIA= og
- baseline-modellen ikkje gjer). 
+ baseline-modellen ikkje gjer).
 
- Tidlegare nemnte eg at positiv LPT-informasjon kan føre til at
- lenkjer blir fjerna -- dette blir ganske tydeleg her. Når ordboka er
- med, får =lfgalign= berre ein fjerdedel så mange lenkjer som =RIA=.
- Det er kanskje ein del feil blant lenkjene i =RIA=-testsettet; men
- sjølv om halvparten av lenkjene til =RIA= var feil, burde me sjå
- høgare snitt mellom =lfgalign= og =RIA= viss ordboka førte til betre
- lenkjer. Det viser seg allereie med første ord i testsettet kvifor
- dette skjer: ordboka omset engelsk /adoption/ med tysk /Adoption/ (og
- gir ingen andre omsetjingar), medan /adoption/ i denne setninga er
- nytta i ei anna tyding og blir omsett til /Genehmigung/ (som har ti
- andre omsetjingar i Ding, men altså ikkje den me er ute etter).  Det
- er sannsynleg at dei gjenståande lenkjene er av høg presisjon, men ei
- så låg dekning (12 % viss =RIA= har rett, 8 % viss me ser på alle
+Tidlegare nemnte eg at positiv LPT-informasjon kan føre til at lenkjer
+ blir fjerna -- dette blir ganske tydeleg her. Når ordboka er med, får
+ =lfgalign= berre ein fjerdedel så mange lenkjer som =RIA=.  Det er
+ kanskje ein del feil blant lenkjene i =RIA=-testsettet; men sjølv om
+ halvparten av lenkjene til =RIA= var feil, burde me sjå høgare snitt
+ mellom =lfgalign= og =RIA= viss ordboka førte til betre lenkjer. Det
+ viser seg allereie med første ord i testsettet kvifor dette skjer:
+ ordboka omset engelsk /adoption/ med tysk /Adoption/ (og gir ingen
+ andre omsetjingar), medan /adoption/ i denne setninga er nytta i ei
+ anna tyding og blir omsett til /Genehmigung/ (som har ti andre
+ omsetjingar i Ding, men altså ikkje den me er ute etter).  Det er
+ sannsynleg at dei gjenståande lenkjene er av høg presisjon, men ei så
+ låg dekning (12 % viss =RIA= har rett, 8 % viss me ser på alle
  lenkbare predikat) er nok ikkje veldig nyttig. Eg diskuterer ei
  mogleg løysing på dette problemet i del \ref{SEC:opneproblem}.
 
@@ -3642,6 +3636,37 @@ problem.
 
 \bibliographystyle{apacite}
 \bibliography{master}
+\appendix
+* Kode for å køyre =RIA=-evaluering
+
+Kode for å køyre analysane frå tabell \ref{tbl:RIA} igjen. Linjene er
+i same følgje som tabellradene: 
+
+#+BEGIN_SRC lisp
+  (ev-ria (ria-analyses nil 0)   #'random-f-align #'random-rank nil)
+  (ev-ria (ria-analyses nil 0)   #'f-align        #'rank        nil)
+  (ev-ria (ria-analyses nil 0)   #'f-align        #'rank        (ding-LPT))
+  
+  (ev-ria (ria-analyses nil 1)   #'random-f-align #'random-rank nil)
+  (ev-ria (ria-analyses nil 1)   #'f-align        #'rank        nil)
+  (ev-ria (ria-analyses nil 1)   #'f-align        #'rank        (ding-LPT))
+  
+  (ev-ria (ria-analyses nil 2)   #'random-f-align #'random-rank nil)
+  (ev-ria (ria-analyses nil 2)   #'f-align        #'rank        nil)
+  (ev-ria (ria-analyses nil 2)   #'f-align        #'rank        (ding-LPT))
+  
+  (ev-ria (ria-analyses nil 3)   #'random-f-align #'random-rank nil)
+  (ev-ria (ria-analyses nil 3)   #'f-align        #'rank        nil)
+  (ev-ria (ria-analyses nil 3)   #'f-align        #'rank        (ding-LPT))
+  
+  (ev-ria (ria-analyses nil nil) #'random-f-align #'random-rank nil)
+  (ev-ria (ria-analyses nil nil) #'f-align        #'rank        nil)
+  (ev-ria (ria-analyses nil nil) #'f-align        #'rank        (ding-LPT))
+#+END_SRC 
+
+(Dette går litt raskare om ein lagrar =(ding-LPT)= og dei ulike
+resultata av =ria-analyses= i variablar i staden for å hente dei ut
+kvar gong.)
 
 * Footnotes
 
@@ -3907,7 +3932,7 @@ problem.
 [fn:46] Testen utan ordbok blei køyrt på revisjon
         =fd14d902262a9274b42131cf83ade74d51e23863= av =lfgalign=,
         testen med ordbok blei køyrt på revisjon
-        =a92646e4673dc839488fe4f50f739c8d5e45dc2e=.  Sjå funksjonen
+        =3c5e1560eac45e34e3af1db4124a714427b2859e=.  Sjå funksjonen
         =ev-ria=.
 
 [fn:45] Eg gjorde ingen slike avskjeringar for argumentpermutasjonane.
