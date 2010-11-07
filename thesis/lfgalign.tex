@@ -1,4 +1,4 @@
-% Created 2010-11-07 su. 13:09
+% Created 2010-11-07 su. 13:53
 \documentclass[11pt,a4paper,oneside,draft]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -3461,8 +3461,8 @@ Resultatet av samanlikninga står i tabell \ref{tbl:RIA}. Kolonnen
  mellom \texttt{RIA} og \texttt{lfgalign} er svært lågt på dette materialet\footnote{Testen utan ordbok blei køyrt på revisjon
         \texttt{fd14d902262a9274b42131cf83ade74d51e23863} av \texttt{lfgalign},
         testen med ordbok blei køyrt på revisjon
-        \texttt{3c5e1560eac45e34e3af1db4124a714427b2859e}.  Sjå funksjonen
-        \texttt{ev-ria}. },
+        \texttt{796824e8f1a0bd643caf9d3928fe0f979a360790}.  Sjå tillegg
+        \ref{SEC:ria-kode}. },
  men iallfall meir enn dobbelt så stort som ein ville forvente om det
  ikkje var nokon likskap. Ved manuelt gjennomsyn ser det ut til at der
  dei har ulike lenkjer, er det \texttt{lfgalign} (av og til begge) som tek
@@ -3718,9 +3718,27 @@ problem.
 \chapter{Kode for å køyre \texttt{RIA}-evaluering}
 \label{sec-7}
 
+\label{SEC:ria-kode}
 
-Kode for å køyre analysane frå tabell \ref{tbl:RIA} igjen. Linjene er
-i same følgje som tabellradene: 
+Her står koden for å køyre analysane frå tabell \ref{tbl:RIA}. Først
+ må du hente ut Ding-ordboka og ekstrahere testsettet. Viss du har
+ installert Ding-ordboka til \texttt{/usr/share/dict/de-en.txt} og har lasta
+ ned og ekstrahert \texttt{RIA} til \texttt{/home/brukarnamn/ria\_12\_06\_09}, kan du
+ klargjere ordboka og testsettet med
+
+
+\begin{verbatim}
+$ ./prepare-ria.sh /usr/share/dict/de-en.txt /home/brukarnamn/ria_12_06_09
+\end{verbatim}
+
+
+
+Eventuelt kan du opne fila \texttt{prepare-ria.sh} og køyre kvar kommando
+ linje for linje.
+
+For å køyre testane som gav tabell \ref{tbl:RIA} kan du laste inn
+ \texttt{lfgalign} i Lisp-tolken din og køyre følgjande kommandoar;
+ kommandoane står her i same følgje som tabellradene:
 
 
 \begin{verbatim}
@@ -3748,8 +3766,33 @@ i same følgje som tabellradene:
 
 
 (Dette går litt raskare om ein lagrar \texttt{(ding-LPT)} og dei ulike
-resultata av \texttt{ria-analyses} i variablar i staden for å hente dei ut
-kvar gong.)
+ resultata av \texttt{ria-analyses} i variablar i staden for å hente dei ut
+ på nytt kvar gong.)
+
+For kvart kall på \texttt{ev-ria} får du (etter nokre blinkenlights) ei
+ oppsummering av samanlikninga, t.d.\footnote{Dette er frå kallet \texttt{(ev-ria (ria-analyses         100 1) \#'f-align \#'rank (ding-lpt))}; kor 100 og 1 vil seie
+        «berre dei 100 første analysane, med maksimalt 1 yttarste
+        \PRED{} (utanom 0)». }
+
+
+\begin{verbatim}
+Intersections: 12
+Unions: 70
+links made by #<FUNCTION F-ALIGN>: 20
+links in RIA: 62
+Linkable source PRED's: 77
+Link possibilities (linkable srcs * linkable trgs): 605
+Unreferenced sources: 18
+Unreferenced targets: 17
+\end{verbatim}
+
+
+
+kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
+ union, lenkjer, \texttt{RIA}-lenkjer}; \texttt{Linkable source PRED's} er
+ kor mange \PRED{}-element på kjeldesida som kunne vore lenkja,
+ \texttt{Unreferenced sources/targets} er kor mange «yttarste \PRED{}» me
+ fann.
 
 
 

@@ -3638,9 +3638,24 @@ problem.
 \bibliography{master}
 \appendix
 * Kode for å køyre =RIA=-evaluering
+\label{SEC:ria-kode}
 
-Kode for å køyre analysane frå tabell \ref{tbl:RIA} igjen. Linjene er
-i same følgje som tabellradene: 
+Her står koden for å køyre analysane frå tabell \ref{tbl:RIA}. Først
+ må du hente ut Ding-ordboka og ekstrahere testsettet. Viss du har
+ installert Ding-ordboka til =/usr/share/dict/de-en.txt= og har lasta
+ ned og ekstrahert =RIA= til =/home/brukarnamn/ria_12_06_09=, kan du
+ klargjere ordboka og testsettet med
+
+#+BEGIN_SRC sh
+$ ./prepare-ria.sh /usr/share/dict/de-en.txt /home/brukarnamn/ria_12_06_09
+#+END_SRC
+
+Eventuelt kan du opne fila =prepare-ria.sh= og køyre kvar kommando
+ linje for linje.
+
+For å køyre testane som gav tabell \ref{tbl:RIA} kan du laste inn
+ =lfgalign= i Lisp-tolken din og køyre følgjande kommandoar;
+ kommandoane står her i same følgje som tabellradene:
 
 #+BEGIN_SRC lisp
   (ev-ria (ria-analyses nil 0)   #'random-f-align #'random-rank nil)
@@ -3665,8 +3680,28 @@ i same følgje som tabellradene:
 #+END_SRC 
 
 (Dette går litt raskare om ein lagrar =(ding-LPT)= og dei ulike
-resultata av =ria-analyses= i variablar i staden for å hente dei ut
-kvar gong.)
+ resultata av =ria-analyses= i variablar i staden for å hente dei ut
+ på nytt kvar gong.)
+
+For kvart kall på =ev-ria= får du (etter nokre blinkenlights) ei
+ oppsummering av samanlikninga, t.d.[fn:55]
+
+#+BEGIN_SRC lisp
+Intersections: 12
+Unions: 70
+links made by #<FUNCTION F-ALIGN>: 20
+links in RIA: 62
+Linkable source PRED's: 77
+Link possibilities (linkable srcs * linkable trgs): 605
+Unreferenced sources: 18
+Unreferenced targets: 17
+#+END_SRC
+
+kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
+ union, lenkjer, \texttt{RIA}-lenkjer}; =Linkable source PRED's= er
+ kor mange \PRED{}-element på kjeldesida som kunne vore lenkja,
+ =Unreferenced sources/targets= er kor mange «yttarste \PRED{}» me
+ fann.
 
 * Footnotes
 
@@ -3932,8 +3967,8 @@ kvar gong.)
 [fn:46] Testen utan ordbok blei køyrt på revisjon
         =fd14d902262a9274b42131cf83ade74d51e23863= av =lfgalign=,
         testen med ordbok blei køyrt på revisjon
-        =3c5e1560eac45e34e3af1db4124a714427b2859e=.  Sjå funksjonen
-        =ev-ria=.
+        =796824e8f1a0bd643caf9d3928fe0f979a360790=.  Sjå tillegg
+        \ref{SEC:ria-kode}.
 
 [fn:45] Eg gjorde ingen slike avskjeringar for argumentpermutasjonane.
 
@@ -3988,5 +4023,9 @@ kvar gong.)
         par av token (men 190 284 av desse har mellomrom i seg, og
         fungerer sannsynlegvis ikkje som LPT-omsetjingar).
 
+[fn:55] Dette er frå kallet =(ev-ria (ria-analyses
+        100 1) #'f-align #'rank (ding-lpt))=; kor 100 og 1 vil seie
+        «berre dei 100 første analysane, med maksimalt 1 yttarste
+        \PRED{} (utanom 0)».
 
 
