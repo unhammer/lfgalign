@@ -3286,8 +3286,9 @@ Eg samanliknar her f-strukturlenkjene ein får ved å køyre =lfgalign=
  =RIA=-metoden[fn:44] i \citet{graham2009osr,graham2009fts}. Eg prøvde
  både utan nokon informasjon i LPT-tabellen, og med ein ganske stor
  LPT-tabell med alle oppslaga frå Ding-ordboka[fn:54]. I tillegg
- prøvde eg med delmengder av testsettet kor eg filtrerte ut analysar
- med mange «yttarste f-strukturar».
+ køyrte eg testane med delmengder av testsettet kor eg filtrerte ut
+ analysar med mange «yttarste f-strukturar», for å sjå kva slags
+ innverknad dei hadde på resultatet.
 
 Samanlikninga skjer ved å, for kvar setning i korpuset, telje opp kor
  mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som
@@ -3348,83 +3349,139 @@ Desse tala seier sjølvsagt ingenting om kva for lenkjer som er
 | \texttt{lfgalign} m/ordbok |      $\infty$ |  3382 | 31970 |    7375 |                28019 | 45,86 %       | 12,07 %              |
 #+TBLFM: $7='(replace-regexp-in-string "[.]" "," (format "%.2f %%" (* 100 (/ $3 (* 1.0 $5)))));N::$8='(replace-regexp-in-string "[.]" "," (format "%.2f %%" (* 100 (/ $3 (* 1.0 $6)))));N
 
-Resultatet av samanlikninga står i tabell \ref{tbl:RIA}. Kolonnen
- /snitt/ viser summen av kor mange lenkjer som var felles for kvart
- setningspar, mellom =RIA= og dei tri testmetodane (=lfgalign= med og
- utan informasjon i LPT-tabellen, og ein tilfeldig baseline). Ved å
- dele dette talet på kor mange lenkjer =RIA= hadde, får me ein enkel
- samanlikning av dei to testmetodane -- viss forholdet var 100 % ville
- altså alle lenkjene vore like, og testmetoden ville ha funne alle
- lenkjene som =RIA= fann (dekning). Viss forholdet mellom snittet og
- lenkjene i testmetoden var 100 % ville alle lenkjene i testmetoden ha
- vore inkludert i =RIA= (presisjon).  Det er tydeleg at overlappet
- mellom =RIA= og =lfgalign= er svært lågt på dette materialet[fn:46],
- men iallfall meir enn dobbelt så stort som ein ville forvente om det
- ikkje var nokon likskap. Ved manuelt gjennomsyn ser det ut til at der
- dei har ulike lenkjer, er det =lfgalign= (av og til begge) som tek
- feil. Det som au er slåande er kor negativt ordboka speler inn.
+Tabell \ref{tbl:RIA} viser resultatet av
+ samanlikninga[fn:46]. Kolonnen /snitt/ viser summen av kor mange
+ lenkjer som var felles for kvart setningspar, mellom =RIA= og dei tri
+ testmetodane (=lfgalign= med og utan informasjon i LPT-tabellen, og
+ ein tilfeldig baseline). Ved å dele dette talet på kor mange lenkjer
+ =RIA= hadde, får me ein enkel samanlikning av dei to testmetodane --
+ viss forholdet var 100 % ville altså alle lenkjene vore like, og
+ testmetoden ville ha funne alle lenkjene som =RIA= fann
+ (dekning). Viss forholdet mellom snittet og lenkjene i testmetoden
+ var 100 % ville alle lenkjene i testmetoden ha vore inkludert i =RIA=
+ (presisjon). Samanlikninga er køyrt med ulike delmengder av
+ testsettet; i dei tri første radene har eg fjerna alle setningar som
+ hadde meir enn ein yttarste \PRED{} utanom rot-f-strukturen (som
+ alltid har indeks =0= i dette formatet); i dei neste har eg i tillegg
+ med dei som hadde maksimalt ein annan yttarste \PRED{},
+ osb. (kolonnen /maks. yttarst/).
 
-I tillegg har =lfgalign= færrast lenkja \PRED{}-element av alle
- metodane, som kan tyde på litt lågare dekning (trass i at =lfgalign=
- kan føye saman eitt predikat og argument i lenkjinga, noko =RIA= og
- baseline-modellen ikkje gjer).
+Det er tydeleg at overlappet mellom =RIA= og =lfgalign= er ganske lågt
+ på dette materialet, men det er iallfall meir enn dobbelt så stort
+ som ein ville forvente om det ikkje var nokon likskap. Ved manuelt
+ gjennomsyn ser det ut til at der dei har ulike lenkjer, er det
+ =lfgalign= (av og til begge) som tek feil.
+
+Det som au er slåande er kor negativt ordboka speler inn på dekninga.
+ Det er =lfgalign= som har færrast lenkja \PRED{}-element av alle
+ metodane der me har med det fulle testsettet (dekninga er spesielt
+ låg der ordboka er med). Viss me derimot har fjerna analysar som har
+ fleire «yttarste \PRED{}», har =lfgalign= (utan ordbok) faktisk
+ fleire enn =RIA= (=lfgalign= kan føye saman eitt predikat og argument
+ i lenkjinga, noko =RIA= og baseline-modellen ikkje gjer, men det ser
+ ikkje ut til at dette speler så veldig sterkt inn på kor mange
+ lenkjer me får).
 
 Tidlegare nemnte eg at positiv LPT-informasjon kan føre til at lenkjer
  blir fjerna -- dette blir ganske tydeleg her. Når ordboka er med, får
- =lfgalign= berre ein fjerdedel så mange lenkjer som =RIA=.  Det er
- kanskje ein del feil blant lenkjene i =RIA=-testsettet; men sjølv om
- halvparten av lenkjene til =RIA= var feil, burde me sjå høgare snitt
- mellom =lfgalign= og =RIA= viss ordboka førte til betre lenkjer. Det
- viser seg allereie med første ord i testsettet kvifor dette skjer:
- ordboka omset engelsk /adoption/ med tysk /Adoption/ (og gir ingen
- andre omsetjingar), medan /adoption/ i denne setninga er nytta i ei
- anna tyding og blir omsett til /Genehmigung/ (som har ti andre
- omsetjingar i Ding, men altså ikkje den me er ute etter).  Det er
- sannsynleg at dei gjenståande lenkjene er av høg presisjon, men ei så
- låg dekning (12 % viss =RIA= har rett, 8 % viss me ser på alle
- lenkbare predikat) er nok ikkje veldig nyttig. Eg diskuterer ei
- mogleg løysing på dette problemet i del \ref{SEC:opneproblem}.
+ =lfgalign=, relativt konsekvent, berre ein fjerdedel så mange lenkjer
+ som =RIA=.  Det er kanskje ein del feil blant lenkjene i
+ =RIA=-testsettet; men sjølv om halvparten av lenkjene til =RIA= var
+ feil, burde me sjå høgare snitt mellom =lfgalign= og =RIA= viss
+ ordboka førte til betre lenkjer. Det viser seg allereie med første
+ ord i testsettet kvifor dette skjer: ordboka omset engelsk /adoption/
+ med tysk /Adoption/ (og gir ingen andre omsetjingar), medan
+ /adoption/ i denne setninga er nytta i ei anna tyding og blir omsett
+ til /Genehmigung/ (som har ti andre omsetjingar i Ding, men altså
+ ikkje den me er ute etter).  Det er sannsynleg at dei gjenståande
+ lenkjene er av høg presisjon, men med ei så låg dekning (12 % viss
+ =RIA= har rett, 8 % viss me ser på alle lenkbare predikat) er nok
+ ikkje samanstillinga veldig nyttig. Eg diskuterer ei mogleg løysing
+ på dette problemet i del \ref{SEC:opneproblem}.
 
- Ved nærare ettersyn viser det seg at dette korpuset har svært mange
- «yttarste f-strukturar» (gjerne over ti i kvar setning, i snitt fire
- per setning; gjennomsnittleg setningslengd i materialet er 9,8
- ord). Implementasjonen min reknar ein f-struktur for å vere ein av
- desse yttarste om han ikkje er referert til som argument/adjunkt av
- andre f-strukturar; dette kan vere fordi analysane er fragmentariske,
- eller analysane rett og slett ikkje har ein sti til desse
- \PRED{}-elementa som går via argument/adjunkt. Det siste gjeld t.d.
- \POSS{}- og \SPEC{}-element, som nemnt over.  Yttarste f-strukturar
- blir handsama som om dei er på same nivå i f-strukturen -- viss det
- eigentleg finst ein intern struktur mellom desse blir det
- ignorert. Det vil altså seie at for store delar av analysane får
- =lfgalign= ingenting ut av f-strukturen.  Sidan programmet er meint
- for trebankbygging med høg presisjon treng det ikkje vere negativt at
- dekninga er /litt/ lågare; i tillegg vil me kanskje forvente meir
- «komplette» analysar enn dei som finst i dette testsettet. Likevel
- bør det vere mogleg å gjere noko for å betre på yteevna når analysane
- er fragmentariske; eg kjem tilbake til dette nedanfor.
+Dette testsettet har svært mange «yttarste f-strukturar» (gjerne over
+ ti i kvar setning, i snitt fire per setning, medan gjennomsnittleg
+ setningslengd i materialet er 9,8 ord). Implementasjonen min reknar
+ ein f-struktur for å vere ein av desse yttarste om han ikkje er
+ referert til som argument/adjunkt av andre f-strukturar; dette kan
+ vere fordi analysane er fragmentariske, eller analysane rett og slett
+ ikkje har ein sti til desse \PRED{}-elementa som går via
+ argument/adjunkt. Det siste gjeld t.d.  \POSS{}- og \SPEC{}-element,
+ som nemnt over, t.d. kvantorar, possessivar og artiklar. Det ser ut
+ til at 1473 av 4000 setningspar har fragmentariske analysar på den
+ eine sida; men 3948 av 4000 har meir enn eitt yttarste \PRED{}
+ (dvs. at det berre er 52 setningspar i dei første tri radene i tabell
+ \ref{tbl:RIA}). Hovudgrunnen til at setningar i dette testsettet har
+ fleire yttarste \PRED{}-element er altså at slike \POSS{}- og
+ \SPEC{}-element, eller liknande, ikkje er mogleg å finne gjennom
+ argument eller adjunkt frå rot-f-strukturen.
 
- Eit anna problem som blir tydeleg med denne evalueringa er at lange
- lister med argument/adjunkt raskt blir komputasjonelt vanskeleg. For
+Yttarste f-strukturar blir handsama som om dei er på same nivå i
+ f-strukturen -- viss det eigentleg finst ein intern struktur mellom
+ desse blir det ignorert. Det vil seie at for store delar av analysane
+ får =lfgalign= ingenting ut av f-strukturen.  Sidan programmet er
+ meint for trebankbygging med høg presisjon treng det ikkje vere
+ negativt at dekninga er /litt/ lågare, men når det gjeld \SPEC{}- og
+ \POSS{}-element bør det ikkje vere alt for vanskeleg å utvikle litt
+ meir nyanserte lenkjingskriterium som au kan handtere desse. 
+
+Ein annan tydeleg, men kanskje ikkje overraskande, trend i tabellen er
+ at «presisjonen» til =lfgalign= med og utan ordbok nestan er heilt
+ lik der me ikkje har med fleire yttarste \PRED{} (kor dei resterande
+ f-strukturane altså er svært informative), 52 % utan og 56 % med
+ ordbok. Men med ei gong me legg til «flate» f-strukturar, får me
+ store forskjellar mellom dei to metodane i presisjonskolonnen -- 30 %
+ utan og 46 % med ordbok. Jo mindre struktur analysane gir oss (eller,
+ jo mindre me er i stand til å hente ut), jo meir avhengig er me av
+ bottom-up-informasjon.
+
+I Xpar-prosjektet vil me nok forvente meir «komplette» analysar enn
+ dei som finst i dette testsettet, som altså hadde svært mange
+ fragment (og i tillegg til automatisk disambiguering). Likevel bør
+ det vere mogleg å gjere noko for å betre på yteevna når analysane er
+ fragmentariske; eg kjem tilbake til dette nedanfor.
+
+Eit problem som blir tydeleg med denne evalueringa er at lange lister
+ med argument/adjunkt raskt blir komputasjonelt vanskeleg. For
  «vanlege» lister med argument/adjunkt (t.d. to argument og tri-fire
  adjunkt), er det ikkje merkbart at alle moglege kombinasjonar av
  argument/adjunkt blir prøvd lenkja; men når det er snakk om ti
- «adjunkt» (her: yttarste f-strukturar) på kvar side tek det
- =adjalign= ca. 46 sekund (på ein vanleg datamaskin med 2,1 GHz, 3GB
- RAM) å finne alle moglege lenkjekombinasjonar. For å i det heile teke
- komme meg gjennom testsettet måtte eg setje ei grense på =lfgalign= i
- denne evalueringa slik at me berre vel første lenkjekombinasjonen
- viss adjunktlistene har over åtte medlem[fn:45]. Med så flate
- strukturar og ingen LPT-informasjon er det nok usannsynleg å ende opp
- med rett kombinasjon uansett. Med denne «avskjeringa» på plass tok
- heile testsettet på 4000 setningspar rett under tri timar å
- samanstille når eg ikkje hadde nokon informasjon i LPT-tabellen med
- (med ordboka tok det under eitt minutt, her blir altså /svært mange/
- løysingar avskjert). Det kan hende at lenkjeoverlappet hadde vore
- litt høgare med eit fullstendig søk, men avskjeringa skjer berre på
+ «adjunkt» (her: yttarste f-strukturar) på kvar side, og ingen
+ LPT-tabell, tek det =adjalign= ca. 46 sekund (på ein vanleg
+ datamaskin med 2,1 GHz, 3GB RAM) å finne alle moglege
+ lenkjekombinasjonar. For å i det heile teke komme meg gjennom
+ testsettet måtte eg setje ei grense på =lfgalign= i denne evalueringa
+ slik at me berre vel første lenkjekombinasjonen viss adjunktlistene
+ har over åtte medlem[fn:45]. Med så flate strukturar og ingen
+ LPT-informasjon er det nok usannsynleg å ende opp med rett
+ kombinasjon uansett. Med denne «avskjeringa» på plass tok heile
+ testsettet på 4000 setningspar rett under tri timar å samanstille når
+ eg ikkje hadde nokon informasjon i LPT-tabellen med (med ordboka tok
+ det under eitt minutt, her blir altså /svært mange/ løysingar
+ avskjert; me får sjølvsagt au raskare samanstilling med færre
+ yttarste \PRED{}). Det kan hende at lenkjeoverlappet hadde vore litt
+ høgare med eit fullstendig søk, men avskjeringa skjer berre på
  omtrent kvart tiande setningspar, så den endelege verknaden på
- resultata i tabell \ref{tbl:RIA} er nok ikkje stor.
+ resultata i tabell \ref{tbl:RIA} (dei siste tri radene) er nok ikkje
+ stor.
 
+Om ein skal konkludere noko frå denne samanlikninga må det vere at
+1. Fragmentariske f-strukturar gir dårleg samanstilling (garbage in,
+   garbage out)
+2. Det finst fleire \PRED{}-element i f-strukturane som me ikkje finn
+   via argumentlister/adjunktmengder, men som me burde kunne lenkje
+   (krava frå kapittel \ref{SEC:ideell} må utvidast for å handtere
+   desse)
+3. Me kan ikkje stole på at ei ordbok har alle dei moglege
+   omsetjingane av eit ord -- implementasjonen av LPT-kravet må
+   bli litt meir nyansert
+4. Jo mindre top-down-informasjon f-strukturane gir, jo viktigare er
+   bottom-up-informasjonen i LPT-tabellen
+
+# TODO: vel, punkt 1 og punkt 2 er jo ikkje skilt i materialet... men
+# det var jo tydeleg frå eyeballing at det skjedde. Hmm.
+
+Nedanfor ser eg på moglege måtar å betre på systemet.
 
 *** Men korleis gjenfinne there is/es gibt?			     :ROTETE:
 (og kva skal me med det, viss ikkje me driv med statistisk
