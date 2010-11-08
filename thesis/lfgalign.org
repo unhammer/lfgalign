@@ -3754,21 +3754,22 @@ På den andre sida, viss situasjonen i \Last ikkje dukkar opp i
  nok». Til no har eg ikkje sett slike situasjonar, men det er altså
  logisk mogleg at dei kan dukke opp.
 
-** Bruksområde
+** SKRIV Bruksområde
 \fxnote[inline,nomargin]{dette blei tynt; flytte til oppsummering kanskje?}
 *** Oppdage argumentstrukturalternasjon
- I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
+I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
  f-strukturar og LPT-korrespondanse ikkje alltid har nok informasjon
  til å kunne handtere ulik følgje i argumentstruktur. Programmet mitt
  vil her gi begge løysingar, ei rangering basert på lik argumentfølgje
  vil gi feil løysing på topp.
 
- Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
- objekt til å lære slike argumentstrukturalternasjonar.  Om me
+Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
+ objekt til å lære slike argumentstrukturalternasjonar. Om me
  observerer /sie gefällt mir/jeg liker henne/ vil me jo ha
  f-strukturinformasjon som kan nyttast til å informere
- argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.), om det
+ argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.); om det
  var substantiv der ville LPT-korrespondanse kunne informere dette.
+*** Kontrollere kor parallelle grammatikkane eigentleg er
 ** Oppsummering
  - Sidan avbildinga frå c-strukturnodar til f-struktur er
    mange-til-ein, kan me t.d. innanfor eitt tre ha fleire N-gram per
