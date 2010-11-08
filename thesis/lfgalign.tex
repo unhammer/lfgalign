@@ -1,4 +1,4 @@
-% Created 2010-11-07 su. 18:49
+% Created 2010-11-08 må. 11:55
 \documentclass[11pt,a4paper,oneside,draft]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -60,7 +60,7 @@
 
 \title{Syntaktisk informert frasesamanstilling }
 \author{Kevin Brubeck Unhammer}
-\date{07/11, 2010}
+\date{08/11, 2010}
 
 \begin{document}
 
@@ -88,6 +88,7 @@ This thesis describes the development of an automatic phrase alignment
 \end{abstract}
 
 
+\listoffixmes
 
 \chapter{Innleiing}
 \label{sec-1}
@@ -2003,55 +2004,76 @@ definert i form av f-strukturlenkjer på preterminale nodar.
 \label{SEC:fnord}
 
 Ikkje alle ord tilsvarer \PRED{}-element i f-strukturen, dette gjeld
-typisk funksjonsord (t.d. \emph{som}, \emph{at}). \fxnote[inline,nomargin]{...og
-desse vil me lenkje kvifor? i kva situasjonar? TODO diskuter.}
-Ved endosentrisitetsprinsippa
-til \citet{bresnan2001lfs} er komplementet til funksjonelle kategoriar
-(C, I, P) ein funksjonell ko-kjerne, det er altså komplementet som gir
-\PRED{}-elementet i dette funksjonelle domenet.
+ typisk funksjonsord (t.d. \emph{som}, \emph{at}). Ved endosentrisitetsprinsippa
+ til \citet{bresnan2001lfs} er komplementet til funksjonelle
+ kategoriar (C, I, P) ein funksjonell ko-kjerne, det er altså
+ komplementet som gir \PRED{}-elementet i dette funksjonelle domenet.
 
 Problemet med å nytte krava nemnt over i dette tilfellet er at nodar
-over funksjonsord er i det same funksjonelle domenet som komplementet,
-og nodane over funksjonsorda tilføyer ikkje ei ny \PRED{}-lenkje som kan
-dele opp treet slik me gjorde tidlegare. Så me må utvide prinsippa for
-å dele opp c-strukturtreet i buntar som dominerer same mengd med
-lenkjer.
+ over funksjonsord er i det same funksjonelle domenet som
+ komplementet, og nodane over funksjonsorda tilføyer ikkje ei ny
+ \PRED{}-lenkje som kan dele opp treet slik me gjorde tidlegare. Så
+ viss me vil lenkje desse nodane må me utvide prinsippa for å dele opp
+ c-strukturtreet i buntar som dominerer same mengd med lenkjer.
 
-Ord som ikkje projiserer \PRED{}-lenkjer kan likevel ha
-LPT-korrespondanse og bestå krava på ordnivå, men når me skal lenkje
-desse på c-strukturnivå må me sjekke ordkrava direkte (me kan ikkje gå
-via nokon f-strukturlenkjing). LPT-kravet gir oss eit utgangspunkt for
-lenkjing.
+Ord som ikkje projiserer \PRED{}-lenkjer kan likevel tenkjast å ha
+ LPT-korrespondanse og bestå krava på ordnivå, men når me skal lenkje
+ desse på c-strukturnivå må me då sjekke ordkrava direkte (me kan
+ ikkje gå via nokon f-strukturlenkjing), så LPT-kravet gir oss eit
+ utgangspunkt for lenkjing. Men dette avheng av korleis ein definerer
+ LPT. Skal ein berre ta med semantisk tunge ord, eller bør
+ funksjonsord au vere representert ved konseptet? Det kan
+ argumenterast for at me ikkje bør la konseptet \emph{LPT-korrespondanse}
+ dekkje funksjonsord, sidan det ofte (oftare enn med innhaldsord) er
+ vanskeleg å seie på førehand kva ord desse kan omsetjast til; viss me
+ trur me har avgrensa ei mengd med omsetjingar for eit funksjonsord,
+ men så finn det omsett til eit nytt funksjonsord -- kor dei semantisk
+ tunge komplementa bør lenkjast, og konteksten er lik -- så bør nok
+ det heller vere evidens for at desse to funksjonsorda au er moglege
+ omsetjingar \citep{dyvik2010pc}.  I såfall har me ikkje fleire
+ lenkjingskrav for funksjonelle nodar, og ser på dei preterminale
+ funksjonelle nodane som om dei ikkje dominerte noko; eller: $L_c$
+ (evt. $LL$) av desse nodane er tomt.
 
-Viss begge språk har funksjonsord, men funksjonsord som ikkje kan
-sjåast på som moglege omsetjingar (t.d. \emph{fordi} og \emph{whether}), bør me
-nok ikkje ein gong lenkje komplementa, sidan funksjonsorda då gjer at
-komplementa speler ulike roller i omgivnadene\footnote{Skal ein lenkje ordet \emph{som} (utan \PRED{}) med ordet \emph{which} (med
+Men, det kan sjølvsagt hende at ein ønskjer å setje eit LPT-krav på
+ ord som ikkje projiserer noko \PRED{}-element, der ein er svært
+ sikker på dei moglege omsetjingane (t.d. der ei viss ikkje-omsetjing
+ av eit funksjonsord kan føre til logisk motsett tyding). Sidan det er
+ mogleg å ønskje seg slike krav, gir eg her eit forslag til korleis
+ det kan formaliserast.
+
+Viss me har to funksjonelle konstituentar kor komplementa kan lenkjast
+ på f-strukturnivå, men funksjonsorda ikkje kan sjåast på som moglege
+ omsetjingar (t.d. \emph{fordi} og \emph{whether}), kan det hende ein ikkje ein
+ gong vil lenkje komplementa. Ein kan sjå på dette som at
+ funksjonsorda gjer at komplementa speler ulike roller i
+ omgivnadene\footnote{Skal ein lenkje ordet \emph{som} (utan \PRED{}) med ordet \emph{which} (med
         \PRED{})? Viss krava elles er oppfylt, kan det kanskje vere
         informativt med ein type «defekt» lenkje, sjølv om berre det
         eine ordet blir rekna for å vere eit innhaldsord. Frasane til
         deira funksjonelle domene vil uansett kunne lenkjast viss dei andre
-        krava er oppfylte. }. Samtidig vil me
-ikkje at eit manglande funksjonsord på det eine språket skal hindre
-lenkjing av komplementa, sidan det kan hende at funksjonsordet ikkje
-er krevd på det språket (eventuelt kjem dette fram som korrespondansar
-i f-strukturtrekk, eg har ikkje teke høgd for korrespondansar mellom
-andre f-strukturelement enn \PRED{} i denne oppgåva).
+        krava er oppfylte. }. Samtidig vil me nok ikkje at eit manglande
+ funksjonsord på det eine språket skal hindre lenkjing av komplementa,
+ sidan det kan hende at funksjonsordet ikkje er krevd på det språket
+ (eventuelt kjem dette fram som korrespondansar i f-strukturtrekk, eg
+ har ikkje teke høgd for korrespondansar mellom andre
+ f-strukturelement enn \PRED{} i denne oppgåva).
 
 Me kan krevje at komplementa er lenkja for å sikre at me ikkje lenkjer
-nodar som står i ulike konstekstar (me vil ikkje lenkje \emph{at} i «han
-såg at det gjekk bra» med \emph{that} i «he saw that she drew a picture»),
-jamfør kravet om lenkja argument for lenkja predikat i del
-\ref{SEC:lik-argstr}.
+ nodar som står i ulike konstekstar (me vil ikkje lenkje \emph{at} i «han
+ såg at det gjekk bra» med \emph{that} i «he saw that she drew a picture»),
+ jamfør kravet om lenkja argument for lenkja predikat i del
+ \ref{SEC:lik-argstr}.
 
 Desse ønskene kan me formalisere slik:
 
-\ex. \label{fnordkrav} Krav for lenkjing av funksjonelle kategoriar i c-strukturen:
+\ex. \label{fnordkrav} Krav for lenkjing av funksjonelle kategoriar i
+    c-strukturen, viss funksjonsord er dekkja av LPT-krav:
 \a. Gitt ei mogleg lenkjing av FP og GP, kor F og G er funksjonelle
     kategoriar der komplementa elles kan lenkjast,
     tolk LPT-korrespondansen mellom orda under F' og G' som eit
     medlem av lenkjemengda $L_c$ (evt. $LL$), kor denne må vere lik
-    for at FP og GP skal kunne lenkjast, då kan me au lenkje F' og G'.
+    for at FP og GP skal kunne lenkjast. Då kan me au lenkje F' og G'.
 \b. Gitt ei mogleg lenkjing av FP og XP, der F er ein funksjonell
     kategori, medan X er ein ikkje-funksjonell kategori, ignorerer me
     den funksjonelle kategorien i c-strukturlenkjinga. Sidan det ikkje
@@ -2059,17 +2081,19 @@ Desse ønskene kan me formalisere slik:
     av nodemengden som blir lenkja til XP.
 
 Om \Last[a] er oppfylt, kan me få samanstillinga vist i figur
-\ref{fig:fnord}. Her vil dei funksjonelle domena til CP og CP
-kvar kunne delast opp i to delar, kor den funksjonelle delen har
-LPT-korrespondanse medan komplementa er lenkja på
-f-strukturnivå. Lenkjemengdene under CP-nodane er like, og dei under
-C-nodane er like.
+ \ref{fig:fnord}. Her vil dei funksjonelle domena til CP og CP kvar
+ kunne delast opp i to delar, kor den funksjonelle delen har
+ LPT-korrespondanse medan komplementa er lenkja på
+ f-strukturnivå. Lenkjemengdene under CP-nodane er like, og dei under
+ C-nodane er like. Merk at me får same samanstilling om me ikkje har
+ noko LPT-krav på ord utan \PRED{}-element -- utanom at dei
+ preterminale C-nodane då står ulenkja.
 
 (Alle nodane under S vist i dei to trea er i same funksjonelle domene,
-så om dei funksjonelle domena er lenkja, vil krav
-\ref{krav:subnode-f-lenkja} vere oppfylt kva gjeld CP-komplementa --
-lenkjinga går ikkje ut over dei funksjonelle domena, medan
-krav \ref{krav:c-pro} er dekkja for S-nodane med unntaket over.)
+ så om dei funksjonelle domena er lenkja, vil krav
+ \ref{krav:subnode-f-lenkja} vere oppfylt kva gjeld CP-komplementa --
+ lenkjinga går ikkje ut over dei funksjonelle domena, medan krav
+ \ref{krav:c-pro} er dekkja for S-nodane med unntaket over.)
 
   \begin{figure}[htp]
    \centering
@@ -2100,15 +2124,15 @@ krav \ref{krav:c-pro} er dekkja for S-nodane med unntaket over.)
   \end{figure}
 
 Der det eine språket har eit funksjonsord og det andre språket ikkje
-krever det, bryr me oss ikkje om funksjonsordet. For å sjekke noko
-slikt må me som nemnt sjå på andre trekk enn \PRED{} i f-strukturane,
-noko som blir utanfor denne oppgåva; men om me hadde sjekka slike
-f-strukturkorrespondansar kunne me unngått kravet om
-LPT-korrespondanse og i staden nytta informasjon frå f-strukturane til
-lenkjing av funksjonelle kategoriar. Utan å ha slike mekanismar på
-plass blir f-strukturlenkjinga avhengig av c-strukturforhold, og i
-implementasjonen min har eg difor lagt mindre vekt lenkjing av
-funksjonelle kategoriar.
+ krever det, bryr me oss ikkje om funksjonsordet. For å sjekke noko
+ slikt må me som nemnt sjå på andre trekk enn \PRED{} i f-strukturane,
+ noko som blir utanfor denne oppgåva; men om me hadde sjekka slike
+ f-strukturkorrespondansar kunne me unngått kravet om
+ LPT-korrespondanse og i staden nytta informasjon frå f-strukturane
+ til lenkjing av funksjonelle kategoriar. Utan å ha slike mekanismar
+ på plass blir f-strukturlenkjinga avhengig av c-strukturforhold, og i
+ implementasjonen min har eg difor valt å ikkje lenkje ord som ikkje
+ projiserer \PRED{}-element.
 
 \section{Rangering}
 \label{sec-3.8}
@@ -2574,16 +2598,25 @@ måte.
 \subsection{Når f-strukturlenkjene ikkje er ein-til-ein}
 \label{sec-4.1.2}
 
- Som nemnt i del \ref{SEC:adposisjonsobjekt} hoppar me over
+Som nemnt i del \ref{SEC:adposisjonsobjekt} hoppar me over
  adposisjonar som plukkar ut adjunkt/argument, dette skjer t.d. i
  \texttt{adjalign} ved at funksjonen som henter ut f-strukturen til
  adjunkt-døtre av ein f-struktur hoppar over adposisjonar.
 
- Der det er umogleg å finne ein kombinasjon av argument- og
+Der det er umogleg å finne ein kombinasjon av argument- og
  adjunkt-lenkjer slik at alle argument har LPT-korrespondanse med ein
  unik f-struktur, dvs. der \texttt{argalign} feilar, prøver me
- ein-mange/mange-ein-lenkjer. Dette er ikkje verre enn at ein kallar
- \texttt{argalign-p} med unionen av argument frå dei to samanføyde
+ ein-mange/mange-ein-lenkjer\footnote{For no berre ein-to/to-ein-lenkjer, der det eine av dei to er
+        eit predikat og det andre er eit argument av det
+        predikatet. Ein annan type ein-to/to-ein-samanføying er to
+        argument av same predikat, men dette vil gi ein omveg rundt
+        krav \ref{krav:PRED} i kapittel \ref{SEC:ideell} om at alle
+        argument må finne omsetjingar. I neste kapittel (del
+        \ref{SEC:feilanalyse}) gir eg eit døme kor slik samanføying
+        ville opna for rett lenkjing, men der me kanskje heller bør ta
+        mangelen på lenkjing som evidens for at predikatet har ein
+        alternativ argumentstruktur. }. Dette er ikkje verre enn at ein
+ kallar \texttt{argalign-p} med unionen av argument frå dei to samanføyde
  f-strukturane (minus desse f-strukturane sjølve); men me sjekker i
  tillegg at kjeldeargumentet som blir samanføyd med kjeldepredikatet
  har LPT-korrespondanse med målpredikatet. Sidan dette berre skjer
@@ -2603,47 +2636,53 @@ måte.
   %    \end{quotation}
 
 Denne metoden går top-down frå ytre PRED og ned i underordna
-argument/adjunkt. Me vil difor aldri prøve å lenkje ein ytre
-f-struktur med ein indre f-struktur, utanom ved ein-mange-lenkjing.
+ argument/adjunkt. Me vil difor aldri prøve å lenkje ein ytre
+ f-struktur med ein indre f-struktur, utanom ved ein-mange-lenkjing.
 
 Ein alternativ metode for lenkjing av f-strukturane er å byrje med
-alle logisk moglege permutasjonar av LPT-korrespondansar, og så sile
-ut dei som ikkje svarer til krava. Prosessen ville nok blitt mykje
-meir oversiktleg på denne måten, sidan det då berre er snakk om å
-sjekke krav for kvar enkelt lenkje.  Men ein slik metode er vanskeleg
-i praksis; når avskjeringa skjer så seint, blir det alt for mange
-moglege kombinasjonar for lengre setningar med mange ukjende ord til
-at ein vanleg datamaskin kan halde styr på dei.
+ alle logisk moglege permutasjonar av LPT-korrespondansar, og så sile
+ ut dei som ikkje svarer til krava. Prosessen ville nok blitt mykje
+ meir oversiktleg på denne måten, sidan det då berre er snakk om å
+ sjekke krav for kvar enkelt lenkje.  Men ein slik metode er vanskeleg
+ i praksis; når avskjeringa skjer så seint, blir det alt for mange
+ moglege kombinasjonar for lengre setningar med mange ukjende ord til
+ at ein vanleg datamaskin kan halde styr på dei.
 
 Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
-(me har ingen informasjon om LPT-korrespondanse), slik at kvart
-kjeldeord kan lenkjast til kvart målord. Viss begge setningane er 4 ord,
-får me 16 moglege samanstillingar der alle ord er med i nøyaktig éi
-lenkje ($2^l$, kor $l$ er setningslengd). Men ofte har me
-null-lenkjer, me må altså i tillegg tillate samanstillingar der minst
-eitt ord er ulenkja, utan at me treng å vite kva for ord det er; med
-desse kortare listene inkludert får me endå fleire moglege
-samanstillingar per setning (4 ord gir 26, 8 ord gir 2186 moglege
-samanstillingar). Sjølv om me heile tida vel dei samanstillingane som
-lenkjar flest ord, vil maskinen raskt få problem. I tillegg har me
-problemet med 1-mange-lenkjer, som skaper endå fleire moglege
-samanstillingar.
+ (me har ingen informasjon om LPT-korrespondanse), slik at kvart
+ kjeldeord kan lenkjast til kvart målord. Viss begge setningane er 4
+ ord, får me 16 moglege samanstillingar der alle ord er med i nøyaktig
+ éi lenkje ($2^l$, kor $l$ er setningslengd). Men ofte har me
+ null-lenkjer, me må altså i tillegg tillate samanstillingar der minst
+ eitt ord er ulenkja, utan at me treng å vite kva for ord det er; med
+ desse kortare listene inkludert får me endå fleire moglege
+ samanstillingar per setning (4 ord gir 26, 8 ord gir 2186 moglege
+ samanstillingar). Sjølv om me heile tida vel dei samanstillingane som
+ lenkjar flest ord, vil maskinen raskt få problem. I tillegg har me
+ problemet med 1-mange-lenkjer, som skaper endå fleire moglege
+ samanstillingar. For å gjere utrekningane handterbare kan ein i
+ staden plukke frå ei liste med dei $k$ beste LPT-korrespondansane i
+ setninga, noko som gjer ein mykje meir avhengig av god
+ LPT-informasjon\footnote{Ein slik strategi kan samanliknast med metoden i
+        \citet{samuelsson2007apa}, men med f-strukturar og ord i
+        staden for c-strukturar og N-gram. }.
 
 Ein sideverknad av å byrje med ytre lenkjer og gå innover (prosessen
-skildra i del \ref{SEC:impl-f-lenkjing}) er at me automatisk unngår å
-prøve «kryssande» lenkjer, t.d. å lenkje $F_s$ med \XCOMPs av $F_t$, og
-\XCOMPs av $F_s$ med $F_t$ (denne kombinasjonen av lenkjer vil jo vere
-ein del av alle logisk moglege permutasjonar). Me får au prioritert å
-lenkje ytre element, som jo er sikrare lenkjer: gitt to f-strukturar
-for setningar der alt me veit om lenkjinga er at \emph{setningane} er
-omsetjingar av kvarandre, vil dei to ytre f-strukturane ha størst
-sjanse for å korrespondere med kvarandre. For kvart steg du går
-innover må du multiplisere inn sjansen for å trå feil i
-argumentpermutasjonane.
+ skildra i del \ref{SEC:impl-f-lenkjing}) er at me automatisk unngår å
+ prøve «kryssande» lenkjer, t.d. å lenkje $F_s$ med \XCOMPs av $F_t$,
+ og \XCOMPs av $F_s$ med $F_t$ (denne kombinasjonen av lenkjer vil jo
+ vere ein del av alle logisk moglege permutasjonar). Me får au
+ prioritert å lenkje ytre element, som jo er sikrare lenkjer: gitt to
+ f-strukturar for setningar der alt me veit om lenkjinga er at
+ \emph{setningane} er omsetjingar av kvarandre, vil dei to ytre
+ f-strukturane ha størst sjanse for å korrespondere med kvarandre. For
+ kvart steg du går innover må du multiplisere inn sjansen for å trå
+ feil i argumentpermutasjonane.
 
 Det finst altså både praktiske og meir ideelle grunnar til å gjere det
-på denne måten, men om det faktisk fungerer er eit spørsmål eg kjem
-tilbake til i del \ref{SEC:diskusjon}.
+ på denne måten, men om det faktisk fungerer er eit spørsmål eg kjem
+ tilbake til i del \ref{SEC:diskusjon}. I neste del ser eg på
+ rangering av løysingane frå \texttt{f-align}.
 
 \section{Rangering}
 \label{sec-4.2}
@@ -2785,16 +2824,18 @@ har same informasjonstap. Prosedyren \texttt{c-align} i kodefigur
     \end{algorithm}    
 
 Hjelpeprosedyren \texttt{add-links} (kodefigur \ref{algo:add-links}) utfører
-hovudjobben. Inndata er rotnoden til c-strukturtreet for eitt av
-språka, og f-samanstillinga. Prosedyren kappar opp treet i
-nodemengder, kor kvar nodemengd dominerer same lenkjemengd (som
-definert over).  Nodemengdene blir lagra i ein tabell, indeksert på
-lenkjemengdene. Prosedyren går rekursivt gjennom treet frå rot til
-lauv; lenkjemengden for kvar node er unionen av lenkjemengdene
-returnert av \texttt{add-links} kalt på kvar av døtrene. Viss ein node
-dominerer ei lenkjemengd $links$, legg me til denne noden i tabellen
-$splits[links]$. Merk at kvar c-strukturnode berre opptrer éin gong i
-tabellen.
+ hovudjobben. Inndata er rotnoden til c-strukturtreet for eitt av
+ språka, og f-samanstillinga. Prosedyren kappar opp treet i
+ nodemengder, kor kvar nodemengd dominerer same lenkjemengd (som
+ definert over).  Nodemengdene blir lagra i ein tabell, indeksert på
+ lenkjemengdene. Prosedyren går rekursivt gjennom treet frå rot til
+ lauv; lenkjemengden for kvar node er unionen av lenkjemengdene
+ returnert av \texttt{add-links} kalt på kvar av døtrene. Viss ein node
+ dominerer ei lenkjemengd $links$, legg me til denne noden i tabellen
+ $splits[links]$. Merk at kvar c-strukturnode berre opptrer éin gong i
+ tabellen\footnote{Som nemnt i del \ref{SEC:fnord} gjer eg ingen forsøk på å
+        finne lenkjer mellom nodar som ikkje projiserer
+        \PRED{}-element. }.
 
    \begin{algorithm}[]
    \caption{add-links(f-alignment, $node, splits$)}
@@ -2805,7 +2846,7 @@ tabellen.
        \uIf{preterminal?($node$)} {
           let $link \in$ f-alignment s.t. $\phi(node) \in link$ \;
           \lIf{$link$} {$links \gets \{link\}$} \;
-          \uIf{*pro-args-affect-c-links*} {
+          \uIf{*pro-affects-c-linking*} {
             \ForAll{$a \in args(\phi(node))$ s.t. $\phi^{-1}(a)=\emptyset$}{
                 let $link_a \in$ f-alignment s.t. $a \in link_a$ \;
                 \lIf{$link_a$} {$links \gets \{link_a\}$} \;
@@ -2821,25 +2862,25 @@ tabellen.
   \end{algorithm}
 
 Sidan \texttt{c-align} kallar \texttt{add-links} for kvar av sidene, får me to
-tabellar $splits_s$ og $splits_t$.  Me hentar så ut alle dei
-lenkjemengdene som er i begge tabellane (dvs. snittet av
-oppslagsnøklene til tabellen); nodane som er lagra med same mengd med
-f-strukturlenkjer (same nøkkel i tabellen) skal lenkjast på
-c-strukturnivå. Alle desse mange-til-mange-lenkjene blir til slutt
-returnert av \texttt{c-align}. Om brukarvariabelen
-\texttt{*pro-args-affect-c-links*} er sann, vil me leggje til lenkja
-pro-argument i lenkjemengdene; denne variabelen styrer forskjellen
-mellom dei to alternative løysingane på ulenkja c-strukturnodar
-diskutert i del \ref{SEC:f-lenkje-utan-c-node}.
+ tabellar $splits_s$ og $splits_t$.  Me hentar så ut alle dei
+ lenkjemengdene som er i begge tabellane (dvs. snittet av
+ oppslagsnøklene til tabellen); nodane som er lagra med same mengd med
+ f-strukturlenkjer (same nøkkel i tabellen) skal lenkjast på
+ c-strukturnivå. Alle desse mange-til-mange-lenkjene blir til slutt
+ returnert av \texttt{c-align}. Om brukarvariabelen \texttt{*pro-affects-c-linking*}
+ er sann, vil me leggje til lenkja pro-argument i lenkjemengdene;
+ denne variabelen styrer forskjellen mellom dei to alternative
+ løysingane på ulenkja c-strukturnodar diskutert i del
+ \ref{SEC:f-lenkje-utan-c-node}.
 
 Prosessen er no ferdig, mange-til-mange-lenkjene mellom
-c-strukturnodar definerer frasesamanstillinga
+ c-strukturnodar definerer frasesamanstillinga.
 
-I neste kapittel går eg gjennom resultat av å køyre \texttt{lfgalign} på eit
-lite testsett. 
+I neste kapittel går eg gjennom resultat av å køyre \texttt{lfgalign} på
+ ulike testsett.
 
 
-\chapter{Diskusjon}
+\chapter{Evaluering og diskusjon}
 \label{sec-5}
 
 \label{SEC:diskusjon}
@@ -2861,8 +2902,8 @@ på variabelen \texttt{pro-affects-c-linking}}
  I denne delen gir eg ei evaluering av resultata frå å køyre
  \texttt{lfgalign} på LFG-analysar av parallelle setningar. Eg ser på manglar
  ved implementasjonen i forhold til dei ideelle krava frå kapittel
- \ref{SEC:ideell}; og kor avhengig \texttt{lfgalign} er av
- bottom-up-informasjon; og samanliknar dei resultata som er moglege å
+ \ref{SEC:ideell}, og på kor avhengig \texttt{lfgalign} er av
+ bottom-up-informasjon. Eg samanliknar dei resultata som er moglege å
  få frå \texttt{lfgalign} med dei som er mogleg å få med andre metodar, då
  spesielt metodar som nyttar N-gramtabellar som kjelde til
  lenkjingsinformasjon -- altså kor fraselenkjer hovudsakleg kjem frå
@@ -3867,6 +3908,9 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
  kor mange \PRED{}-element på kjeldesida som kunne vore lenkja,
  \texttt{Unreferenced sources/targets} er kor mange «yttarste \PRED{}» me
  fann.
+
+
+
 
 
 
