@@ -638,7 +638,7 @@ Sjølvsagt kan ein her seie at den /ideelle/ annotasjonen vil vere å
  viktig: er ein ute etter å finne N-gram som ofte blir omsett med
  kvarande, men som /ikkje/ er syntaktiske konstituentar, er det klart
  at retningslinjene nedanfor ikkje er så nyttige[fn:38]. I tillegg kan
- ein sjå på kva slags setningspar som er relevante å kunne handtere --
+ ein sjå på kva slag setningspar som er relevante å kunne handtere --
  skal me annotere setningar som er klart ugrammatiske, som inneheld
  openberre skrivefeil eller liknande? \citet[s.~158]{rosen2007tmt}
  skriv i denne samanhengen at «building a treebank is not just a
@@ -1789,7 +1789,7 @@ kan formalisere dette kravet i del \ref{SEC:c-strengare}.
  med berre /åpnet seg/.  I figur \ref{fig:PanJara-gaiGo} ser me
  t.d. at I'-nodane kan lenkjast (utan å sjå på anna enn krav
  \ref{krav:c-tentativt}), det vil altså vere mogleg å lenkje I'-nodane
- i andre omgivnader. Det finst ein slags dobbeltheit mellom
+ i andre omgivnader. Det finst ein slag dobbeltheit mellom
  korrespondansen /gaiGo-det åpnet seg/ og korrespondansen /gaiGo-åpnet
  seg/ og me kan uttrykkje dette ved å ikkje gjere forskjell på IP og
  I' i figur \ref{fig:gaiGo} (Dyvik 2010
@@ -2899,17 +2899,17 @@ Eg gjer i tillegg ei samanlikning med materialet nytta i =RIA Open
 
 ** N-grambaserte metodar
 
- Dei fleste metodane for frasesamanstilling er N-grambaserte, dvs. at
+Dei fleste metodane for frasesamanstilling er N-grambaserte, dvs. at
  hovudkjelda for lenkjing er bottom-up-informasjon; difor er det
  naturleg å samanlikne metoden i =lfgalign= med slike metodar. Eg gir
  først ein kort introduksjon til korleis N-grambaserte metodar gir
- ordlenkjer og fraselenkjer, og ser så på kva slags lenkjer dette
- fører til. Det finst sjølvsagt svært mange ulike moglege metodar og
+ ordlenkjer og fraselenkjer, og ser så på kva lenkjer dette fører
+ til. Det finst sjølvsagt svært mange ulike moglege metodar og
  variasjonar på temaet; for å avgrense diskusjonen konsentrerer eg meg
  om metoden nytta i \citet{samuelsson2007apa}, som har som formål å
  konstruere ein parallell, fraselenkja trebank.
 
- \citet[s.~20--21]{och2003scv} gir eit grundig oversyn over ulike
+\citet[s.~20--21]{och2003scv} gir eit grundig oversyn over ulike
  samanstillingsmetodar, først og fremst statistiske (og helst med
  maskinomsetjing som formål). Dei definerer ei samanstilling på det
  mest generelle som ei delmengd av det kartesiske produktet av
@@ -2920,7 +2920,7 @@ Eg gjer i tillegg ei samanlikning med materialet nytta i =RIA Open
  $\mathcal{A}\subseteq \{(j,i): j=1,...,J;i=1,...,I\}$. Eitt kjeldeord
  kan altså vere lenkja til eitt eller fleire målord, og omvendt.
 
- Å finne alle slike delmengder er ein komputasjonelt tung jobb, og
+Å finne alle slike delmengder er ein komputasjonelt tung jobb, og
  ikkje eigentleg handterbart for vanlege setningslengder.  I praksis
  vil spesifikke modellar prøve å avgrense dette, t.d. ved å krevje
  maksimalt eitt målord per kjeldeord, kor ein nyttar «det tomme ordet»
@@ -2929,12 +2929,12 @@ Eg gjer i tillegg ei samanlikning med materialet nytta i =RIA Open
  /ordsamanstilling/; når mange-mange-lenkjer er med har me ei
  /frasesamanstilling/.
 
- Ei samanstilling er her altså ei mengd par av ordposisjonar. Det
+Ei samanstilling er her altså ei mengd par av ordposisjonar. Det
  finst mange ulike måtar å komme fram til samanstillinga på; men
  grunntanken er at ord som oftare enn forventa opptrer saman i omsette
  setningar i eit korpus, sannsynlegvis er omsetjingar.
 
- Dei vanlegaste metodane er basert på sannsynsmodellar[fn:36], kor den
+Dei vanlegaste metodane er basert på sannsynsmodellar[fn:36], kor den
  beste samanstillinga $a$ er den som får høgast skåre på
  $p(f_1^J,a|e_1^I)$, dvs. sannsynet for samanstillinga $a$ og
  kjeldesetninga gitt målsetninga og parametrane i modellen. Verdien
@@ -3068,17 +3068,17 @@ Eg gjer i tillegg ei samanlikning med materialet nytta i =RIA Open
  Om me ikkje har LPT-informasjon, blir den urangerte
  f-struktursamanstillinga:
 
-\ex. \{(\p{mi-codeba} , \p{rekke-hand}) \\
- \{(\p{Browne} , \p{Abrams}) (\p{sigareti} , \p{Browne}) (\p{Abrams} , \p{sigarett})\} \\
- \{(\p{Browne} , \p{Abrams}) (\p{sigareti} , \p{sigarett}) (\p{Abrams} , \p{Browne})\} \\
- \{(\p{Browne} , \p{Browne}) (\p{sigareti} , \p{Abrams}) (\p{Abrams} , \p{sigarett})\} \\
- \{(\p{Browne} , \p{Browne}) (\p{sigareti} , \p{sigarett}) (\p{Abrams} , \p{Abrams})\} \\
- \{(\p{Browne} , \p{sigarett}) (\p{sigareti} , \p{Abrams}) (\p{Abrams} , \p{Browne})\} \\
- \{(\p{Browne} , \p{sigarett}) (\p{sigareti} , \p{Browne}) (\p{Abrams} , \p{Abrams})\} \}
+\ex. \{(\p{mi-codeba}, \p{rekke-hand}), \\
+ \{(\p{Browne}, \p{Abrams}),   (\p{sigareti}, \p{Browne}),   (\p{Abrams}, \p{sigarett})\} \\
+ \{(\p{Browne}, \p{Abrams}),   (\p{sigareti}, \p{sigarett}), (\p{Abrams}, \p{Browne})\} \\
+ \{(\p{Browne}, \p{Browne}),   (\p{sigareti}, \p{Abrams}),   (\p{Abrams}, \p{sigarett})\} \\
+ \{(\p{Browne}, \p{Browne}),   (\p{sigareti}, \p{sigarett}), (\p{Abrams}, \p{Abrams})\} \\
+ \{(\p{Browne}, \p{sigarett}), (\p{sigareti}, \p{Abrams}),   (\p{Abrams}, \p{Browne})\} \\
+ \{(\p{Browne}, \p{sigarett}), (\p{sigareti}, \p{Browne}),   (\p{Abrams}, \p{Abrams})\} \}
 
  Etter rangering får me då 
 
-\ex. \{(\p{mi-codeba} , \p{rekke-hand}) (\p{Browne} , \p{sigarett}) (\p{sigareti} , \p{Browne}) (\p{Abrams} , \p{Abrams})\} 
+\ex. \{(\p{mi-codeba}, \p{rekke-hand}), (\p{Browne}, \p{sigarett}), (\p{sigareti}, \p{Browne}), (\p{Abrams}, \p{Abrams})\} 
 
  som jo er feil (me får då au feil c-struktursamanstilling). Dette
  skjer pga. argumentstrukturane til dei to verba /ikkje/ er
@@ -3088,8 +3088,7 @@ Eg gjer i tillegg ei samanlikning med materialet nytta i =RIA Open
  følgje over ulik. Men ved å t.d. leggje til informasjonen om at
  /brouns/ og /Browne/ har LPT-korrespondanse, får me:
 
-\ex. \{(\p{mi-codeba} , \p{rekke-hand})
- (\p{Browne} , \p{Browne}) (\p{sigareti} , \p{sigarett}) (\p{Abrams} , \p{Abrams})\}
+\ex. \{(\p{mi-codeba}, \p{rekke-hand}), (\p{Browne}, \p{Browne}), (\p{sigareti}, \p{sigarett}), (\p{Abrams}, \p{Abrams})\}
 
  Me kunne au klart oss med berre informasjonen om at /sigareti/ og
  /sigaretten/ har LPT-korrespondanse -- så sjølv om LPT-korrespondanse
@@ -3224,7 +3223,7 @@ Sofie Amundsen skole.fra dreie.3SG.IMP.\\
 subj & \@{10} \[pred  & `{\bf{}amundsen}' \] \\
 adjunct & \{ \[pred & `{\bf{}skola}' \] \} \]
 \end{avm} \\
-     $\leftrightarrow$
+     $\\\\\leftrightarrow$\\
 \b. Sofie Amundsen var på vei hjem fra skolen.\\
 \begin{avm}
 \[pred  & `{\bf{}være}<\@{23},\@{24}>' \\
@@ -3236,7 +3235,7 @@ adjunct & \{ \[pred & `{\bf{}skola}' \] \} \]
 
 }
 
-\ex. \{(\p{*-bruneba} , \p{være}) (\p{*-bruneba} , \p{vei}) (\p{amundsen} , \p{Amundsen})\}
+\ex. \{(\p{*-bruneba}, \p{være}), (\p{*-bruneba}, \p{vei}), (\p{amundsen}, \p{Amundsen})\}
 #+END_LaTeX
 
 Samanstillinga kjem ikkje djupare inn i f-strukturane enn dette. Her
@@ -3248,7 +3247,7 @@ f-strukturnivå. Merk at om me ikkje legg til /skola/skole/ i
 LPT-tabellen får me samanstillinga i \Next:
 
 #+BEGIN_LaTeX
-\ex. \{(\p{*-bruneba} , \p{være}) (\p{skola} , \p{vei}) (\p{amundsen} , \p{Amundsen})\}
+\ex. \{(\p{*-bruneba}, \p{være}), (\p{skola}, \p{vei}), (\p{amundsen}, \p{Amundsen})\}
 #+END_LaTeX
 
 Altså, slik implementasjonen av LPT-kravet fungerer kan positiv
@@ -3274,7 +3273,7 @@ forskjellar i argumentstruktur gir feil løysing.
 subj & \@{10} \[pred  & `{\bf{}soPi}' \] \\
 adjunct & \{ \[pred & \@{5} `{\bf{}klevervegeni}' \] \} \]
 \end{avm} \\
-     $\leftrightarrow$
+     $\\\\\leftrightarrow$\\
 \b. Nå svingte hun inn i Kløverveien.\\
 \begin{avm}
 \[pred  & `{\bf{}svinge}<\@{18}:hun>' \\
@@ -3284,7 +3283,7 @@ adjunct & \{ \[pred & \@{5} `{\bf{}klevervegeni}' \] \} \]
 
 }
 
-\ex. \{(\p{Se-Hveva} , \p{svinge}) (\p{pro} , \p{hun}) (\p{pro} , \p{nå}) (\p{soPi} , \p{inn})\}
+\ex. \{(\p{Se-Hveva}, \p{svinge}), (\p{pro}, \p{hun}), (\p{pro}, \p{nå}), (\p{soPi}, \p{inn})\}
 #+END_LaTeX
 
 F-strukturane i \LLast gir lenkjinga i \Last. Desse pro-elementa på
@@ -3295,7 +3294,7 @@ at pro blir lenkja til adjunkt ved å leggje inn LPT-informasjon om
 adjunkta (evt. krevje at pro /berre/ kan lenkjast til nominalar). Om
 me legg inn ei omsetjing for /nå/, får me samanstillinga i \Next:
 
-\ex. \{(\p{Se-Hveva} , \p{svinge}) (\p{pro} , \p{svinge}) (\p{pro} , \p{hun}) (\p{soPi} , \p{inn})\}
+\ex. \{(\p{Se-Hveva}, \p{svinge}), (\p{pro}, \p{svinge}), (\p{pro}, \p{hun}), (\p{soPi}, \p{inn})\}
 
 Denne samanstillinga er kanskje er hakket betre, men sidan
 mange-mange-lenkjing berre er to-til-ein så langt, vil LPT-informasjon
@@ -3318,14 +3317,14 @@ Det andre testsettet mitt er ei mengd med 4000 automatisk
  både utan nokon informasjon i LPT-tabellen, og med ein ganske stor
  LPT-tabell med alle oppslaga frå Ding-ordboka[fn:54]. I tillegg
  køyrer eg testane med delmengder av testsettet kor eg har filtrert ut
- analysar med mange «yttarste f-strukturar», for å sjå kva slags
- innverknad dei har på resultatet.
+ analysar med mange «yttarste f-strukturar», for å sjå kva innverknad
+ dei har på resultatet.
 
 Samanlikninga skjer ved å, for kvar setning i korpuset, telje opp kor
  mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som
  er i =RIA= og dei som =lfgalign= gir. Dette kan me samanlikne med kor
- mange f-strukturlenkjer =RIA= har i det heile for å få ein slags
- «dekning», og med kor mange lenkjer =lfgalign= har for å få ein slags
+ mange f-strukturlenkjer =RIA= har i det heile for å få ein slag
+ «dekning», og med kor mange lenkjer =lfgalign= har for å få
  «presisjon» -- denne tolkinga føreset sjølvsagt at =RIA=-lenkjene er
  korrekte.
 
@@ -3337,7 +3336,7 @@ Viss me har to setningar som kvar har tri \PRED{}-element, finst det
  element som er ulenkja i samanstilling til =lfgalign=, vil snitt /
  =RIA= gå ned (dekning), medan snitt / =lfgalign= held seg likt
  (presisjon). For å få ein peikepinn på kor mykje likskapen har å seie
- (ein slags indikasjon på effektstyrke), har eg au køyrt ein
+ (ein slag indikasjon på effektstyrke), har eg au køyrt ein
  baseline-modell på testsettet, som berre opprettar tilfeldige lenkjer
  mellom lenkbare \PRED{}-element (slik at flest mogleg
  ein-til-ein-lenkjer blir oppretta; denne modellen har ingen
@@ -3612,9 +3611,10 @@ argstr til $PRED_{L2}$.
 I =RIA=-testsettet var f-strukturar forenkla slik at det ikkje var
 nokon sykliske stiar. Men det er svært vanleg i LFG-analysar at
 f-strukturane er sykliske eller har fleire stiar til same
-element. Setningsparet i \Next (38.pl/39.pl i =mrs=-testsettet) har
-ein enkel form for dette, både på kjelde- og målsida opptrer subjektet
-til hjelpeverbet au som subjekt for hovudverbet/verbalsubstativet:
+element. Setningsparet i \Next, 38.pl/39.pl i =mrs=-testsettet, har
+ein enkel form for dette fenomenet; både på kjelde- og målsida opptrer
+subjektet til hjelpeverbet au som subjekt for
+hovudverbet/verbalsubstativet:
 
 #+BEGIN_LaTeX
 {\avmoptions{}
@@ -3625,7 +3625,7 @@ til hjelpeverbet au som subjekt for hovudverbet/verbalsubstativet:
 subj & \@{3} \[pred & `{\bf{}jaGli}' \] \\
 obj &  \@{6} \[pred & `{\bf{}*-qePa<\@{3}>'}' \] \]
 \end{avm} \\
-     $\leftrightarrow$
+     $\\\\\leftrightarrow$\\
 \b. Hunden vil bjeffe.\\
 \begin{avm}
 \[pred  & `{\bf{}root-ville}<\@{8},\@{9}>' \\
@@ -3633,14 +3633,17 @@ subj & \@{8} \[pred & `{\bf{}hund}' \] \\
 xcomp &  \@{9} \[pred & `{\bf{}bjeffe<\@{8}>'}' \] \]
 \end{avm}
 
+\ex. \{(\p{ndoma}, \p{root-ville}), (\p{*-qePa}, \p{bjeffe}), (\p{jaGli}, \p{hund}), (\p{jaGli}, \p{hund})\}
 
 }
 #+END_LaTeX
 
+I \Last ser me løysinga som =lfgalign= gir; her kjem subjektlenkjene
+ to gonger, men sidan me uansett reknar samanstillinga som ei /mengd/
+ av lenkjer bør dette vere uproblematisk.
 
-
-Setningsparet i \Next gir eit døme på dette. Predikata i setningane
-bør kunne lenkjast, men analysane gir nokre intrikate problem.
+Men setningsparet i \Next er vanskelegare. Predikata i setningane bør
+ kunne lenkjast, men analysane gir oss nokre intrikate problem.
 
 #+BEGIN_LaTeX
 {\avmoptions{}
@@ -3672,16 +3675,43 @@ I =lfgalign= vil me kunne lenkje \p{bin} og \p{have}, med
  med. Verken krava i kapittel \ref{SEC:ideell} eller implementasjonen
  av dei tek innover seg slike problem.
 
-Ein /kan/ gjere unntak i krav \ref{krav:PRED} om at argument som
- allereie har ei lenkje på ytre nivå ikkje skal lenkjast -- altså må
- eit argument berre lenkjast «ein gong». Dette bør løyse problemet
- over, og bør ikkje vere for vanskeleg å implementere heller.
+For å gjere det litt meir generelt, er problemet her strukturar av
+ typen i \Next:
 
-Men ein variant av situasjonen over kan gi litt større problem. I
- \Next kan me tenkje oss at den ønskelege lenkjinga er
- \{(\p{p},\p{r}),(\p{q},\p{s}),(\p{ich},\p{I})\}. Den einaste
- relevante forskjellen frå \Last er at i \Last står \p{I} berre i ytre
- \PRED, medan i \Next står \p{I} berre i indre \PRED.
+#+BEGIN_LaTeX
+{\avmoptions{}
+\ex. \a. $\begin{avm}\[pred & `{\bf{}p}<\@{1}, \@{2}>'  \\
+     subj & \@{1} \[pred &  `{\bf{}ich}' \] \\
+     xcomp & \@{2} \[pred & `{\bf{}q}<\@{1}>' \] \] \end{avm}$
+     $\\\\\leftrightarrow$\\
+     \b. $\begin{avm}\[pred & `{\bf{}r}<\@{3},\@{4}>' \\
+     subj & \@{3} \[pred &  `{\bf{}I}' \]  \\
+     xcomp & \@{4} \[pred & `{\bf{}s}'\] \]\end{avm}$
+
+}
+#+END_LaTeX
+
+Me føreset at \p{p} og \p{r} har LPT-korrespondanse, det same med
+ \p{q} og \p{s} og \p{ich} og \p{I}. Ein /kan/ gjere unntak i krav
+ \ref{krav:PRED} om at argument som allereie har ei lenkje på ytre
+ nivå ikkje skal lenkjast -- altså må eit argument berre lenkjast «ein
+ gong». Dette bør løyse problemet over (og bør ikkje vere for
+ vanskeleg å implementere heller). Me gjer altså eit unntak frå kravet
+ om at alle argument skal finne LPT-korrespondanse hos
+ argument/adjunkt av omsetjinga, sidan dei allereie har
+ LPT-korrespondanse med argument/adjunkt av eit ytre predikat. Dette
+ blir ein slag omsetjingsskifte (på argumentstrukturnivå), og
+ lenkjinga bør nok vere open for slike skifte.
+
+Men ein variant av situasjonen over kan gi litt større problem,
+ iallfall implementasjonsmessig. I \NNext kan me tenkje oss at den
+ ønskelege lenkjinga er, som i \Last:
+
+\ex. \{(\p{p},\p{r}),(\p{q},\p{s}),(\p{ich},\p{I})\}.
+
+Den einaste relevante forskjellen frå \LLast er at i \LLast står \p{I}
+ berre som argument av ytre \PRED{}, medan i \Next står \p{I} berre
+ som argument av indre \PRED{}.
 
 #+BEGIN_LaTeX
 {\avmoptions{}
@@ -3696,20 +3726,34 @@ Men ein variant av situasjonen over kan gi litt større problem. I
 }
 #+END_LaTeX
 
- Då er det eit problem at me følgjer krav \ref{krav:PRED-omgivnad} og
- går top-down i f-strukturlenkjinga i =lfgalign=. Når me skal lenkje
- \p{p} og \p{r} vil me ikkje finne ein argumentpermutasjon
- (ein-til-ein LPT-korrespondanse) som fyller krav \ref{krav:PRED} --
- \p{q} og \p{s} har LPT-korrespondanse, men \p{ich} har ikkje noko som
- svarer til seg blant argument/adjunkt av \p{r}.
+Då er det eit problem at me følgjer krav \ref{krav:PRED-omgivnad} frå
+ kapittel \ref{SEC:ideell}, og går top-down i f-strukturlenkjinga i
+ =lfgalign=. Når me skal lenkje \p{p} og \p{r} vil me ikkje finne ein
+ argumentpermutasjon (ein-til-ein LPT-korrespondanse) som fyller krav
+ \ref{krav:PRED} -- \p{q} og \p{s} har LPT-korrespondanse, så dei
+ oppfyll kravet, men \p{ich} har ikkje noko som svarer til seg blant
+ argument/adjunkt av \p{r}. Då vil me heller aldri prøve å lenkje
+ \p{q} og \p{s}, som kunne fortalt oss at \p{ich} ikkje trengte nokon
+ LPT-korrespondanse ved lenkjing av \p{p} og \p{r}.
 
- Det er sjølvsagt mogleg å køyre top-down-metoden frå fleire
- startpunkt i f-strukturane dersom dei første ikkje går, men om ein må
- gjere det er det kanskje eit teikn på at heile strategien må
- endrast. På den andre sida, viss desse situasjonane ikkje dukker opp
- i faktiske analysar, så kan det hende at metoden er god nok. Til no
- har eg ikkje sett slike situasjonar, men det er altså logisk mogleg
- at dei kan dukke opp.
+Det er sjølvsagt mogleg å køyre top-down-metoden frå fleire startpunkt
+ i f-strukturane dersom dei første ikkje går, så kan ein kanskje sjå i
+ ettertid om det finst argument til overs som ikkje fann
+ LPT-korrespondanse. Ein annan utveg vil vere å (1) ha ei liste over
+ over argument som opptrer fleire stader i f-strukturen, her berre
+ \p{ich} (dette er lett å lage); og (2) når =argalign= ikkje finn
+ nokon argumentpermutasjonar, men ser at \p{ich} opptrer innanfor eitt
+ av dei andre argumenta, prøve å lage nye argumentpermutasjonar kor
+ \p{ich} er ignorert. Helst bør ein då au krevje at =f-align= kalt på
+ det andre argumentet har fått lenkja \p{ich}.  Men om ein må gjere
+ slike kompliserte unntak er det kanskje eit teikn på at ein må
+ vurdere heile metoden på nytt.
+
+På den andre sida, viss situasjonen i \Last ikkje dukkar opp i
+ faktiske analysar, så kan det hende at top-down-metoden er «god
+ nok». Til no har eg ikkje sett slike situasjonar, men det er altså
+ logisk mogleg at dei kan dukke opp.
+
 ** Bruksområde
 \fxnote[inline,nomargin]{dette blei tynt; flytte til oppsummering kanskje?}
 *** Oppdage argumentstrukturalternasjon
