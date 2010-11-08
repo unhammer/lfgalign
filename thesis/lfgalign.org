@@ -38,6 +38,9 @@
 #+LaTeX_HEADER:  \SetKwComment{Comment}{ // }{}
 #+LaTeX_HEADER:  \SetKwInOut{Input}{usage}
 
+
+#+EXPORT_EXCLUDE_TAGS: ROTETE
+
  
 #+BEGIN_LaTeX
 \begin{abstract}
@@ -61,14 +64,9 @@ This thesis describes the development of an automatic phrase alignment
 \listoffixmes
 
 * COMMENT Generell TODO
-Nytt denne før INNLEVERING:
-#+EXPORT_EXCLUDE_TAGS: ROTETE
- 
-nyttig sparse tree: SKRIV
-
 [[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
 
-
+** TODO fikse ỹgraham i lenkjer!
 
 * Innleiing
 \label{SEC:innleiing}
@@ -2848,25 +2846,27 @@ på variabelen \texttt{pro-affects-c-linking}}
  krav \ref{krav:PRED-omgivnad} i kapittel \ref{SEC:ideell} (og lenkjar
  altså berre f-strukturar som er argument/adjunkt av lenkja
  f-strukturar, eller ikkje er argument/adjunkt av noko). Dette er nok
- for strengt, men det avskjerer ein god del umotiverte lenkjingar. I
- tillegg er c-strukturlenkjinga i implementasjonen direkte avleidd av
+ for unyansert, men det avskjerer ein god del umotiverte
+ lenkjingar. \fxnote[inline,nomargin]{I tillegg er
+ c-strukturlenkjinga i implementasjonen direkte avleidd av
  f-strukturlenkjinga; men, som nemnt i del \ref{SEC:fnord} kan det
- finnast c-strukturforhold som bør påverke f-strukturlenkjinga. I
+ finnast c-strukturforhold som bør påverke f-strukturlenkjinga.} I
  dette kapittelet ser eg på korleis føresetnadene ved implementasjonen
  påverkar kva for samanstillingar me får, og kjem fram til at svært
  ulike eller fragmentariske f-strukturar fører til store feil i
  lenkjingane.
- 
-** Materiale
- Eg nyttar språka georgisk og norsk i evalueringa, hovudsakleg fordi
- dei er svært ulike syntaktisk og morfologisk. Som nemnt er georgisk
- eitt av språka nytta i Xpar-prosjektet; og det er nok det som har
- mest typologisk avstand frå norsk av språka i prosjektet.  Georgisk
- er mellom anna eit pro-drop-språk, med friare ordfølgje og rikare
- morfologi enn norsk. Georgisk-norsk burde difor vere eit passande
- språkpar for evalueringa.
 
- Kjeldematerialet mitt for dette språkparet er ei mengd med
+  
+** Materiale
+Eg byrjar med språka georgisk og norsk i evalueringa, hovudsakleg
+ fordi dei er svært ulike syntaktisk og morfologisk. Som nemnt er
+ georgisk eitt av språka nytta i Xpar-prosjektet; og det er nok det
+ som har mest typologisk avstand frå norsk av språka i prosjektet.
+ Georgisk er mellom anna eit pro-drop-språk, med friare ordfølgje og
+ rikare morfologi enn norsk. Georgisk-norsk burde difor vere eit
+ passande språkpar for evalueringa.
+
+Kjeldematerialet mitt for dette språkparet er ei mengd med
  omtrent tredve LFG-analyserte testsetningar på norsk og georgisk, frå
  eit testsett kor setningane er valde for å illustrere ei vid rekkje
  ulike syntaktiske situasjonar (kalla =mrs= nedanfor), i tillegg til
@@ -2874,10 +2874,10 @@ på variabelen \texttt{pro-affects-c-linking}}
  nedanfor) på norsk og georgisk. Analysane er manuelt disambiguerte og
  setningssamanstilte.
 
- Sidan eg ikkje har tilgang på nokon større ferdig setningssamanstilt
+Sidan eg ikkje har tilgang på nokon større ferdig setningssamanstilt
  georgisk-norsk parallelltekst, blir det vanskeleg (utan ein god del
  forarbeid) å køyre den statistiske ordsamanstillinga som er vanleg
- som første steg i N-grambaserte metodar[fn:34].  Materialet i =mrs=
+ som første steg i N-grambaserte metodar[fn:34]. Materialet i =mrs=
  og =sofie= er sjølvsagt alt for lite for statistisk samanstilling, så
  det vil ikkje vere mogleg å empirisk samanlikne presisjon/dekning med
  N-grambaserte metodar her. I staden har eg prøvd å sjå på kva for
@@ -2885,13 +2885,14 @@ på variabelen \texttt{pro-affects-c-linking}}
  spesifikk N-grambasert metode kan vere vanskeleg å hente ut; men
  dette er ein veikskap med evalueringa.
 
- Eg gjer i tillegg ei overflatisk samanlikning med materialet nytta i
- =RIA Open Source Rule Induction Tool=
- \citep{graham2009osr,graham2009fts}, kor språka er tysk og
- engelsk. Dette materialet inkluderer f-strukturlenkjer for 4000
- setningspar, fått via ein N-grambasert metode; her samanliknar eg
- overlapp i samanstillingane.  Setningane, og setningslenkjene, er frå
- Europarl-korpuset \citep{koehn2005emc}. LFG-analysane er automatisk
+Eg gjer i tillegg ei samanlikning med materialet nytta i =RIA Open
+ Source Rule Induction Tool= \citep{graham2009osr,graham2009fts}, kor
+ språka er tysk og engelsk. Dette materialet inkluderer
+ f-strukturlenkjer for 4000 setningspar, fått via ein N-grambasert
+ metode; her samanliknar eg overlapp i samanstillingane.  Setningane,
+ og setningslenkjene, er frå Europarl-korpuset
+ \citep{koehn2005emc}. LFG-analysane kjem frå handskrivne
+ ParGram-grammatikkar \citep[m.a.~][]{kaplan2002aeg}, men er automatisk
  disambiguerte og setningssamanstilte (og inkluderer ein god del
  fragmentariske analysar); det er difor ganske ulikt det materialet eg
  elles har sett på.
@@ -3067,17 +3068,17 @@ på variabelen \texttt{pro-affects-c-linking}}
  Om me ikkje har LPT-informasjon, blir den urangerte
  f-struktursamanstillinga:
 
-\ex. \{(\p{mi-codeba} . \p{rekke-hand}) \\
- \{(\p{Browne} . \p{Abrams}) (\p{sigareti} . \p{Browne}) (\p{Abrams} . \p{sigarett})\} \\
- \{(\p{Browne} . \p{Abrams}) (\p{sigareti} . \p{sigarett}) (\p{Abrams} . \p{Browne})\} \\
- \{(\p{Browne} . \p{Browne}) (\p{sigareti} . \p{Abrams}) (\p{Abrams} . \p{sigarett})\} \\
- \{(\p{Browne} . \p{Browne}) (\p{sigareti} . \p{sigarett}) (\p{Abrams} . \p{Abrams})\} \\
- \{(\p{Browne} . \p{sigarett}) (\p{sigareti} . \p{Abrams}) (\p{Abrams} . \p{Browne})\} \\
- \{(\p{Browne} . \p{sigarett}) (\p{sigareti} . \p{Browne}) (\p{Abrams} . \p{Abrams})\} \}
+\ex. \{(\p{mi-codeba} , \p{rekke-hand}) \\
+ \{(\p{Browne} , \p{Abrams}) (\p{sigareti} , \p{Browne}) (\p{Abrams} , \p{sigarett})\} \\
+ \{(\p{Browne} , \p{Abrams}) (\p{sigareti} , \p{sigarett}) (\p{Abrams} , \p{Browne})\} \\
+ \{(\p{Browne} , \p{Browne}) (\p{sigareti} , \p{Abrams}) (\p{Abrams} , \p{sigarett})\} \\
+ \{(\p{Browne} , \p{Browne}) (\p{sigareti} , \p{sigarett}) (\p{Abrams} , \p{Abrams})\} \\
+ \{(\p{Browne} , \p{sigarett}) (\p{sigareti} , \p{Abrams}) (\p{Abrams} , \p{Browne})\} \\
+ \{(\p{Browne} , \p{sigarett}) (\p{sigareti} , \p{Browne}) (\p{Abrams} , \p{Abrams})\} \}
 
  Etter rangering får me då 
 
-\ex. \{(\p{mi-codeba} . \p{rekke-hand}) (\p{Browne} . \p{sigarett}) (\p{sigareti} . \p{Browne}) (\p{Abrams} . \p{Abrams})\} 
+\ex. \{(\p{mi-codeba} , \p{rekke-hand}) (\p{Browne} , \p{sigarett}) (\p{sigareti} , \p{Browne}) (\p{Abrams} , \p{Abrams})\} 
 
  som jo er feil (me får då au feil c-struktursamanstilling). Dette
  skjer pga. argumentstrukturane til dei to verba /ikkje/ er
@@ -3087,8 +3088,8 @@ på variabelen \texttt{pro-affects-c-linking}}
  følgje over ulik. Men ved å t.d. leggje til informasjonen om at
  /brouns/ og /Browne/ har LPT-korrespondanse, får me:
 
-\ex. \{(\p{mi-codeba} . \p{rekke-hand})
- (\p{Browne} . \p{Browne}) (\p{sigareti} . \p{sigarett}) (\p{Abrams} . \p{Abrams})\}
+\ex. \{(\p{mi-codeba} , \p{rekke-hand})
+ (\p{Browne} , \p{Browne}) (\p{sigareti} , \p{sigarett}) (\p{Abrams} , \p{Abrams})\}
 
  Me kunne au klart oss med berre informasjonen om at /sigareti/ og
  /sigaretten/ har LPT-korrespondanse -- så sjølv om LPT-korrespondanse
@@ -3233,7 +3234,7 @@ adjunct & \{ \[pred & `{\bf{}skola}' \] \} \]
 
 }
 
-\ex. \{(\p{*-bruneba} . \p{være}) (\p{*-bruneba} . \p{vei}) (\p{amundsen} . \p{Amundsen})\}
+\ex. \{(\p{*-bruneba} , \p{være}) (\p{*-bruneba} , \p{vei}) (\p{amundsen} , \p{Amundsen})\}
 #+END_LaTeX
 
 Samanstillinga kjem ikkje djupare inn i f-strukturane enn dette. Her
@@ -3245,7 +3246,7 @@ f-strukturnivå. Merk at om me ikkje legg til /skola/skole/ i
 LPT-tabellen får me samanstillinga i \Next:
 
 #+BEGIN_LaTeX
-\ex. \{(\p{*-bruneba} . \p{være}) (\p{skola} . \p{vei}) (\p{amundsen} . \p{Amundsen})\}
+\ex. \{(\p{*-bruneba} , \p{være}) (\p{skola} , \p{vei}) (\p{amundsen} , \p{Amundsen})\}
 #+END_LaTeX
 
 Altså, slik implementasjonen av LPT-kravet fungerer kan positiv
@@ -3281,7 +3282,7 @@ adjunct & \{ \[pred & \@{5} `{\bf{}klevervegeni}' \] \} \]
 
 }
 
-\ex. \{(\p{Se-Hveva} . \p{svinge}) (\p{pro} . \p{hun}) (\p{pro} . \p{nå}) (\p{soPi} . \p{inn})\}
+\ex. \{(\p{Se-Hveva} , \p{svinge}) (\p{pro} , \p{hun}) (\p{pro} , \p{nå}) (\p{soPi} , \p{inn})\}
 #+END_LaTeX
 
 F-strukturane i \LLast gir lenkjinga i \Last. Desse pro-elementa på
@@ -3292,7 +3293,7 @@ at pro blir lenkja til adjunkt ved å leggje inn LPT-informasjon om
 adjunkta (evt. krevje at pro /berre/ kan lenkjast til nominalar). Om
 me legg inn ei omsetjing for /nå/, får me samanstillinga i \Next:
 
-\ex. \{(\p{Se-Hveva} . \p{svinge}) (\p{pro} . \p{svinge}) (\p{pro} . \p{hun}) (\p{soPi} . \p{inn})\}
+\ex. \{(\p{Se-Hveva} , \p{svinge}) (\p{pro} , \p{svinge}) (\p{pro} , \p{hun}) (\p{soPi} , \p{inn})\}
 
 Denne samanstillinga er kanskje er hakket betre, men sidan
 mange-mange-lenkjing berre er to-til-ein så langt, vil LPT-informasjon
@@ -3307,31 +3308,34 @@ og endre grammatikkane til ei seinare utgåve av trebanken.
 *** Overlapp med =RIA=
 \label{SEC:ria}
 
-Eg samanliknar her f-strukturlenkjene ein får ved å køyre =lfgalign=
- på ei mengd med 4000 automatisk disambiguerte og setningslenkja
- setningar på tysk og engelsk, med dei lenkjene som kjem frå
- =RIA=-metoden[fn:44] i \citet{graham2009osr,graham2009fts}. Eg prøvde
+Det andre testsettet mitt er ei mengd med 4000 automatisk
+ setningslenkja setningspar på tysk og engelsk, med automatisk
+ disambiguerte LFG-analysar. Eg samanliknar her f-strukturlenkjene ein
+ får ved å køyre =lfgalign= med dei lenkjene som kjem frå
+ =RIA=-metoden[fn:44] i \citet{graham2009osr,graham2009fts}. Eg prøver
  både utan nokon informasjon i LPT-tabellen, og med ein ganske stor
  LPT-tabell med alle oppslaga frå Ding-ordboka[fn:54]. I tillegg
- køyrte eg testane med delmengder av testsettet kor eg filtrerte ut
+ køyrer eg testane med delmengder av testsettet kor eg har filtrert ut
  analysar med mange «yttarste f-strukturar», for å sjå kva slags
- innverknad dei hadde på resultatet.
+ innverknad dei har på resultatet.
 
 Samanlikninga skjer ved å, for kvar setning i korpuset, telje opp kor
  mange lenkjer som finst i snittet mellom dei f-strukturlenkjene som
  er i =RIA= og dei som =lfgalign= gir. Dette kan me samanlikne med kor
  mange f-strukturlenkjer =RIA= har i det heile for å få ein slags
  «dekning», og med kor mange lenkjer =lfgalign= har for å få ein slags
- «presisjon» -- dette føreset sjølvsagt at =RIA=-lenkjene er korrekte.
+ «presisjon» -- denne tolkinga føreset sjølvsagt at =RIA=-lenkjene er
+ korrekte.
 
 Viss me har to setningar som kvar har tri \PRED{}-element, finst det
  seks måtar å lenkje desse på slik at alle blir lenkja. Viss
- =lfgalign= har same samanstilling som =RIA=, vil snittet av dei to ha
- like mange lenkjer som =RIA= har, og like mange som =lfgalign= har
- (medan viss det er eitt av desse orda som =lfgalign= ikkje har
- lenkja, vil snitt / =RIA= gå ned, medan snitt / =lfgalign= held seg
- likt). For å få ein peikepinn på kor mykje likskapen har å seie (ein
- slags indikasjon på effektstyrke), har eg au køyrt ein
+ =lfgalign= har same samanstilling som =RIA=, vil snittet av dei to
+ samanstillingane ha like mange lenkjer som =RIA=-samanstillinga har,
+ og like mange som =lfgalign=-samanstillinga har. Viss det finst eit
+ element som er ulenkja i samanstilling til =lfgalign=, vil snitt /
+ =RIA= gå ned (dekning), medan snitt / =lfgalign= held seg likt
+ (presisjon). For å få ein peikepinn på kor mykje likskapen har å seie
+ (ein slags indikasjon på effektstyrke), har eg au køyrt ein
  baseline-modell på testsettet, som berre opprettar tilfeldige lenkjer
  mellom lenkbare \PRED{}-element (slik at flest mogleg
  ein-til-ein-lenkjer blir oppretta; denne modellen har ingen
@@ -3347,7 +3351,9 @@ Desse tala seier sjølvsagt ingenting om kva for lenkjer som er
  går under 10 % ved korpora på fleire tusen ord. Om f-strukturlenkjene
  i =lfgalign= har stor overlapp med dei i testsettet er det altså
  sannsynleg at mange av dei er korrekte, om det er stor forskjell er
- det sannsynleg at =lfgalign= tek feil.
+ det sannsynleg at =lfgalign= tek feil. Men jo større overlappet er,
+ jo større sjanse er det for at =lfgalign= kan ha rett og =RIA= tek
+ feil der dei ikkje gir same svar.
 
 
 #+LABEL: tbl:RIA
@@ -3388,10 +3394,10 @@ Tabell \ref{tbl:RIA} viser resultatet av
  var 100 % ville alle lenkjene i testmetoden ha vore inkludert i =RIA=
  (presisjon). Samanlikninga er køyrt med ulike delmengder av
  testsettet; i dei tri første radene har eg fjerna alle setningar som
- hadde meir enn ein yttarste \PRED{} utanom rot-f-strukturen (som
- alltid har indeks =0= i dette formatet); i dei neste har eg i tillegg
- med dei som hadde maksimalt ein annan yttarste \PRED{},
- osb. (kolonnen /maks. yttarst/).
+ hadde meir enn ein yttarste \PRED{} utanom rot-f-strukturen (denne
+ har alltid indeks =0= i dette formatet og er lett å identifisere); i
+ dei neste har eg i tillegg med dei som hadde maksimalt ein annan
+ yttarste \PRED{}, osb. (kolonnen /maks. yttarst/).
 
 Det er tydeleg at overlappet mellom =RIA= og =lfgalign= er ganske lågt
  på dette materialet, men det er iallfall meir enn dobbelt så stort
@@ -3401,7 +3407,7 @@ Det er tydeleg at overlappet mellom =RIA= og =lfgalign= er ganske lågt
 
 Det som au er slåande er kor negativt ordboka speler inn på dekninga.
  Det er =lfgalign= som har færrast lenkja \PRED{}-element av alle
- metodane der me har med det fulle testsettet (dekninga er spesielt
+ metodane der me har med det fulle testsettet (og dekninga er spesielt
  låg der ordboka er med). Viss me derimot har fjerna analysar som har
  fleire «yttarste \PRED{}», har =lfgalign= (utan ordbok) faktisk
  fleire enn =RIA= (=lfgalign= kan føye saman eitt predikat og argument
@@ -3421,10 +3427,11 @@ Tidlegare nemnte eg at positiv LPT-informasjon kan føre til at lenkjer
  /adoption/ i denne setninga er nytta i ei anna tyding og blir omsett
  til /Genehmigung/ (som har ti andre omsetjingar i Ding, men altså
  ikkje den me er ute etter).  Det er sannsynleg at dei gjenståande
- lenkjene er av høg presisjon, men med ei så låg dekning (12 % viss
- =RIA= har rett, 8 % viss me ser på alle lenkbare predikat) er nok
- ikkje samanstillinga veldig nyttig. Eg diskuterer ei mogleg løysing
- på dette problemet i del \ref{SEC:opneproblem}.
+ lenkjene er av høg presisjon, men med ei så låg dekning (12 % på det
+ fulle testsettet viss =RIA= har rett, 8 % viss me ser på alle
+ lenkbare predikat) er nok ikkje samanstillinga veldig nyttig. Eg
+ diskuterer ei mogleg løysing på dette problemet i del
+ \ref{SEC:opneproblem}.
 
 Dette testsettet har svært mange «yttarste f-strukturar» (gjerne over
  ti i kvar setning, i snitt fire per setning, medan gjennomsnittleg
@@ -3434,10 +3441,11 @@ Dette testsettet har svært mange «yttarste f-strukturar» (gjerne over
  vere fordi analysane er fragmentariske, eller analysane rett og slett
  ikkje har ein sti til desse \PRED{}-elementa som går via
  argument/adjunkt. Det siste gjeld t.d.  \POSS{}- og \SPEC{}-element,
- som nemnt over, t.d. kvantorar, possessivar og artiklar. Det ser ut
- til at 1473 av 4000 setningspar har fragmentariske analysar på den
- eine sida; men 3948 av 4000 har meir enn eitt yttarste \PRED{}
- (dvs. at det berre er 52 setningspar i dei første tri radene i tabell
+ som nemnt over. Desse er gjerne kvantorar, possessivar eller
+ artiklar. Av 4000 setningspar har 1473 blitt merka som fragmentariske
+ på iallfall den eine sida; men 3948 av dei 4000 har i følgje
+ =lfgalign= meir enn eitt yttarste \PRED{} (dvs. at det berre er 52
+ setningspar i dei første tri radene i tabell
  \ref{tbl:RIA}). Hovudgrunnen til at setningar i dette testsettet har
  fleire yttarste \PRED{}-element er altså at slike \POSS{}- og
  \SPEC{}-element, eller liknande, ikkje er mogleg å finne gjennom
@@ -3468,7 +3476,7 @@ I Xpar-prosjektet vil me nok forvente meir «komplette» analysar enn
  det vere mogleg å gjere noko for å betre på yteevna når analysane er
  fragmentariske; eg kjem tilbake til dette nedanfor.
 
-Eit problem som blir tydeleg med denne evalueringa er at lange lister
+Eit anna problem som blir tydeleg med denne evalueringa er at lange lister
  med argument/adjunkt raskt blir komputasjonelt vanskeleg. For
  «vanlege» lister med argument/adjunkt (t.d. to argument og tri-fire
  adjunkt), er det ikkje merkbart at alle moglege kombinasjonar av
@@ -4048,11 +4056,9 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
         http://www.computing.dcu.ie/~ygraham/sample_de.tar.gz og
         http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz.
 
-[fn:46] Testen utan ordbok blei køyrt på revisjon
-        =fd14d902262a9274b42131cf83ade74d51e23863= av =lfgalign=,
-        testen med ordbok blei køyrt på revisjon
-        =796824e8f1a0bd643caf9d3928fe0f979a360790=.  Sjå tillegg
-        \ref{SEC:ria-kode}.
+[fn:46] Testen blei køyrt på revisjon
+        =796824e8f1a0bd643caf9d3928fe0f979a360790= av =lfgalign=.  Sjå
+        tillegg \ref{SEC:ria-kode}.
 
 [fn:45] Eg gjorde ingen slike avskjeringar for argumentpermutasjonane.
 
@@ -4102,10 +4108,11 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
         under GNU GPL, konvertert til Prolog-format med skriptet
         =dev/ding-to-LPT.py= (i kjeldekoden til =lfgalign=).  Ordboka
         har omtrent 270 000 oppslag; men sidan ein del av dei
-        involverer alternative omsetjingar tok eg det kartesiske
-        produktet av alle slike alternativ, og endte opp med 418 492
+        involverer alternative omsetjingar tek eg det kartesiske
+        produktet av alle slike alternativ, og ender opp med 418 492
         par av token (men 190 284 av desse har mellomrom i seg, og
-        fungerer sannsynlegvis ikkje som LPT-omsetjingar).
+        fungerer sannsynlegvis ikkje som LPT-omsetjingar). Eg har
+        ikkje rekna ut dekninga på ordboka.
 
 [fn:55] Dette er frå kallet =(ev-ria (ria-analyses
         100 1) #'f-align #'rank (ding-lpt))=; kor 100 og 1 vil seie
