@@ -3132,7 +3132,7 @@ Eg gjer i tillegg ei samanlikning med materialet nytta i =RIA Open
 | mrs 26.pl 27.pl   |   2 |   2 |        0 |                                          |
 | mrs 34.pl 35.pl   |   2 |   3 |        0 |                                          |
 | mrs 37.pl 38.pl   |   3 |   3 |        0 |                                          |
-| mrs 38.pl 39.pl   |   2 |   5 |        0 |                                          |
+| mrs 38.pl 39.pl   |   2 |   5 |      (0) |                                          |
 | mrs 57.pl 58.pl   |   3 |   4 |        0 |                                          |
 | mrs 63.pl 64.pl   |   3 |   4 |        0 |                                          |
 | mrs 67.pl 68.pl   |   3 |   4 |      (0) |                                          |
@@ -3161,18 +3161,20 @@ f-strukturnormaliserte setningar.
 \label{SEC:feilanalyse}
 
 Testsettet =mrs= har berre konstruerte døme og eit svært lite
-ordforråd. Det illustrerer ei vid rekkje syntaktiske fenomen, men
-omsetjingane er nok svært direkte. 
+ ordforråd. Det illustrerer ei vid rekkje syntaktiske fenomen, men
+ omsetjingane er nok svært direkte.
 
-Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning 4.pl
-på georgisk (men f-strukturane er like nok til at det ikkje gjer nokon
-forskjell for lenkjinga)[fn:42].
+Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning
+ 4.pl på georgisk (men f-strukturane er like nok til at det ikkje gjer
+ nokon forskjell for lenkjinga)[fn:42].
 
-Berre tri setningspar fekk mange-ein-lenkjer på f-strukturnivå
-(2.pl/2.pl, 34.pl/35.pl og 38.pl/39.pl); dette skjedde i omsetjing frå
-verb til hovudverb+hjelpeverb, eller frå verb til verb+refleksivt
-pronomen. Mange-ein-lenkjene ser ikkje ut til å ha vore noko problem i
-dette testsettet.
+Setningsparet 38.pl/39.pl har argument som blir referert til fleire
+ stader i f-strukturane, eg kjem tilbake til desse i del
+ \ref{SEC:reentrancy}. Berre to setningspar fekk mange-ein-lenkjer på
+ f-strukturnivå (2.pl/2.pl og 34.pl/35.pl); dette skjedde i omsetjing
+ frå verb til hovudverb+hjelpeverb, eller frå verb til verb+refleksivt
+ pronomen. Mange-ein-lenkjene ser ikkje ut til å ha vore noko problem
+ i dette testsettet.
 
 Men setning 67.pl og 68.pl, vist i \Next nedanfor, er problematiske:
 
@@ -3180,7 +3182,7 @@ Men setning 67.pl og 68.pl, vist i \Next nedanfor, er problematiske:
      $\leftrightarrow$
      \b. Bildet av Abrams ankom.
 
- Her er /abramsis/ ein \POSS{} under \SPEC{} av f-strukturen til
+Her er /abramsis/ ein \POSS{} under \SPEC{} av f-strukturen til
  /suraTi/, i staden for å vere eit adjunkt/argument (f-strukturen til
  /Abrams/ står som argument til \p{bilde}). Programmet finn ikkje
  f-strukturar via andre stigar enn adjunkt eller argument til
@@ -3189,25 +3191,25 @@ Men setning 67.pl og 68.pl, vist i \Next nedanfor, er problematiske:
  \ref{SEC:ideell}. Sidan /abramsis/ ikkje er mogleg å finne via
  argument/adjunkt av rotpredikatet, ender det opp i ei eiga liste for
  fragment ol. som kan lenkjast, men kor me ikkje veit noko om
- konteksten. Det blir altså handsama som eit av fleire yttarste predikat
- -- men her burde det jo vere mogleg å finne det via /suraTi/. På den
- norske sida er /Abrams/ mogleg å finne gjennom /bilde/, og er ikkje
- sett på som noko yttarste predikat, så /abramsis/ og /av Abrams/ blir
- ikkje lenkja.
+ konteksten. Det blir altså handsama som eit av fleire yttarste
+ predikat -- men her burde det jo vere mogleg å finne det via
+ /suraTi/. På den norske sida er /Abrams/ mogleg å finne gjennom
+ /bilde/, og er ikkje sett på som noko yttarste predikat, så
+ /abramsis/ og /av Abrams/ blir ikkje lenkja.
 
 Dette dømet demonstrerer ein veikskap med =lfgalign=: om ein skal
-køyre programmet med andre LFG-grammatikkar, som kanskje har andre
-retningslinjer for analyse eller har gjort ting på litt spesielle
-måtar, må ein kanskje leggje til fleire unntak eller meir «kunnskap»
-(evt. preprosessere analysane før lenkjing). Generelt kan dette
-forsåvidt vere eit problem med alle metodar som er svært
-kunnskapsbaserte.
+ køyre programmet med andre LFG-grammatikkar, som kanskje har andre
+ retningslinjer for analyse eller har gjort ting på litt spesielle
+ måtar, må ein kanskje leggje til fleire unntak eller meir «kunnskap»
+ (evt. preprosessere analysane før lenkjing). Generelt kan dette
+ forsåvidt vere eit problem med alle metodar som er svært
+ kunnskapsbaserte.
 
 
 Testsettet =sofie= er frå ein roman, og har difor litt friare
-omsetjingar enn =mrs=.
+ omsetjingar enn =mrs=.
 
- I setning 2.pl og 0.pl har konstruksjonen /være på vei hjem/ blitt
+I setning 2.pl og 0.pl har konstruksjonen /være på vei hjem/ blitt
  omsett til /bruneba/, direkte omsett `dreie'. F-strukturane i \Next
  illusterer forskjellen (adposisjonane er fjerna for å få plass til
  figuren); i \NNext ser me f-struktursamanstillinga som me får etter
@@ -3605,14 +3607,38 @@ Alternativt ein konstruksjonslenkjing...
 Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slag delmengd av
 argstr til $PRED_{L2}$. 
 *** Top-down-lenkjing av f-strukturar, og problemet med sykliske grafar
-      \fxnote{Standarddømet med reentrancy er i mrs/ka/37.pl
-      mrs/nb/38.pl; jaGli/hund er subjekt både for \p{ville} og
-      \p{bjeffe}, difor får løysinga ut jaGli-hund to gonger. TODO:
-      byrje med det enkle dømet, så dette.}
+    \label{SEC:reentrancy}
 
 I =RIA=-testsettet var f-strukturar forenkla slik at det ikkje var
 nokon sykliske stiar. Men det er svært vanleg i LFG-analysar at
-f-strukturane er sykliske og har fleire stiar til same element.
+f-strukturane er sykliske eller har fleire stiar til same
+element. Setningsparet i \Next (38.pl/39.pl i =mrs=-testsettet) har
+ein enkel form for dette, både på kjelde- og målsida opptrer subjektet
+til hjelpeverbet au som subjekt for hovudverbet/verbalsubstativet:
+
+#+BEGIN_LaTeX
+{\avmoptions{}
+\ex. \ag. jaGls qePa unda.\\
+          hund.DAT bjeffe.3SG vil.PRES.IMP \\
+\begin{avm}
+\[pred  & `{\bf{}ndoma}<\@{3},\@{6}>' \\
+subj & \@{3} \[pred & `{\bf{}jaGli}' \] \\
+obj &  \@{6} \[pred & `{\bf{}*-qePa<\@{3}>'}' \] \]
+\end{avm} \\
+     $\leftrightarrow$
+\b. Hunden vil bjeffe.\\
+\begin{avm}
+\[pred  & `{\bf{}root-ville}<\@{8},\@{9}>' \\
+subj & \@{8} \[pred & `{\bf{}hund}' \] \\
+xcomp &  \@{9} \[pred & `{\bf{}bjeffe<\@{8}>'}' \] \]
+\end{avm}
+
+
+}
+#+END_LaTeX
+
+
+
 Setningsparet i \Next gir eit døme på dette. Predikata i setningane
 bør kunne lenkjast, men analysane gir nokre intrikate problem.
 
@@ -4153,5 +4179,7 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
 [fn:59] Som nemnt i del \ref{SEC:fnord} gjer eg ingen forsøk på å
         finne lenkjer mellom nodar som ikkje projiserer
         \PRED{}-element.
+
+
 
 
