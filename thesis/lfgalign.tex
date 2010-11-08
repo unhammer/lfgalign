@@ -1,4 +1,4 @@
-% Created 2010-11-08 må. 12:43
+% Created 2010-11-08 må. 13:48
 \documentclass[11pt,a4paper,oneside,draft]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -3615,31 +3615,30 @@ I Xpar-prosjektet vil me nok forvente meir «komplette» analysar enn
  det vere mogleg å gjere noko for å betre på yteevna når analysane er
  fragmentariske; eg kjem tilbake til dette nedanfor.
 
-Eit anna problem som blir tydeleg med denne evalueringa er at lange lister
- med argument/adjunkt raskt blir komputasjonelt vanskeleg. For
+Eit anna problem som blir tydeleg med denne evalueringa er at lange
+ lister med argument/adjunkt raskt blir komputasjonelt vanskeleg. For
  «vanlege» lister med argument/adjunkt (t.d. to argument og tri-fire
  adjunkt), er det ikkje merkbart at alle moglege kombinasjonar av
  argument/adjunkt blir prøvd lenkja; men når det er snakk om ti
  «adjunkt» (her: yttarste f-strukturar) på kvar side, og ingen
  LPT-tabell, tek det \texttt{adjalign} ca. 46 sekund (på ein vanleg
  datamaskin med 2,1 GHz, 3GB RAM) å finne alle moglege
- lenkjekombinasjonar. For å i det heile teke komme meg gjennom
- testsettet måtte eg setje ei grense på \texttt{lfgalign} i denne evalueringa
- slik at me berre vel første lenkjekombinasjonen viss adjunktlistene
- har over åtte medlem\footnote{Eg gjorde ingen slike avskjeringar for argumentpermutasjonane. }. Med så flate strukturar og ingen
- LPT-informasjon er det nok usannsynleg å ende opp med rett
- kombinasjon uansett. Med denne «avskjeringa» på plass tok heile
- testsettet på 4000 setningspar rett under tri timar å samanstille når
- eg ikkje hadde nokon informasjon i LPT-tabellen med (med ordboka tok
- det under eitt minutt, her blir altså \emph{svært mange} løysingar
- avskjert; me får sjølvsagt au raskare samanstilling med færre
- yttarste \PRED{}). Det kan hende at lenkjeoverlappet hadde vore litt
- høgare med eit fullstendig søk, men avskjeringa skjer berre på
- omtrent kvart tiande setningspar, så den endelege verknaden på
- resultata i tabell \ref{tbl:RIA} (dei siste tri radene) er nok ikkje
- stor.
+ lenkjekombinasjonar. For å i det heile komme meg gjennom testsettet
+ måtte eg setje ei grense på \texttt{lfgalign} i denne evalueringa slik at me
+ berre vel første lenkjekombinasjonen viss adjunktlistene har over
+ åtte medlem\footnote{Eg gjorde ingen slike avskjeringar for argumentpermutasjonane. }. Med så flate strukturar og ingen LPT-informasjon
+ er det nok usannsynleg å ende opp med rett kombinasjon uansett. Med
+ denne «avskjeringa» på plass tok heile testsettet på 4000 setningspar
+ rett under tri timar å samanstille når eg ikkje hadde nokon
+ informasjon i LPT-tabellen med (med ordboka tok det under eitt
+ minutt, her blir altså \emph{svært mange} løysingar avskjert; me får
+ sjølvsagt au raskare samanstilling med færre yttarste \PRED{}). Det
+ kan hende at lenkjeoverlappet hadde vore litt høgare med eit
+ fullstendig søk, men avskjeringa skjer berre på omtrent kvart tiande
+ setningspar, så den endelege verknaden på resultata i tabell
+ \ref{tbl:RIA} (dei siste tri radene) er nok ikkje stor.
 
-Om ein skal konkludere noko frå denne samanlikninga må det vere at
+Om ein skal konkludere noko frå denne samanlikninga må det vere at:
 \begin{enumerate}
 \item Fragmentariske f-strukturar gir dårleg samanstilling (garbage in,
    garbage out)
@@ -3653,7 +3652,13 @@ Om ein skal konkludere noko frå denne samanlikninga må det vere at
 \item Jo mindre top-down-informasjon f-strukturane gir, jo viktigare er
    bottom-up-informasjonen i LPT-tabellen
 \end{enumerate}
-Nedanfor ser eg på moglege måtar å betre på systemet.
+\fxnote[inline,nomargin]{TODO: vel, punkt 1 og punkt 2 er jo ikkje skilt i
+materialet... men det var jo tydeleg frå eyeballing at det
+skjedde. Hmm. Køyre nye testar? Burde au sjå på dei 52 i det minste
+settet og finne ut kvifor dei ikkje blei betre.}
+
+Nedanfor ser eg på moglege måtar å betre på systemet etter denne
+lærdommen.
 
 \section{Opne problem}
 \label{sec-5.4}
@@ -3663,65 +3668,68 @@ Nedanfor ser eg på moglege måtar å betre på systemet.
 I denne delen diskuterer eg nokre opne problem, og moglege strategiar
 for å betre metoden.
 
-\subsection{Fragmentariske analysar}
+\subsection{Fragmentariske analysar og «mjuk» LPT-korrespondanse}
 \label{sec-5.4.1}
 
 Som nemnt i del \ref{SEC:ria} har \texttt{lfgalign} problem med
-fragmentariske f-strukturanalysar. 
+ fragmentariske f-strukturanalysar, både når det gjeld effektivitet,
+ og presisjon.
 
-\fxnote{veit ikkje kor mykje meir eg skal seie
-her...} 
-
-Ein mogleg strategi for å handsame desse vil vere å dele opp
-lenkjingsoppgåva slik at me først finn fragment som sannsynlegvis
-korresponderar (ein god heuristikk er ganske enkelt ordfølgje), og så
-sender kvar av desse til vanleg f-strukturlenkjing. Men der fragmenta
-ikkje overlappar vil me få problem. Ein av grunnføresetnadene til
-\texttt{lfgalign} er at analysane har ein viss likskap, og er korrekte; ei
-god løysing på dette problemet vil nok gå utover oppgåva.
+Éin mogleg strategi for å handsame desse vil vere å dele opp
+ lenkjingsoppgåva slik at me først finn fragment som sannsynlegvis
+ korresponderer (ein god heuristikk er ganske enkelt ordfølgje), og så
+ sender kvar av desse til vanleg f-strukturlenkjing. Men der fragmenta
+ ikkje overlappar vil me få problem. Ein av grunnføresetnadene til
+ \texttt{lfgalign} er at analysane har ein viss likskap, og er korrekte; ei
+ god løysing på dette problemet vil nok gå utover oppgåva.
 
 Ein annan strategi, som iallfall løyser problemet med effektivitet, er
-å gjere eit ufullstendig søk etter adjunktpermutasjonar. Det å finne
-alle kombinasjonar av lenkjer mellom «flate» f-strukturar der me har
-over åtte ord på kvar side tek for lang tid til at det blir
-nyttig. Ein filtrering av moglege lenkjer basert på
-t.d. LPT-korrespondanse kan gjere ei betre avskjering enn me får med
-berre ordfølgje.
-
-\subsection{«Mjuk» LPT-korrespondanse, og rangering som avskjering}
-\label{sec-5.4.2}
+ å gjere eit ufullstendig søk etter adjunktpermutasjonar. Det å finne
+ alle kombinasjonar av lenkjer mellom «flate» f-strukturar der me har
+ over åtte ord på kvar side tek for lang tid til at det blir
+ nyttig. Ein filtrering av moglege lenkjer basert på
+ t.d. LPT-korrespondanse kan gjere ei betre avskjering enn me får med
+ berre ordfølgje. Dette kan ha andre gode sideverknader.
 
 Ufullstendig informasjon i LPT-tabellen kan, som nemnt i del
-\ref{SEC:feilanalyse} og \ref{SEC:ria}, føre til at programmet
-avskjerer for aggressivt. Jo friare omsetjingane er, jo større blir
-dette problemet.
+ \ref{SEC:feilanalyse} og \ref{SEC:ria}, føre til at programmet
+ avskjerer for aggressivt. Jo friare omsetjingane er når det gjeld
+ ordval, jo større blir dette problemet.
 
 I implementasjonen bør kanskje kravet om LPT-korrespondanse difor bli
-eit rangeringskriterium i implementasjonen, slik at me ikkje treng
-stole på at bottom-up-informasjonen vår er perfekt. Eg har ikkje prøvd
-å implementere dette enno. Ved å berre finne dei $k$ beste
-argument-/adjunkt-permutasjonane kan dette kanskje gjere lenkjinga
-litt raskare au\footnote{For å ta dette eit steg vidare kan me flytte sjølve rangeringa
-        inn i f-strukturlenkjinga, for å gjere implementasjonen litt
-        meir effektiv. Dette kan relativt enkelt gjerast ved å endre
-        rekursive kall på \texttt{f-align} til kall på \texttt{rank(f-align)}, og
-        endre \texttt{rank} til å levere ei liste med dei $k$ beste
-        alternativa. Men, det synest som om flaskehalsen er generering
-        av argument-/adjunkt-permutasjonar, så eg veit ikkje kor mykje
-        dette vil ha å seie. }.
+ eit rangeringskriterium, slik at me ikkje treng stole på at
+ bottom-up-informasjonen vår er perfekt. Eg har ikkje prøvd å
+ implementere dette enno, men det bør vere fullt mogleg å endre på
+ \texttt{argalign} og \texttt{adjalign} slik at dei berre leverer dei $k$ beste
+ argument-/adjunkt-permutasjonane (altså eit ufullstendig søk). Dette
+ vil nok gjere lenkjinga litt raskare, i tillegg til at me iallfall
+ returnerer minst éi løysing sjølv om eit målord ikkje står i mengda
+ med omsetjingar frå kjeldeordet\footnote{For å ta dette eit steg vidare kan me flytte sjølve rangeringa
+        inn i f-strukturlenkjinga, som nok vil gjere implementasjonen
+        endå litt meir effektiv. Dette kan relativt enkelt gjerast ved
+        å endre rekursive kall på \texttt{f-align} til kall på
+        \texttt{rank(f-align)}, og endre \texttt{rank} til å levere ei liste med dei
+        $k$ beste alternativa. Men, det synest som om flaskehalsen er
+        generering av argument-/adjunkt-permutasjonar, så eg veit
+        ikkje kor mykje dette vil ha å seie; i tillegg er det kanskje
+        nyttig i visse tilfelle å kunne sjå fleire fullstendige
+        løysingar. }.
 
 
 
 
-\subsection{Top-down-lenkjing av f-strukturar, og problemet med reentrancy}
-\label{sec-5.4.3}
+\subsection{Top-down-lenkjing av f-strukturar, og problemet med sykliske grafar}
+\label{sec-5.4.2}
 
       \fxnote{Standarddømet med reentrancy er i mrs/ka/37.pl
       mrs/nb/38.pl; jaGli/hund er subjekt både for \p{ville} og
       \p{bjeffe}, difor får løysinga ut jaGli-hund to gonger.}
 
-Setningsparet i \Next bør kunne lenkjast, men gir nokre intrikate
-problem.
+I \texttt{RIA}-testsettet var f-strukturar forenkla slik at det ikkje var
+nokon sykliske stiar. Men det er svært vanleg i LFG-analysar at
+f-strukturane er sykliske og har fleire stiar til same element.
+Setningsparet i \Next gir eit døme på dette. Predikata i setningane
+bør kunne lenkjast, men analysane gir nokre intrikate problem.
 
 {\avmoptions{}
 \ex. \ag. Dafür bin ich zutiefst dankbar \\
@@ -3740,7 +3748,7 @@ problem.
 
 }
 
- I \texttt{lfgalign} vil me kunne lenkje \p{bin} og \p{have}, med
+I \texttt{lfgalign} vil me kunne lenkje \p{bin} og \p{have}, med
  LPT-korrespondanse mellom \p{ich} og \p{I} og mellom \p{dankbar} og
  \p{appreciation}. Når me prøver å lenkje \p{dankbar} med
  \p{appreciation} har me LPT-korrespondanse mellom \p{da} og \p{that},
@@ -3751,12 +3759,12 @@ problem.
  med. Verken krava i kapittel \ref{SEC:ideell} eller implementasjonen
  av dei tek innover seg slike problem.
 
- Ein \emph{kan} gjere unntak i krav \ref{krav:PRED} om at argument som
+Ein \emph{kan} gjere unntak i krav \ref{krav:PRED} om at argument som
  allereie har ei lenkje på ytre nivå ikkje skal lenkjast -- altså må
  eit argument berre lenkjast «ein gong». Dette bør løyse problemet
  over, og bør ikkje vere for vanskeleg å implementere heller.
 
- Men ein variant av situasjonen over kan gi litt større problem. I
+Men ein variant av situasjonen over kan gi litt større problem. I
  \Next kan me tenkje oss at den ønskelege lenkjinga er
  \{(\p{p},\p{r}),(\p{q},\p{s}),(\p{ich},\p{I})\}. Den einaste
  relevante forskjellen frå \Last er at i \Last står \p{I} berre i ytre
