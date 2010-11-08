@@ -1,4 +1,4 @@
-% Created 2010-11-08 må. 17:05
+% Created 2010-11-08 må. 17:27
 \documentclass[11pt,a4paper,oneside,draft]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -3862,25 +3862,28 @@ På den andre sida, viss situasjonen i \Last ikkje dukkar opp i
  nok». Til no har eg ikkje sett slike situasjonar, men det er altså
  logisk mogleg at dei kan dukke opp.
 
-\section{Bruksområde}
+\section{\textbf{SKRIV} Bruksområde}
 \label{sec-5.5}
 
 \fxnote[inline,nomargin]{dette blei tynt; flytte til oppsummering kanskje?}
 \subsection{Oppdage argumentstrukturalternasjon}
 \label{sec-5.5.1}
 
- I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
+I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
  f-strukturar og LPT-korrespondanse ikkje alltid har nok informasjon
  til å kunne handtere ulik følgje i argumentstruktur. Programmet mitt
  vil her gi begge løysingar, ei rangering basert på lik argumentfølgje
  vil gi feil løysing på topp.
 
- Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
- objekt til å lære slike argumentstrukturalternasjonar.  Om me
+Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
+ objekt til å lære slike argumentstrukturalternasjonar. Om me
  observerer \emph{sie gefällt mir/jeg liker henne} vil me jo ha
  f-strukturinformasjon som kan nyttast til å informere
- argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.), om det
+ argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.); om det
  var substantiv der ville LPT-korrespondanse kunne informere dette.
+\subsection{Kontrollere kor parallelle grammatikkane eigentleg er}
+\label{sec-5.5.2}
+
 \section{Oppsummering}
 \label{sec-5.6}
 
@@ -3965,9 +3968,18 @@ For å køyre testane som gav tabell \ref{tbl:RIA} kan du laste inn
 
 
 
-(Dette går litt raskare om ein lagrar \texttt{(ding-LPT)} og dei ulike
+Dette går litt raskare om ein lagrar \texttt{(ding-LPT)} og dei ulike
  resultata av \texttt{ria-analyses} i variablar i staden for å hente dei ut
- på nytt kvar gong.)
+ på nytt kvar gong. Om du har tenkt å køyre dei siste testane bør du
+ au sørgje for at Lisp-en din prioriterer snøggleik over
+ avlusingsinformasjon ved kompilering; i SBCL kan ein gjere det slik:
+
+
+\begin{verbatim}
+(declaim (optimize (speed 3) (safety 0) (debug 0)))
+\end{verbatim}
+
+
 
 For kvart kall på \texttt{ev-ria} får du (etter nokre blinkenlights) ei
  oppsummering av samanlikninga, t.d.\footnote{Dette er frå kallet \texttt{(ev-ria (ria-analyses         100 1) \#'f-align \#'rank (ding-lpt))}; kor 100 og 1 vil seie

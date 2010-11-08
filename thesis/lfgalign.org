@@ -3848,9 +3848,15 @@ For å køyre testane som gav tabell \ref{tbl:RIA} kan du laste inn
   (ev-ria (ria-analyses nil nil) #'f-align        #'rank        (ding-LPT))
 #+END_SRC 
 
-(Dette går litt raskare om ein lagrar =(ding-LPT)= og dei ulike
+Dette går litt raskare om ein lagrar =(ding-LPT)= og dei ulike
  resultata av =ria-analyses= i variablar i staden for å hente dei ut
- på nytt kvar gong.)
+ på nytt kvar gong. Om du har tenkt å køyre dei siste testane bør du
+ au sørgje for at Lisp-en din prioriterer snøggleik over
+ avlusingsinformasjon ved kompilering; i SBCL kan ein gjere det slik:
+
+#+BEGIN_SRC lisp
+(declaim (optimize (speed 3) (safety 0) (debug 0)))
+#+END_SRC
 
 For kvart kall på =ev-ria= får du (etter nokre blinkenlights) ei
  oppsummering av samanlikninga, t.d.[fn:55]
