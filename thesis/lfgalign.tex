@@ -1,5 +1,7 @@
-% Created 2010-11-08 må. 17:27
-\documentclass[11pt,a4paper,oneside,draft]{report}
+% Created 2010-11-09 ty. 13:39
+\documentclass[12pt,a4paper,draft]{report}
+%% That geometry is fugly... ugh, not using it
+%\usepackage[left=22mm,top=22mm,right=22mm,bottom=22mm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{xcolor}                 % needs to be before hyperref when using fixme
@@ -57,10 +59,11 @@
 \newcommand{\p}[1]{`\textbf{#1}'}
 \SetKwComment{Comment}{ // }{}
 \SetKwInOut{Input}{usage}
+\newcommand{\tittel}{\vspace{40mm}DASP350 Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk informert frasesamanstilling\vspace{50mm}}
 
-\title{Syntaktisk informert frasesamanstilling }
-\author{Kevin Brubeck Unhammer}
-\date{08/11, 2010}
+\title{\tittel}
+\author{Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010}
+\date{09/11, 2010}
 
 \begin{document}
 
@@ -72,7 +75,10 @@
 
 
 
- 
+
+
+
+
 \begin{abstract}
 \noindent
 
@@ -1280,7 +1286,7 @@ LPT-informasjon for å avgjere kva for lenkjing som er korrekt. Men i
 visse tilfelle vil ikkje ein gong LPT-informasjon vere nok:
 
 {\avmoptions{}
-\ex. \a. sie$_j$ gefallen ihnen$_i$ \\
+\ex. \label{ex:sie-gefallen} \a. sie$_j$ gefallen ihnen$_i$ \\
      $\begin{avm}\[pred & `{\bf{}gefallen}<de$_j$, de$_i$>' \]\end{avm}$
     $\\\\\leftrightarrow$\\
      \b. de$_i$ liker dem$_j$ \\
@@ -1606,11 +1612,17 @@ korresponderer.
                                     [.\node(It){\proj{}{I}}; {regent} ]
                                     [.\node(OBJt){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
+
+\draw[-] (IPs)..controls +(north east:1.5) and +(north west:1.5) .. (IPt) ;
+\draw[-] (I's)..controls +(north east:1.5) and +(north west:1.5) .. (I't) ;
+\draw[-] (SUBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (SUBJt) ;
+\draw[-] (OBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (OBJt) ;
+\draw[-] (Is)..controls +(south east:1.5) and +(south west:1.5) ..  (It) ;
+
 \end{tikzpicture}
    \caption{Enkel lenkjing av c-strukturnodar mellom norsk og
    nederlandsk; IP til IP, I' til I' og I til I.}
    \label{fig:enkel-c-lenkje}
-  \fxnote{TODO: lenkjene!}
   \end{figure}
 
 I figur \ref{fig:enkel-c-lenkje} er dei funksjonelle domena til \emph{regnar/regent} 
@@ -3862,27 +3874,37 @@ På den andre sida, viss situasjonen i \Last ikkje dukkar opp i
  nok». Til no har eg ikkje sett slike situasjonar, men det er altså
  logisk mogleg at dei kan dukke opp.
 
-\section{\textbf{SKRIV} Bruksområde}
+\section{Bruksområde}
 \label{sec-5.5}
 
-\fxnote[inline,nomargin]{dette blei tynt; flytte til oppsummering kanskje?}
-\subsection{Oppdage argumentstrukturalternasjon}
-\label{sec-5.5.1}
+Frasesamanstillingane frå \texttt{lfgalign} har ein kvalitativt forskjellig
+ informasjon frå den du får med berre N-gramlenkjer eller
+ konstituentlenkjer. I denne delen ser eg på moglege bruksområde for
+ samanstillingsannotasjonen.
 
-I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
- f-strukturar og LPT-korrespondanse ikkje alltid har nok informasjon
- til å kunne handtere ulik følgje i argumentstruktur. Programmet mitt
- vil her gi begge løysingar, ei rangering basert på lik argumentfølgje
- vil gi feil løysing på topp.
+Formålet med annotasjonen er jo å lage ein trebank for lingvistisk
+ forsking. Når ein har både LFG-analysane og samanstillinga av kvart
+ setningspar i ein trebank, blir det mogleg å søkje etter t.d. alle
+ førsteargument som er lenkja til ikkje-førsteargument, eller få ei
+ liste over lenkjer mellom frasar med ulik kasus, osb.  Og med eit
+ grensesnitt som skildra i \citet[, under utvikling]{dyvik2009lmp}
+ blir dette endå enklare, for dei spørjingane grensesnittet tillèt.
+ 
+I døme \ref{ex:sie-gefallen} i kapittel \ref{SEC:lik-argstr} viste eg
+ at, sjølv med fullstendig LPT-informasjon kan det finnast tilfelle
+ der me ikkje har nok informasjon til å kunne handtere ulik følgje i
+ argumentstruktur. Programmet mitt vil her gi begge løysingar, ei
+ rangering basert på lik argumentfølgje vil gi feil løysing på topp.
+ Men om me nyttar data frå \emph{fleire førekomstar} (med andre subjekt og
+ objekt) kan me lære slike argumentstrukturskifte; t.d. vil me i \emph{der  Tonfall gefällt mir nicht/jeg liker ikke tonen} ha nok
+ LPT-informasjon til å finne rett løysing. Med ein trebank annotert
+ med f-strukturlenkjer vil slik «læring» ikkje involvere meir enn å
+ gjere spørringar etter subjekt lenkja til objekt og omvendt.
 
-Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
- objekt til å lære slike argumentstrukturalternasjonar. Om me
- observerer \emph{sie gefällt mir/jeg liker henne} vil me jo ha
- f-strukturinformasjon som kan nyttast til å informere
- argumentstrukturalternasjon (\emph{sie/henne} er hokjønn, etc.); om det
- var substantiv der ville LPT-korrespondanse kunne informere dette.
-\subsection{Kontrollere kor parallelle grammatikkane eigentleg er}
-\label{sec-5.5.2}
+Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
+ parallelle som dei er meint å vere, vil sjølvsagt \texttt{lfgalign} au vere
+ praktisk, sidan umotiverte forskjellar lett kan føre til feil
+ lenkjing. 
 
 \section{Oppsummering}
 \label{sec-5.6}

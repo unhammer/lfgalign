@@ -1550,11 +1550,17 @@ korresponderer.
 				    [.\node(It){\proj{}{I}}; {regent} ]
 				    [.\node(OBJt){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {gehaktballen} ] ]   ]
 \end{scope}
+
+\draw[-] (IPs)..controls +(north east:1.5) and +(north west:1.5) .. (IPt) ;
+\draw[-] (I's)..controls +(north east:1.5) and +(north west:1.5) .. (I't) ;
+\draw[-] (SUBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (SUBJt) ;
+\draw[-] (OBJs)..controls +(north east:1.5) and +(north west:1.5) ..  (OBJt) ;
+\draw[-] (Is)..controls +(south east:1.5) and +(south west:1.5) ..  (It) ;
+
 \end{tikzpicture}
    \caption{Enkel lenkjing av c-strukturnodar mellom norsk og
    nederlandsk; IP til IP, I' til I' og I til I.}
    \label{fig:enkel-c-lenkje}
-  \fxnote{TODO: lenkjene!}
   \end{figure}
 #+END_LaTeX
 
