@@ -1,6 +1,8 @@
-% Created 2010-11-09 ty. 13:39
-\documentclass[12pt,a4paper,draft]{report}
-%% That geometry is fugly... ugh, not using it
+% Created 2010-11-09 ty. 14:09
+\documentclass[12pt,a4paper,oneside]{report}
+%% TODO: Change to twoside for print version, remove draft
+
+%% That geometry is fugly... ugh
 %\usepackage[left=22mm,top=22mm,right=22mm,bottom=22mm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -59,10 +61,11 @@
 \newcommand{\p}[1]{`\textbf{#1}'}
 \SetKwComment{Comment}{ // }{}
 \SetKwInOut{Input}{usage}
-\newcommand{\tittel}{\vspace{40mm}DASP350 Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk informert frasesamanstilling\vspace{50mm}}
+\pagenumbering{roman}
+\newcommand{\tittel}{DASP350 -- Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk informert frasesamanstilling\vspace{30mm}}
 
 \title{\tittel}
-\author{Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010}
+\author{Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}}
 \date{09/11, 2010}
 
 \begin{document}
@@ -72,6 +75,7 @@
 \setcounter{tocdepth}{4}
 \tableofcontents
 \vspace*{1cm}
+
 
 
 
@@ -97,6 +101,9 @@ This thesis describes the development of an automatic phrase alignment
 
 
 \listoffixmes
+
+\pagenumbering{arabic}
+
 
 \chapter{Innleiing}
 \label{sec-1}

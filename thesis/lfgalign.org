@@ -37,12 +37,14 @@
 #+LaTeX_HEADER:  \SetKwComment{Comment}{ // }{}
 #+LaTeX_HEADER:  \SetKwInOut{Input}{usage}
 
+#+LaTeX_HEADER: \pagenumbering{roman}
+
 ### The org-mode TITLE command escapes curly parens, so we do it like this instead:
-#+LaTeX_HEADER: \newcommand{\tittel}{\vspace{40mm}DASP350 Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk informert frasesamanstilling\vspace{50mm}}
+#+LaTeX_HEADER: \newcommand{\tittel}{DASP350 -- Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk informert frasesamanstilling\vspace{30mm}}
 #+TITLE: \tittel
 
 ### TODO: studentnummer
-#+AUTHOR: Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010
+#+AUTHOR: Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}
 
 
 #+EXPORT_EXCLUDE_TAGS: ROTETE
@@ -68,6 +70,9 @@ This thesis describes the development of an automatic phrase alignment
 #+END_LaTeX
 
 \listoffixmes
+
+#+LaTeX: \pagenumbering{arabic}
+
 
 * COMMENT Generell TODO
 [[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
