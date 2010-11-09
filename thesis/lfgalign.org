@@ -3768,18 +3768,20 @@ På den andre sida, viss situasjonen i \Last ikkje dukkar opp i
  logisk mogleg at dei kan dukke opp.
 
 ** Bruksområde
-Frasesamanstillingane frå =lfgalign= har ein kvalitativt forskjellig
- informasjon frå den du får med berre N-gramlenkjer eller
- konstituentlenkjer. I denne delen ser eg på moglege bruksområde for
- samanstillingsannotasjonen.
+# Frasesamanstillingane frå =lfgalign= har ein kvalitativt forskjellig
+#  informasjon frå den du får med berre N-gramlenkjer eller
+#  konstituentlenkjer. 
+
+I denne delen ser eg kort på moglege bruksområde for
+ samanstillingsannotasjonen frå =lfgalign=.
 
 Formålet med annotasjonen er jo å lage ein trebank for lingvistisk
  forsking. Når ein har både LFG-analysane og samanstillinga av kvart
- setningspar i ein trebank, blir det mogleg å søkje etter t.d. alle
+ setningspar i ein trebank, blir det mogleg å leite etter t.d. alle
  førsteargument som er lenkja til ikkje-førsteargument, eller få ei
  liste over lenkjer mellom frasar med ulik kasus, osb.  Og med eit
- grensesnitt som skildra i \citet[, under utvikling]{dyvik2009lmp}
- blir dette endå enklare, for dei spørjingane grensesnittet tillèt.
+ grensesnitt som skildra i \citet{dyvik2009lmp} blir dette endå
+ enklare, for dei spørjingane grensesnittet tillèt.
  
 I døme \ref{ex:sie-gefallen} i kapittel \ref{SEC:lik-argstr} viste eg
  at, sjølv med fullstendig LPT-informasjon kan det finnast tilfelle
@@ -3793,10 +3795,16 @@ I døme \ref{ex:sie-gefallen} i kapittel \ref{SEC:lik-argstr} viste eg
  med f-strukturlenkjer vil slik «læring» ikkje involvere meir enn å
  gjere spørringar etter subjekt lenkja til objekt og omvendt.
 
+
+
 Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
  parallelle som dei er meint å vere, vil sjølvsagt =lfgalign= au vere
  praktisk, sidan umotiverte forskjellar lett kan føre til feil
- lenkjing. 
+ lenkjing. Ein kan au nytte programmet under utvikling av ein ny
+ grammatikk for å kontrollere om like fenomen faktisk får lik analyse,
+ men dette gjeld sjølvsagt berre «lenkjingskandidatane» -- dei delene
+ av analysane som kan få lenkjer.
+
 
 ** Oppsummering
  - Sidan avbildinga frå c-strukturnodar til f-struktur er
