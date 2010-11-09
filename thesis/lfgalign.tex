@@ -1,4 +1,4 @@
-% Created 2010-11-09 ty. 14:35
+% Created 2010-11-09 ty. 15:15
 \documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
@@ -3941,9 +3941,47 @@ Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
 \label{sec-6}
 
 
+Automatisk frasesamanstilling direkte avleidd frå parallellismen i
+ f-strukturar er, såvidt eg veit, ikkje prøvd før dette. Som
+ evalueringa viser kan både dei ideelle krava nyanserast (m.a. til å
+ ta inn over seg fleire relasjonar mellom predikat enn
+ argument/adjunkt) og implementeringa betrast (m.a. til å rangere i
+ staden for å avskjere på LPT-informasjon); men metoden synest
+ lovande.
+
+F-strukturlenkjene gir ein kvalitativt ulik informasjon frå det ein
+ får med lenkjer mellom reine N-gram eller konstituentar. Men den
+ endelege samanstillinga har i tillegg ei nær kopling til djupe
+ lingvistiske analysar; dette gir oss høve til å samanlikne
+ grammatiske trekk, konstituentar, syntaktiske funksjonar og \emph{kva  desse er lenkja til} på ein måte som er vanskeleg å sjå føre seg med
+ mindre kunnskapsbaserte metodar. 
+
+Sidan samanstillingane er direkte avleidd frå utdata frå grammatikkar,
+ bør \texttt{lfgalign} vere mogleg å integrere i ein inkrementell metode for
+ trebankoppbygging, kor ein kontinuerleg modifiserer grammatikkane på
+ bakgrunn av arbeidet med manuell disambiguering av ein trebank.
+ \citet{rosen2007tmt} kallar dette \emph{parsebanking}, her kan me kanskje
+ snakke om \emph{parallell parsebanking}. Dette kan au vere ein nyttig
+ strategi der det er lite parallell språkdata, utover det ein skal
+ lenkje (slik situasjonen er for dei fleste språkpara i
+ Xpar-prosjektet). Dei fleste frasesamanstillingsmetodar er avhengig
+ av parallellkorpora på tusenvis av setningspar for å lage
+ N-gramtabellar, sjølv om målet berre er å lenkje eit korpus på eit
+ par hundre setningspar. Men i den situasjonen der nokon har skrive
+ ein grammatikk for språka, kan me få gode samanstillingar ved hjelp
+ av top-down-lenkjing på dei grammatiske analysane. Med eit godt
+ brukargrensesnitt for val av alternative samanstillingar kan ein til
+ og med klare seg utan å gi ordomsetjingar til programmet.
+
+\fxnote[inline,nomargin]{insert snappy finish here}
+
+
+
 \bibliographystyle{apacite}
 \bibliography{master}
+
 \appendix
+
 \chapter{Kode for å køyre \texttt{RIA}-evaluering}
 \label{sec-7}
 
