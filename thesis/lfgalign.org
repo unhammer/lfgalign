@@ -1,12 +1,11 @@
-#+TITLE: Syntaktisk informert frasesamanstilling 
 #+SEQ_TODO: ULEST SKRIV FERDIG
 #+SEQ_TODO: TOGROK TODO DONE
 #+TAGS: SPML(s) NORGLISH(n) ROTETE(r)
 #+STARTUP: hidestars
-#+AUTHOR: Kevin Brubeck Unhammer
 #+EMAIL: Kevin.Unhammer hos student uib no
 #+LANGUAGE: nn
 #+OPTIONS: H:4 toc:t f:t skip:nil num:t
+
 #+LaTeX_CLASS: masterdraft
 #+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
 #+LaTeX_HEADER: \newcommand{\ind}[1]{{\avmoptions{center}\begin{avm}\@{#1}\end{avm}}}
@@ -38,10 +37,17 @@
 #+LaTeX_HEADER:  \SetKwComment{Comment}{ // }{}
 #+LaTeX_HEADER:  \SetKwInOut{Input}{usage}
 
+### The org-mode TITLE command escapes curly parens, so we do it like this instead:
+#+LaTeX_HEADER: \newcommand{\tittel}{\vspace{40mm}DASP350 Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk informert frasesamanstilling\vspace{50mm}}
+#+TITLE: \tittel
+
+### TODO: studentnummer
+#+AUTHOR: Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010
+
 
 #+EXPORT_EXCLUDE_TAGS: ROTETE
 
- 
+
 #+BEGIN_LaTeX
 \begin{abstract}
 \noindent
@@ -66,6 +72,7 @@ This thesis describes the development of an automatic phrase alignment
 * COMMENT Generell TODO
 [[file:~/Master/Master.org::*om%20samanstilling%20fr][skriv det om samanstilling frå forrige Xpar-møte]]
 
+** TODO Studentnummer blah
 ** TODO fikse ỹgraham i lenkjer!
 
 * Innleiing
@@ -1221,7 +1228,7 @@ visse tilfelle vil ikkje ein gong LPT-informasjon vere nok:
 
 #+BEGIN_LaTeX
 {\avmoptions{}
-\ex. \a. sie$_j$ gefallen ihnen$_i$ \\
+\ex. \label{ex:sie-gefallen} \a. sie$_j$ gefallen ihnen$_i$ \\
      $\begin{avm}\[pred & `{\bf{}gefallen}<de$_j$, de$_i$>' \]\end{avm}$
     $\\\\\leftrightarrow$\\
      \b. de$_i$ liker dem$_j$ \\
@@ -3754,22 +3761,37 @@ På den andre sida, viss situasjonen i \Last ikkje dukkar opp i
  nok». Til no har eg ikkje sett slike situasjonar, men det er altså
  logisk mogleg at dei kan dukke opp.
 
-** SKRIV Bruksområde
-\fxnote[inline,nomargin]{dette blei tynt; flytte til oppsummering kanskje?}
-*** Oppdage argumentstrukturalternasjon
-I døme \ref{ex:vedde} i kapittel \ref{SEC:lik-argstr} viste eg at
- f-strukturar og LPT-korrespondanse ikkje alltid har nok informasjon
- til å kunne handtere ulik følgje i argumentstruktur. Programmet mitt
- vil her gi begge løysingar, ei rangering basert på lik argumentfølgje
- vil gi feil løysing på topp.
+** Bruksområde
+Frasesamanstillingane frå =lfgalign= har ein kvalitativt forskjellig
+ informasjon frå den du får med berre N-gramlenkjer eller
+ konstituentlenkjer. I denne delen ser eg på moglege bruksområde for
+ samanstillingsannotasjonen.
 
-Kanskje kan me nytte data frå fleire førekomstar med andre subjekt og
- objekt til å lære slike argumentstrukturalternasjonar. Om me
- observerer /sie gefällt mir/jeg liker henne/ vil me jo ha
- f-strukturinformasjon som kan nyttast til å informere
- argumentstrukturalternasjon (/sie/henne/ er hokjønn, etc.); om det
- var substantiv der ville LPT-korrespondanse kunne informere dette.
-*** Kontrollere kor parallelle grammatikkane eigentleg er
+Formålet med annotasjonen er jo å lage ein trebank for lingvistisk
+ forsking. Når ein har både LFG-analysane og samanstillinga av kvart
+ setningspar i ein trebank, blir det mogleg å søkje etter t.d. alle
+ førsteargument som er lenkja til ikkje-førsteargument, eller få ei
+ liste over lenkjer mellom frasar med ulik kasus, osb.  Og med eit
+ grensesnitt som skildra i \citet[, under utvikling]{dyvik2009lmp}
+ blir dette endå enklare, for dei spørjingane grensesnittet tillèt.
+ 
+I døme \ref{ex:sie-gefallen} i kapittel \ref{SEC:lik-argstr} viste eg
+ at, sjølv med fullstendig LPT-informasjon kan det finnast tilfelle
+ der me ikkje har nok informasjon til å kunne handtere ulik følgje i
+ argumentstruktur. Programmet mitt vil her gi begge løysingar, ei
+ rangering basert på lik argumentfølgje vil gi feil løysing på topp.
+ Men om me nyttar data frå /fleire førekomstar/ (med andre subjekt og
+ objekt) kan me lære slike argumentstrukturskifte; t.d. vil me i /der
+ Tonfall gefällt mir nicht/jeg liker ikke tonen/ ha nok
+ LPT-informasjon til å finne rett løysing. Med ein trebank annotert
+ med f-strukturlenkjer vil slik «læring» ikkje involvere meir enn å
+ gjere spørringar etter subjekt lenkja til objekt og omvendt.
+
+Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
+ parallelle som dei er meint å vere, vil sjølvsagt =lfgalign= au vere
+ praktisk, sidan umotiverte forskjellar lett kan føre til feil
+ lenkjing. 
+
 ** Oppsummering
  - Sidan avbildinga frå c-strukturnodar til f-struktur er
    mange-til-ein, kan me t.d. innanfor eitt tre ha fleire N-gram per
