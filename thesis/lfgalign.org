@@ -2093,14 +2093,6 @@ mellom /never/ og /nikby/.
 # medan einingen er det på engelsk (her følgjer dei semantikken i
 # samanstilling).
 
-** TOGROK Diskontinuerlege einingar				     :ROTETE:
-   - diskontinuerlege einingar \cite[s.~4]{cheung2002scg}
-     [[http://scholar.google.no/scholar.bib%3Fhl%3Dno&lr%3D&ie%3DUTF-8&q%3Dinfo:Qh_MRSftNZgJ:scholar.google.com/&output%3Dcitation&oe%3DMACINTOSH&oi%3Dcitation][@books.google]] -- skal dei eigentleg samanstillast? Kva for
-     problem gir dei i forhold til c-strukturnivåsamanstilling?
-
-bør ikkje finnast på f-nivå, \PRED{} er unikt instansiert; MEN: prøv «jeg
-tror på ham» i XLE, ser ut som dei har komplekse predikat :-/
-*** TODO døme på diskontinuerlege konstituentar som er lenkja	     :ROTETE:
 
 ** TODO Konstruksjonar og komposisjonell inekvivalens		     :ROTETE:
 # eg siterer her alsina frå min eigen artikkel..heller sitere min??
@@ -3844,11 +3836,12 @@ Men i tillegg til desse måla, vil lenkjene til =lfgalign= gi
  dependensstrukturar åleine. Og sidan avbildinga frå c-strukturnodar
  til f-struktur er mange-til-ein, kan me innanfor eitt tre ha fleire
  «N-gram» per f-strukturhovud. Me kan altså ha diskontinuerlege
- mange-mange-lenkjer på c-strukturnivå. Slike relasjonar finn me ikkje
- med ein metode som berre ser på lenkjer mellom konstituentdelmengdene
- av ein N-gramtabell \citep{samuelsson2007apa} eller ein metode som
- ikkje har ei kopling frå f-struktur til c-struktur
- \citep{graham2009fts}.
+ mange-mange-lenkjer på c-strukturnivå. \fxnote{treng meir enn berre
+ diskontinuerlege einingar her, sidan testsettet ikkje har dei...}
+ Slike relasjonar finn me ikkje med ein metode som berre ser på
+ lenkjer mellom konstituentdelmengdene av ein N-gramtabell
+ \citep{samuelsson2007apa} eller ein metode som ikkje har ei kopling
+ frå f-struktur til c-struktur \citep{graham2009fts}.
 
 
 
