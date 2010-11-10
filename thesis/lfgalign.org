@@ -3548,7 +3548,7 @@ maskinomsetjing?)
 Til gjengjeld vil me få lenkjer sjølv om me har mellomståande ord
 (/There/ never /is/) som opptrer utanfor N-grammet på det andre
 språket.
-** Opne problem 
+** Opne problem og moglege løysingar
    \label{SEC:opneproblem}
 
 I denne delen diskuterer eg nokre opne problem, og moglege strategiar
@@ -3807,37 +3807,43 @@ Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
 
 
 ** Oppsummering
- - Sidan avbildinga frå c-strukturnodar til f-struktur er
-   mange-til-ein, kan me t.d. innanfor eitt tre ha fleire N-gram per
-   f-strukturhovud; ein metode som berre ser på enkle N-gram-lenkjer
-   vil ikkje registrere desse relasjonane (t.d. metoden i
-   \citet{samuelsson2007apa}).
+Implementasjonen stiller høge krav til inndata: det må vere ferdig
+ disambiguert og setningslenkja, og analysane må sjølvsagt vere
+ korrekte (iallfall når det gjeld argumentstruktur). I tillegg må
+ grammatikkane som gav analysane vere fundert på like prinsipp, for å
+ få best mogleg resultat. Det kan au oppstå problem viss ein køyrer
+ programmet på analysar frå grammatikkar som, sjølv om dei er fundert
+ på like prinsipp, har svært ulike måtar å representere ulike
+ grammatiske fenomen enn det grammatikkane i Xpar-prosjektet her
+ (t.d. viss mange \PRED{}-element ikkje er mogleg å finne igjen frå
+ argumentlister eller adjunktmengder). Evalueringa viser at det er ein
+ del arbeid som gjenstår med både dei ideelle krava og
+ implementeringa. Men det er allereie med dette systemet mogleg å få
+ ut nyttig lenkjingsinformasjon.
 
- - Det er ikkje berre ei N-gramsamanstilling; sidan
-   lenkjene er mellom c-strukturnodar kor kvar node dominerer ein
-   konstituent, kunne me kalt det ei konstituentsamanstilling.
+Me kan nok betre skårane på kvantitative mål som presisjon og dekning
+ ved å implementere nokre av forslaga nemnt i del
+ \ref{SEC:opneproblem}. Det ville au vore interessant å teste denne
+ metoden opp mot N-grambaserte metodar på eit språkpar som
+ norsk-georgisk, kor dei syntaktiske forskjellane er større; her må
+ det meir evalueringsdata til.
 
- - Lenkjer mellom f-strukturar vil gi informasjon som er kvalitativt
-   forskjellig frå det ein kan få med å berre sjå på lenkjer mellom
-   ord, n-gram eller konstituentar.
+Men i tillegg til desse måla, vil lenkjene til =lfgalign= gi
+ informasjon som er kvalitativt forskjellig frå det ein kan få med å
+ berre sjå på lenkjer mellom ord, n-gram, konstituentar eller
+ dependensstrukturar åleine. Og sidan avbildinga frå c-strukturnodar
+ til f-struktur er mange-til-ein, kan me innanfor eitt tre ha fleire
+ «N-gram» per f-strukturhovud. Me kan altså ha diskontinuerlege
+ mange-mange-lenkjer på c-strukturnivå. Slike relasjonar finn me ikkje
+ med ein metode som berre ser på lenkjer mellom konstituentdelmengdene
+ av ein N-gramtabell \citep{samuelsson2007apa} eller ein metode som
+ ikkje har ei kopling frå f-struktur til c-struktur
+ \citep{graham2009fts}.
 
- - Ein kan kanskje få betre skåre på kvantitative mål som presisjon og
-   gjenkjenning, spesielt kor språkforskjellane er store men analysane
-   tufta på felles prinsipp, men her må det meir testing (og ikkje
-   minst data) til.
-
- - =lfgalign= stiller høge krav til inndata: det må vere ferdig
-   disambiguert og setningssamanstilt. I tillegg må grammatikkane som
-   gav analysane vere fundert på like prinsipp, for å få best mogleg
-   resultat. Det kan au oppstå problem viss ein køyrer programmet på
-   analysar frå grammatikkar som, sjølv om dei er fundert på like
-   prinsipp, har svært ulike måtar å representere ulike grammatiske
-   fenomen enn det grammatikkane i Xpar-prosjektet her.
 
 
      
 * Avslutning
-# tom inndeling for å halde bibliografien sist
 
 Automatisk frasesamanstilling direkte avleidd frå parallellismen i
  f-strukturar er, såvidt eg veit, ikkje prøvd før dette. Som
@@ -4308,6 +4314,8 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
 
 [fn:60] Me kunne hatt inversjon på nederlandsk au; men me samanstiller
         instansar av omsetjingar, ikkje språket generelt.
+
+
 
 
 
