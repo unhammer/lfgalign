@@ -1787,13 +1787,13 @@ lenkja på c-strukturnivå.
 Det finst (iallfall) to alternativ. 
 
 Det eine alternativet er å seie seie at I- og I'-nodane ikkje skal
-lenkjast, sidan /det/ og /seg/ er lenkja på f-strukturnivå (til
-subjekt og objekt av gaiGo), då tolker me det slik at I' og IP
-dominerer ulikt lenkja materiale. Det at det /ikkje/ finst ei lenkje
-mellom I'-nodane, men mellom IP-nodane, vil då opplyse oss om at
-I'-nodane dominerer ulike f-strukturlenkja informasjonstilskot på dei
-ulike språka; likeins for I-nodane. Eg kjem tilbake til korleis ein
-kan formalisere dette kravet i del \ref{SEC:c-strengare}.
+ lenkjast, sidan /det/ og /seg/ er lenkja på f-strukturnivå (til
+ subjekt og objekt av gaiGo), då tolker me det slik at I' og IP
+ dominerer ulikt lenkja materiale. Det at det /ikkje/ finst ei lenkje
+ mellom I'-nodane, men mellom IP-nodane, vil då opplyse oss om at
+ I'-nodane dominerer ulike f-strukturlenkja informasjonstilskot på dei
+ ulike språka; likeins for I-nodane. Eg kjem tilbake til korleis ein
+ kan formalisere dette kravet i del \ref{SEC:c-strengare}.
 
 Det andre alternativet er å ikkje gjere forskjell på IP, I' og I når
  det gjeld c-strukturlenkjinga. Grunnen til å gjere dette er at
@@ -1804,7 +1804,7 @@ Det andre alternativet er å ikkje gjere forskjell på IP, I' og I når
  i andre omgivnader. Det finst ein slag dobbeltheit mellom
  korrespondansen /gaiGo-det åpnet seg/ og korrespondansen /gaiGo-åpnet
  seg/ og me kan uttrykkje dette ved å ikkje gjere forskjell på IP og
- I' i figur \ref{fig:gaiGo} \citep{dyvik2010pc}.
+ I' i figur \ref{fig:gaiGo} (Dyvik 2010, p.k.).
 
 #+BEGIN_LaTeX
 \begin{figure}[htp]
@@ -2904,7 +2904,7 @@ Eg gjer i tillegg ei samanlikning med materialet nytta i =RIA Open
  f-strukturlenkjer for 4000 setningspar, fått via ein N-grambasert
  metode; her samanliknar eg overlapp i samanstillingane.  Setningane,
  og setningslenkjene, er frå Europarl-korpuset
- \citep{koehn2005emc}. LFG-analysane kjem frå handskrivne
+ \citep{koehn2005epc}. LFG-analysane kjem frå handskrivne
  ParGram-grammatikkar \citep[m.a.~][]{kaplan2002aeg}, men er automatisk
  disambiguerte og setningssamanstilte (og inkluderer ein god del
  fragmentariske analysar); det er difor ganske ulikt det materialet eg
