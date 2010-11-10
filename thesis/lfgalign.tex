@@ -1,4 +1,4 @@
-% Created 2010-11-10 on. 13:39
+% Created 2010-11-10 on. 15:26
 \documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
@@ -3882,29 +3882,32 @@ På den andre sida, viss situasjonen i \Last ikkje dukkar opp i
 \label{sec-5.5}
 
 
-I denne delen ser eg kort på moglege bruksområde for
- samanstillingsannotasjonen frå \texttt{lfgalign}.
+Her ser eg kort på moglege bruksområde for samanstillingsannotasjonen
+ frå \texttt{lfgalign}, utover det ein får med «vanlege»
+ frasesamanstillingsmetodar.
 
 Formålet med annotasjonen er jo å lage ein trebank for lingvistisk
  forsking. Når ein har både LFG-analysane og samanstillinga av kvart
  setningspar i ein trebank, blir det mogleg å leite etter t.d. alle
  førsteargument som er lenkja til ikkje-førsteargument, eller få ei
- liste over lenkjer mellom frasar med ulik kasus, osb.  Og med eit
+ liste over lenkjer mellom frasar med ulik kasus, eller alle PP-ar
+ lenkja til NP-ar som dominerer ein ulenkja PP, osb. Og med eit
  grensesnitt som skildra i \citet{dyvik2009lmp} blir dette endå
  enklare, for dei spørjingane grensesnittet tillèt.
  
-I døme \ref{ex:sie-gefallen} i kapittel \ref{SEC:lik-argstr} viste eg
+Sjølv der programmet kan tek feil i enkelttilfelle, kan ein få nyttig
+ informasjon ved å sjå på samanstillingane over heile trebanken.  I
+ døme \ref{ex:sie-gefallen} i kapittel \ref{SEC:lik-argstr} viste eg
  at, sjølv med fullstendig LPT-informasjon kan det finnast tilfelle
  der me ikkje har nok informasjon til å kunne handtere ulik følgje i
- argumentstruktur. Programmet mitt vil her gi begge løysingar, ei
+ argumentstruktur. Programmet mitt vil her finne to løysingar; ei
  rangering basert på lik argumentfølgje vil gi feil løysing på topp.
  Men om me nyttar data frå \emph{fleire førekomstar} (med andre subjekt og
- objekt) kan me lære slike argumentstrukturskifte; t.d. vil me i \emph{der  Tonfall gefällt mir nicht/jeg liker ikke tonen} ha nok
+ objekt) kan me kartleggje slike argumentstrukturskifte; t.d. vil me i
+ \emph{der Tonfall gefällt mir nicht/jeg liker ikke tonen} ha nok
  LPT-informasjon til å finne rett løysing. Med ein trebank annotert
- med f-strukturlenkjer vil slik «læring» ikkje involvere meir enn å
+ med f-strukturlenkjer vil slik kartlegging ikkje involvere meir enn å
  gjere spørringar etter subjekt lenkja til objekt og omvendt.
-
-
 
 Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
  parallelle som dei er meint å vere, vil sjølvsagt \texttt{lfgalign} au vere
@@ -3914,6 +3917,17 @@ Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
  men dette gjeld sjølvsagt berre «lenkjingskandidatane» -- dei delene
  av analysane som kan få lenkjer.
 
+Sjølv om eg her har argumentert for at formålet med metoden i denne
+ oppgåva er å lage annotasjonar som er nyttige for språkstudium, er
+ det ikkje utelukka at desse kan vere nyttige for meir praktiske
+ formål. Predikat-argumentstruktur har m.a. vore nyttig i
+ fleirspråkleg anaforresolusjon og informasjonsgjenfinning
+ \citep{surdeanu2003upa,azzam1998crm}, medan fraselenkjer generelt kan
+ vere nyttige for alle typar overvåka læring av fleirspråklege
+ korrespondansar. Sjølvsagt bør det au vere mogleg å nytte
+ annotasjonen i maskinomsetjing, t.d. til læring av overføringsreglar,
+ men då må ein nok endre LPT-kravet til å ikkje tillate lenkjer mellom
+ pronomen og NP-ar.
 
 \section{Oppsummering}
 \label{sec-5.6}
