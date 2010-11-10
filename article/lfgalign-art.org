@@ -1,16 +1,13 @@
 #+TITLE: LFG-based Constituent and Function Alignment for Parallel Treebanking
 #+STARTUP: hidestars
 #+SEQ_TODO: ULEST SKRIV FERDIG
-#+AUTHOR: 
-#Kevin Brubeck Unhammer
-#+EMAIL: 
-#Kevin.Unhammer hos student uib no
+#+AUTHOR: Kevin Brubeck Unhammer\\[0.5cm]Universitetet i Bergen\\Institutt for lingvistiske, litterære og estetiske studier\\E-mail: \texttt{unhammer@fsfe.org}
+#+EMAIL: Kevin.Unhammer hos student uib no
 #+LANGUAGE: en
 #+OPTIONS: H:4 toc:nil f:t skip:nil num:t
 
 #+LaTeX_CLASS: TLT
 
-#+LaTeX_HEADER: \newcommand{\ind}[1]{{\avmoptions{center}\begin{avm}\@{#1}\end{avm}}}
 #+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
 #+LaTeX_HEADER: \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
 #+LaTeX_HEADER: \newcommand{\OBLben}{\F{obl}{ben}}
@@ -36,6 +33,9 @@
 #+LaTeX_HEADER: \newcommand{\ua}{\ensuremath{\uparrow}}
 #+LaTeX_HEADER: \newcommand{\da}{\ensuremath{\downarrow}}
 #+LaTeX_HEADER: \newcommand{\p}[1]{`\textbf{#1}'}
+#+LaTeX_HEADER: \newcommand{\latexbf}[1]{{\bf#1}} % since textbf doesn't work in avm's and {bf{}} not in footnotes
+#+LaTeX_HEADER: \newcommand{\inlineavm}[1]{{\avmoptions{center}\begin{avm}#1\end{avm}}}
+#+LaTeX_HEADER: \newcommand{\ind}[1]{\inlineavm{\@{#1}}}
 
 #+LaTeX_HEADER: \usetikzlibrary{calc}
 
@@ -177,7 +177,7 @@ We begin by explaining the relevant LFG-terminology and concepts.
 
   \end{minipage}
   \begin{minipage}[c]{8 cm}
-    \begin{tikzpicture}
+    \begin{tikzpicture}[scale=0.8]
 
     {\avmoptions{}
      \node(src){
@@ -199,9 +199,9 @@ We begin by explaining the relevant LFG-terminology and concepts.
 %      \draw[dashed,-] (src.west) .. controls +(-1,3) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
 %      \draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
 
-      \begin{scope}[shift={(0,-1.3cm)}]
+      \begin{scope}[shift={(0,-1.5cm)}]
         \Tree  [.\node(VPs){IP}; [.\proj{\ua{}\SUBJ{}=\da}{NP} \edge[roof]; {eg} ] [.\proj{\ua{}=\da}{I'} [.\proj{\ua{}=\da}{V} \node(sov){sov};  ] ] ]
-      \begin{scope}[shift={(5cm,0)}]
+      \begin{scope}[shift={(6cm,0)}]
         \Tree  [.\node(VPt){S}; [.\proj{\ua{}\SUBJ{}=\da}{NP} \edge[roof]; {I} ] [.\proj{\ua{}=\da}{VP} [.\proj{\ua{}=\da}{V} \node(slept){slept};  ] ] ]
       \end{scope}
       \end{scope}
@@ -286,7 +286,7 @@ If any of the arguments of two otherwise linkable predicates do not
 \ex. \label{ex:vedde}
 \a. \textbf{Abrams} \textbf{bet} \textbf{a} \textbf{cigarette} \textbf{with} \textbf{Browne} \textbf{that} \textbf{it} \textbf{was} \textbf{raining.}
     $\\\begin{avm}\[pred & `{\bf{}bet}<Abrams, cigarette, rain>'
-                    ~~~~ \textsc{adjunct} & \{ \rm Browne \}\]\end{avm}\\$
+                    ~~~~~~ \textsc{adjunct} & \{ \rm Browne \}\]\end{avm}\\$
 \bg. \textbf{Abrams} \textbf{veddet} \textbf{en} \textbf{sigarett} \textbf{med} \textbf{Browne} \textbf{på} \textbf{at} \textbf{det} \textbf{regnet.}\\
      Abrams bet    a  cigarette with Browne on that it rained.\\
      $\\\begin{avm}\[pred & `{\bf{}bet}<Abrams, cigarette, Browne, rain>' 
@@ -294,11 +294,11 @@ If any of the arguments of two otherwise linkable predicates do not
 \cg. \textbf{abramsi} \textbf{brouns} \textbf{daenajleva} \textbf{sigare\d{t}-ze,} \textbf{rom} \textbf{\d{c}vimda.} \\
      Abrams.NOM Browne.DAT    bet.PERF   cigarette.DAT-on,  that rained.IMPERF.\\
      $\\\begin{avm}\[pred &  `{\bf{}bet}<Abrams, Browne, rain>'
-                     ~~~~ \textsc{adjunct} &  \{ \rm cigarette \}\]\end{avm}\\$ 
+                     ~~~~~~ \textsc{adjunct} &  \{ \rm cigarette \}\]\end{avm}\\$ 
 \dg. \textbf{Abrams} \textbf{hat} \textbf{mit} \textbf{Browne} \textbf{um} \textbf{eine} \textbf{Zigarette} \textbf{gewettet,} \textbf{daß} \textbf{es} \textbf{regnet.}\\
      Abrams has    with Browne about a cigarette.ACC bet, that it rained.\\
      $\\\begin{avm}\[pred & `{\bf{}bet}<Abrams, rain>' 
-                     ~~~~ \textsc{adjunct} & \{ \rm Browne, cigarette \}\]\end{avm}$
+                     ~~~~~~ \textsc{adjunct} & \{ \rm Browne, cigarette \}\]\end{avm}$
 
 }
 %\hfill{} (Norwegian Bokmål)\\
@@ -387,7 +387,7 @@ Georgian being a pro-drop language, the argument expressed by /de/ in
 }
 
 
-      \begin{tikzpicture}
+      \begin{tikzpicture}[scale=0.8]
       \tikzset{level distance=1.4cm,sibling distance=0.1pt}
       \Tree  [.\node(IPs){IP};  [.\node(roboter){\proj{\ua{}\TOPIC{}=\da}{NP}}; \edge[roof]; {roboter} ]
                                 [.\node(I's){\proj{\ua=\da}{I'}};
@@ -445,7 +445,7 @@ Several nodes may have equal $LL$, thus the c-structure links are
 #+BEGIN_LaTeX
 \begin{figure}[htp]
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.8]
     {\avmoptions{}
      \node(src){
         \begin{avm}
@@ -597,11 +597,12 @@ The current implementation is, as mentioned, a work in progress,
 Of course, the alignments will only be as good as the grammatical
  analyses that gave rise to them, so this is an important possible
  source of errors. E.g. where an idiom is missing from the grammar,
- the f-structure on one side may be too deep, leading to mismatches[fn:18];
- also, fragmentary analyses contain very little useful information.
- Building high-quality, wide-coverage grammars requires manual work;
- however, without these, a large, informative and consistent treebank
- may require even more manual work.
+ the f-structure on one side may be too deep, leading to
+ mismatches[fn:18]; also, fragmentary analyses contain very little
+ useful information due to their ``flat'' f-structures.  Building
+ high-quality, wide-coverage grammars requires manual work; however,
+ without these, a large, informative and consistent treebank may
+ require even more manual work.
 
 A top-down method of alignment such as this may be quite
  useful for language pairs with few parallel resources, where there
@@ -732,15 +733,16 @@ A top-down method of alignment such as this may be quite
  \cite[p.~149]{samuelsson2007apa}.
 
 [fn:15] In particular: we don't yet have a way to align features like
- \SPEC{} and \POSS{} unless they are also in the arguments/adjuncts;
- also the current implementation uses LPT information to completely
- cut off possibilities---a ranking would be more robust if we have
- partial information. Additionally, the program expects
- sentence-aligned, disambiguated analyses, and many sentences in the
- larger test sets have not seen manual disambiguation yet.
+ \SPEC{} and \POSS{} (which may have \PRED{} elements) unless they are
+ also in the arguments/adjuncts; and the current implementation uses
+ LPT information to completely cut off possibilities---a ranking would
+ be more robust if we have partial information. Additionally, the
+ program expects sentence-aligned, disambiguated analyses, and many
+ sentences in the larger test sets have not seen manual disambiguation
+ yet.
 
-[fn:16] The sentences are from a book translation, but the Norwegian
- sentence has been topicalised to illustrate the c-structure
+[fn:16] The sentences are from a translation of a novel, but the
+ Norwegian sentence has been topicalised to illustrate the c-structure
  constraint.
 
 # TODO kan fjerne fn:16 («book translation»)
@@ -752,7 +754,9 @@ A top-down method of alignment such as this may be quite
  practice, evidence about possible LPT-correspondence may also come from
  word alignments, translational dictionaries, etc.
 
-[fn:18] An example of this would be where /be on one's way home/
- translates into a single predicate.
+[fn:18] An example of this would be where a single predicate (perhaps
+ itself an idiom) translates into /be on one's way home/, which in an
+ incomplete grammar might consist of three predicates.
+
 
 
