@@ -4,7 +4,7 @@
 #+STARTUP: hidestars
 #+EMAIL: Kevin.Unhammer hos student uib no
 #+LANGUAGE: nn
-#+OPTIONS: H:4 toc:t f:t skip:nil num:t
+#+OPTIONS: H:4 toc:nil f:t skip:nil num:t
 
 #+LaTeX_CLASS: masterdraft
 #+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
@@ -51,27 +51,45 @@
 
 
 #+BEGIN_LaTeX
-\begin{abstract}
-\noindent
+  \chapter*{Forord}
+  \addcontentsline{toc}{chapter}{Forord}
+  
+  \begin{abstract}\selectlanguage{english}
+    \thispagestyle{plain}\setcounter{page}{2}\addcontentsline{toc}{chapter}{Abstract}
+    \fxnote{fylle ut, og så skrive på norsk..}
+  
+    This thesis describes the development of an automatic phrase alignment
+    method using as input parallel sentences parsed in Lexical-Functional
+    Grammar, where similarity in analyses is used as evidence that
+    constituents (syntactic phrases) or functional elements (predicates,
+    arguments, adjuncts) may be linked. A set of principles for phrase
+    alignment are formulated, with the goal of annotating a parallel
+    treebank for linguistic research.  An implementation is given and
+    evaluated and compared with methods based on N-gram tables.
+  
+  \end{abstract}
+  
 
- \fxnote{fylle ut, og så skrive på norsk..}
+  \begin{abstract}\selectlanguage{nynorsk}
+    \thispagestyle{plain}\setcounter{page}{3}\addcontentsline{toc}{chapter}{Samandrag}
 
-This thesis describes the development of an automatic phrase alignment
- method using as input parallel sentences parsed in Lexical-Functional
- Grammar, where similarity in analyses is used as evidence that
- constituents (syntactic phrases) or functional elements (predicates,
- arguments, adjuncts) may be linked. A set of principles for phrase
- alignment are formulated, with the goal of annotating a parallel
- treebank for linguistic research.  An implementation is given and
- evaluated and compared with methods based on N-gram tables.
+    Denne oppgåva...
 
-\end{abstract}
-
+  \end{abstract}
+  
+  
+  \listoffixmes
+  
+  
+  \setcounter{tocdepth}{4}
+  \tableofcontents
+  \vspace*{1cm}
+  
+  
+  \pagenumbering{arabic}
 #+END_LaTeX
 
-\listoffixmes
 
-#+LaTeX: \pagenumbering{arabic}
 
 
 * COMMENT Generell TODO

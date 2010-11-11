@@ -1,8 +1,6 @@
-% Created 2010-11-10 on. 16:20
-\documentclass[12pt,a4paper,oneside,draft]{report}
-%% TODO: Change to twoside for print version, remove draft
-
-%% That geometry is fugly... ugh
+% Created 2010-11-11 to. 14:51
+\documentclass[12pt,a4paper,draft]{report}
+%% That geometry is fugly... ugh, not using it
 %\usepackage[left=22mm,top=22mm,right=22mm,bottom=22mm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -66,15 +64,12 @@
 
 \title{\tittel}
 \author{Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}}
-\date{10/11, 2010}
+\date{11/11, 2010}
 
 \begin{document}
 
 \maketitle
 
-\setcounter{tocdepth}{4}
-\tableofcontents
-\vspace*{1cm}
 
 
 
@@ -83,26 +78,44 @@
 
 
 
-\begin{abstract}
-\noindent
+  \chapter*{Forord}
+  \addcontentsline{toc}{chapter}{Forord}
+  
+  \begin{abstract}\selectlanguage{english}
+    \thispagestyle{plain}\setcounter{page}{2}\addcontentsline{toc}{chapter}{Abstract}
+    \fxnote{fylle ut, og så skrive på norsk..}
+  
+    This thesis describes the development of an automatic phrase alignment
+    method using as input parallel sentences parsed in Lexical-Functional
+    Grammar, where similarity in analyses is used as evidence that
+    constituents (syntactic phrases) or functional elements (predicates,
+    arguments, adjuncts) may be linked. A set of principles for phrase
+    alignment are formulated, with the goal of annotating a parallel
+    treebank for linguistic research.  An implementation is given and
+    evaluated and compared with methods based on N-gram tables.
+  
+  \end{abstract}
+  
 
- \fxnote{fylle ut, og så skrive på norsk..}
+  \begin{abstract}\selectlanguage{nynorsk}
+    \thispagestyle{plain}\setcounter{page}{3}\addcontentsline{toc}{chapter}{Samandrag}
 
-This thesis describes the development of an automatic phrase alignment
- method using as input parallel sentences parsed in Lexical-Functional
- Grammar, where similarity in analyses is used as evidence that
- constituents (syntactic phrases) or functional elements (predicates,
- arguments, adjuncts) may be linked. A set of principles for phrase
- alignment are formulated, with the goal of annotating a parallel
- treebank for linguistic research.  An implementation is given and
- evaluated and compared with methods based on N-gram tables.
+    Denne oppgåva...
 
-\end{abstract}
+  \end{abstract}
+  
+  
+  \listoffixmes
+  
+  
+  \setcounter{tocdepth}{4}
+  \tableofcontents
+  \vspace*{1cm}
+  
+  
+  \pagenumbering{arabic}
 
 
-\listoffixmes
-
-\pagenumbering{arabic}
 
 
 \chapter{Innleiing}
