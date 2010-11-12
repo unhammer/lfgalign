@@ -65,7 +65,7 @@
   \begin{abstract}
     \thispagestyle{plain}\setcounter{page}{2}\addcontentsline{toc}{chapter}{Abstract}
 
-    This thesis describes a novel, \emph{top-down} method of automatic
+    This thesis describes a novel, knowledge-based method of automatic
     phrase alignment, with the aim of annotating a multilingual
     treebank for linguistic studies. Most current phrase alignment
     methods are based on extracting many-to-many-links from N-gram
@@ -99,7 +99,7 @@
   \begin{abstract}
     \thispagestyle{plain}\setcounter{page}{3}\addcontentsline{toc}{chapter}{Samandrag}
 
-    Denne oppgåva presenterer ein \emph{top-down}-metode for
+    Denne oppgåva presenterer ein kunnskapsbasert metode for
     automatisk frasesamanstilling, kor formålet er å annotere ein
     fleirspråkleg trebank for lingvistiske studium. Dei fleste
     frasesamanstillingsmetodar nyttar N-gramtabellar som grunnlag for
@@ -755,8 +755,7 @@ Sidan utviklinga av automatisk frasesamanstilling hovudsakleg har
  /es gibt/ og /there is/ (dvs. eit auka sannsyn for å nytte slike par
  i omsetjinga) kan gi ein høgare (betre) endeleg skåre i \Bleu. Som
  vist i \citet{koehn2003spb} fekk dei ein /lågare/ \Bleu-skåre når dei
- \fxnote{todo: referere til den faktiske parsaren?  det var Bikel
- kanskje?}  fjerna lenkjer mellom N-gram som, i følgje ein robust
+ fjerna lenkjer mellom N-gram som, i følgje ein robust
  statistisk frasestrukturparsar, ikkje var syntaktiske frasar
  (konstituentar). Dvs. at i figur \ref{fig:ikkjenode} vil lenkja vist
  ved den prikkete linja bli fjerna frå mengda over moglege lenkjer om
@@ -1460,7 +1459,6 @@ ser eg på del \ref{SEC:f-mange-mange}.
 
 *** Kausativar og inkorporering
 \label{SEC:f-mange-mange}
-\fxnote{TODO: dette gjeld mange andre fenomen au, fryse ned, }
 
 Til no har me føresett at eit \PRED{}-element anten er ulenkja, eller
 er lenkja til eitt og berre eitt anna \PRED{}-element. Men i visse
@@ -3885,9 +3883,9 @@ Sjølv om eg her har argumentert for at formålet med metoden i denne
  \citep{surdeanu2003upa,azzam1998crm}, medan fraselenkjer generelt kan
  vere nyttige for alle typar overvåka læring av fleirspråklege
  korrespondansar. Sjølvsagt bør det au vere mogleg å nytte
- annotasjonen i maskinomsetjing, t.d. til læring av overføringsreglar,
- men då må ein nok endre LPT-kravet til å ikkje tillate lenkjer mellom
- pronomen og NP-ar.
+ annotasjonen i maskinomsetjing, t.d. til læring av overføringsreglar
+ som i \citet{riezler2006gmt,graham2009fts}, men då må ein nok endre
+ LPT-kravet til å ikkje tillate lenkjer mellom pronomen og NP-ar.
 
 ** Oppsummering
 Implementasjonen stiller høge krav til inndata: det må vere ferdig
@@ -3914,15 +3912,15 @@ Me kan nok betre skårane på kvantitative mål som presisjon og dekning
 Men i tillegg til desse måla, vil lenkjene til =lfgalign= gi
  informasjon som er kvalitativt forskjellig frå det ein kan få med å
  berre sjå på lenkjer mellom ord, n-gram, konstituentar eller
- dependensstrukturar åleine. Og sidan avbildinga frå c-strukturnodar
- til f-struktur er mange-til-ein, kan me innanfor eitt tre ha fleire
- «N-gram» per f-strukturhovud. Me kan altså ha diskontinuerlege
- mange-mange-lenkjer på c-strukturnivå. \fxnote{treng meir enn berre
- diskontinuerlege einingar her, sidan testsettet ikkje har dei...}
- Slike relasjonar finn me ikkje med ein metode som berre ser på
- lenkjer mellom konstituentdelmengdene av ein N-gramtabell
- \citep{samuelsson2007apa} eller ein metode som ikkje har ei kopling
- frå f-struktur til c-struktur \citep{graham2009fts}.
+ dependensstrukturar åleine. Me har ei integrert mengd med lenkjer på
+ ulike nivå. Og sidan avbildinga frå c-strukturnodar til f-struktur er
+ mange-til-ein, kan me innanfor eitt tre ha fleire «N-gram» per
+ f-strukturhovud; dette gjer at me kan ha diskontinuerlege
+ mange-mange-lenkjer på c-strukturnivå.  Slike relasjonar kan me ikkje
+ finne med ein metode som berre ser på lenkjer mellom
+ konstituentdelmengdene av ein N-gramtabell \citep{samuelsson2007apa}
+ eller ein metode som ikkje har ei kopling frå f-struktur til
+ c-struktur \citep{graham2009fts}.
 
 
 
