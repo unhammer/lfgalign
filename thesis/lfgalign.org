@@ -158,6 +158,16 @@
 
 #+BEGIN_LaTeX
   % \begin{quotation}
+  % Die Summe des Erkennbaren liegt, als das von dem menschlichen Geiste zu bearbeitende Feld, zwischen allen Sprachen, und unabhängig von ihnen, in der Mitte.
+  % % The sum of the knowable, as the field to be tilled by the human mind, lies among all languages, independent of them, in the middle.
+  % \begin{minipage}{0.77\textwidth}
+  % \begin{flushright}
+  % (Wilhelm von Humboldt)
+  % \end{flushright}
+  % \end{minipage}
+  % \end{quotation}
+
+  % \begin{quotation}
   % I begynnelsen var ordet -- på slutten, frasen. % vel, klisjeen 
   % \begin{minipage}{0.77\textwidth}
   % \begin{flushright}
