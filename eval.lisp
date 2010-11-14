@@ -2,7 +2,8 @@
 ;;; problems about them
 (in-package #:lfgalign)
 
-(defun evaluate (path_s path_t &optional LPTs absolute)
+
+(defun ev-align-print (path_s path_t &optional LPTs absolute)
   (let*
       ((tab_s (open-and-import path_s absolute))
        (tab_t (open-and-import path_t absolute))
@@ -44,8 +45,12 @@
 			   (topnodes (cadr pair) tree_t))))
 	    c-alignments)))
 
+
+;;;;;;;; MANUAL TEST SET (mrs, sofie)
+;;;;;;;; ----------------------------
+
 (defun ev-ka-nb (subdir n_s n_t)
-  (evaluate (format nil "eval/~A/ka/~A.pl" subdir n_s)
+  (ev-align-print (format nil "eval/~A/ka/~A.pl" subdir n_s)
 	    (format nil "eval/~A/nb/~A.pl" subdir n_t)))
 
 (defun ev-all ()
@@ -75,9 +80,8 @@
   (ev-ka-nb "mrs" 57 58)
   (ev-ka-nb "mrs" 63 64)
   (ev-ka-nb "mrs" 67 68)
-  (ev-ka-nb "mrs" 71 72)	  ; TODO: koordinering fungerer ikkje!
-  ; (ev-ka-nb "mrs" 73 74)	  ; TODO: koordinering fungerer ikkje!
-  ;; ^^^ krasjer i tillegg pred-tag-alignment...
+  (ev-ka-nb "mrs" 71 72)		; coord
+  (ev-ka-nb "mrs" 73 74)		; coord
 
   (ev-ka-nb "sofie" 2 0)		; for stor avstand i argumentstruktur: være på vei hjem <=> bruneba
 
@@ -98,7 +102,7 @@
   ;; (ev-ka-nb "sofie" 32 32)
   ;; (ev-ka-nb "sofie" 41 46)
 
-  (evaluate "eval/sulis/de/D0000.pl" "eval/sulis/en/E0000.pl"))
+  (ev-align-print "eval/sulis/de/D0000.pl" "eval/sulis/en/E0000.pl"))
 
 
 
@@ -135,7 +139,7 @@
 		(c-alignments (c-align-ranked best-f-alignment 
 					      tree_s tab_s
 					      tree_t tab_t)))
-	     (out "=================================~% (evaluate \"~A\" \"~A\")~%"
+	     (out "=================================~% (ev-align-print \"~A\" \"~A\")~%"
 		  path_s path_t)
 	     (out "~A~% <=> ~A~%"
 		  (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
@@ -289,30 +293,6 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
 
      counting path_s into i
      do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
-     do
-     (when *debug*
-       (out "=================================~% (evaluate \"~A\" \"~A\")~%"
-	    path_s path_t)
-       (if (> union 0)
-	   (out "isect/union ~A~%" (/ isect union))
-	   (out "isect: ~A union: ~A~%" isect union))
-       (out "~A~% <=> ~A~%"
-	    (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
-       (out "                ria: ~A~%~A: ~A~%"
-	    (pred-tag-alignment ria-ranked tab_s tab_t)
-	    aligner
-	    (pred-tag-alignment best-f-alignment tab_s tab_t))
-       (let ((allpairs
-	      (if (consp (cdr f-alignments))
-		  ;; Strangely, mapcan #'append hangs if the list is long enough:
-		  (loop for l in (flatten f-alignments) append l)
-		  (list f-alignments))))
-	 (flet ((preds (getter tab)
-		  (mapcar (lambda (var)
-			    (get-pred var tab))
-			  (remove-duplicates (mapcar getter allpairs)))))
-	   (out "~%srcs: ~A~%trgs: ~A~%"
-		(preds #'car tab_s) (preds #'cdr tab_t)))))
      finally (out "~%Intersections: ~A~%Unions: ~A~%links made by ~A: ~A~%links in RIA: ~A~%Linkable source PRED's: ~A~%Link possibilities (linkable srcs * linkable trgs): ~A~%Unreferenced sources: ~A~%Unreferenced targets: ~A~%"
 		  isects unions aligner ls_best ls_ria possible_srcs possible_links
 		  unref_s unref_t)
