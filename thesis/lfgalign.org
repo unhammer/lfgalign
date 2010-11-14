@@ -2906,10 +2906,6 @@ I neste kapittel går eg gjennom resultat av å køyre =lfgalign= på
 * Evaluering og diskusjon
 \label{SEC:diskusjon}
 
-\fxnote{burde skrive noko om c-strukturlenkjinga; men den ser jo grei
-ut... kan evt. sjekke kor mange lenkjingar som blir ulike når me endrar
-på variabelen \texttt{pro-affects-c-linking}} 
-
 #+BEGIN_LaTeX
   %     \begin{quotation}
   %   Nawet w jego milczeniu były błędy językowe. \\
@@ -2939,16 +2935,20 @@ på variabelen \texttt{pro-affects-c-linking}}
  krav \ref{krav:PRED-omgivnad} i kapittel \ref{SEC:ideell} (og lenkjar
  altså berre f-strukturar som er argument/adjunkt av lenkja
  f-strukturar, eller ikkje er argument/adjunkt av noko). Dette er nok
- for unyansert, men det avskjerer ein god del umotiverte
- lenkjingar. \fxnote[inline,nomargin]{I tillegg er
- c-strukturlenkjinga i implementasjonen direkte avleidd av
- f-strukturlenkjinga; men, som nemnt i del \ref{SEC:fnord} kan det
- finnast c-strukturforhold som bør påverke f-strukturlenkjinga.} I
- dette kapittelet ser eg på korleis føresetnadene ved implementasjonen
- påverkar kva for samanstillingar me får, og kjem fram til at svært
- ulike eller fragmentariske f-strukturar fører til store feil i
- lenkjingane.
+ for unyansert, men det avskjerer ein god del umotiverte lenkjingar.
 
+ I dette kapittelet ser eg på korleis føresetnadene ved
+ implementasjonen påverkar kva for samanstillingar me får, og kjem
+ fram til at svært ulike eller fragmentariske f-strukturar fører til
+ store feil i lenkjingane; men det finst konkrete løysingar på dei
+ fleste problema. 
+
+ Eg har ikkje gjort nokon evaluering av c-strukturlenkjinga; denne er
+ uansett direkte avleidd frå f-strukturlenkjene, utan nokon
+ «valfridom». Feil i c-strukturlenkjene har så langt anten vore
+ implementasjonsfeil som var enkle å rette på, eller så har dei
+ oppstått på grunn av at f-strukturlenkjene var feil.
+ 
   
 ** Materiale
 Eg byrjar med språka georgisk og norsk i evalueringa, hovudsakleg
@@ -4405,6 +4405,10 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
 
 [fn:60] Me kunne hatt inversjon på nederlandsk au; men me samanstiller
         instansar av omsetjingar, ikkje språket generelt.
+
+
+
+
 
 
 
