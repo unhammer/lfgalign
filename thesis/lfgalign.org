@@ -3220,7 +3220,7 @@ Dei vanlegaste metodane er basert på sannsynsmodellar[fn:36], kor den
 | mrs 63.pl 64.pl   |   3 |   4 |        0 |                                          |
 | mrs 67.pl 68.pl   |   3 |   4 |      (0) |                                          |
 | mrs 71.pl 72.pl   |   4 |   4 |        0 |                                          |
-| mrs 73.pl 74.pl   |   4 |   4 |        0 |                                          |
+| mrs 73.pl 74.pl   |   4 |   4 |        1 | {(qePa,bjeffe)}, {(mo-svla,ankomme)}     |
 |                   |     |     |          |                                          |
 | sofie 2.pl 0.pl   |   4 |   8 |      (2) | {(amundsen,Amundsen),(skola,skole)}      |
 | sofie 13.pl 10.pl |   3 |   6 |      (0) |                                          |
