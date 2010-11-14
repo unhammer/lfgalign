@@ -131,8 +131,6 @@
   \end{abstract}
   
   
-  \listoffixmes
-  
   
   \setcounter{tocdepth}{4}
   \tableofcontents
@@ -1060,17 +1058,17 @@ Sidan \PRED{}-lenkjing impliserer ordlenkjing, må me sjekke om krava
  \PRED{}-element.
 
 ** Forholdet mellom ordlenkjer og \PRED{}-lenkjer 			     :ROTETE:
-\fxnote{der ADJUNKT ikkje er realisert, lenkjer me ikkje \PRED{}.  skal
-me då ikkje lenkje ord heller?}
+der ADJUNKT ikkje er realisert, lenkjer me ikkje \PRED{}.  skal
+me då ikkje lenkje ord heller?
 
-\fxnote{finst det tilfelle der ordlenkjer ikkje impliserer \PRED{}-lenkjer? 
+finst det tilfelle der ordlenkjer ikkje impliserer \PRED{}-lenkjer? 
 \\
 (hypotese: det er alltid slik at ordlenkjing av predikerande ord => \PRED{}-lenkje)
 \\
 PRED->ord :: iallfall\\
 PRED<-ord :: ?\\
 PRED<->ord\\
-PRED, ord}
+PRED, ord
 
 ** Krav på ordnivå
 \label{SEC:ordkrav}
@@ -3606,13 +3604,14 @@ Om ein skal konkludere noko frå denne samanlikninga må det vere at:
 4. Jo mindre top-down-informasjon f-strukturane gir, jo viktigare er
    bottom-up-informasjonen i LPT-tabellen
 
-\fxnote[inline,nomargin]{TODO: vel, punkt 1 og punkt 2 er jo ikkje skilt i
-materialet... men det var jo tydeleg frå eyeballing at det
-skjedde. Hmm. Køyre nye testar? Burde au sjå på dei 52 i det minste
-settet og finne ut kvifor dei ikkje blei betre.}
 
 Nedanfor ser eg på moglege måtar å betre på systemet etter denne
 lærdommen.
+
+*** TODO vel, punkt 1 og punkt 2 er jo ikkje skilt i materialet...   :ROTETE:
+    men det var jo tydeleg frå eyeballing at det
+    skjedde. Hmm. Køyre nye testar? Burde au sjå på dei 52 i det minste
+    settet og finne ut kvifor dei ikkje blei betre.
 
 *** Men korleis gjenfinne there is/es gibt?			     :ROTETE:
 (og kva skal me med det, viss ikkje me driv med statistisk
