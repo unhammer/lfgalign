@@ -3884,6 +3884,23 @@ Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
  men dette gjeld sjølvsagt berre «lenkjingskandidatane» -- dei delene
  av analysane som kan få lenkjer.
 
+Sidan samanstillingane er direkte avleidd frå utdata frå grammatikkar,
+ bør =lfgalign= vere mogleg å integrere i ein inkrementell metode for
+ trebankoppbygging, kor ein kontinuerleg modifiserer grammatikkane på
+ bakgrunn av arbeidet med manuell disambiguering av ein trebank.
+ \citet{rosen2007tmt} kallar dette /parsebanking/, her kan me kanskje
+ snakke om /parallell parsebanking/. Dette kan au vere ein nyttig
+ strategi der det er lite parallell språkdata, utover det ein skal
+ lenkje (slik situasjonen er for dei fleste språkpara i
+ Xpar-prosjektet). Dei fleste frasesamanstillingsmetodar er avhengig
+ av parallellkorpora på tusenvis av setningspar for å lage
+ N-gramtabellar, sjølv om målet berre er å lenkje eit korpus på eit
+ par hundre setningspar. Men i den situasjonen der nokon har skrive
+ ein grammatikk for språka, kan me få gode samanstillingar ved hjelp
+ av top-down-lenkjing på dei grammatiske analysane. Med eit godt
+ brukargrensesnitt for val av alternative samanstillingar kan ein til
+ og med klare seg utan å gi ordomsetjingar til programmet.
+
 Sjølv om eg her har argumentert for at formålet med metoden i denne
  oppgåva er å lage annotasjonar som er nyttige for språkstudium, er
  det ikkje utelukka at desse kan vere nyttige for meir praktiske
@@ -3895,6 +3912,7 @@ Sjølv om eg her har argumentert for at formålet med metoden i denne
  annotasjonen i maskinomsetjing, t.d. til læring av overføringsreglar
  som i \citet{riezler2006gmt,graham2009fts}, men då må ein nok endre
  LPT-kravet til å ikkje tillate lenkjer mellom pronomen og NP-ar.
+
 
 ** Oppsummering
 Implementasjonen stiller høge krav til inndata: det må vere ferdig
@@ -3936,13 +3954,21 @@ Men i tillegg til desse måla, vil lenkjene til =lfgalign= gi
      
 * Avslutning
 
+Denne oppgåva har prøvd å svare på kva for fraselenkjer som er
+ ønskelege i ein parallel trebank mynta på lingvistisk forsking, på
+ ein slik måte at desse ønskene er formaliserbare, og
+ implementerbare. Implementasjonsmetoden nyttar i hovudsak
+ parallellismen i dei djupe, syntaktiske analysane for å finne
+ lenkbare f-strukturar, og frå dei, lenkbare c-strukturnodar.
+
 Automatisk frasesamanstilling direkte avleidd frå parallellismen i
- f-strukturar er, såvidt eg veit, ikkje prøvd før dette. Som
- evalueringa viser kan både dei ideelle krava nyanserast (m.a. til å
- ta inn over seg fleire relasjonar mellom predikat enn
- argument/adjunkt) og implementeringa betrast (m.a. til å rangere i
- staden for å avskjere på LPT-informasjon); men metoden synest
- lovande.
+ djupe syntaktiske analysar er, såvidt eg veit, ikkje prøvd utanfor
+ Xpar-prosjektet. Som evalueringa viser kan både dei ideelle krava
+ nyanserast (m.a. til å ta inn over seg fleire relasjonar mellom
+ predikat enn argument/adjunkt) og implementeringa betrast (m.a. til å
+ rangere i staden for å avskjere på LPT-informasjon). Men metoden
+ synest lovande, sjølv om evalueringsmaterialet er litt for tynt for å
+ komme med ein sterk konklusjon.
 
 F-strukturlenkjene gir ein kvalitativt ulik informasjon frå det ein
  får med lenkjer mellom reine N-gram eller konstituentar. Men den
@@ -3951,25 +3977,6 @@ F-strukturlenkjene gir ein kvalitativt ulik informasjon frå det ein
  grammatiske trekk, konstituentar, syntaktiske funksjonar og /kva
  desse er lenkja til/ på ein måte som er vanskeleg å sjå føre seg med
  mindre kunnskapsbaserte metodar. 
-
-Sidan samanstillingane er direkte avleidd frå utdata frå grammatikkar,
- bør =lfgalign= vere mogleg å integrere i ein inkrementell metode for
- trebankoppbygging, kor ein kontinuerleg modifiserer grammatikkane på
- bakgrunn av arbeidet med manuell disambiguering av ein trebank.
- \citet{rosen2007tmt} kallar dette /parsebanking/, her kan me kanskje
- snakke om /parallell parsebanking/. Dette kan au vere ein nyttig
- strategi der det er lite parallell språkdata, utover det ein skal
- lenkje (slik situasjonen er for dei fleste språkpara i
- Xpar-prosjektet). Dei fleste frasesamanstillingsmetodar er avhengig
- av parallellkorpora på tusenvis av setningspar for å lage
- N-gramtabellar, sjølv om målet berre er å lenkje eit korpus på eit
- par hundre setningspar. Men i den situasjonen der nokon har skrive
- ein grammatikk for språka, kan me få gode samanstillingar ved hjelp
- av top-down-lenkjing på dei grammatiske analysane. Med eit godt
- brukargrensesnitt for val av alternative samanstillingar kan ein til
- og med klare seg utan å gi ordomsetjingar til programmet.
-
-\fxnote[inline,nomargin]{insert snappy finish here}
 
 
 
