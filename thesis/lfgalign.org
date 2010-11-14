@@ -65,7 +65,7 @@
   \begin{abstract}
     \thispagestyle{plain}\setcounter{page}{2}\addcontentsline{toc}{chapter}{Abstract}
 
-    This thesis describes a novel, knowledge-based method of automatic
+    This thesis describes a knowledge-based method of automatic
     phrase alignment, with the aim of annotating a multilingual
     treebank for linguistic studies. Most current phrase alignment
     methods are based on extracting many-to-many-links from N-gram
@@ -90,7 +90,7 @@
     these principles is given. Finally, the method is evaluated both
     manually and automatically, and compared with methods based on
     N-gram tables. The results suggest that the method seems
-    promising, but there are also concrete possibilities for
+    promising, but also suggest specific possibilities for
     improvement.
   
   \end{abstract}
@@ -104,7 +104,7 @@
     fleirspråkleg trebank for lingvistiske studium. Dei fleste
     frasesamanstillingsmetodar nyttar N-gramtabellar som grunnlag for
     å finne mange-mange-lenkjer; ekte syntaktiske konstituentar eller
-    avhengnadslenkjer blir kanskje filtrert ut i eit seinare
+    dependenslenkjer blir kanskje filtrert ut i eit seinare
     steg. Desse metodane nyttar ikkje den fulle informasjonen
     tilgjengeleg i ein djup syntaktisk analyse. I tillegg er formålet
     ofte å byggje eit maskinomsetjingssystem; få metodar rettar seg
@@ -112,7 +112,7 @@
     heller ingen prinsippielle grunnar til å ekskludere lenkjer som
     ikkje er lingvistisk motiverte.
 
-    Metoden i denne oppgåva, derimot, har det uttrykkelege formålet å
+    Metoden i denne oppgåva, derimot, har som uttrykkeleg formål å
     annotere ein parallell trebank for lingvistisk forsking. Inndata
     er parallelle setningar med djupe, syntaktiske analysar i
     Leksikalsk-Funksjonell Grammatikk. Ein føresetnad er at
@@ -125,8 +125,8 @@
     gir ein implementasjon av prinsippa. Til slutt blir metoden
     evaluert, både manuelt og automatisk, og samanlikna med metodar
     som tek N-gramtabellar som datagrunnlag. Resultata tyder på at
-    metoden er lovande, men det finst au konkrete måtar å betre på
-    metoden.
+    metoden er lovande, men viser au at det finst konkrete måtar å
+    betre på metoden.
 
   \end{abstract}
   
