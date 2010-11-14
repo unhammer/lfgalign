@@ -2881,14 +2881,23 @@ Sidan =c-align= kallar =add-links= for kvar av sidene, får me to
  oppslagsnøklene til tabellen); nodane som er lagra med same mengd med
  f-strukturlenkjer (same nøkkel i tabellen) skal lenkjast på
  c-strukturnivå. Alle desse mange-til-mange-lenkjene blir til slutt
- returnert av =c-align=. Om brukarvariabelen =*pro-affects-c-linking*=
- er sann, vil me leggje til lenkja pro-argument i lenkjemengdene;
- denne variabelen styrer forskjellen mellom dei to alternative
- løysingane på ulenkja c-strukturnodar diskutert i del
- \ref{SEC:f-lenkje-utan-c-node}.
+ returnert av =c-align=.
 
-Prosessen er no ferdig, mange-til-mange-lenkjene mellom
- c-strukturnodar definerer frasesamanstillinga.
+ Om brukarvariabelen =*pro-affects-c-linking*= er sann, vil me leggje
+ til lenkja pro-argument i lenkjemengdene; denne variabelen styrer
+ forskjellen mellom dei to alternative løysingane på ulenkja
+ c-strukturnodar diskutert i del \ref{SEC:f-lenkje-utan-c-node}. Om
+ =*pro-affects-c-linking*= er usann, filtrerer me ut alle lenkjer frå
+ =f-alignment= kor det eine elementet ikkje opptrer i c-strukturen,
+ før kall på =c-align=.  I figur \ref{fig:gaiGo} har me to
+ f-strukturlenkjer som ikkje finst i c-strukturen; om me ikkje
+ filterer ut desse, vil det /norske/ treet bli delt i tri nodemengder
+ (noko me berre ønskjer viss =*pro-affects-c-linking*= er sann) medan
+ det georgiske uansett står som éin del.
+
+Etter å ha henta ut nodane som er lagra med same nøkkel, er prosessen
+ ferdig. Mange-til-mange-lenkjene mellom c-strukturnodar definerer
+ konstituentsamanstillinga.
 
 I neste kapittel går eg gjennom resultat av å køyre =lfgalign= på
  ulike testsett.

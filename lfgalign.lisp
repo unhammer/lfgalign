@@ -14,7 +14,7 @@
 
 (defvar *no-warnings* t)
 (defvar *debug* nil)
-(defvar *pro-affects-c-linking* t)	; Whether unlinked pro-elements may hinder linking c-structure nodes of two predicates
+(defvar *pro-affects-c-linking* nil)	; Whether unlinked pro-elements may hinder linking c-structure nodes of two predicates
 (defvar *max-adjs* 8)			; maximum amount of adjs to try to match in `adjalign'
 (defvar *include-unreferenced-preds* t)	; Whether we add all unreferenced PRED f-structures to adjuncts of SENTENCE (with f-structure id -1)
 
@@ -1166,6 +1166,14 @@ defined by `f-alignment', which must have been through `flatten';
 	     (when (member c-id v) (return-from get-links k)))
 	   (LL-tab splits)))
 
+(defun nodeless-link? (link tab_s tab_t)
+  "Return true iff either part of `link' has no c-structure node.
+
+Note: will of course remove SENTENCE, but that shouldn't matter since
+-1 is not in the c-structure tree anyway."
+  (or (not (phi^-1 (cdr link) tab_t))
+      (not (phi^-1 (car link) tab_s))))
+
 (defun nodeless-args (f-id tab)
   "Return arguments of PRED with `f-id' that have no c-structure nodes.
 TODO: could pro-arguments ever have pro-arguments of their own? 
@@ -1247,7 +1255,12 @@ phi's don't match anything in the files)."
 (defun c-align-ranked (f-alignment tree_s tab_s tree_t tab_t)
   "Align trees for a single, flat `f-alignment'."
   (let ((splits_s (make-instance 'LL-splits))
-	(splits_t (make-instance 'LL-splits)))
+	(splits_t (make-instance 'LL-splits))
+	(f-alignment
+	 (if *pro-affects-c-linking*
+	     f-alignment
+	     (remove-if (lambda (link) (nodeless-link? link tab_s tab_t))
+			f-alignment))))
     (add-links f-alignment tree_s tab_s splits_s 'src)
     (add-links f-alignment tree_t tab_t splits_t 'trg)
     (let ((linkable (hash-key-intersect (LL-tab splits_s)
