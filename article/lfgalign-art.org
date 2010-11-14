@@ -732,14 +732,13 @@ A top-down method of alignment such as this may be quite
  order to increase recall) may hurt precision severely
  \cite[p.~149]{samuelsson2007apa}.
 
-[fn:15] In particular: we don't yet have a way to align features like
- \SPEC{} and \POSS{} (which may have \PRED{} elements) unless they are
- also in the arguments/adjuncts; and the current implementation uses
- LPT information to completely cut off possibilities---a ranking would
- be more robust if we have partial information. Additionally, the
- program expects sentence-aligned, disambiguated analyses, and many
- sentences in the larger test sets have not seen manual disambiguation
- yet.
+[fn:15] In particular: we don't yet align features like \SPEC{} and
+ \POSS{} (which may have \PRED{} elements) unless they are also in the
+ arguments/adjuncts; and the current implementation uses LPT
+ information to completely cut off possibilities---a ranking would be
+ more robust if we have partial information. Additionally, the program
+ expects sentence-aligned, disambiguated analyses, and most sentences
+ in the larger test sets have not seen manual disambiguation yet.
 
 [fn:16] The sentences are from a translation of a novel, but the
  Norwegian sentence has been topicalised to illustrate the c-structure
