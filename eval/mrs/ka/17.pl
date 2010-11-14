@@ -21,6 +21,7 @@ fstructure('gaiGo.',
 	],
 	% Equivalences:
 	[
+	select(A2, 1),
 	
 	],
 	% Constraints:
