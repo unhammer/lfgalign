@@ -1,4 +1,4 @@
-% Created 2010-11-16 ty. 14:21
+% Created 2010-11-16 ty. 14:26
 \documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
@@ -368,7 +368,7 @@ I første omgang spesifiserer eg kva for lenkjer mellom f\hyp{}strukturar og
  \texttt{lfgalign} som automatisk finn samanstillingar med slike lenkjer.
  Dette programmet opprettar frasesamanstillingar med hjelp av
  f\hyp{}strukturinformasjonen gitt av grammatikkar som er skrivne på felles
- prinsipp, i tillegg til å kunne avgrense lenkjingar med hjelp av
+ prinsipp, i tillegg til å kunne avgrense lenkingar med hjelp av
  bottom-up-informasjon om kva for ordlenkjer som er
  moglege. f\hyp{}strukturane avgrensar igjen kva for ordsamanstillingar som
  er moglege, og kva for c\hyp{}strukturnodar (syntaktiske frasar) som kan
@@ -400,9 +400,9 @@ Eg evaluerer samanstillingane som kjem ut av denne metoden i kapittel
 som er mogleg der me berre har konstituentstruktur (syntaktiske tre) i
 tillegg til N-grambasert ordsamanstilling. Eg nyttar dei typologisk
 svært ulike språka georgisk og norsk i eit lite testsett kor eg går
-gjennom lenkjingane manuelt. I tillegg ser eg på forskjellane mellom
-f\hyp{}strukturlenkjingane frå min implementasjonen og dei som kjem frå ein
-N-grambasert metode for lenkjing av f\hyp{}strukturar, på eit større,
+gjennom lenkingane manuelt. I tillegg ser eg på forskjellane mellom
+f\hyp{}strukturlenkingane frå min implementasjonen og dei som kjem frå ein
+N-grambasert metode for lenking av f\hyp{}strukturar, på eit større,
 tysk-engelsk testsett.
 
 
@@ -432,16 +432,16 @@ I dette kapittelet gir eg eit oversyn over dei vanlegaste metodane
 \section{Metodar for frasesamanstilling}
 \label{sec-2.1}
 
-Frasesamanstilling vil seie lenkjing av (representasjonar av) delar av
+Frasesamanstilling vil seie lenking av (representasjonar av) delar av
  setningar som (representerer ord som) har ein omsetjingsmessig
  korrespondanse. Merk at ordet «frase» ofte blir nytta i litteraturen
  om kontinuerlege strenger av ord (N-gram) som ikkje treng vere
  syntaktiske konstituentar. I vid forstand kan me au inkludere
- lenkjing av delar av dependensstrukturar, eller av syntaktiske
+ lenking av delar av dependensstrukturar, eller av syntaktiske
  funksjonar, som begge representerer mengder med ord.
 
 Automatisk frasesamanstilling er eit nytt felt.  Det finst allereie
- veldig gode system for automatisk lenkjing av setningar; her har ein
+ veldig gode system for automatisk lenking av setningar; her har ein
  fått svært gode resultat ved å nytte ein statistisk omsetjingsmodell
  \citep{chen1993asb}; andre metodar har nytta avstand eller
  delstrengoverlapp
@@ -464,7 +464,7 @@ Eit av dei tidlegaste forsøka på å lenkje frasar var
  \citet{kupiec1993afn}, her berre nominalfrasar. Metoden besto i å
  først køyre ein statistisk ordklassetaggar, så finne sannsynlege
  nominalfrasar på kvart språk (dvs. «chunking») med reine regulære
- uttrykk, og så lenkjing av slike kontinuerlege ordstrengar basert på
+ uttrykk, og så lenking av slike kontinuerlege ordstrengar basert på
  sannsynsmaksimering\footnote{Dette er ein av dei vanlegaste metodane for iterativ
         reestimering av parametre i ein statistisk modell; eg kjem
         tilbake til sannsynsmaksimering i kapittel
@@ -476,7 +476,7 @@ Eit av dei tidlegaste forsøka på å lenkje frasar var
 Innanfor korpuslingvistikken har \citet{piao2001mwu} nytta enkel
  kollokasjonsinformasjon og ordklasseheuristikkar for å først finne
  sannsynlege nominale frasar på engelsk og kinesisk, og så lenkje
- desse ved hjelp av sannsynsheuristikkar som t-skåre og \emph{Mutual  Information}. Dei køyrer fleire runder med lenkjing av lengre og
+ desse ved hjelp av sannsynsheuristikkar som t-skåre og \emph{Mutual  Information}. Dei køyrer fleire runder med lenking av lengre og
  lengre N-gram.  Her, som i \citet{kupiec1993afn}, er
  evalueringsgrunnlaget rett og slett ein manuell gjennomgang av dei
  mest sannsynlege omsetjingane dei får.
@@ -691,12 +691,12 @@ Så langt har eg ikkje komme over metodar som prøver å finne eller
  kan gi same verdi.
 
  I denne oppgåva nyttar eg, i tillegg til LFG-terminologien, orda
- \emph{lenkjing} og \emph{samanstilling} i omtrent same tyding som dei engelske
+ \emph{lenking} og \emph{samanstilling} i omtrent same tyding som dei engelske
  termane \emph{link} og \emph{alignment}. Ei samanstilling er ei mengd
  lenkjer. Merk at ei enkeltlenkje treng ikkje å vere ein-til-ein.
  Lenkjer og samanstillingar er ekvivalensforhold som me kan finne
  mellom lingvistiske \emph{representasjonar} (f\hyp{}struktur, c\hyp{}struktur) eller
- \emph{uttrykk} (ord, setningar). Lenkjing mellom dei siste er meir
+ \emph{uttrykk} (ord, setningar). Lenking mellom dei siste er meir
  ateoretisk/datanært -- grunnlaget for å opprette ei lenkje mellom to
  c\hyp{}strukturnodar (representasjonar) er at uttrykka i kontekst som dei
  representerer er omsetjingar (og har lik nok syntaks i følgje dei to
@@ -909,7 +909,7 @@ føreset at det eine er derivert av det andre; men dette har me ingen
 sjåast på som \emph{skrankar} på moglege samanstillingar i modellen (jamfør
 \ref{SEC:omgrepsavklaring} om modellteoretiske grammatikkar), heller
 enn derivasjonelle forhold. Samtidig er det som nemnt eit mål å finne
-ut kor uavhengig me kan gjere oss av ordlenkjingsinformasjonen (dette
+ut kor uavhengig me kan gjere oss av ordlenkingsinformasjonen (dette
 er au nyttig for implementasjonen), utan at det treng å gi krava ei
 \emph{retning}.
 
@@ -967,13 +967,13 @@ omsetjinga, men det kan godt hende at eit ord \emph{ikkje} har ei lenkje,
 og me kan heller ikkje utelukke at det finst mange-til-mange-lenkjer
 som ikkje kan «delast opp». Dette gjeld au nodane i c\hyp{}strukturen.
 
-Me utelukker lenkjing av ikkje-konstituentar som \emph{there is} på
+Me utelukker lenking av ikkje-konstituentar som \emph{there is} på
 c\hyp{}strukturnivå sidan ei lenkje mellom to c\hyp{}strukturnodar impliserer at
 heile frasen under er lenkja. Det finst ingen c\hyp{}strukturnodar som
 dominerer berre \emph{there}, \emph{is} og ingen andre ord (heller ikkje \emph{es},
 \emph{gibt}), så dette er ikkje lenkjekandidatar.  \emph{There is} og \emph{Es gibt}
 i figur \ref{fig:ikkjenode} kan då ikkje samanstillast åleine, men
-berre som del av ei ytre frasesamanstilling\footnote{Slike forhold kan me sjølvsagt finne igjen etter lenkjinga,
+berre som del av ei ytre frasesamanstilling\footnote{Slike forhold kan me sjølvsagt finne igjen etter lenkinga,
         men då vil me au kunne generalisere til andre ordformer. Eg
         kjem tilbake til dette i kapittel \ref{SEC:diskusjon}. }.
 
@@ -1003,7 +1003,7 @@ Samtidig er det au eit omsetjingsforhold mellom trekka i same
 f\hyp{}struktur som dei lenkja \PRED{}-elementa, og me ville kanskje ikkje ha
 omsett dei to \PRED{}-elementa i andre f\hyp{}strukturkontekstar. Difor bør me
 au sjå på ei \PRED{}-lenkje som ei lenkje mellom \emph{f\hyp{}strukturane til
-desse \PRED{}-elementa}\footnote{Eventuelt kunne me ha definert lenkjingskandidatane på
+desse \PRED{}-elementa}\footnote{Eventuelt kunne me ha definert lenkingskandidatane på
        f\hyp{}strukturnivå som alle \PRED{}-haldande f\hyp{}strukturar, resultatet
        blir det same. }.  Med dette i tankane, kombinert med
 c\hyp{}struktur-f\hyp{}strukturavbildinga $\phi$ (sjå del
@@ -1108,7 +1108,7 @@ Men som nemnd treng ikkje ordsamanstillinga vere ein-til-ein, det
  det som i \Last mogleg å skilje ut delsamanstillingar, som
  \emph{have/har}. Neste del gir eit døme på dette.
 
-Sidan \PRED{}-lenkjing impliserer ordlenkjing, må me sjekke om krava
+Sidan \PRED{}-lenking impliserer ordlenking, må me sjekke om krava
  på ordnivå (del \ref{SEC:ordkrav}) er oppfylte for å lenkje to
  \PRED{}-element.
 
@@ -1156,7 +1156,7 @@ Ein type presisering/depresisering (del \ref{SEC:formaal}) me ofte ser
  heller enn å byggje ein trebank for lingvistiske studie, ville det
  nok vore betre å unngå slike lenkjer \citep[s.~53]{volk2008hjp}.
 
-Men kva då med lenkjing av pronomen til verb bøygd for person og tal i
+Men kva då med lenking av pronomen til verb bøygd for person og tal i
 pro-drop-språk?
 
 \ex. \a. iqePa                                  \hfill{} (georgisk) \\
@@ -1209,10 +1209,10 @@ korresponderende uttrykkene i \emph{b}s omgivelser gjør til hverandre
 og til \emph{b}» er det difor passande å prøve å gjere dette til eit
 krav på f\hyp{}strukturnivå.
 
-Den enklaste lenkjingssituasjonen, f\hyp{}strukturmessig, er der
+Den enklaste lenkingssituasjonen, f\hyp{}strukturmessig, er der
 rotpredikata kan lenkjast, og første argument av predikatet på
 kjeldespråket kan lenkjast til første argument på målspråket, andre
-argument til andre argument, osb., og lenkjinga kan fortsetje slik
+argument til andre argument, osb., og lenkinga kan fortsetje slik
 rekursivt inn i f\hyp{}strukturane\footnote{Når eg her skriv \emph{argument}, meiner eg eigentleg alle
         subkategoriserte ledd, både innanfor og utanfor sjølve
         argumentlista. I analysen av «eska opna seg» vil \emph{eske} stå
@@ -1305,7 +1305,7 @@ tredje. Men om me har analysar som dei over, ser det ut til at me er
 avhengig av LPT-kravet frå del \ref{SEC:ordkrav} for å avgjere kva for
 adjunkt og argument som samsvarer. 
 
-LPT-kravet blir forresten endå viktigare når det gjeld lenkjing av
+LPT-kravet blir forresten endå viktigare når det gjeld lenking av
 adjunkt til adjunkt. Adjunkt plukker ut si eiga rolle (argument får
 rolla tildelt frå verbet) og f\hyp{}strukturane ordnar ikkje adjunkt etter
 nokon rekkjefølgje, dei er representert som uordna mengder, medan
@@ -1313,10 +1313,10 @@ følgja mellom argument iallfall potensielt kan nyttast til å indikere
 semantisk likskap.
 
 Ein kan argumentere for at grammatikkane her \emph{burde} hatt like (eller
-likare) analysar, dette ville letta lenkjingsarbeidet, men sidan stoda
+likare) analysar, dette ville letta lenkingsarbeidet, men sidan stoda
 no er slik, må krava ta høgd for lenkjer mellom argument og
 adjunkt. Om seinare utgåver av grammatikkane gir likare analysar, vil
-det iallfall ikkje gi verre lenkjingsresultat.
+det iallfall ikkje gi verre lenkingsresultat.
 
 Og ei enkel korpusundersøking tyder på at det er relativt sjeldan at
 ein får slike situasjonar som \Last illustrerer.  I
@@ -1363,7 +1363,7 @@ omsetjing av dette verbet kan ha opplevar før tema:
 }
 
 Argumentstrukturane i \Last har omvendt intern følgje. Igjen må me ha
-LPT\hyp{}informasjon for å avgjere kva for lenkjing som er korrekt. Men i
+LPT\hyp{}informasjon for å avgjere kva for lenking som er korrekt. Men i
 visse tilfelle vil ikkje ein gong LPT\hyp{}informasjon vere nok:
 
 {\avmoptions{}
@@ -1376,13 +1376,13 @@ visse tilfelle vil ikkje ein gong LPT\hyp{}informasjon vere nok:
 }
 
 Det finst ingen f\hyp{}strukturinformasjon eller LPT\hyp{}informasjon me kunne
-nytta til å sikre den korrekte lenkjinga \emph{sie/dem} og \emph{ihnen/de}; og
+nytta til å sikre den korrekte lenkinga \emph{sie/dem} og \emph{ihnen/de}; og
 viss me rangerer lik argumentstruktur over ulik, vil me her få feil
 resultat. Det me \emph{kan} gjere (utanom å endre grammatikkane slik at
 argumentstruktur korresponderer med eit universelt tematisk
-rollehierarki) er å sjå på mange lenkjingar av same verbpar, og på den
+rollehierarki) er å sjå på mange lenkingar av same verbpar, og på den
 måten oppdage moglege feil. For enkelttilfelle, derimot, vil krava i
-denne oppgåva ikkje vere nok til å gi korrekt lenkjing.
+denne oppgåva ikkje vere nok til å gi korrekt lenking.
 
 
 \subsection{Krav om argumentlenkjer}
@@ -1401,7 +1401,7 @@ LPT\hyp{}korrespondanse. \citet[s.~75]{dyvik2009lmp} gir følgjande krav på
 f\hyp{}strukturnivå\footnote{Med eit unntak for adposisjonsobjekt som eg kjem tilbake til i
         del \ref{SEC:adposisjonsobjekt}. }:
 
-\ex. \label{krav:PRED} Krav for lenkjing av to \PRED{}-element $p$ og $q$:
+\ex. \label{krav:PRED} Krav for lenking av to \PRED{}-element $p$ og $q$:
 \a. ordformene til $p$ og $q$ har LPT\hyp{}korrespondanse
 \b. alle argument av $p$ har LPT\hyp{}korrespondanse med eit argument eller adjunkt av $q$
 \c. alle argument av $q$ har LPT\hyp{}korrespondanse med eit argument eller adjunkt av $p$
@@ -1416,7 +1416,7 @@ Det går an å gjere \Last strengare, og krevje at argumenta -- i
 tillegg til å ha LPT\hyp{}korrespondanse -- sjølv er \PRED{}-lenkja. Dette har
 eg ikkje gjort i implementasjonen min, men det er mogleg å ha det som
 eit rangeringskriterium, noko eg kjem tilbake til i del
-\ref{SEC:rangering}. Ved å \emph{ikkje} krevje at lenkjinga går heilt til
+\ref{SEC:rangering}. Ved å \emph{ikkje} krevje at lenkinga går heilt til
 botn i f\hyp{}strukturen blir det mogleg å seie at \emph{setningane} er
 syntaktisk like, og at kanskje visse overordna frasar er syntaktisk
 like, men visse \emph{delfrasar} kan likevel vere ulike og dimed ikkje vere
@@ -1427,7 +1427,7 @@ lenkja.
  f\hyp{}strukturen til koordineringa, og det er sjølvsagt ønskeleg å lenkje
  desse elementa om dei korresponderer:
 
- \ex. \label{krav:COORD} Ved lenkjing av f\hyp{}strukturane til to
+ \ex. \label{krav:COORD} Ved lenking av f\hyp{}strukturane til to
  koordineringar $p$ og $q$, sjå på dei som om elementa i mengdene var
  argument til eit \PRED{}-element, kor «argumentfølgja» er basert på
  setningsposisjon; $p$ og $q$ kan då lenkjast om dei oppfyller krav
@@ -1451,7 +1451,7 @@ kjeldespråket er lenkja til eit \XCOMP{}-argument på målspråket; men i
 dette tilfellet bør kanskje ikkje \emph{setningane} vere lenkja i
 utgangspunktet.
 
-Sjølv om det er logisk mogleg å gjere slike lenkjingar, er det
+Sjølv om det er logisk mogleg å gjere slike lenkingar, er det
 vanskeleg å finne ikkje-vilkårlege avgrensingar for når ein skal kunne
 lenkje f\hyp{}strukturar som står i ulike omgivnader. I implementasjonen
 min har eg difor følgt eit strengare krav enn \Last[e]:
@@ -1468,7 +1468,7 @@ lenkjast med kvarandre, eller stå ulenkja (som om dei var adjunkt av
 eit predikat som sto utanfor dei).
 
 Krav \ref{krav:PRED} og \ref{krav:PRED-omgivnad} bør i enkle
-situasjonar vere tilstrekkelege for lenkjing på f\hyp{}strukturnivå, men
+situasjonar vere tilstrekkelege for lenking på f\hyp{}strukturnivå, men
 det finst au meir komplekse korrespondansar mellom \PRED{}-element. Desse
 ser eg på del \ref{SEC:f-mange-mange}.
 
@@ -1503,7 +1503,7 @@ ser eg på del \ref{SEC:f-mange-mange}.
 
  Løysinga valt i \citet[s.~75,~fotnote~3]{dyvik2009lmp}, som eg
  følgjer i implementasjonen, er å berre hoppe over slike
- adposisjonar. Ved lenkjing av \p{vedde} og \p{da-najleveba} ser me
+ adposisjonar. Ved lenking av \p{vedde} og \p{da-najleveba} ser me
  då på f\hyp{}strukturane i \Last som om dei var som i \Next nedanfor.
 
 {\avmoptions{}
@@ -1548,7 +1548,7 @@ Her er altså den kausative tydinga leksikalisert, og verbet har berre
 eitt \PRED{}-element (på same måte som det norske verbet \emph{kjøle} berre
 har eitt \PRED{}-element, ikkje \emph{la} + \emph{bli kald}).\footnote{Det går sjølvsagt an å analysere sjølv leksikaliserte
         kausativar som om dei har fleire \PRED{}-element, men det bør i
-        såfall skje på uavhengig grunnlag, ikkje for å gjere lenkjinga
+        såfall skje på uavhengig grunnlag, ikkje for å gjere lenkinga
         enklare. }
 
 Den same situasjonen får me der eit argument eller adjunkt er
@@ -1596,7 +1596,7 @@ Det bør kanskje vere grenser for kor langt slik samanføying kan
  gå. Ein grunn er at problemet fort blir komputasjonelt vanskeleg. Å
  opne for ein-mange-lenkjer mellom \PRED{}-element (eller til og med
  mange-mange-lenkjer) gir ei mykje større mengd moglege løysingar på
- lenkjingsproblemet; i alle situasjonar der me krev LPT\hyp{}korrespondanse
+ lenkingsproblemet; i alle situasjonar der me krev LPT\hyp{}korrespondanse
  mellom eit argument $a_p$ av $p$ og eit adjunkt $a_q$ av $q$ for å
  lenkje $p$ og $q$, vil me no au ha ei mogleg løysing der $a_q$ er
  ulenkja, medan $a_p$ er samanføyd med $p$ og difor ikkje treng
@@ -1623,10 +1623,10 @@ I implementasjonen blir difor alle ein-til-ein-lenkjer prøvd
  $p$ med eit ulenkja \PRED{}-element $a_p$ kor $a_p$ er argument eller
  adjunkt av $p$, og der $p$ og $a_p$ vil kunne lenkjast med eit
  ulenkja \PRED{}-element $q$ ved føringane gitt over, og alle dei
- andre lenkjingskrava er dekkja. Me får då ei modifisert utgåve av
+ andre lenkingskrava er dekkja. Me får då ei modifisert utgåve av
  krav \ref{krav:PRED}:
 
-\ex. \label{krav:f-ein-mange} Krav for samanføyd lenkjing frå \PRED{}-elementa
+\ex. \label{krav:f-ein-mange} Krav for samanføyd lenking frå \PRED{}-elementa
 $p$ og $a_p$, kor $a_p$ er eit argument eller adjunkt av $p$, til \PRED{}-elementet $q$:
 \a. ordformene til $p$ og $a_p$ har saman LPT\hyp{}korrespondanse med ordformen til $q$
 \b. la $A$ vere unionen av argument til $p$ og argument til $a_p$,
@@ -1701,7 +1701,7 @@ korresponderer.
 \draw[-] (Is)..controls +(south east:1.5) and +(south west:1.5) ..  (It) ;
 
 \end{tikzpicture}
-   \caption{Enkel lenkjing av c\hyp{}strukturnodar mellom norsk og
+   \caption{Enkel lenking av c\hyp{}strukturnodar mellom norsk og
    nederlandsk; IP til IP, I' til I' og I til I.}
    \label{fig:enkel-c-lenkje}
   \end{figure}
@@ -1726,7 +1726,7 @@ det ikkje finst informasjon på kjeldespråket som ikkje er uttrykt på
 målspråket (eller omvendt) innanfor det IP-ane dominerer.
 
 I'-nodane dominerer ikkje subjekta i figur
- \ref{fig:enkel-c-lenkje}. Ei lenkjing av I'-nodane impliserer at det
+ \ref{fig:enkel-c-lenkje}. Ei lenking av I'-nodane impliserer at det
  som står under desse korresponderer, men au at nodane står i liknande
  omgivnader. Det er lett å sjå føre seg eit døme der det ikkje ville
  vore ønskeleg med ei lenkje mellom I'-nodane. I figur
@@ -1770,7 +1770,7 @@ I'-nodane dominerer ikkje subjekta i figur
    \label{fig:ikkje-c-lenkje}
   \end{figure}
 
-Sjølv om subjektet sto ulenkja, t.d. ved lenkjing inn i eit
+Sjølv om subjektet sto ulenkja, t.d. ved lenking inn i eit
 pro-drop-språk eller liknande, ville me fått same situasjon; I'-nodane
 i figur \ref{fig:ikkje-c-lenkje-pro-drop} kan ikkje lenkjast sidan I'
 på islandsk dominerer objektet, medan I' på norsk ikkje gjer dette, og
@@ -1878,7 +1878,7 @@ I det minste bør me difor krevje følgjande av lenkjer på c\hyp{}strukturnivå
 
 Men, kva om det finst nodar under $n_s$ som ikkje er lenkja på
 c\hyp{}strukturnivå (kanskje fordi det ikkje finst tilsvarande nodar på
-målspråket, t.d. ved lenkjing inn i pro-drop-språk), men som har ei
+målspråket, t.d. ved lenking inn i pro-drop-språk), men som har ei
 lenkje på f\hyp{}strukturnivå?  Her finst det fleire alternative løysingar,
 som eg ser på nedanfor.
 
@@ -1914,7 +1914,7 @@ det norske treet i tillegg den informasjonen som \emph{seg} tilfører.
 % \draw[-] (gaiGo)..controls +(south:1) and +(south:1) .. (åpnet) ;
 
 \end{tikzpicture}
-\caption{Skal ulenkja søsternodar hindre lenkjing? (Georgisk og bokmål)}
+\caption{Skal ulenkja søsternodar hindre lenking? (Georgisk og bokmål)}
  \label{fig:gaiGo}
 \end{figure}
 
@@ -1937,7 +1937,7 @@ Det eine alternativet er å seie seie at I- og I'-nodane ikkje skal
  kan formalisere dette kravet i del \ref{SEC:c-strengare}.
 
 Det andre alternativet er å ikkje gjere forskjell på IP, I' og I når
- det gjeld c\hyp{}strukturlenkjinga. Grunnen til å gjere dette er at
+ det gjeld c\hyp{}strukturlenkinga. Grunnen til å gjere dette er at
  \emph{gaiGo} både korresponderer med heile frasen \emph{det åpnet seg}, men au
  med berre \emph{åpnet seg}.  I figur \ref{fig:PanJara-gaiGo} ser me
  t.d. at I'-nodane kan lenkjast (utan å sjå på anna enn krav
@@ -1966,27 +1966,28 @@ Det andre alternativet er å ikkje gjere forskjell på IP, I' og I når
  \draw[-] (NPs)..controls +(north east:2) and +(north west:2) .. (NPt) ;
 
 \end{tikzpicture}
-\caption{Delvis mogleg lenkjing av underordna c\hyp{}strukturnodar mellom georgisk og bokmål}
+\caption{Delvis mogleg lenking av underordna c\hyp{}strukturnodar mellom georgisk og bokmål}
  \label{fig:PanJara-gaiGo}
 \end{figure}
 
 
-\citet[s.~77]{dyvik2009lmp} definerer i denne samanhengen
-omgrepet \emph{lenkja leksikalske nodar}, $LL$, kor $LL(n)$ er mengda av
-nodar dominert av $n$ som har ei ordlenkje. For å lenkje
-c\hyp{}strukturnodane $n_s$ og $n_t$, som er i lenkja funksjonelle domene,
-må alle nodane i mengda $LL(n_s)$ vere lenkja til nodar i
-$LL(n_t)$. Ulenkja nodar under $n_s$ og $n_t$ står ikkje i vegen for
-lenkjing av $n_s$ og $n_t$, men dei to mengdene kan ikkje vere tomme.
+\citet[s.~77]{dyvik2009lmp} definerer i denne samanhengen omgrepet
+ \emph{lenkja leksikalske nodar}, $LL$, kor $LL(n)$ er mengda av nodar
+ dominert av $n$ som har ei ordlenkje. For å lenkje
+ c\hyp{}strukturnodane $n_s$ og $n_t$, som er i lenkja funksjonelle
+ domene, må alle nodane i mengda $LL(n_s)$ vere lenkja til nodar i
+ $LL(n_t)$. Ulenkja nodar under $n_s$ og $n_t$ står ikkje i vegen for
+ lenking av $n_s$ og $n_t$, men dei to mengdene kan ikkje vere tomme.
 
 Dette kravet gjer at ein ikkje treng krav \ref{krav:c-tentativt}, og
-vil gi ei mange-mange-lenkje mellom alle nodane i dei to funksjonelle
-domena til \emph{gaiGo-åpnet} i figur \ref{fig:gaiGo}. Viss me skriv ei
-f\hyp{}strukturlenkje som eit ordna par mellom \PRED{}-verdien på kjeldesida
-(georgisk, med subskript $_s$) og \PRED{}-verdien på målsida (norsk, med
-subskript $_t$) får me
-$LL(IP_s)=LL(I'_s)=LL(I_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}=LL(IP_t)=LL(I'_t)=LL(I_t)$
-kor \emph{det} og \emph{seg} er ulenkja på både c\hyp{}strukturnivå og ordnivå\footnote{\label{fn:LL-ordlenkje} Merk at orda \emph{det} og \emph{seg} måtte definerast som ulenkja for
+ vil gi ei mange-mange-lenkje mellom alle nodane i dei to funksjonelle
+ domena til \emph{gaiGo-åpnet} i figur \ref{fig:gaiGo}. Viss me skriv ei
+ f\hyp{}strukturlenkje som eit ordna par mellom \PRED{}-verdien på
+ kjeldesida (georgisk, med subskript $_s$) og \PRED{}-verdien på
+ målsida (norsk, med subskript $_t$) får me
+ $LL(IP_s)=LL(I'_s)=LL(I_s)=\{(\textbf{ga-Geba},\textbf{åpne})\}=LL(IP_t)=LL(I'_t)=LL(I_t)$
+ kor \emph{det} og \emph{seg} er ulenkja på både c\hyp{}strukturnivå og
+ ordnivå\footnote{\label{fn:LL-ordlenkje} Merk at orda \emph{det} og \emph{seg} måtte definerast som ulenkja for
         at denne definisjonen skulle fungere, noko som krev at ein nyanserer
         krav \ref{krav:f-links-words} litt. Viss me hadde definert
         \emph{det} og \emph{seg} som mange-ein-lenkja (med \emph{åpnet}) inn i
@@ -2001,13 +2002,13 @@ kor \emph{det} og \emph{seg} er ulenkja på både c\hyp{}strukturnivå og ordniv
         sida har då ikkje korresponderande mengder på georgisk og blir
         ikkje lenkja. }.
 
-\subsection{Eit strengare lenkjingskriterium}
+\subsection{Eit strengare lenkingskriterium}
 \label{sec-3.7.2}
 
 \label{SEC:c-strengare}
 
 Det er mogleg å ønskje å ikkje lenkje I'- og I-nodane i
- \ref{fig:gaiGo}. Dette gir eit strengare lenkjingskriterium på
+ \ref{fig:gaiGo}. Dette gir eit strengare lenkingskriterium på
  c\hyp{}strukturnivå, kor ein reknar \emph{det} og \emph{seg} for å vere uttrykt i
  ordet \emph{gaiGo}, sidan ordet står åleine i omsetjinga. Tolka slik kan
  ein -- i denne konteksten, eller mangelen på meir kontekst -- ikkje
@@ -2116,8 +2117,8 @@ Problemet med å nytte krava nemnt over i dette tilfellet er at nodar
 Ord som ikkje projiserer \PRED{}-lenkjer kan likevel tenkjast å ha
  LPT\hyp{}korrespondanse og bestå krava på ordnivå, men når me skal lenkje
  desse på c\hyp{}strukturnivå må me då sjekke ordkrava direkte (me kan
- ikkje gå via nokon f\hyp{}strukturlenkjing), så LPT-kravet gir oss eit
- utgangspunkt for lenkjing. Men dette avheng av korleis ein definerer
+ ikkje gå via nokon f\hyp{}strukturlenking), så LPT-kravet gir oss eit
+ utgangspunkt for lenking. Men dette avheng av korleis ein definerer
  LPT. Skal ein berre ta med semantisk tunge ord, eller bør
  funksjonsord au vere representert ved konseptet? Det kan
  argumenterast for at me ikkje bør la konseptet \emph{LPT\hyp{}korrespondanse}
@@ -2128,7 +2129,7 @@ Ord som ikkje projiserer \PRED{}-lenkjer kan likevel tenkjast å ha
  tunge komplementa bør lenkjast, og konteksten er lik -- så bør nok
  det heller vere evidens for at desse to funksjonsorda au er moglege
  omsetjingar \citep{dyvik2010pc}.  I såfall har me ikkje fleire
- lenkjingskrav for funksjonelle nodar, og ser på dei preterminale
+ lenkingskrav for funksjonelle nodar, og ser på dei preterminale
  funksjonelle nodane som om dei ikkje dominerte noko; eller: $L_c$
  (evt. $LL$) av desse nodane er tomt.
 
@@ -2150,7 +2151,7 @@ Viss me har to funksjonelle konstituentar kor komplementa kan lenkjast
         eine ordet blir rekna for å vere eit innhaldsord. Frasane til
         deira funksjonelle domene vil uansett kunne lenkjast viss dei andre
         krava er oppfylte. }. Samtidig vil me nok ikkje at eit manglande
- funksjonsord på det eine språket skal hindre lenkjing av komplementa,
+ funksjonsord på det eine språket skal hindre lenking av komplementa,
  sidan det kan hende at funksjonsordet ikkje er krevd på det språket
  (eventuelt kjem dette fram som korrespondansar i f\hyp{}strukturtrekk, eg
  har ikkje teke høgd for korrespondansar mellom andre
@@ -2164,16 +2165,16 @@ Me kan krevje at komplementa er lenkja for å sikre at me ikkje lenkjer
 
 Desse ønskene kan me formalisere slik:
 
-\ex. \label{fnordkrav} Krav for lenkjing av funksjonelle kategoriar i
+\ex. \label{fnordkrav} Krav for lenking av funksjonelle kategoriar i
     c\hyp{}strukturen, viss funksjonsord er dekkja av LPT-krav:
-\a. Gitt ei mogleg lenkjing av FP og GP, kor F og G er funksjonelle
+\a. Gitt ei mogleg lenking av FP og GP, kor F og G er funksjonelle
     kategoriar der komplementa elles kan lenkjast,
     tolk LPT\hyp{}korrespondansen mellom orda under F' og G' som eit
     medlem av lenkjemengda $L_c$ (evt. $LL$), kor denne må vere lik
     for at FP og GP skal kunne lenkjast. Då kan me au lenkje F' og G'.
-\b. Gitt ei mogleg lenkjing av FP og XP, der F er ein funksjonell
+\b. Gitt ei mogleg lenking av FP og XP, der F er ein funksjonell
     kategori, medan X er ein ikkje-funksjonell kategori, ignorerer me
-    den funksjonelle kategorien i c\hyp{}strukturlenkjinga. Sidan det ikkje
+    den funksjonelle kategorien i c\hyp{}strukturlenkinga. Sidan det ikkje
     er nokon forskjell i $L_c$ (evt. $LL$) mellom FP og F', er F' medlem
     av nodemengden som blir lenkja til XP.
 
@@ -2189,7 +2190,7 @@ Om \Last[a] er oppfylt, kan me få samanstillinga vist i figur
 (Alle nodane under S vist i dei to trea er i same funksjonelle domene,
  så om dei funksjonelle domena er lenkja, vil krav
  \ref{krav:subnode-f-lenkja} vere oppfylt kva gjeld CP-komplementa --
- lenkjinga går ikkje ut over dei funksjonelle domena, medan krav
+ lenkinga går ikkje ut over dei funksjonelle domena, medan krav
  \ref{krav:c-pro} er dekkja for S-nodane med unntaket over.)
 
   \begin{figure}[htp]
@@ -2226,8 +2227,8 @@ Der det eine språket har eit funksjonsord og det andre språket ikkje
  noko som blir utanfor denne oppgåva; men om me hadde sjekka slike
  f\hyp{}strukturkorrespondansar kunne me unngått kravet om
  LPT\hyp{}korrespondanse og i staden nytta informasjon frå f\hyp{}strukturane
- til lenkjing av funksjonelle kategoriar. Utan å ha slike mekanismar
- på plass blir f\hyp{}strukturlenkjinga avhengig av c\hyp{}strukturforhold, og i
+ til lenking av funksjonelle kategoriar. Utan å ha slike mekanismar
+ på plass blir f\hyp{}strukturlenkinga avhengig av c\hyp{}strukturforhold, og i
  implementasjonen min har eg difor valt å ikkje lenkje ord som ikkje
  projiserer \PRED{}-element.
 
@@ -2262,20 +2263,20 @@ fungere som «mjuke» skrankar på f\hyp{}struktursamanstillinga.
 Nedanfor følgjer dei kriteria eg har basert implementasjonen på. Som
 nemnt er det berre ein av mange moglege måtar å gjere det på, men
 kriteria tek innover seg dei trekka som er relevante for
-argumentstrukturen: argumentfølgje og rekursiv f\hyp{}strukturlenkjing.
+argumentstrukturen: argumentfølgje og rekursiv f\hyp{}strukturlenking.
 
 \subsection{Rangering ved følgje}
 \label{sec-3.8.1}
 
 I \citet[s.~75--76]{dyvik2009lmp} blir det formulert eit
-spesialtilfelle av krava for lenkjing på f\hyp{}strukturnivå, der det er
+spesialtilfelle av krava for lenking på f\hyp{}strukturnivå, der det er
 like mange argument på kvart predikat, og førsteargument er lenkja til
 førsteargument, andre til andre, osb. I slike situasjonar er ingen
 adjunkt lenkja til argument; og om argumentstrukturane i analysane
 reflekterer det semantiske rollehierarkiet, vil me aldri lenkje
 t.d. agens til patiens og patiens til agens. Der grammatikkane er
 skrivne etter parallelle prinsipp, bør ei slik samanstilling -- om alt
-anna er likt -- gi den ønskelege lenkjinga.
+anna er likt -- gi den ønskelege lenkinga.
 
 Difor har me dette som eit rangeringskriterium. For å nyansere det
 litt, kan me sjå på kor mange av lenkjene frå argumenta til eit
@@ -2308,7 +2309,7 @@ prøvde å sykle», kan me lenkje \emph{try} med \emph{prøve} sjølv om \emph{r
         ei mange-mange-lenkje mellom \emph{ride} + \emph{bike} og \emph{sykle}; for
         skuld argumentet ser me berre på ein-til-ein-lenkjer her. }. I
 situasjonar der me har eit val mellom berre LPT\hyp{}korrespondanse, og
-full rekursiv lenkjing, vil ei rekursiv lenkje skildre meir
+full rekursiv lenking, vil ei rekursiv lenkje skildre meir
 strukturell likskap enn berre LPT\hyp{}korrespondansen.
 
 Difor har me dette som eit rangeringskriterium. Me kan formalisere det
@@ -2429,9 +2430,9 @@ me ser på som lingvistisk prediktable. Intensjonen er at dette kan
 vere informert av omsetjingstabellen frå eit automatisk
 ordsamanstillingsprogram, eller av handskrivne omsetjingsordbøker.
 
-Programmet byrjar lenkjinga med f\hyp{}strukturane. Ei
+Programmet byrjar lenkinga med f\hyp{}strukturane. Ei
 f\hyp{}struktur\emph{samanstilling} er ei mengd med \emph{lenkjer} mellom
-individuelle f\hyp{}strukturar. Resultatet av lenkjinga på dette nivået kan
+individuelle f\hyp{}strukturar. Resultatet av lenkinga på dette nivået kan
 vere tvitydig: sidan det ofte finst fleire måtar å lenkje argument og
 adjunkt på, får me i første omgang mange samanstillingar mellom
 kjelde- og mål-f\hyp{}strukturar.
@@ -2449,9 +2450,9 @@ programmet.
 \section{Lenkjer mellom f\hyp{}strukturar}
 \label{sec-4.1}
 
-\label{SEC:impl-f-lenkjing}
+\label{SEC:impl-f-lenking}
 
-Hovudalgoritmen for lenkjing mellom f\hyp{}strukturar er vist i kodefigur
+Hovudalgoritmen for lenking mellom f\hyp{}strukturar er vist i kodefigur
 \ref{algo:f-align}. Funksjonen \texttt{f-align} returnerer ei mengd med
 moglege samanstillingar. Kvar samanstilling er ei mengd med par av
 f\hyp{}strukturar\footnote{Eigentleg eit slag avgjerdstre; kvart element er eit par, kor
@@ -2468,7 +2469,7 @@ går ut frå at dette paret har LPT\hyp{}korrespondanse\footnote{Når eg her skr
         meiner eg sjølvsagt at ordformene til \PRED{}-verdien til kvar
         f\hyp{}struktur har LPT\hyp{}korrespondanse. }, dette blir
 sjekka før alle kall på \texttt{f-align}. Der me ikkje har informasjon om
-LPT\hyp{}korrespondanse mellom to ord (orda er ukjende), er lenkjing
+LPT\hyp{}korrespondanse mellom to ord (orda er ukjende), er lenking
 lov. Pro-element og substantiv kan alltid lenkjast med kvarandre.
 
 Funksjonen \texttt{f-align} prøver først å lenkje $F_s$ og $F_t$
@@ -2641,7 +2642,7 @@ desse f\hyp{}strukturane med eitt av argumenta til den andre.
 Sjølv om det er krav om LPT\hyp{}korrespondanse mellom kvart argument og
 eit argument/adjunkt for å lenkje $F_s$ og $F_t$, er det ikkje noko
 krav om at alle para i ein argumentpermutasjon tilfredsstiller alle
-lenkjingskrava. Viss \texttt{f-align}$(\OBJ,\ADJ)$ frå dømet over gir
+lenkingskrava. Viss \texttt{f-align}$(\OBJ,\ADJ)$ frå dømet over gir
 null, og ikkje kan lenkjast (t.d. fordi \ADJs hadde eitt argument, og
 \OBJs ingen argument/adjunkt), medan \texttt{f-align}$(\SUBJ,\SUBJ)$
 kan lenkjast, vil \texttt{f-align} likevel returnere samanstillinga som
@@ -2652,11 +2653,11 @@ tilfellet vil $aligntable[\OBJ,\ADJ]$ vere tom.
 
 
 Om me i tillegg krev at substrukturar kan samanstillast kan me
-utelukke lenkjing av f\hyp{}strukturane $F_s$ og $F_t$ i \Next under:
+utelukke lenking av f\hyp{}strukturane $F_s$ og $F_t$ i \Next under:
 
 {\avmoptions{}
 
-\ex. \a.  \begin{avm}  \sort{$F_s$}{\[ {\sc pred} `{\bf planlegge}<{\it eg},[1:{\it gi}]>'\\
+\ex. \a.  \begin{avm}  \sort{$F_s$}{\[  pred `{\bf planlegge}<{\it eg},[1:{\it gi}]>'\\
   {\sc xcomp} \sort{$^{1}$}{\[ {\sc pred} `{\it gi (opp)}'\]} \]}  \end{avm}
   \b.\begin{avm} \sort{$F_t$}{\[ {\sc pred} `{\bf plan}<{\it I},[2:{\it give}]>'\\
   {\sc xcomp} \sort{$^{2}$}{\[ {\sc pred} {\bf give}<{\it I},{\it him},{\it it}>' \]} \]} \end{avm}
@@ -2674,7 +2675,7 @@ kjem eg tilbake til i \ref{SEC:impl-f-rangering} nedanfor.
    \label{SEC:impl-adjalign}
 
 Argumentpermutasjonane frå \texttt{argalign} prøver som nemnt ikkje reine
-adjunkt-adjunkt-lenkjer, sidan me ikkje vil forkaste lenkjing av $F_s$
+adjunkt-adjunkt-lenkjer, sidan me ikkje vil forkaste lenking av $F_s$
 og $F_t$ berre på grunn av at ikkje alle adjunkt kunne lenkjast. Men
 når me har prøvd ein argumentpermutasjon, kan me lage ein kopi av
 denne som i tillegg inneheld lenkjer mellom «overflødige» adverbial,
@@ -2710,8 +2711,8 @@ Der det er umogleg å finne ein kombinasjon av argument- og
         krav \ref{krav:PRED} i kapittel \ref{SEC:ideell} om at alle
         argument må finne omsetjingar. I neste kapittel (del
         \ref{SEC:feilanalyse}) gir eg eit døme kor slik samanføying
-        ville opna for rett lenkjing, men der me kanskje heller bør ta
-        mangelen på lenkjing som evidens for at predikatet har ein
+        ville opna for rett lenking, men der me kanskje heller bør ta
+        mangelen på lenking som evidens for at predikatet har ein
         alternativ argumentstruktur. }. Dette er ikkje verre enn at ein
  kallar \texttt{argalign-p} med unionen av argument frå dei to samanføyde
  f\hyp{}strukturane (minus desse f\hyp{}strukturane sjølve); men me sjekker i
@@ -2734,9 +2735,9 @@ Der det er umogleg å finne ein kombinasjon av argument- og
 
 Denne metoden går top-down frå ytre PRED og ned i underordna
  argument/adjunkt. Me vil difor aldri prøve å lenkje ein ytre
- f\hyp{}struktur med ein indre f\hyp{}struktur, utanom ved ein-mange-lenkjing.
+ f\hyp{}struktur med ein indre f\hyp{}struktur, utanom ved ein-mange-lenking.
 
-Ein alternativ metode for lenkjing av f\hyp{}strukturane er å byrje med
+Ein alternativ metode for lenking av f\hyp{}strukturane er å byrje med
  alle logisk moglege permutasjonar av LPT\hyp{}korrespondansar, og så sile
  ut dei som ikkje svarer til krava. Prosessen ville nok blitt mykje
  meir oversiktleg på denne måten, sidan det då berre er snakk om å
@@ -2765,12 +2766,12 @@ Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
         staden for c\hyp{}strukturar og N-gram. }.
 
 Ein sideverknad av å byrje med ytre lenkjer og gå innover (prosessen
- skildra i del \ref{SEC:impl-f-lenkjing}) er at me automatisk unngår å
+ skildra i del \ref{SEC:impl-f-lenking}) er at me automatisk unngår å
  prøve «kryssande» lenkjer, t.d. å lenkje $F_s$ med \XCOMPs av $F_t$,
  og \XCOMPs av $F_s$ med $F_t$ (denne kombinasjonen av lenkjer vil jo
  vere ein del av alle logisk moglege permutasjonar). Me får au
  prioritert å lenkje ytre element, som jo er sikrare lenkjer: gitt to
- f\hyp{}strukturar for setningar der alt me veit om lenkjinga er at
+ f\hyp{}strukturar for setningar der alt me veit om lenkinga er at
  \emph{setningane} er omsetjingar av kvarandre, vil dei to ytre
  f\hyp{}strukturane ha størst sjanse for å korrespondere med kvarandre. For
  kvart steg du går innover må du multiplisere inn sjansen for å trå
@@ -2859,18 +2860,18 @@ Det finst altså både praktiske og meir ideelle grunnar til å gjere det
 I tillegg til skåren, returnerer desse funksjonane den beste
 greina\footnote{Alternativt kunne me returnert eit tre som var annotert med
         skårene. }, slik at me ender opp med ei enkel, «flat» liste med
-lenkjer. Denne blir sendt vidare til c\hyp{}strukturlenkjinga.
+lenkjer. Denne blir sendt vidare til c\hyp{}strukturlenkinga.
 
 
-\section{Lenkjing av c\hyp{}strukturnodar}
+\section{Lenking av c\hyp{}strukturnodar}
 \label{sec-4.3}
 
 Samanstilling mellom f\hyp{}strukturar treng i \texttt{lfgalign} ikkje informasjon
-om c\hyp{}strukturen, medan lenkjing av c\hyp{}strukturnodar skjer på grunnlag
+om c\hyp{}strukturen, medan lenking av c\hyp{}strukturnodar skjer på grunnlag
 av f\hyp{}struktursamanstillinga. Programmet utfører difor samanstilling av
 c\hyp{}strukturar sist\footnote{Som nemnt i del \ref{SEC:fnord} kan funksjonsord gjere
-       f\hyp{}strukturlenkjinga avhengig av forhold i c\hyp{}strukturen,
-       evt. krevje meir nyansert f\hyp{}strukturlenkjing. Dette har eg
+       f\hyp{}strukturlenkinga avhengig av forhold i c\hyp{}strukturen,
+       evt. krevje meir nyansert f\hyp{}strukturlenking. Dette har eg
        ikkje teke høgd for i implementasjonen, så der eit funksjonsord
        burde blokkert ei f\hyp{}strukturlenkje vil \texttt{lfgalign} gi feil
        samanstilling. }.
@@ -3008,7 +3009,7 @@ I neste kapittel går eg gjennom resultat av å køyre \texttt{lfgalign} på
  bottom-up-informasjon. Eg samanliknar dei resultata som er moglege å
  få frå \texttt{lfgalign} med dei som er mogleg å få med andre metodar, då
  spesielt metodar som nyttar N-gramtabellar som kjelde til
- lenkjingsinformasjon -- altså kor fraselenkjer hovudsakleg kjem frå
+ lenkingsinformasjon -- altså kor fraselenkjer hovudsakleg kjem frå
  bottom-up-informasjon. I tillegg diskuterer eg kort ulike bruksområde
  for samanstillingane, og problem som enno er uløyste.
 
@@ -3018,15 +3019,15 @@ I neste kapittel går eg gjennom resultat av å køyre \texttt{lfgalign} på
  krav \ref{krav:PRED-omgivnad} i kapittel \ref{SEC:ideell} (og lenkjar
  altså berre f\hyp{}strukturar som er argument/adjunkt av lenkja
  f\hyp{}strukturar, eller ikkje er argument/adjunkt av noko). Dette er nok
- for unyansert, men det avskjerer ein god del umotiverte lenkjingar.
+ for unyansert, men det avskjerer ein god del umotiverte lenkingar.
 
  I dette kapittelet ser eg på korleis føresetnadene ved
  implementasjonen påverkar kva for samanstillingar me får, og kjem
  fram til at svært ulike eller fragmentariske f\hyp{}strukturar fører til
- store feil i lenkjingane; men det finst konkrete løysingar på dei
+ store feil i lenkingane; men det finst konkrete løysingar på dei
  fleste problema. 
 
- Eg har ikkje gjort nokon evaluering av c\hyp{}strukturlenkjinga; denne er
+ Eg har ikkje gjort nokon evaluering av c\hyp{}strukturlenkinga; denne er
  uansett direkte avleidd frå f\hyp{}strukturlenkjene, utan nokon
  «valfridom». Feil i c\hyp{}strukturlenkjene har så langt anten vore
  implementasjonsfeil som var enkle å rette på, eller så har dei
@@ -3085,7 +3086,7 @@ Eg gjer i tillegg ei samanlikning med materialet nytta i \texttt{RIA Open  Sourc
 
 
 Dei fleste metodane for frasesamanstilling er N-grambaserte, dvs. at
- hovudkjelda for lenkjing er bottom-up-informasjon; difor er det
+ hovudkjelda for lenking er bottom-up-informasjon; difor er det
  naturleg å samanlikne metoden i \texttt{lfgalign} med slike metodar. Eg gir
  først ein kort introduksjon til korleis N-grambaserte metodar gir
  ordlenkjer og fraselenkjer, og ser så på kva lenkjer dette fører
@@ -3214,12 +3215,12 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
         for manuelle mange-mange-lenkjer, men det er klart at når me
         går frå par av N-gram til par av frasestrukturnodar som
         dominerer same N-gram kan me ikkje få mange-mange-lenkjer. }). Dette står i kontrast
- til c\hyp{}strukturlenkjing basert på f\hyp{}strukturforhold -- her gir dei
+ til c\hyp{}strukturlenking basert på f\hyp{}strukturforhold -- her gir dei
  funksjonelle domena (saman med dominans) evidens for når ein skal sjå
  på to nodar som del av same mange-mange-lenkje.  Med desse
  mange-mange-lenkjene mellom c\hyp{}strukturnodar kan me utan problem
  tillate lenkjer mellom diskontinuerlege konstituentar. I tillegg vil
- nodar som, for skuld lenkjinga, bør sjåast på som like, bli handsama
+ nodar som, for skuld lenkinga, bør sjåast på som like, bli handsama
  som like ved å vere ein del av same mange-mange-lenkje.
  
  Metoden i \texttt{RIA} \citep{graham2009osr,graham2009fts} finn
@@ -3227,12 +3228,12 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
  overføringsreglar for maskinomsetjing. Dei fjernar alle kantar i
  f\hyp{}strukturgrafen som kan skape sirkularitet eller som deler sluttnode
  med andre kantar (og unngår dimed problemet med \emph{reentrancy}, nemnt
- nedanfor). f\hyp{}strukturen blir då, i lenkjingsprosessen, ekvivalent med
+ nedanfor). f\hyp{}strukturen blir då, i lenkingsprosessen, ekvivalent med
  ein enkel trestruktur, slik at dei kan nytte ein liknande
  framgangsmåte som \citet{samuelsson2007apa}.  Dei nyttar
  f\hyp{}strukturhierarkiet til å «normalisere» ordfølgja i setningane, før
- den automatiske ordlenkjinga. Viss f\hyp{}strukturane er korrekte og bygd
- på felles prinsipp, vil altså ordfølgja i inndata til ordlenkjinga
+ den automatiske ordlenkinga. Viss f\hyp{}strukturane er korrekte og bygd
+ på felles prinsipp, vil altså ordfølgja i inndata til ordlenkinga
  bli nokolunde lik (ytre predikat først, så første argument, så andre,
  osb.), noko som lettar den statistiske ordsamanstillingsprosessen.
  Dei lenkjer ikkje c\hyp{}strukturnodar, sidan målet er å lage
@@ -3257,9 +3258,9 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
  er avleidd av f\hyp{}struktursamanstillinga, utan påverknad i andre
  retninga, vil det få følgjer for \emph{heile} samanstillinga dersom
  manglar i bottom-up-informasjonen gir feil
- argument/adjunkt-lenkjing. Feil i c\hyp{}struktursamanstillinga, derimot,
+ argument/adjunkt-lenking. Feil i c\hyp{}struktursamanstillinga, derimot,
  vil ikkje få følgjer andre stader (gitt ei viss
- f\hyp{}struktursamanstilling har me heller ingen «val» å ta for lenkjinga
+ f\hyp{}struktursamanstilling har me heller ingen «val» å ta for lenkinga
  her).
 
  Setningsparet i \Next illustrerer problemet.
@@ -3354,7 +3355,7 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
 Tabell \ref{tbl:LPT} viser, for kvart korresponderande og disambiguert
 setningspar i testsettet, kor mange ord setningane hadde og kor mange
 LPT\hyp{}korrespondansar som måtte til for å ikkje få feil i
-argument/adjunkt-lenkjinga (kolonnen «min. LPT»). For dei setningane
+argument/adjunkt-lenkinga (kolonnen «min. LPT»). For dei setningane
 der LPT\hyp{}korrespondansar måtte til, viser kolonnen «moglege LPT-par»
 kva for moglege mengder med minimal LPT\hyp{}informasjon som er nok for å
 få rett analyse (mange mengder i denne kolonnen vil altså seie at det
@@ -3377,7 +3378,7 @@ Testsettet \texttt{mrs} har berre konstruerte døme og eit svært lite
 
 Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning
  4.pl på georgisk (men f\hyp{}strukturane er like nok til at det ikkje gjer
- nokon forskjell for lenkjinga)\footnote{Det finst ingen 8.pl på georgisk i tabellen sidan denne (som
+ nokon forskjell for lenkinga)\footnote{Det finst ingen 8.pl på georgisk i tabellen sidan denne (som
         hadde tilsvart 9.pl på norsk) ikkje hadde analyse, difor
         manglar dette setningsparet -- andre som manglar frå tabellen
         var anten ikkje disambiguerte eller hadde ikkje analysar. Eit
@@ -3420,7 +3421,7 @@ Dette dømet demonstrerer ein veikskap med \texttt{lfgalign}: om ein skal
  køyre programmet med andre LFG-grammatikkar, som kanskje har andre
  retningslinjer for analyse eller har gjort ting på litt spesielle
  måtar, må ein kanskje leggje til fleire unntak eller meir «kunnskap»
- (evt. preprosessere analysane før lenkjing). Generelt kan dette
+ (evt. preprosessere analysane før lenking). Generelt kan dette
  forsåvidt vere eit problem med alle metodar som er svært
  kunnskapsbaserte.
 
@@ -3463,7 +3464,7 @@ skal kunne lenkje \p{skola} og \p{skole}\footnote{Eller så kunne ein tenkje seg
         argument for å komme fram til det lenkbare argumentet, altså
         berre lenkje \p{være} med \p{*-bruneba} og \p{skole} med
         \p{skole} -- men noko slikt ville involvert store endringar i
-        krava for f\hyp{}strukturlenkjing. }. Om det finst mange
+        krava for f\hyp{}strukturlenking. }. Om det finst mange
 slike situasjonar bør me kanskje opne for meir kompliserte lenkjer på
 f\hyp{}strukturnivå. Merk at om me ikkje legg til \emph{skola/skole} i
 LPT-tabellen får me samanstillinga i \Next:
@@ -3503,7 +3504,7 @@ adjunct & \{ \[pred & \@{5} `{\bf{}klevervegeni}' \] \} \]
 
 \ex. \{(\p{Se-Hveva}, \p{svinge}), (\p{pro}, \p{hun}), (\p{pro}, \p{nå}), (\p{soPi}, \p{inn})\}
 
-f\hyp{}strukturane i \LLast gir lenkjinga i \Last. Desse pro-elementa på
+f\hyp{}strukturane i \LLast gir lenkinga i \Last. Desse pro-elementa på
 georgisk skal sjølvsagt \emph{ikkje} lenkjast med adjunkta på norsk; her
 har me «overgenerering» av lenkjer pga. me opnar for
 argument-adjunkt-lenkjer. Slik \texttt{lfgalign} fungerer no, kan ein unngå
@@ -3514,8 +3515,8 @@ me legg inn ei omsetjing for \emph{nå}, får me samanstillinga i \Next:
 \ex. \{(\p{Se-Hveva}, \p{svinge}), (\p{pro}, \p{svinge}), (\p{pro}, \p{hun}), (\p{soPi}, \p{inn})\}
 
 Denne samanstillinga er kanskje er hakket betre, men sidan
-mange-mange-lenkjing berre er to-til-ein så langt, vil LPT\hyp{}informasjon
-om \emph{både} \p{nå} og \p{inn} resultere i at denne setninga \emph{ikkje får nokon lenkjing}. Dette er kanskje å føretrekkje, når me først skal
+mange-mange-lenking berre er to-til-ein så langt, vil LPT\hyp{}informasjon
+om \emph{både} \p{nå} og \p{inn} resultere i at denne setninga \emph{ikkje får nokon lenking}. Dette er kanskje å føretrekkje, når me først skal
 krevje likskap i argumentstruktur for å lenkje\footnote{Om eit slikt setningspar er gitt til ein N-grambasert metode,
         vil det sjølvsagt gi evidens for at t.d. \emph{nå} og det georgiske
         verbet skal lenkjast -- ikkje noko me vil ha i ein
@@ -3655,7 +3656,7 @@ Det som au er slåande er kor negativt ordboka speler inn på dekninga.
  låg der ordboka er med). Viss me derimot har fjerna analysar som har
  fleire «yttarste \PRED{}», har \texttt{lfgalign} (utan ordbok) faktisk
  fleire enn \texttt{RIA} (\texttt{lfgalign} kan føye saman eitt predikat og argument
- i lenkjinga, noko \texttt{RIA} og baseline-modellen ikkje gjer, men det ser
+ i lenkinga, noko \texttt{RIA} og baseline-modellen ikkje gjer, men det ser
  ikkje ut til at dette speler så veldig sterkt inn på kor mange
  lenkjer me får).
 
@@ -3702,7 +3703,7 @@ Yttarste f\hyp{}strukturar blir handsama som om dei er på same nivå i
  meint for trebankbygging med høg presisjon treng det ikkje vere
  negativt at dekninga er \emph{litt} lågare, men når det gjeld \SPEC{}- og
  \POSS{}-element bør det ikkje vere alt for vanskeleg å utvikle litt
- meir nyanserte lenkjingskriterium som au kan handtere desse. 
+ meir nyanserte lenkingskriterium som au kan handtere desse. 
 
 Ein annan tydeleg, men kanskje ikkje overraskande, trend i tabellen er
  at «presisjonen» til \texttt{lfgalign} med og utan ordbok nestan er heilt
@@ -3776,9 +3777,9 @@ Som nemnt i del \ref{SEC:ria} har \texttt{lfgalign} problem med
  og presisjon.
 
 Éin mogleg strategi for å handsame desse vil vere å dele opp
- lenkjingsoppgåva slik at me først finn fragment som sannsynlegvis
+ lenkingsoppgåva slik at me først finn fragment som sannsynlegvis
  korresponderer (ein god heuristikk er ganske enkelt ordfølgje), og så
- sender kvar av desse til vanleg f\hyp{}strukturlenkjing. Men der fragmenta
+ sender kvar av desse til vanleg f\hyp{}strukturlenking. Men der fragmenta
  ikkje overlappar vil me få problem. Ein av grunnføresetnadene til
  \texttt{lfgalign} er at analysane har ein viss likskap, og er korrekte; ei
  god løysing på dette problemet vil nok gå utover oppgåva.
@@ -3802,10 +3803,10 @@ I implementasjonen bør kanskje kravet om LPT\hyp{}korrespondanse difor bli
  implementere dette enno, men det bør vere fullt mogleg å endre på
  \texttt{argalign} og \texttt{adjalign} slik at dei berre leverer dei $k$ beste
  argument-/adjunkt-permutasjonane (altså eit ufullstendig søk). Dette
- vil nok gjere lenkjinga litt raskare, i tillegg til at me iallfall
+ vil nok gjere lenkinga litt raskare, i tillegg til at me iallfall
  returnerer minst éi løysing sjølv om eit målord ikkje står i mengda
  med omsetjingar frå kjeldeordet\footnote{For å ta dette eit steg vidare kan me flytte sjølve rangeringa
-        inn i f\hyp{}strukturlenkjinga, som nok vil gjere implementasjonen
+        inn i f\hyp{}strukturlenkinga, som nok vil gjere implementasjonen
         endå litt meir effektiv. Dette kan relativt enkelt gjerast ved
         å endre rekursive kall på \texttt{f-align} til kall på
         \texttt{rank(f-align)}, og endre \texttt{rank} til å levere ei liste med dei
@@ -3818,7 +3819,7 @@ I implementasjonen bør kanskje kravet om LPT\hyp{}korrespondanse difor bli
 
 
 
-\subsection{Top-down-lenkjing av f\hyp{}strukturar, og problemet med sykliske grafar}
+\subsection{Top-down-lenking av f\hyp{}strukturar, og problemet med sykliske grafar}
 \label{sec-5.4.2}
 
     \label{SEC:reentrancy}
@@ -3910,11 +3911,11 @@ Me føreset at \p{p} og \p{r} har LPT\hyp{}korrespondanse, det same med
  argument/adjunkt av omsetjinga, sidan dei allereie har
  LPT\hyp{}korrespondanse med argument/adjunkt av eit ytre predikat. Dette
  blir ein slag omsetjingsskifte (på argumentstrukturnivå), og
- lenkjinga bør nok vere open for slike skifte.
+ lenkinga bør nok vere open for slike skifte.
 
 Men ein variant av situasjonen over kan gi litt større problem,
  iallfall implementasjonsmessig. I \NNext kan me tenkje oss at den
- ønskelege lenkjinga er, som i \Last:
+ ønskelege lenkinga er, som i \Last:
 
 \ex. \{(\p{p},\p{r}),(\p{q},\p{s}),(\p{ich},\p{I})\}.
 
@@ -3934,14 +3935,14 @@ Den einaste relevante forskjellen frå \LLast er at i \LLast står \p{I}
 }
 
 Då er det eit problem at me følgjer krav \ref{krav:PRED-omgivnad} frå
- kapittel \ref{SEC:ideell}, og går top-down i f\hyp{}strukturlenkjinga i
+ kapittel \ref{SEC:ideell}, og går top-down i f\hyp{}strukturlenkinga i
  \texttt{lfgalign}. Når me skal lenkje \p{p} og \p{r} vil me ikkje finne ein
  argumentpermutasjon (ein-til-ein LPT\hyp{}korrespondanse) som fyller krav
  \ref{krav:PRED} -- \p{q} og \p{s} har LPT\hyp{}korrespondanse, så dei
  oppfyll kravet, men \p{ich} har ikkje noko som svarer til seg blant
  argument/adjunkt av \p{r}. Då vil me heller aldri prøve å lenkje
  \p{q} og \p{s}, som kunne fortalt oss at \p{ich} ikkje trengte nokon
- LPT\hyp{}korrespondanse ved lenkjing av \p{p} og \p{r}.
+ LPT\hyp{}korrespondanse ved lenking av \p{p} og \p{r}.
 
 Det er sjølvsagt mogleg å køyre top-down-metoden frå fleire startpunkt
  i f\hyp{}strukturane dersom dei første ikkje går, så kan ein kanskje sjå i
@@ -3995,9 +3996,9 @@ Sjølv der programmet kan tek feil i enkelttilfelle, kan ein få nyttig
 Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
  parallelle som dei er meint å vere, vil sjølvsagt \texttt{lfgalign} au vere
  praktisk, sidan umotiverte forskjellar lett kan føre til feil
- lenkjing. Ein kan au nytte programmet under utvikling av ein ny
+ lenking. Ein kan au nytte programmet under utvikling av ein ny
  grammatikk for å kontrollere om like fenomen faktisk får lik analyse,
- men dette gjeld sjølvsagt berre «lenkjingskandidatane» -- dei delene
+ men dette gjeld sjølvsagt berre «lenkingskandidatane» -- dei delene
  av analysane som kan få lenkjer.
 
 Sidan samanstillingane er direkte avleidd frå utdata frå grammatikkar,
@@ -4013,7 +4014,7 @@ Sidan samanstillingane er direkte avleidd frå utdata frå grammatikkar,
  N-gramtabellar, sjølv om målet berre er å lenkje eit korpus på eit
  par hundre setningspar. Men i den situasjonen der nokon har skrive
  ein grammatikk for språka, kan me få gode samanstillingar ved hjelp
- av top-down-lenkjing på dei grammatiske analysane. Med eit godt
+ av top-down-lenking på dei grammatiske analysane. Med eit godt
  brukargrensesnitt for val av alternative samanstillingar kan ein til
  og med klare seg utan å gi ordomsetjingar til programmet.
 
@@ -4045,7 +4046,7 @@ Implementasjonen stiller høge krav til inndata: det må vere ferdig
  argumentlister eller adjunktmengder). Evalueringa viser at det er ein
  del arbeid som gjenstår med både dei ideelle krava og
  implementeringa. Men det er allereie med dette systemet mogleg å få
- ut nyttig lenkjingsinformasjon.
+ ut nyttig lenkingsinformasjon.
 
 Me kan nok betre skårane på kvantitative mål som presisjon og dekning
  ved å implementere nokre av forslaga nemnt i del
