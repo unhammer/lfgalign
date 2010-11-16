@@ -203,10 +203,10 @@ Omsetjingsforhold finn me mellom ord og setningar i kontekst på ulike
 # forhold til omsetjing...
 
 Det at me kan finne korrespondansar mellom lingvistiske skildringar
- (t.d. frasestrukturannotasjonar, eller trekkstrukturane til dei
- grammatiske rammeverka HPSG eller LFG) gjer det tydeleg at me
- arbeider med ein /modell/ av språket; ulike skildringar kan vere
- sanne innanfor modellen, utan at modellen er lik
+ (t.d. frasestrukturannotasjonar, dependensstrukturar, eller
+ trekkstrukturane til dei grammatiske rammeverka HPSG eller LFG) gjer
+ det tydeleg at me arbeider med ein /modell/ av språket; ulike
+ skildringar kan vere sanne innanfor modellen, utan at modellen er lik
  språket. Korrespondansane er au teoretiske storleikar, og me kan
  leggje ulike kriterium til grunn for å seie at to representasjonar
  korresponderer; på same måte som me kan leggje ulike kriterium til
@@ -234,10 +234,11 @@ I den manuelle samanstillinga i \citet{samuelsson2006pap} har dei
  likskap i omgivnadene til frasane, sjølv om frasane internt kanskje
  er syntaktisk ulike.
 
-Grammatikkane som gir analysane er utvikla med tanke på at /like
- syntaktiske fenomen på ulike språk skal få like analysar/,
- frasesamanstillinga bør då kunne tene på at omsetjingar som har ein
- syntaktisk likskap vil få liknande analysar.
+Grammatikkane som gir analysane i Xpar-prosjektet er utvikla med tanke
+ på at /like syntaktiske fenomen på ulike språk skal få like
+ analysar/. Frasesamanstillinga bør då kunne tene på at omsetjingar
+ som har ein syntaktisk likskap vil få liknande analysar; nedanfor gir
+ eg eit kort oversyn over tanken bak metoden i denne oppgåva.
 
 Dei grammatiske analysane er gjort i leksikalsk-funksjonell
  grammatikk, LFG \citep{bresnan2001lfs}. Ei grammatisk analyse i LFG
@@ -266,7 +267,7 @@ I Xpar-prosjektet vil ein finne ut om metodar for frasesamanstilling
 # todo: «precision and recall» ymtar jo om samanlikning med
 # gullstandard som evalueringsgrunnlag
 
-kor «parallel grammars» her tydar at grammatikkane har ein viss
+kor «parallel grammars» her tyder at grammatikkane har ein viss
  parallellisme i både f\hyp{}struktur og c\hyp{}struktur.
 
 Men i tillegg til at ein kanskje kan få betre skåre på desse
@@ -282,8 +283,8 @@ Og sidan f\hyp{}strukturane er meint å skildre informasjon på eit meir
  omsette setningar, kan
 1. lage ei samanstilling mellom relevante delar av f\hyp{}strukturane,
 2. nytte denne funksjonelle samanstillinga til å finne ei
-   frasesamanstilling, ved å følgje avbildinga frå f\hyp{}struktur til
-   c\hyp{}struktur.
+   konstituentsamanstilling, ved å følgje avbildinga frå
+   f\hyp{}struktur til c\hyp{}struktur.
 
 
 Eitt problem som byr seg er hypotesemangfaldet: kva for «delar av
@@ -311,25 +312,26 @@ Funksjonen \falign{} vil gi ei mengd av par av f\hyp{}strukturar, kor kvart
  $\fpairs(f_{1},f_{2})$.
 
 
-Sjølv om f\hyp{}strukturar abstraherer frå skilnadene i korleis ulike språk
- nyttar ordgruppering og ordform til å kode syntaktiske forhold
+Sjølv om f\hyp{}strukturar abstraherer frå skilnadene i korleis ulike
+ språk nyttar ordgruppering og ordform til å kode syntaktiske forhold
  \citep[s.~14]{bresnan2001lfs}, vil det oppstå forskjellar i
- f\hyp{}strukturane til to parallellstilte setningar i eit korpus; både
- pga. «omsetjarfridom», ulikskap i argumentstrukturar og det at ulike
- språk nyttar ulike syntaktiske funksjonar til å uttrykkje det same
- konseptet. Det kan t.d. godt hende at me bør lenkje eit objekt på
- eitt språk til eit setningskomplement på eit anna språk. Skal ein
- algoritme gå frå f\hyp{}strukturar til frasesamanstilling må han i det
- minste vere robust nok til å takle slik mangel på samsvar. Til å
+ f\hyp{}strukturane til to parallellstilte setningar i eit korpus;
+ både pga. «omsetjarfridom», ulikskap i argumentstrukturar og det at
+ ulike språk nyttar ulike syntaktiske funksjonar til å uttrykkje det
+ same konseptet. Det kan t.d. godt hende at me bør lenkje eit objekt
+ på eitt språk til eit setningskomplement på eit anna språk. Skal ein
+ algoritme gå frå f\hyp{}strukturar til frasesamanstilling må han i
+ det minste vere robust nok til å takle slik mangel på samsvar. Til å
  byrje med kan me tenkje oss at \fpairs{} gir alle par av grammatiske
  funksjonar som har same plass i argumentstrukturen til predikatet. Så
  viss predikatet \p{sein} i $f_1$ har eit subjekt på førsteplass i
  strukturen, og så eit setningskomplement, medan \p{have} i $f_2$ har
  eit subjekt og så eit objekt, vil \fpairs{} i det minste returnere
  $\{(f_{1}(\SUBJ),f_{2}(\SUBJ)),(f_{1}(\XCOMP),f_{2}(\OBJ))\}$.  Ved å
- nytte argumentplass kan me då enkelt få til lenkjer mellom
- grammatiske funksjonar med ulike namn.  Men der me ikkje har slikt
- samsvar i argumentstrukturar, vil \fpairs{} ha ein vanskelegare jobb.
+ lenkje f-strukturar med lik posisjon i argumentstrukturen kan me då
+ enkelt få til lenkjer mellom grammatiske funksjonar med ulike namn.
+ Men der me ikkje eingong har så mykje samsvar i argumentstrukturar,
+ vil \fpairs{} ha ein vanskelegare jobb.
 
 Og sidan me gjerne au vil lenkje adverbial, som er representert som
  uordna mengder i f\hyp{}strukturane, er det klart at \fpairs{} ikkje er
@@ -350,8 +352,8 @@ I første omgang spesifiserer eg kva for lenkjer mellom
  frasesamanstillingar med hjelp av f\hyp{}strukturinformasjonen gitt
  av grammatikkar som er skrivne på felles prinsipp, i tillegg til å
  kunne avgrense lenkingar med hjelp av bottom-up-informasjon om kva
- for ordlenkjer som er moglege. f\hyp{}strukturane avgrensar igjen kva
- for ordsamanstillingar som er moglege, og kva for
+ for ordlenkjer som er moglege. Desse f\hyp{}strukturane avgrensar
+ igjen kva for ordsamanstillingar som er moglege, og kva for
  c\hyp{}strukturnodar (syntaktiske frasar) som kan lenkjast. Til sist
  evaluerer eg resultatet av å køyre programmet mitt, og samanliknar
  dette med kva for samanstillingar me kan få frå andre metodar.
@@ -360,7 +362,7 @@ I første omgang spesifiserer eg kva for lenkjer mellom
 
 ** Vegkart
 I neste kapittel gir eg eit oversyn over feltet /frasesamanstilling/,
-i tillegg til ein kort introduksjon til terminologi og konseptar frå
+i tillegg til ein kort introduksjon til terminologi og konsept frå
 LFG som blir nytta i resten av teksta.
 
 I kapittel \ref{SEC:ideell} går eg gjennom kva me ønskjer av ei
@@ -4153,7 +4155,9 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
         lenkjer mellom f\hyp{}strukturar.
 
 [fn:19] Ved c\hyp{}struktur-f\hyp{}strukturavbildinga $\phi$, ein funksjon som
-        tek ein c\hyp{}strukturnode og returnerer ein (delvis) f\hyp{}struktur.
+        tek ein c\hyp{}strukturnode og returnerer ein (delvis)
+        f\hyp{}struktur. Eg gir ein litt djupare introduksjon til LFG
+        i neste kapittel.
 
 [fn:20] Dette er ein litt enklare måte å definere kravet på; ei
         /lenkje/ refererer til både kjelde og mål, dimed blir det
