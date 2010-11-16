@@ -1,5 +1,5 @@
-% Created 2010-11-16 ty. 13:07
-\documentclass[12pt,a4paper,oneside]{report}
+% Created 2010-11-16 ty. 14:21
+\documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
 %% That geometry is fugly... ugh
@@ -500,7 +500,7 @@ Sjølv om fraselenkjer kan vere nyttige i korpuslingvistikken er det
  rangering ved (N-grambasert) samanlikning med ferdig omsett tekst.
 
 Den første metoden, \emph{AP}, er reint N-grambasert. Dei nyttar verktøyet
- Giza++ \citep[Och~og~Ney,~2000,~i][s.~50]{koehn2003spb} til å
+ Giza++ \citep[Och og Ney, 2000, i][s.~50]{koehn2003spb} til å
  indusere ordsamanstilling frå eit setningssamanstilt korpus
  (vha. «modell 4» for ordsamanstilling, utvikla ved IBM av
  \citet{brown1993msm}). Denne samanstillinga er 1-til-n (t.d. eitt
@@ -523,7 +523,7 @@ Den andre metoden, \emph{Syn}, tek berre med dei frasane som står under
 Seinare resultat har vist at ein \emph{kombinasjon} av syntaktisk
  informerte metodar med reint N-grambaserte modellar (dvs. i
  motsetning til å berre fjerne samanstillingar mellom
- ikkje-konstituentar) kan auke skåren i ein
+ ikkje\hyp{}konstituentar) kan auke skåren i ein
  maskinomsetjingsevaluering, både om ein som i \emph{Syn}-modellen nyttar
  frasestrukturinformasjon, men i endå større grad om ein nyttar
  dependendsinformasjon \citep{tinsley2007ept,hearne2008ccd}. Dette er
@@ -1163,15 +1163,14 @@ pro-drop-språk?
      $\leftrightarrow$
      \b. han bjeffa
 
-Viss setningane i døme \Last er lenkja, der iqePa har eit pro-argument
-koreferent med \emph{han} som subjekt, bør dei to subjekta iallfall kunne
-lenkjast på f\hyp{}strukturnivå; dei har same referent og speler same rolle
-i argumentstrukturen til verba (som me går ut frå er lenkja). På
-ordnivå, derimot, kan me ikkje lenkje \emph{han} til \emph{iqePa} åleine -- her
-må me ha ei mange-til-ein-lenkje mellom $\{ \rm han, bjeffa \}$ og $\{
-\rm iqePa \}$. 
-Generelt må me ha slike lenkjer der eitt ord projiserer fleire
-\PRED{}-element\footnote{Me ville au fått ei mange-til-ein-lenkje om me tillot
+Viss setningane i døme \Last er lenkja, der iqePa har eit
+ pro\hyp{}argument koreferent med \emph{han} som subjekt, bør dei to
+ subjekta iallfall kunne lenkjast på f\hyp{}strukturnivå; dei har same
+ referent og speler same rolle i argumentstrukturen til verba (som me
+ går ut frå er lenkja). På ordnivå, derimot, kan me ikkje lenkje \emph{han}
+ til \emph{iqePa} åleine -- her må me ha ei mange-til-ein-lenkje mellom $\{
+ \rm han, bjeffa \}$ og $\{ \rm iqePa \}$.  Generelt må me ha slike
+ lenkjer der eitt ord projiserer fleire \PRED{}-element\footnote{Me ville au fått ei mange-til-ein-lenkje om me tillot
         \emph{komplekse predikat} i analysane, t.d. slik
         \citet{butt1998merger} foreslår ved å la kombinasjonen av to
         ord endre argumentstrukturen til eitt \PRED{}-element. }.
@@ -1494,8 +1493,8 @@ ser eg på del \ref{SEC:f-mange-mange}.
  Medan \p{sigarett} er argument til \p{vedde}, står det ein adposisjon
  mellom \p{sigareti} og \p{da-najleveba}. I følgje krav
  \ref{krav:PRED} må me ha LPT\hyp{}korrespondanse mellom \p{sigarett} og
- eit argument/adjunkt av \p{da-najleveba} for å lenkje \p{vedde} og
- \p{da-najleveba}, det har me ikkje -- det står ein adposisjon i vegen.
+ eit argument eller adjunkt av \p{da-najleveba} for å lenkje \p{vedde} og
+ \p{da-najleveba}; det har me ikkje -- det står ein adposisjon i vegen.
 
  Éi løysing ville vore å mange-mange-lenkje \p{sigarett} med
  \p{sigareti} og \p{ze} -- men dette gir ei misvisande lenkje, sidan
@@ -2968,7 +2967,7 @@ Sidan \texttt{c-align} kallar \texttt{add-links} for kvar av sidene, får me to
  returnert av \texttt{c-align}.
 
  Om brukarvariabelen \texttt{*pro-affects-c-linking*} er sann, vil me leggje
- til lenkja pro-argument i lenkjemengdene; denne variabelen styrer
+ til lenkja pro\hyp{}argument i lenkjemengdene; denne variabelen styrer
  forskjellen mellom dei to alternative løysingane på ulenkja
  c\hyp{}strukturnodar diskutert i del \ref{SEC:f-lenkje-utan-c-node}. Om
  \texttt{*pro-affects-c-linking*} er usann, filtrerer me ut alle lenkjer frå
@@ -3596,7 +3595,7 @@ Desse tala seier sjølvsagt ingenting om kva for lenkjer som er
 
 
 \begin{table}[htb]
-\caption{\label{tbl:RIA}Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Det fulle testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida; 337 når alle setningspar med fleire yttarste \PRED{} er fjerna.}
+\caption{\label{tbl:RIA}Overlapp mellom \texttt{RIA} og \texttt{lfgalign}, og mellom \texttt{RIA} og ein tilfeldige baseline. Det fulle testsettet har totalt 40343 lenkbare \PRED{}-element på kjeldesida; dette søkk til 337 når alle setningspar med fleire yttarste \PRED{} er fjerna.}
 \begin{center}
 \begin{tabular}{lcrrrrrr}
  metode                      &  yttarst        &  snitt  &  union  &  lenkjer  &  \texttt{RIA}-lenkjer  &  snitt / denne      &  snitt / \texttt{RIA}  \\
