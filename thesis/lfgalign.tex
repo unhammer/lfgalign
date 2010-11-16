@@ -1,9 +1,9 @@
-% Created 2010-11-14 su. 14:16
+% Created 2010-11-16 ty. 12:26
 \documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
 %% That geometry is fugly... ugh
-%\usepackage[left=22mm,top=22mm,right=22mm,bottom=22mm]{geometry}
+\usepackage[left=22mm,top=22mm,right=22mm,bottom=22mm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{xcolor}                 % needs to be before hyperref when using fixme
@@ -66,7 +66,7 @@
 
 \title{\tittel}
 \author{Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}}
-\date{14/11, 2010}
+\date{16/11, 2010}
 
 \begin{document}
 
@@ -205,97 +205,97 @@
   % \end{quotation}
 
 Denne masteroppgåva utforskar kva det vil seie at to uttrykk er
-omsetjingar av kvarandre, og korleis me automatisk kan generere
-samanstillingar (\emph{alignments}) av uttrykk som står i eit slikt
-omsetjingsforhold.
+ omsetjingar av kvarandre, og korleis me automatisk kan generere
+ samanstillingar (\emph{alignments}) av uttrykk som står i eit slikt
+ omsetjingsforhold.
 
 Omsetjingsforhold finn me mellom ord og setningar i kontekst på ulike
-språk, men me kan au finne ulike typar ekvivalensforhold
-(samanstillingar) mellom frasar innanfor setningane, og mellom
-lingvistiske skildringar av setningane. I samanheng med
-Xpar-prosjektet \citep{xpar2008rcn,dyvik2009lmp} har eg sett på metodar for
-automatisk frasesamanstilling – å finne omsetjingsforhold mellom
-grupper av fleire ord. Resultatet blir ein \emph{annotasjon}, endå ei
-lingvistisk skildring av tekstene.
+ språk, men me kan au finne ulike typar ekvivalensforhold
+ (samanstillingar) mellom frasar innanfor setningane, og mellom
+ lingvistiske skildringar av setningane. I samanheng med
+ Xpar-prosjektet \citep{xpar2008rcn,dyvik2009lmp} har eg sett på
+ metodar for automatisk frasesamanstilling – å finne omsetjingsforhold
+ mellom grupper av fleire ord. Resultatet blir ein \emph{annotasjon}, endå
+ ei lingvistisk skildring av tekstene.
 
 
 
 Det at me kan finne korrespondansar mellom lingvistiske skildringar
-(t.d. frasestrukturannotasjonar, eller trekkstrukturane til dei
-grammatiske rammeverka HPSG eller LFG) gjer det tydeleg at me arbeider
-med ein \emph{modell} av språket; ulike skildringar kan vere sanne innanfor
-modellen, utan at modellen er lik språket. Korrespondansane er au
-teoretiske storleikar, og me kan leggje ulike kriterium til grunn for
-å seie at to representasjonar korresponderer; på same måte som me kan
-leggje ulike kriterium til grunn for å seie at to ulike uttrykk er
-omsetjingar av kvarandre.
+ (t.d. frasestrukturannotasjonar, eller trekkstrukturane til dei
+ grammatiske rammeverka HPSG eller LFG) gjer det tydeleg at me
+ arbeider med ein \emph{modell} av språket; ulike skildringar kan vere
+ sanne innanfor modellen, utan at modellen er lik
+ språket. Korrespondansane er au teoretiske storleikar, og me kan
+ leggje ulike kriterium til grunn for å seie at to representasjonar
+ korresponderer; på same måte som me kan leggje ulike kriterium til
+ grunn for å seie at to ulike uttrykk er omsetjingar av kvarandre.
 
 Kriteria avheng av formålet. Samanstillingsannotasjon kan t.d. nyttast
-som grunnlag for statistisk eller eksempelbasert maskinomsetjing, i
-tillegg til oppbygging av parallelle korpora for språkstudium.  For
-statistisk maskinomsetjing vil alle uttrykk vere omsetjingar av
-kvarandre med eit visst sannsyn (kanskje null), ein har vanlegvis
-ikkje kriterium som krev lingvistisk analyse. Når samanstillinga skal
-nyttast i parallelle korpora for lingvistiske undersøkingar vil ein
-kanskje ha krav om at uttrykk som skal lenkjast er «like» på eit eller
-anna mål, utover at dei har opptredt saman ofte.
+ som grunnlag for statistisk eller eksempelbasert maskinomsetjing, i
+ tillegg til oppbygging av parallelle korpora for språkstudium.  For
+ statistisk maskinomsetjing vil alle uttrykk vere omsetjingar av
+ kvarandre med eit visst sannsyn (kanskje null), ein har vanlegvis
+ ikkje kriterium som krev lingvistisk analyse. Når samanstillinga skal
+ nyttast i parallelle korpora for lingvistiske undersøkingar vil ein
+ kanskje ha krav om at uttrykk som skal lenkjast er «like» på eit
+ eller anna mål, utover at dei har opptredt saman ofte.
 
 I den manuelle samanstillinga i \citet{samuelsson2006pap} har dei
-t.d. ein del reint semantiske kriterium for å opprette fraselenkjer i
-ein parallell trebank, men dei har ikkje krav om syntaktisk likskap.
-Xpar-prosjektet, som denne masteroppgåva er ein del av, har mellom
-anna som mål å oppdage forhold mellom grammatiske funksjonar,
-tematiske roller og kasusmarkering, ved hjelp av parallelle trebankar
-annotert med djupe grammatiske analysar. Trebankane vil innehalde
-parallell tekst på norsk, georgisk, tigrinya og nederlandsk.  For å
-lenkje to frasar i dette prosjektet krev me ein viss syntaktisk
-likskap i omgivnadene til frasane, sjølv om frasane internt kanskje er
-syntaktisk ulike.  
+ t.d. ein del reint semantiske kriterium for å opprette fraselenkjer i
+ ein parallell trebank, men dei har ikkje krav om syntaktisk likskap.
+ Xpar-prosjektet, som denne masteroppgåva er ein del av, har mellom
+ anna som mål å oppdage forhold mellom grammatiske funksjonar,
+ tematiske roller og kasusmarkering, ved hjelp av parallelle trebankar
+ annotert med djupe grammatiske analysar. Trebankane vil innehalde
+ parallell tekst på norsk, georgisk, tigrinya og nederlandsk.  For å
+ lenkje to frasar i dette prosjektet krev me ein viss syntaktisk
+ likskap i omgivnadene til frasane, sjølv om frasane internt kanskje
+ er syntaktisk ulike.
 
-Grammatikkane som gir analysane er utvikla med tanke på at \emph{like syntaktiske fenomen på ulike språk skal få like analysar},
-frasesamanstillinga bør då kunne tene på at omsetjingar som har ein
-syntaktisk likskap vil få liknande analysar.
+Grammatikkane som gir analysane er utvikla med tanke på at \emph{like  syntaktiske fenomen på ulike språk skal få like analysar},
+ frasesamanstillinga bør då kunne tene på at omsetjingar som har ein
+ syntaktisk likskap vil få liknande analysar.
 
 Dei grammatiske analysane er gjort i leksikalsk-funksjonell
-grammatikk, LFG \citep{bresnan2001lfs}. Ei grammatisk analyse i LFG
-involverer både konstituentstruktur (c-struktur) og funksjonell
-struktur (f-struktur). Konstituentstrukturen liknar på
-frasestrukturtrea frå andre grammatiske tradisjonar. Dei funksjonelle
-strukturane er trekkstrukturar, som mellom anna representerer
-avhengnadsforhold mellom syntaktiske funksjonar som predikat, subjekt
-og objekt, i tillegg til å halde informasjon om grammatiske trekk som
-genus, tal eller kasus. Nodar i c-strukturen kan spesifisere
-informasjon på ulike stader i f-strukturen\footnote{Ved c-struktur-f-strukturavbildinga $\phi$, ein funksjon som
+ grammatikk, LFG \citep{bresnan2001lfs}. Ei grammatisk analyse i LFG
+ involverer både konstituentstruktur (c-struktur) og funksjonell
+ struktur (f-struktur). Konstituentstrukturen liknar på
+ frasestrukturtrea frå andre grammatiske tradisjonar. Dei funksjonelle
+ strukturane er trekkstrukturar, som mellom anna representerer
+ avhengnadsforhold mellom syntaktiske funksjonar som predikat, subjekt
+ og objekt, i tillegg til å halde informasjon om grammatiske trekk som
+ genus, tal eller kasus. Nodar i c-strukturen kan spesifisere
+ informasjon på ulike stader i f-strukturen\footnote{Ved c-struktur-f-strukturavbildinga $\phi$, ein funksjon som
         tek ein c-strukturnode og returnerer ein (delvis) f-struktur. }.
 
 I Xpar-prosjektet vil ein finne ut om metodar for frasesamanstilling
-kan tene på det at LFG-grammatikkane for dei ulike språka er skrivne
-med same prinsipp lagt til grunn; to parallellstilte setningar bør ha
-f-strukturar som er like nok til at me kan samanstille frasar ved
-hjelp av likskapen mellom f-strukturane. I \citet[s.~72]{dyvik2009lmp}
-finn me følgjande hypotese:
+ kan tene på det at LFG-grammatikkane for dei ulike språka er skrivne
+ med same prinsipp lagt til grunn; to parallellstilte setningar bør ha
+ f-strukturar som er like nok til at me kan samanstille frasar ved
+ hjelp av likskapen mellom f-strukturane. I
+ \citet[s.~72]{dyvik2009lmp} finn me følgjande hypotese:
 
 \begin{quote}
-On the basis of monolingual treebanks constructed from a parallel
-corpus by means of parallel grammars it will be possible to achieve
-automatic word and phrase alignment with significantly higher
-precision and recall than hitherto achieved through other means.
+ On the basis of monolingual treebanks constructed from a parallel
+ corpus by means of parallel grammars it will be possible to achieve
+ automatic word and phrase alignment with significantly higher
+ precision and recall than hitherto achieved through other means.
 \end{quote}
 
 kor «parallel grammars» her tydar at grammatikkane har ein viss
-parallellisme i både f-struktur og c-struktur.
+ parallellisme i både f-struktur og c-struktur.
 
 Men i tillegg til at ein kanskje kan få betre skåre på desse
-kvantitative måla, vil lenkjer mellom f-strukturar gi informasjon som
-er kvalitativt forskjellig frå det ein kan få med å berre sjå på
-lenkjer mellom ord, N-gram eller konstituentar.
+ kvantitative måla, vil lenkjer mellom f-strukturar gi informasjon som
+ er kvalitativt forskjellig frå det ein kan få med å berre sjå på
+ lenkjer mellom ord, N-gram eller konstituentar.
 
 
 Og sidan f-strukturane er meint å skildre informasjon på eit meir
-«språkuavhengig» nivå enn t.d. konstituentstruktur, bør f-strukturane
-vere gode kandidatar for å finne informasjon som korresponderer på dei
-to språka. Tanken er at me frå to f-strukturar
-som skildrar omsette setningar, kan
+ «språkuavhengig» nivå enn t.d. konstituentstruktur, bør f-strukturane
+ vere gode kandidatar for å finne informasjon som korresponderer på
+ dei to språka. Tanken er at me frå to f-strukturar som skildrar
+ omsette setningar, kan
 \begin{enumerate}
 \item lage ei samanstilling mellom relevante delar av f-strukturane,
 \item nytte denne funksjonelle samanstillinga til å finne ei
@@ -303,17 +303,17 @@ som skildrar omsette setningar, kan
    c-struktur.
 \end{enumerate}
 Eitt problem som byr seg er hypotesemangfaldet: kva for «delar av
-f-strukturane»? Korleis kan me avgrense søkjerommet? I det minste må
-me kunne kople dei lenkja f-strukturane opp mot c-strukturnodar; her
-er \PRED{}-elementet ein god kandidat.
+ f-strukturane»? Korleis kan me avgrense søkjerommet? I det minste må
+ me kunne kople dei lenkja f-strukturane opp mot c-strukturnodar; her
+ er \PRED{}-elementet ein god kandidat.
 
 Vidare må me vite \emph{korleis} me samanstiller desse delene. Me kan
-t.d. byrje med å lenkje dei yttarste f-strukturane frå kvart språk, og
-så rekursivt lenkje visse relevante substrukturar\footnote{Dette krev sjølvsagt at dei yttarste f-strukturane faktisk
+ t.d. byrje med å lenkje dei yttarste f-strukturane frå kvart språk,
+ og så rekursivt lenkje visse relevante substrukturar\footnote{Dette krev sjølvsagt at dei yttarste f-strukturane faktisk
         korresponderer i lenkja setningar, noko me ikkje alltid kan ta
-        for gitt. }.  Eit naivt
-førsteutkast til ei \emph{f-samanstilling}, samanstilling på
-f-strukturnivå, kan då sjå slik ut:
+        for gitt. }.  Eit
+ naivt førsteutkast til ei \emph{f-samanstilling}, samanstilling på
+ f-strukturnivå, kan då sjå slik ut:
 
 
 \[
@@ -324,41 +324,42 @@ f-strukturnivå, kan då sjå slik ut:
 \]
 
 Funksjonen \falign{} vil gi ei mengd av par av f-strukturar, kor kvart
-par altså er samanstilt. Problemet er då å finne ut kva for par av
-substrukturar som er «relevante», her representert ved
-$\fpairs(f_{1},f_{2})$.
+ par altså er samanstilt. Problemet er då å finne ut kva for par av
+ substrukturar som er «relevante», her representert ved
+ $\fpairs(f_{1},f_{2})$.
 
 
 Sjølv om f-strukturar abstraherer frå skilnadene i korleis ulike språk
-nyttar ordgruppering og ordform til å kode syntaktiske forhold
-\citep[s.~14]{bresnan2001lfs}, vil det  oppstå forskjellar i
-f-strukturane til to parallellstilte setningar i eit korpus; både
-pga. «omsetjarfridom», ulikskap i argumentstrukturar og det at ulike
-språk nyttar ulike syntaktiske funksjonar til å uttrykkje det same
-konseptet. Det kan t.d. godt hende at me bør lenkje eit objekt på eitt
-språk til eit setningskomplement på eit anna språk. Skal ein algoritme
-gå frå f-strukturar til frasesamanstilling må han i det minste vere
-robust nok til å takle slik mangel på samsvar. Til å byrje med kan me
-tenkje oss at \fpairs{} gir alle par av grammatiske funksjonar som har
-same plass i argumentstrukturen til predikatet. Så viss predikatet
-\p{sein} i $f_1$ har eit subjekt på førsteplass i strukturen, og så
-eit setningskomplement, medan \p{have} i $f_2$ har eit subjekt og så
-eit objekt, vil \fpairs{} i det minste returnere
-$\{(f_{1}(\SUBJ),f_{2}(\SUBJ)),(f_{1}(\XCOMP),f_{2}(\OBJ))\}$.  Ved å
-nytte argumentplass kan me då enkelt få til lenkjer mellom grammatiske
-funksjonar med ulike namn.  Men der me ikkje har slikt samsvar i
-argumentstrukturar, vil \fpairs{} ha ein vanskelegare jobb.
+ nyttar ordgruppering og ordform til å kode syntaktiske forhold
+ \citep[s.~14]{bresnan2001lfs}, vil det oppstå forskjellar i
+ f-strukturane til to parallellstilte setningar i eit korpus; både
+ pga. «omsetjarfridom», ulikskap i argumentstrukturar og det at ulike
+ språk nyttar ulike syntaktiske funksjonar til å uttrykkje det same
+ konseptet. Det kan t.d. godt hende at me bør lenkje eit objekt på
+ eitt språk til eit setningskomplement på eit anna språk. Skal ein
+ algoritme gå frå f-strukturar til frasesamanstilling må han i det
+ minste vere robust nok til å takle slik mangel på samsvar. Til å
+ byrje med kan me tenkje oss at \fpairs{} gir alle par av grammatiske
+ funksjonar som har same plass i argumentstrukturen til predikatet. Så
+ viss predikatet \p{sein} i $f_1$ har eit subjekt på førsteplass i
+ strukturen, og så eit setningskomplement, medan \p{have} i $f_2$ har
+ eit subjekt og så eit objekt, vil \fpairs{} i det minste returnere
+ $\{(f_{1}(\SUBJ),f_{2}(\SUBJ)),(f_{1}(\XCOMP),f_{2}(\OBJ))\}$.  Ved å
+ nytte argumentplass kan me då enkelt få til lenkjer mellom
+ grammatiske funksjonar med ulike namn.  Men der me ikkje har slikt
+ samsvar i argumentstrukturar, vil \fpairs{} ha ein vanskelegare jobb.
 
 Og sidan me gjerne au vil lenkje adverbial, som er representert som
-uordna mengder i f-strukturane, er det klart at \fpairs{} ikkje er
-triviell å definere. Ein del av denne oppgåva vil altså vere å komme
-med forslag til funksjonen \fpairs{}.
+ uordna mengder i f-strukturane, er det klart at \fpairs{} ikkje er
+ triviell å definere. Ein del av denne oppgåva vil altså vere å komme
+ med forslag til funksjonen \fpairs{}.
 
 Om to f-strukturar er lenkja, har me grunn til å lenkje
-c-strukturnodane som projiserer dei. Men her er det ikkje sikkert me
-vil lenkje \emph{alle} nodane; intuitivt vil me berre at nodar som
-dominerer korresponderande innhald skal lenkjast.  Ein formalisering
-dette steget, med diskusjon rundt problema, inngår au i denne oppgåva.
+ c-strukturnodane som projiserer dei. Men her er det ikkje sikkert me
+ vil lenkje \emph{alle} nodane; intuitivt vil me berre at nodar som
+ dominerer korresponderande innhald skal lenkjast.  Ein formalisering
+ dette steget, med diskusjon rundt problema, inngår au i denne
+ oppgåva.
 
 I første omgang spesifiserer eg kva for lenkjer mellom f-strukturar og
  c-strukturnodar me \emph{ønskjer}. Eg implementerer så eit program
@@ -409,7 +410,7 @@ tysk-engelsk testsett.
 \chapter{Bakgrunn og omgrepsavklaring}
 \label{sec-2}
 
-  \label{SEC:bakgrunn}
+\label{SEC:bakgrunn}
 
   % \begin{quotation}
   % Syntax, my lad. It has been restored to the highest place in the republic.
@@ -421,132 +422,134 @@ tysk-engelsk testsett.
   % \end{quotation}
   
 I dette kapittelet gir eg eit oversyn over dei vanlegaste metodane
-innanfor feltet frasesamanstilling, og då spesielt dei som nyttar djup
-syntaktisk analyse eller rettar seg mot trebankar. Eg gir au ein kort
-gjennomgang av nokre teoretiske omgrep og konsept som eg kjem til å
-nytte i resten av oppgåva.
+ innanfor feltet frasesamanstilling, og då spesielt dei som nyttar
+ djup syntaktisk analyse eller rettar seg mot trebankar. Eg gir au ein
+ kort gjennomgang av nokre teoretiske omgrep og konsept som eg kjem
+ til å nytte i resten av oppgåva.
 
 \section{Metodar for frasesamanstilling}
 \label{sec-2.1}
 
 Frasesamanstilling vil seie lenkjing av (representasjonar av) delar av
-setningar som (representerer ord som) har ein omsetjingsmessig
-korrespondanse. Merk at ordet «frase» ofte blir nytta i litteraturen
-om kontinuerlege strenger av ord (N-gram) som ikkje treng vere
-syntaktiske konstituentar. I vid forstand kan me au inkludere lenkjing
-av delar av dependensstrukturar, eller av syntaktiske funksjonar, som
-begge representerer mengder med ord.
+ setningar som (representerer ord som) har ein omsetjingsmessig
+ korrespondanse. Merk at ordet «frase» ofte blir nytta i litteraturen
+ om kontinuerlege strenger av ord (N-gram) som ikkje treng vere
+ syntaktiske konstituentar. I vid forstand kan me au inkludere
+ lenkjing av delar av dependensstrukturar, eller av syntaktiske
+ funksjonar, som begge representerer mengder med ord.
 
 Automatisk frasesamanstilling er eit nytt felt.  Det finst allereie
-veldig gode system for automatisk lenkjing av setningar; her har ein
-fått svært gode resultat ved å nytte ein statistisk omsetjingsmodell
-\citep{chen1993asb}; andre metodar har nytta avstand eller
-delstrengoverlapp
-\citep[s.~467--484~gir~eit~oversyn]{manning99foundations}.  Automatisk
-samanstilling av ord har au komme langt (sjå \citet{brown1993msm} for
-dei klassiske «IBM-modellane»; \citet{och2003scv} gir eit godt oversyn
-over ytinga til leiande metodar).  Men på nivåa mellom ord og setning
-er det vanskelegare å vurdere feltet.  Det finst fleire moglege
-einingar å lenkje -- kontinuerlege N-gram, kontinuerlege eller
-diskontinuerlege konstituentar, dependensstrukturar, syntaktiske
-funksjonar -- og i motsetning til einingar som \emph{ord} eller \emph{setning},
-er einingane i ein frasesamanstilling sjeldan teoretisk
-ukontroversielle\footnote{\citet[s.~470]{manning99foundations} skil i tillegg mellom
+ veldig gode system for automatisk lenkjing av setningar; her har ein
+ fått svært gode resultat ved å nytte ein statistisk omsetjingsmodell
+ \citep{chen1993asb}; andre metodar har nytta avstand eller
+ delstrengoverlapp
+ \citep[s.~467--484~gir~eit~oversyn]{manning99foundations}.
+ Automatisk samanstilling av ord har au komme langt (sjå
+ \citet{brown1993msm} for dei klassiske «IBM-modellane»;
+ \citet{och2003scv} gir eit godt oversyn over ytinga til leiande
+ metodar).  Men på nivåa mellom ord og setning er det vanskelegare å
+ vurdere feltet.  Det finst fleire moglege einingar å lenkje --
+ kontinuerlege N-gram, kontinuerlege eller diskontinuerlege
+ konstituentar, dependensstrukturar, syntaktiske funksjonar -- og i
+ motsetning til einingar som \emph{ord} eller \emph{setning}, er einingane i ein
+ frasesamanstilling sjeldan teoretisk ukontroversielle\footnote{\citet[s.~470]{manning99foundations} skil i tillegg mellom
         \emph{samanstillingsproblem} og \emph{korrespondanseproblem}, der berre
-        det siste kan involvere kryssande avhengnader. }.  Dei ulike tilnærmingane som finst, og
-einingane dei lenkjer, er prega av formåla til utviklarane.
+        det siste kan involvere kryssande avhengnader. }.  Dei
+ ulike tilnærmingane som finst, og einingane dei lenkjer, er prega av
+ formåla til utviklarane.
 
 Eit av dei tidlegaste forsøka på å lenkje frasar var
-\citet{kupiec1993afn}, her berre nominalfrasar. Metoden besto i å
-først køyre ein statistisk ordklassetaggar, så finne sannsynlege
-nominalfrasar på kvart språk (dvs. «chunking») med reine regulære
-uttrykk, og så lenkjing av slike kontinuerlege ordstrengar basert på
-sannsynsmaksimering\footnote{Dette er ein av dei vanlegaste metodane for iterativ
+ \citet{kupiec1993afn}, her berre nominalfrasar. Metoden besto i å
+ først køyre ein statistisk ordklassetaggar, så finne sannsynlege
+ nominalfrasar på kvart språk (dvs. «chunking») med reine regulære
+ uttrykk, og så lenkjing av slike kontinuerlege ordstrengar basert på
+ sannsynsmaksimering\footnote{Dette er ein av dei vanlegaste metodane for iterativ
         reestimering av parametre i ein statistisk modell; eg kjem
         tilbake til sannsynsmaksimering i kapittel
         \ref{SEC:diskusjon}. }. Resultata var relativt gode for enkle
-frasar (nitti av dei hundre høgast rangerte korrespondansane var
-gode), men modellen var svært enkel og involverte ikkje nokon kontekst
-rundt frasane.
+ frasar (nitti av dei hundre høgast rangerte korrespondansane var
+ gode), men modellen var svært enkel og involverte ikkje nokon
+ kontekst rundt frasane.
 
 Innanfor korpuslingvistikken har \citet{piao2001mwu} nytta enkel
-kollokasjonsinformasjon og ordklasseheuristikkar for å først finne
-sannsynlege nominale frasar på engelsk og kinesisk, og så lenkje desse
-ved hjelp av sannsynsheuristikkar som t-skåre og \emph{Mutual Information}. Dei køyrer fleire runder med lenkjing av lengre og
-lengre N-gram.  Her, som i \citet{kupiec1993afn}, er
-evalueringsgrunnlaget rett og slett ein manuell gjennomgang av dei
-mest sannsynlege omsetjingane dei får.
+ kollokasjonsinformasjon og ordklasseheuristikkar for å først finne
+ sannsynlege nominale frasar på engelsk og kinesisk, og så lenkje
+ desse ved hjelp av sannsynsheuristikkar som t-skåre og \emph{Mutual  Information}. Dei køyrer fleire runder med lenkjing av lengre og
+ lengre N-gram.  Her, som i \citet{kupiec1993afn}, er
+ evalueringsgrunnlaget rett og slett ein manuell gjennomgang av dei
+ mest sannsynlege omsetjingane dei får.
 
 Den manuelle frasesamanstillinga i \citet{samuelsson2006pap}, nemnt i
-introduksjonen, blei nytta som evalueringsstandard for den automatiske
-metoden i \citet{samuelsson2007apa}.  Her finn dei ei
-konstituentsamanstilling frå ei ordsamanstilling, der berre N-gram som
-svarer til ein syntaktisk node blir lenkja som frasar. Formålet er å
-lage ein parallell trebank, kor det altså er unyttig å lenkje «frasar»
-som \emph{ikkje} er konstituentar. Eg kjem tilbake til denne metoden i
-kapittel \ref{SEC:diskusjon}.
+ introduksjonen, blei nytta som evalueringsstandard for den
+ automatiske metoden i \citet{samuelsson2007apa}.  Her finn dei ei
+ konstituentsamanstilling frå ei ordsamanstilling, der berre N-gram
+ som svarer til ein syntaktisk node blir lenkja som frasar. Formålet
+ er å lage ein parallell trebank, kor det altså er unyttig å lenkje
+ «frasar» som \emph{ikkje} er konstituentar. Eg kjem tilbake til denne
+ metoden i kapittel \ref{SEC:diskusjon}.
 
 Sjølv om fraselenkjer kan vere nyttige i korpuslingvistikken er det
-hovudsakleg innanfor statistisk maskinomsetjing at ein har forska på
-samanstilling av frasar. \citet{koehn2003spb} gir ei grundig
-evaluering av ulike statistiske metodar for frasesamanstilling til
-bruk i stokastisk maskinomsetjing. Dei nyttar \Bleu-skåren til å
-rangere resultata
-\citep[Papineni~et~al.,~2001,~i][s.~51]{koehn2003spb}, som gir ei
-rangering ved (N-grambasert) samanlikning med ferdig omsett tekst.
+ hovudsakleg innanfor statistisk maskinomsetjing at ein har forska på
+ samanstilling av frasar. \citet{koehn2003spb} gir ei grundig
+ evaluering av ulike statistiske metodar for frasesamanstilling til
+ bruk i stokastisk maskinomsetjing. Dei nyttar \Bleu-skåren til å
+ rangere resultata
+ \citep[Papineni~et~al.,~2001,~i][s.~51]{koehn2003spb}, som gir ei
+ rangering ved (N-grambasert) samanlikning med ferdig omsett tekst.
 
 Den første metoden, \emph{AP}, er reint N-grambasert. Dei nyttar verktøyet
-Giza++ \citep[Och~og~Ney,~2000,~i][s.~50]{koehn2003spb} til å indusere
-ordsamanstilling frå eit setningssamanstilt korpus (vha. «modell 4»
-for ordsamanstilling, utvikla ved IBM av \citet{brown1993msm}). Denne
-samanstillinga er 1-til-n (t.d. eitt engelsk ord til to franske), så
-dei finn ordsamanstilling for begge retningar og tek så snittet av
-alle moglege N-gramsamanstillingar som ikkje er i konflikt med
-ordsamanstillingane. Dei føyer så på ord frå unionen av desse
-vha. nokre enkle heuristikkar.
+ Giza++ \citep[Och~og~Ney,~2000,~i][s.~50]{koehn2003spb} til å
+ indusere ordsamanstilling frå eit setningssamanstilt korpus
+ (vha. «modell 4» for ordsamanstilling, utvikla ved IBM av
+ \citet{brown1993msm}). Denne samanstillinga er 1-til-n (t.d. eitt
+ engelsk ord til to franske), så dei finn ordsamanstilling for begge
+ retningar og tek så snittet av alle moglege N-gramsamanstillingar som
+ ikkje er i konflikt med ordsamanstillingane. Dei føyer så på ord frå
+ unionen av desse vha. nokre enkle heuristikkar.
 
 Den andre metoden, \emph{Syn}, tek berre med dei frasane som står under
-syntaktiske nodar i eit parsa korpus; frasesamanstillinga til \emph{Syn} er
-ein delmengd av den i \emph{AP}. Denne syntaktisk informerte modellen gav
-ein mykje dårlegare \Bleu-skåre enn den reint N-grambaserte modellen
-(faktisk dårlegare enn omsetjingane frå den opphavlege modell 4 for
-ordsamanstilling, utan frasesamanstilling). Dei forklarer dette med
-den store mengda uttrykk som ikkje utgjer syntaktiske konstituentar i
-følgje parsaren deira, men likevel konsekvent blir omsett til visse
-uttrykk på det andre språket (t.d. «es gibt» på tysk til «there is» på
-engelsk). 
+ syntaktiske nodar i eit parsa korpus; frasesamanstillinga til \emph{Syn}
+ er ein delmengd av den i \emph{AP}. Denne syntaktisk informerte modellen
+ gav ein mykje dårlegare \Bleu-skåre enn den reint N-grambaserte
+ modellen (faktisk dårlegare enn omsetjingane frå den opphavlege
+ modell 4 for ordsamanstilling, utan frasesamanstilling). Dei
+ forklarer dette med den store mengda uttrykk som ikkje utgjer
+ syntaktiske konstituentar i følgje parsaren deira, men likevel
+ konsekvent blir omsett til visse uttrykk på det andre språket
+ (t.d. «es gibt» på tysk til «there is» på engelsk).
 
 Seinare resultat har vist at ein \emph{kombinasjon} av syntaktisk
-informerte metodar med reint N-grambaserte modellar (dvs. i motsetning
-til å berre fjerne samanstillingar mellom ikkje-konstituentar) kan
-auke skåren i ein maskinomsetjingsevaluering, både om ein som i
-\emph{Syn}-modellen nyttar frasestrukturinformasjon, men i endå større
-grad om ein nyttar dependendsinformasjon
-\citep{tinsley2007ept,hearne2008ccd}. Dette er interessant med tanke
-på at LFG-analysane gir begge typar informasjon.
+ informerte metodar med reint N-grambaserte modellar (dvs. i
+ motsetning til å berre fjerne samanstillingar mellom
+ ikkje-konstituentar) kan auke skåren i ein
+ maskinomsetjingsevaluering, både om ein som i \emph{Syn}-modellen nyttar
+ frasestrukturinformasjon, men i endå større grad om ein nyttar
+ dependendsinformasjon \citep{tinsley2007ept,hearne2008ccd}. Dette er
+ interessant med tanke på at LFG-analysane gir begge typar
+ informasjon.
 
 \citet{riezler2006gmt} utvikla ein metode for å kombinere frasebasert
-statistisk maskinomsetjing med LFG-basert setningsgenerering. Dei finn
-ei n-til-m-ordsamanstilling med Giza++ som i metodane over, men parsar
-i tillegg setningane i LFG. Dei to moglege f-strukturane som liknar
-mest blir valt ut, og frå ordsamanstillinga finn dei
-mange-til-mange-korrespondansar mellom substrukturane i
-f-strukturane. Ved å leggje til LFG-basert generering fekk det
-kombinerte systemet betre resultat på langdistanseavhengnader og
-generalisering til nye uttrykk med strukturell likskap til tidlegare
-observerte uttrykk. Dei går altså frå ordlenkjer til
-f-strukturlenkjer, motsett retning frå metoden i denne
-oppgåva. Ordlenkjer har au gitt f-strukturlenkjer i overføringsbasert
-(transferbasert) statistisk maskinomsetjing
-\citep{graham2010dsl,graham2009osr,graham2009fts}, som eg kjem tilbake
-til i kapittel \ref{SEC:diskusjon}.
+ statistisk maskinomsetjing med LFG-basert setningsgenerering. Dei
+ finn ei n-til-m-ordsamanstilling med Giza++ som i metodane over, men
+ parsar i tillegg setningane i LFG. Dei to moglege f-strukturane som
+ liknar mest blir valt ut, og frå ordsamanstillinga finn dei
+ mange-til-mange-korrespondansar mellom substrukturane i
+ f-strukturane. Ved å leggje til LFG-basert generering fekk det
+ kombinerte systemet betre resultat på langdistanseavhengnader og
+ generalisering til nye uttrykk med strukturell likskap til tidlegare
+ observerte uttrykk. Dei går altså frå ordlenkjer til
+ f-strukturlenkjer, motsett retning frå metoden i denne
+ oppgåva. Ordlenkjer har au gitt f-strukturlenkjer i overføringsbasert
+ (transferbasert) statistisk maskinomsetjing
+ \citep{graham2010dsl,graham2009osr,graham2009fts}, som eg kjem
+ tilbake til i kapittel \ref{SEC:diskusjon}.
 
 Så langt har eg ikkje komme over metodar som prøver å finne eller
-betre på frase- og ordsamanstilling direkte frå ein LFG-parse -- det
-er dette som er strategien til programmet \texttt{lfgalign} i kapittel
-\ref{SEC:implementasjon} -- men det er stor overlapp mellom krava som
-kjem i kapittel \ref{SEC:ideell} og dei gitt i den første publiseringa
-i Xpar-prosjektet, \citet{dyvik2009lmp}.
+ betre på frase- og ordsamanstilling direkte frå ein LFG-parse -- det
+ er dette som er strategien til programmet \texttt{lfgalign} i kapittel
+ \ref{SEC:implementasjon} -- men det er stor overlapp mellom krava som
+ kjem i kapittel \ref{SEC:ideell} og dei gitt i den første
+ publiseringa i Xpar-prosjektet, \citet{dyvik2009lmp}.
 
 \section{Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi}
 \label{sec-2.2}
@@ -1181,7 +1184,7 @@ t.d. det engelske ordet \emph{fulfilment} meir naturleg blir omsett til eit
 verb på kinesisk. På same måte vil eit georgisk verbalsubstantiv
 (\emph{masdar}) gjerne bli omsett til eit verb i infinitiv på
 norsk. Slike skifte mellom ordklasser er svært vanlege i
-omsetjing\footnote{\citet[Catford~(1965),~i][s.~61]{munday2001its} gir ein gjennomgang av
+omsetjing\footnote{Catford \citep[1965, i][s.~61]{munday2001its} gir ein gjennomgang av
        slike \emph{klasseskifte}, og andre typar omsetjingsskifte. }.
 
 Me kan opne for ordklasseoverskridande lenkjer der det er samsvar på
@@ -1245,33 +1248,33 @@ proposisjon og \emph{speler same rolle i verbsituasjonen}, synest det
 naturleg å lenkje desse.
 
 Slike omsetjingsrelasjonar gir data for verbsituasjonen, på eit meir
-generelt grunnlag enn det me kan få frå einspråklege analysar
-åleine. Om me har gode semantiske grunnar for å kalle ein deltakar i
-ein verbsituasjon eit argument på eitt språk, vil dei same grunnane
-gjelde for omsetjingsmessig korresponderande verb på andre språk. Ein
-kan då nytte unionen over alle argument til korresponderande verb til
-å karakterisere kva ein meiner med \emph{deltakarane i verbsituasjonen}. Syntaktiske forhold i språket kan sjølvsagt gi
-grunnar til å \emph{ikkje} kalle dette eit argument.
+ generelt grunnlag enn det me kan få frå einspråklege analysar
+ åleine. Om me har gode semantiske grunnar for å kalle ein deltakar i
+ ein verbsituasjon eit argument på eitt språk, vil dei same grunnane
+ gjelde for omsetjingsmessig korresponderande verb på andre språk. Ein
+ kan då nytte unionen over alle argument til korresponderande verb til
+ å karakterisere kva ein meiner med \emph{deltakarane i  verbsituasjonen}. Syntaktiske forhold i språket kan sjølvsagt gi
+ grunnar til å \emph{ikkje} kalle dette eit argument.
 
 For å gjere dette konkret kan me sjå på følgjande setning frå
-test-suiten til Xpar-prosjektet:
+ test-suiten til Xpar-prosjektet:
 
 \exg. abramsi brouns       daenajleva sigaretze, rom cvimda \label{ex:vedde-gloss} \\
       Abrams.NOM Brown.DAT vedde.3SG sigarett.om, at  regne.3SG.IMP \\
      `Abrams veddet en sigarett med Brown på at det regnet' 
 
 I følgje LFG-parsen til desse setningane har hovudpredikata svært ulik
-argumentstruktur\footnote{Analysane er henta 18. mai, 2009, frå
+ argumentstruktur\footnote{Analysane er henta 18. mai, 2009, frå
         \href{http://decentius.aksis.uib.no/logon/xle.xml}{http://decentius.aksis.uib.no/logon/xle.xml}, som implementerer
-        LFG-grammatikkane frå ParGram-prosjektet \citep{butt2002pgp}. }. Det norske \emph{vedde} har \underline{fire} argument, medan
-\emph{da-najleveba} har \underline{to} (\emph{Abrams} og \emph{Browne}), kor at-setninga på
-norsk og \emph{rom cvimda} uttrykkjer same proposisjon og speler same rolle
-i verbsituasjonen. Den engelske LFG-parsen av den tilsvarande setninga
-(mine omsetjingar) gir \underline{tri} argument, \emph{with} blir her adjunkt, medan
-den tyske grammatikken, som au har \underline{tri} argument, gjer \emph{at}-setninga
-til adjunkt. I \Next nedanfor har eg representert dei omsetjingsmessig
-korresponderande frasane i f-strukturane med dei norske omsetjingane
-for å illustrere dette:
+        LFG-grammatikkane frå ParGram-prosjektet \citep{butt2002pgp}. }. Det norske \emph{vedde} har \underline{fire} argument,
+ medan \emph{da-najleveba} har \underline{to} (\emph{Abrams} og \emph{Browne}), kor
+ at-setninga på norsk og \emph{rom cvimda} uttrykkjer same proposisjon og
+ speler same rolle i verbsituasjonen. Den engelske LFG-parsen av den
+ tilsvarande setninga (mine omsetjingar) gir \underline{tri} argument, \emph{with}
+ blir her adjunkt, medan den tyske grammatikken, som au har \underline{tri}
+ argument, gjer \emph{at}-setninga til adjunkt. I \Next nedanfor har eg
+ representert dei omsetjingsmessig korresponderande frasane i
+ f-strukturane med dei norske omsetjingane for å illustrere dette:
 
 {\avmoptions{}
 \ex. \label{ex:vedde}
@@ -1281,11 +1284,11 @@ for å illustrere dette:
 \b. abramsi brouns daenajleva sigaretze, rom cvimda. \hfill{} (georgisk)\\
     $\\\begin{avm}\[pred &  `{\bf{}da-najleveba}<Abrams, Browne, regne>'\\
     adjunct &  \{ \rm sigarett \}\]\end{avm}\\$ 
-\c. Abrams hat mit Browne um eine Zigarette gewettet, \hfill{}(tysk)\\
+\c. Abrams hat mit Browne um eine Zigarette gewettet, \hfill{} (tysk)\\
     daß es regnet.\\
     $\\\begin{avm}\[pred & `{\bf{}wetten}<Abrams, regne>' \\
                   adjunct & \{ \rm Browne, sigarett \}\]\end{avm}\\$
-\d. Abrams bet a cigarette with Brown that it was raining. \hfill{}(engelsk)\\
+\d. Abrams bet a cigarette with Brown that it was raining. \hfill{} (engelsk)\\
     $\\\begin{avm}\[pred & `{\bf{}bet}<Abrams, sigarett, regne>'\\
                   adjunct & \{ \rm Browne \}\]\end{avm}$
 
