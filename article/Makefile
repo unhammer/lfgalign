@@ -7,7 +7,7 @@ all: ${TARGET}.pdf
 
 # it doesn't really need the .dvi, but this way all the refs are right
 %.pdf : %.dvi
-	pdflatex -synctex=1 --halt-on-error $*
+	pdflatex -synctex=-1 --halt-on-error $*
 
 ${TARGET}.bbl: ${BIBTAG}.bib
 # in case we don't already have a .aux file listing citations
