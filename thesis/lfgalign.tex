@@ -1,5 +1,5 @@
-% Created 2010-11-16 ty. 18:36
-\documentclass[12pt,a4paper,oneside,draft]{report}
+% Created 2010-11-17 on. 14:30
+\documentclass[12pt,a4paper,oneside]{report}
 %% TODO: Change to twoside for print version, remove draft
 
 %% That geometry is fugly... ugh
@@ -37,6 +37,7 @@
 \newcommand{\xbar}{$\rm\overline{X}$}
 \newcommand{\ind}[1]{{\avmoptions{center}\begin{avm}\@{#1}\end{avm}}}
 \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
+\newcommand{\q}[2]{\begin{quotation}\raggedleft{}#1\\\vspace{0.2cm}(#2)\vspace{1.2cm}\end{quotation}}
 \newcommand{\OBLben}{\F{obl}{ben}}
 \newcommand{\OBJben}{\F{obj}{ben}}
 \newcommand{\OBJ}{\F{obj}{}}
@@ -68,7 +69,7 @@
 
 \title{\tittel}
 \author{Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}}
-\date{16/11, 2010}
+\date{17/11, 2010}
 
 \begin{document}
 
@@ -177,16 +178,15 @@
 
 \label{SEC:innleiing}\pagenumbering{arabic}
 
-   \begin{quotation}\raggedleft{}
-   Die Summe des Erkennbaren liegt, als das von dem menschlichen Geiste zu bearbeitende Feld, zwischen allen Sprachen, und unabhängig von ihnen, in der Mitte.
+   \q{Die Summe des Erkennbaren liegt, als das von dem mensch-\\lichen
+   Geiste zu bearbeitende Feld, zwischen allen Sprachen,\\
+   und unabhängig von ihnen, in der Mitte.}
+   {Wilhelm von Humboldt}
    % The sum of the knowable, as the field to be tilled by the human mind, lies among all languages, independent of them, in the middle.
-   \\\vspace{0.2cm}(Wilhelm von Humboldt)
-   \end{quotation}
 
-  % \begin{quotation}\raggedleft{}
-  % I begynnelsen var ordet -- på slutten, frasen. % vel, klisjeen 
-  % \\\vspace{0.2cm}(Stanisław Jerzy Lec)
-  % \end{quotation}
+  % \q{I begynnelsen var ordet -- på slutten, frasen.}
+  %   {Stanisław Jerzy Lec}
+  % vel, klisjeen 
 
 Denne masteroppgåva utforskar kva det vil seie at to uttrykk er
  omsetjingar av kvarandre, og korleis me automatisk kan generere
@@ -400,10 +400,9 @@ tysk-engelsk testsett.
 
 \label{SEC:bakgrunn}
 
-   \begin{quotation}\raggedleft{}
-   Syntax, my lad. It has been restored to the highest place in the republic.
-   \\\vspace{0.2cm}(John Steinbeck)
-   \end{quotation}
+   \q{Syntax, my lad. It has been restored\\ to the highest place in the
+   republic.}
+   {John Steinbeck}
   
 I dette kapittelet gir eg eit oversyn over dei vanlegaste metodane
  innanfor feltet frasesamanstilling, og då spesielt dei som nyttar
@@ -691,10 +690,8 @@ Så langt har eg ikkje komme over metodar som prøver å finne eller
 
 \label{SEC:ideell}
 
-   \begin{quotation}\raggedleft{}
-   El original es infiel a la traducción.
-   \\\vspace{0.2cm}(Jorge Luis Borges)
-   \end{quotation}
+   \q{El original es infiel a la traducción.}
+   {Jorge Luis Borges}
 
 \section{Innleiing}
 \label{sec-3.1}
@@ -2366,12 +2363,10 @@ kapittelet sånn at det er lettare å teste kor dei slår feil.
 
 \label{SEC:implementasjon}
 
-   \begin{quotation}\raggedleft{}
-   Scientists reproduce results; engineers build impressive and enduring
-   artifacts; and theologians muse about what they believe but can't see
-   or prove.
-   \\\vspace{0.2cm}\citep[s.~466]{pedersen2008enm}
-   \end{quotation}
+   \q{Scientists reproduce results; engineers build impressive and \\enduring
+   artifacts; and theologians muse about what they \\believe but can't see
+   or prove.}
+   {\citealp[s.~466]{pedersen2008enm}}
 
 Eit formelt krav kan se bra ut på papiret, men ha skjulte manglar som
 ikkje kjem fram før ein har testa det.  Ei implementering gjer det med
@@ -2966,16 +2961,16 @@ I neste kapittel går eg gjennom resultat av å køyre \texttt{lfgalign} på
 
 \label{SEC:diskusjon}
 
-       \begin{quotation}\raggedleft{}
-      Any sufficiently complex problem needs to be coded three times.
-   \\\vspace{0.2cm}(ukjend, via Steve Gibson)
-      \end{quotation}
-
-   %\begin{quotation}\raggedleft{}
-    % Nawet w jego milczeniu były błędy językowe. \\
-    %There were grammatical errors even in his silence.
-    %\\\vspace{0.2cm}(Stanisław Jerzy Lec)
-   %\end{quotation}
+  \q{O! I smell false Latin}
+  {Shakespeare}
+  
+  
+  %\q{Any sufficiently complex problem needs to be coded three times.}
+  % {ukjend, via Steve Gibson}
+  
+  %\q{Nawet w jego milczeniu były błędy językowe. \\
+  %   There were grammatical errors even in his silence.}
+  % {Stanisław Jerzy Lec}
 
  I denne delen gir eg ei evaluering av resultata frå å køyre
  \texttt{lfgalign} på LFG-analysar av parallelle setningar. Eg ser på manglar

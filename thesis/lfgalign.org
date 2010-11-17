@@ -10,6 +10,7 @@
 #+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
 #+LaTeX_HEADER: \newcommand{\ind}[1]{{\avmoptions{center}\begin{avm}\@{#1}\end{avm}}}
 #+LaTeX_HEADER: \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
+#+LaTeX_HEADER: \newcommand{\q}[2]{\begin{quotation}\raggedleft{}#1\\\vspace{0.2cm}(#2)\vspace{1.2cm}\end{quotation}}
 #+LaTeX_HEADER: \newcommand{\OBLben}{\F{obl}{ben}}
 #+LaTeX_HEADER: \newcommand{\OBJben}{\F{obj}{ben}}
 #+LaTeX_HEADER: \newcommand{\OBJ}{\F{obj}{}}
@@ -154,16 +155,15 @@
 \label{SEC:innleiing}\pagenumbering{arabic}
 
 #+BEGIN_LaTeX
-   \begin{quotation}\raggedleft{}
-   Die Summe des Erkennbaren liegt, als das von dem menschlichen Geiste zu bearbeitende Feld, zwischen allen Sprachen, und unabhängig von ihnen, in der Mitte.
+   \q{Die Summe des Erkennbaren liegt, als das von dem mensch-\\lichen
+   Geiste zu bearbeitende Feld, zwischen allen Sprachen,\\
+   und unabhängig von ihnen, in der Mitte.}
+   {Wilhelm von Humboldt}
    % The sum of the knowable, as the field to be tilled by the human mind, lies among all languages, independent of them, in the middle.
-   \\\vspace{0.2cm}(Wilhelm von Humboldt)
-   \end{quotation}
 
-  % \begin{quotation}\raggedleft{}
-  % I begynnelsen var ordet -- på slutten, frasen. % vel, klisjeen 
-  % \\\vspace{0.2cm}(Stanisław Jerzy Lec)
-  % \end{quotation}
+  % \q{I begynnelsen var ordet -- på slutten, frasen.}
+  %   {Stanisław Jerzy Lec}
+  % vel, klisjeen 
 #+END_LaTeX
 
 Denne masteroppgåva utforskar kva det vil seie at to uttrykk er
@@ -376,10 +376,9 @@ tysk-engelsk testsett.
 \label{SEC:bakgrunn}
 
 #+BEGIN_LaTeX
-   \begin{quotation}\raggedleft{}
-   Syntax, my lad. It has been restored to the highest place in the republic.
-   \\\vspace{0.2cm}(John Steinbeck)
-   \end{quotation}
+   \q{Syntax, my lad. It has been restored\\ to the highest place in the
+   republic.}
+   {John Steinbeck}
 #+END_LaTeX
   
 I dette kapittelet gir eg eit oversyn over dei vanlegaste metodane
@@ -671,10 +670,8 @@ this project relates to similar projects in the field.»
 \label{SEC:ideell}
 
 #+BEGIN_LaTeX
-   \begin{quotation}\raggedleft{}
-   El original es infiel a la traducción.
-   \\\vspace{0.2cm}(Jorge Luis Borges)
-   \end{quotation}
+   \q{El original es infiel a la traducción.}
+   {Jorge Luis Borges}
 #+END_LaTeX
 
 ** Innleiing
@@ -2340,12 +2337,10 @@ kapittelet sånn at det er lettare å teste kor dei slår feil.
 \label{SEC:implementasjon}
 
 #+BEGIN_LaTeX
-   \begin{quotation}\raggedleft{}
-   Scientists reproduce results; engineers build impressive and enduring
-   artifacts; and theologians muse about what they believe but can't see
-   or prove.
-   \\\vspace{0.2cm}\citep[s.~466]{pedersen2008enm}
-   \end{quotation}
+   \q{Scientists reproduce results; engineers build impressive and \\enduring
+   artifacts; and theologians muse about what they \\believe but can't see
+   or prove.}
+   {\citealp[s.~466]{pedersen2008enm}}
 #+END_LaTeX
 
 Eit formelt krav kan se bra ut på papiret, men ha skjulte manglar som
@@ -2885,16 +2880,16 @@ I neste kapittel går eg gjennom resultat av å køyre =lfgalign= på
 \label{SEC:diskusjon}
 
 #+BEGIN_LaTeX
-       \begin{quotation}\raggedleft{}
-      Any sufficiently complex problem needs to be coded three times.
-   \\\vspace{0.2cm}(ukjend, via Steve Gibson)
-      \end{quotation}
-
-   %\begin{quotation}\raggedleft{}
-    % Nawet w jego milczeniu były błędy językowe. \\
-    %There were grammatical errors even in his silence.
-    %\\\vspace{0.2cm}(Stanisław Jerzy Lec)
-   %\end{quotation}
+  \q{O! I smell false Latin}
+  {Shakespeare}
+  
+  
+  %\q{Any sufficiently complex problem needs to be coded three times.}
+  % {ukjend, via Steve Gibson}
+  
+  %\q{Nawet w jego milczeniu były błędy językowe. \\
+  %   There were grammatical errors even in his silence.}
+  % {Stanisław Jerzy Lec}
 #+END_LaTeX
 
  I denne delen gir eg ei evaluering av resultata frå å køyre
