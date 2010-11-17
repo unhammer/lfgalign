@@ -82,6 +82,16 @@ symlinked to lfgalign.asd) first by doing e.g.:
 Common Lisp command-line interfaces are unfortunately not very
 standardised.
 
+Alternative c-structure alignment
+---------------------------------
+
+The global variable `*pro-affects-c-linking*` controls whether
+unlinked pro-elements may hinder linking c-structure nodes of two
+predicates. Setting this to `t` or `nil` toggles two alternative ways
+of linking c-structures in the cases where one language has
+pro-elements and the other does not, and the pro-element is linked on
+the f-structure level.
+
 
 Central functions
 =================
