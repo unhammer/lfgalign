@@ -8,7 +8,10 @@ be in the
 [XLE format](http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html#Prolog_Output),
 and preferably manually disambiguated from grammars that have been
 written using common analysis principles (see the
-[Xpar project description](http://xpar.b.uib.no/project-description/)).
+[Xpar project description](http://xpar.b.uib.no/project-description/)). One
+may optionally supply word-translations (e.g. from word alignments or
+translational dictionaries) in order to improve the predicate
+alignment.
 
 There is an
 [article about lfgalign](https://github.com/unhammer/lfgalign/raw/master/article/lfgalign-art.pdf)
