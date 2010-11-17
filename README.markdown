@@ -1,3 +1,23 @@
+
+About
+=====
+
+`lfgalign` is a program for aligning corresponding f-structures and
+c-structures of LFG analysed parallel sentences. The analyses should
+be in the
+[XLE format](http://www2.parc.com/isl/groups/nltt/xle/doc/xle.html#Prolog_Output),
+and preferably manually disambiguated from grammars that have been
+written using common analysis principles (see the
+[Xpar project description](http://xpar.b.uib.no/project-description/)).
+
+There is an
+[article about lfgalign](https://github.com/unhammer/lfgalign/raw/master/article/lfgalign-art.pdf)
+that describes the method; see also the
+[master's thesis](https://github.com/unhammer/lfgalign/raw/master/thesis/lfgalign.pdf)
+(in Norwegian).
+
+
+
 Usage
 =====
 
@@ -59,8 +79,9 @@ symlinked to lfgalign.asd) first by doing e.g.:
 Common Lisp command-line interfaces are unfortunately not very
 standardised.
 
-Progress
-========
+
+Central functions
+=================
 
 lfgalign
 ----------
@@ -163,11 +184,16 @@ filter out non-selected parses from the file, keeping only the ones
 equivalent to the selected parse (see `filter-equiv`, `in-disjunction`
 and `disambiguated?`). 
 
+
 TODO
 ====
 
 - Use LPT-check as a k-best ranking criterion rather than a binary
   cut-off.
+  
+- SPEC and POSS features may lead to PRED's that are not arguments or
+  adjuncts of anything else (e.g. determiners, possessors) -- need
+  some principled method of aligning these.
 
 - The program just uses dset3 of the dsets, rename it (make a class?)
   and deprecate the others.
