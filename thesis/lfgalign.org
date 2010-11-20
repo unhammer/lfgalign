@@ -386,11 +386,15 @@ Eg evaluerer samanstillingane som kjem ut av denne metoden i kapittel
    {John Steinbeck}
 #+END_LaTeX
   
-I dette kapittelet gir eg eit oversyn over dei vanlegaste metodane
- innanfor feltet frasesamanstilling, og då spesielt dei som nyttar
- djup syntaktisk analyse eller rettar seg mot trebankar. Eg gir au ein
- kort gjennomgang av nokre teoretiske omgrep og konsept som eg kjem
- til å nytte i resten av oppgåva.
+Innanfor korpusbasert språkteknologi og korpusbasert datalingvistikk
+ (t.d. statistisk maskinomsetjing) har djup, syntaktisk analyse lenge
+ vore fråverande, kanskje delvis fordi ressursane som krevst tek tid å
+ byggje opp, delvis fordi ein treng nye metodar, men dette har byrja å
+ endre på seg i dei siste ti åra.  I dette kapittelet gir eg eit
+ oversyn over utviklinga av feltet frasesamanstilling, då spesielt dei
+ metodane som nyttar djup syntaktisk analyse eller rettar seg mot
+ trebankar. Eg gir au ein kort gjennomgang av nokre syntaktiske omgrep
+ og konsept som eg kjem til å nytte i resten av oppgåva.
 
 ** Metodar for frasesamanstilling
 Frasesamanstilling vil seie lenking av (representasjonar av) delar av
@@ -423,10 +427,10 @@ Eit av dei tidlegaste forsøka på å lenkje frasar var
  \citet{kupiec1993afn}, her berre nominalfrasar. Metoden besto i å
  først køyre ein statistisk ordklassetaggar, så finne sannsynlege
  nominalfrasar på kvart språk (dvs. «chunking») med reine regulære
- uttrykk, og så lenking av slike kontinuerlege ordstrengar basert på
- sannsynsmaksimering[fn:53]. Resultata var relativt gode for enkle
+ uttrykk, følgt av lenking av slike kontinuerlege ordstrengar basert
+ på sannsynsmaksimering[fn:53]. Resultata var relativt gode for enkle
  frasar (nitti av dei hundre høgast rangerte korrespondansane var
- gode), men modellen var svært enkel og involverte ikkje nokon
+ akseptable), men modellen var svært enkel og involverte ikkje nokon
  kontekst rundt frasane.
 
 Innanfor korpuslingvistikken har \citet{piao2001mwu} nytta enkel
@@ -453,8 +457,9 @@ Sjølv om fraselenkjer kan vere nyttige i korpuslingvistikken er det
  evaluering av ulike statistiske metodar for frasesamanstilling til
  bruk i stokastisk maskinomsetjing. Dei nyttar \Bleu-skåren til å
  rangere resultata
- \citep[Papineni~et~al.,~2001,~i][s.~51]{koehn2003spb}, som gir ei
- rangering ved (N-grambasert) samanlikning med ferdig omsett tekst.
+ \citep[Papineni~et~al.,~2001,~i][s.~51]{koehn2003spb}; denne
+ evalueringsmetoden gir ei rangering ved (N-grambasert) samanlikning
+ med ferdig omsett tekst.
 
 Den første metoden, /AP/, er reint N-grambasert. Dei nyttar verktøyet
  Giza++ \citep[Och og Ney, 2000, i][s.~50]{koehn2003spb} til å
@@ -490,25 +495,28 @@ Seinare resultat har vist at ein /kombinasjon/ av syntaktisk
 \citet{riezler2006gmt} utvikla ein metode for å kombinere frasebasert
  statistisk maskinomsetjing med LFG-basert setningsgenerering. Dei
  finn ei n-til-m-ordsamanstilling med Giza++ som i metodane over, men
- parsar i tillegg setningane i LFG. Dei to moglege f\hyp{}strukturane som
- liknar mest blir valt ut, og frå ordsamanstillinga finn dei
+ parsar i tillegg setningane i LFG. Dei to moglege f\hyp{}strukturane
+ som liknar mest blir valt ut, og frå ordsamanstillinga finn dei
  mange-til-mange-korrespondansar mellom substrukturane i
  f\hyp{}strukturane. Ved å leggje til LFG-basert generering fekk det
  kombinerte systemet betre resultat på langdistanseavhengnader og
  generalisering til nye uttrykk med strukturell likskap til tidlegare
  observerte uttrykk. Dei går altså frå ordlenkjer til
  f\hyp{}strukturlenkjer, motsett retning frå metoden i denne
- oppgåva. Ordlenkjer har au gitt f\hyp{}strukturlenkjer i overføringsbasert
- (transferbasert) statistisk maskinomsetjing
+ oppgåva. Ordlenkjer har au gitt f\hyp{}strukturlenkjer i
+ overføringsbasert (transferbasert) statistisk maskinomsetjing
  \citep{graham2010dsl,graham2009osr,graham2009fts}, som eg kjem
- tilbake til i kapittel \ref{SEC:diskusjon}.
+ tilbake til i kapittel \ref{SEC:diskusjon}. I det siste har det au
+ komme ein del nye, reint statistiske metodar for samanstilling av
+ konstituentstrukturar, t.d. \citet{zhechev2008agp,tiedemann2009dat}.
 
 Så langt har eg ikkje komme over metodar som prøver å finne eller
  betre på frase- og ordsamanstilling direkte frå ein LFG-parse -- det
  er dette som er strategien til programmet =lfgalign= i kapittel
  \ref{SEC:implementasjon} -- men det er stor overlapp mellom krava som
- kjem i kapittel \ref{SEC:ideell} og dei gitt i den første
- publiseringa i Xpar-prosjektet, \citet{dyvik2009lmp}.
+ kjem i kapittel \ref{SEC:ideell} (i tillegg nemnt i
+ \citet{unhammer2010lcf}) og dei gitt i den første publiseringa i
+ Xpar-prosjektet, \citet{dyvik2009lmp}.
 
 *** ULEST Cyrus, FuSe-prosjektet 				     :ROTETE:
 \citet{cyrus2004apa}
@@ -4394,13 +4402,3 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
 
 [fn:60] Me kunne hatt inversjon på nederlandsk au; men me samanstiller
         instansar av omsetjingar, ikkje språket generelt.
-
-
-
-
-
-
-
-
-
-
