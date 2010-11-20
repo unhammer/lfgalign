@@ -41,7 +41,7 @@
 #+LaTeX_HEADER: \pagenumbering{roman}
 
 ### The org-mode TITLE command escapes curly parens, so we do it like this instead:
-#+LaTeX_HEADER: \newcommand{\tittel}{DASP350 -- Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk informert frasesamanstilling\vspace{30mm}}
+#+LaTeX_HEADER: \newcommand{\tittel}{DASP350 -- Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk fraselenking\vspace{30mm}}
 #+TITLE: \tittel
 
 ### TODO: studentnummer
@@ -103,7 +103,7 @@
     Denne oppgåva presenterer ein kunnskapsbasert metode for
     automatisk frasesamanstilling, kor formålet er å annotere ein
     fleirspråkleg trebank for lingvistiske studium. Dei fleste
-    frasesamanstillingsmetodar nyttar N-gramtabellar som grunnlag for
+    frasesamanstillingsmetodane nyttar N-gramtabellar som grunnlag for
     å finne mange-mange-lenkjer; ekte syntaktiske konstituentar eller
     dependenslenkjer blir kanskje filtrert ut i eit seinare
     steg. Desse metodane nyttar ikkje den fulle informasjonen
@@ -121,7 +121,7 @@
     retningslinjer for analyse; i så fall kan me ta strukturell
     likskap i analysane som evidens for at konstituentar (syntaktiske
     frasar) eller funksjonelle element (predikat, argument, adjunkt)
-    kan lenkjast. Oppgåva formulerer ei mengd prinsipp for funksjons-
+    kan lenkast. Oppgåva formulerer ei mengd prinsipp for funksjons-
     og konstituentsamanstilling (med annoteringsformålet i minnet), og
     gir ein implementasjon av prinsippa. Til slutt blir metoden
     evaluert, både manuelt og automatisk, og samanlikna med metodar
@@ -172,13 +172,13 @@ Denne masteroppgåva utforskar kva det vil seie at to uttrykk er
  omsetjingsforhold.
 
 Omsetjingsforhold finn me mellom ord og setningar i kontekst på ulike
- språk, men me kan au finne ulike typar ekvivalensforhold
- (samanstillingar) mellom frasar innanfor setningane, og mellom
+ språk, men me kan au finne ulike typar ekvivalensforhold --
+ samanstillingar -- mellom frasar innanfor setningane, og mellom
  lingvistiske skildringar av setningane. I samanheng med
  Xpar-prosjektet \citep{xpar2008rcn,dyvik2009lmp} har eg sett på
- metodar for automatisk frasesamanstilling – å finne omsetjingsforhold
- mellom grupper av fleire ord. Resultatet blir ein /annotasjon/, endå
- ei lingvistisk skildring av tekstene.
+ metodar for automatisk frasesamanstilling, for å skildre
+ omsetjingsforhold mellom grupper av fleire ord. Resultatet blir ein
+ /annotasjon/, endå ei lingvistisk skildring av tekstene.
 
 
 # to situerte setningar er omsetjingar av kvarandre, mellom
@@ -237,9 +237,9 @@ Dei grammatiske analysane er gjort i leksikalsk-funksjonell
 I Xpar-prosjektet vil ein finne ut om metodar for frasesamanstilling
  kan tene på det at LFG-grammatikkane for dei ulike språka er skrivne
  med same prinsipp lagt til grunn; to parallellstilte setningar bør ha
- f\hyp{}strukturar som er like nok til at me kan samanstille frasar ved
- hjelp av likskapen mellom f\hyp{}strukturane. I
- \citet[s.~72]{dyvik2009lmp} finn me følgjande hypotese:
+ f\hyp{}strukturar som er like nok til at me kan samanstille frasar
+ ved hjelp av denne likskapen. I \citet[s.~72]{dyvik2009lmp} finn me
+ følgjande hypotese:
 
 \begin{quote}
  On the basis of monolingual treebanks constructed from a parallel
@@ -254,9 +254,10 @@ kor «parallel grammars» her tyder at grammatikkane har ein viss
  parallellisme i både f\hyp{}struktur og c\hyp{}struktur.
 
 Men i tillegg til at ein kanskje kan få betre skåre på desse
- kvantitative måla, vil lenkjer mellom f\hyp{}strukturar gi informasjon som
- er kvalitativt forskjellig frå det ein kan få med å berre sjå på
- lenkjer mellom ord, N-gram eller konstituentar.
+ kvantitative måla, vil lenkjer mellom f\hyp{}strukturar gi
+ informasjon som er kvalitativt forskjellig frå det ein kan få med å
+ berre sjå på lenkjer mellom ord, N-gram eller konstituentar, og som
+ vidare avgrensar kva for lenkjer som er moglege på dei andre nivåa.
 
 
 Og sidan f\hyp{}strukturane er meint å skildre informasjon på eit meir
@@ -273,7 +274,7 @@ Og sidan f\hyp{}strukturane er meint å skildre informasjon på eit meir
 Eitt problem som byr seg er hypotesemangfaldet: kva for «delar av
  f\hyp{}strukturane»? Korleis kan me avgrense søkjerommet? I det minste må
  me kunne kople dei lenkja f\hyp{}strukturane opp mot c\hyp{}strukturnodar; her
- er \PRED{}-elementet ein god kandidat.
+ er \PRED{}-elementet (predikatet) ein god kandidat.
 
 Vidare må me vite /korleis/ me samanstiller desse delene. Me kan
  t.d. byrje med å lenkje dei yttarste f\hyp{}strukturane frå kvart språk,
@@ -289,10 +290,10 @@ Vidare må me vite /korleis/ me samanstiller desse delene. Me kan
 \bigcup_{g_{1},g_{2}\in \fpairs(f_{1},f_{2})} \falign(g_{1}, g_{2})
 \]
 
-Funksjonen \falign{} vil gi ei mengd av par av f\hyp{}strukturar, kor kvart
- par altså er samanstilt. Problemet er då å finne ut kva for par av
- substrukturar som er «relevante», her representert ved
- $\fpairs(f_{1},f_{2})$.
+Funksjonen \falign{} vil gi ei mengd av par av f\hyp{}strukturar, kor
+ kvart par altså er samanstilt. Problemet er då redusert til å finne
+ ut kva for par av substrukturar som er «relevante», her representert
+ ved $\fpairs(f_{1},f_{2})$.
 
 
 Sjølv om f\hyp{}strukturar abstraherer frå skilnadene i korleis ulike
@@ -317,29 +318,32 @@ Sjølv om f\hyp{}strukturar abstraherer frå skilnadene i korleis ulike
  vil \fpairs{} ha ein vanskelegare jobb.
 
 Og sidan me gjerne au vil lenkje adverbial, som er representert som
- uordna mengder i f\hyp{}strukturane, er det klart at \fpairs{} ikkje er
- triviell å definere. Ein del av denne oppgåva vil altså vere å komme
- med forslag til funksjonen \fpairs{}.
+ uordna mengder i f\hyp{}strukturane, er det klart at \fpairs{} ikkje
+ er triviell å definere. Ein del av denne oppgåva vil altså vere å
+ komme med forslag til funksjonen \fpairs{}. Det inneber både å finne
+ ut av kva me ønskjer å kunne lenkje, og å gi ein implementasjon av
+ desse ønskene.
 
 Om to f\hyp{}strukturar er lenkja, har me grunn til å lenkje
  c\hyp{}strukturnodane som projiserer dei. Men her er det ikkje sikkert me
  vil lenkje /alle/ nodane; intuitivt vil me berre at nodar som
- dominerer korresponderande innhald skal lenkjast.  Ein formalisering
- dette steget, med diskusjon rundt problema, inngår au i denne
+ dominerer korresponderande innhald skal lenkjast.  Ei formalisering
+ av dette steget, med diskusjon rundt problema, inngår au i denne
  oppgåva.
 
 I første omgang spesifiserer eg kva for lenkjer mellom
- f\hyp{}strukturar og c\hyp{}strukturnodar me ideelt sett
- /ønskjer/. Eg implementerer så eit program =lfgalign= som automatisk
- finn samanstillingar med slike lenkjer.  Dette programmet opprettar
- frasesamanstillingar med hjelp av f\hyp{}strukturinformasjonen gitt
- av grammatikkar som er skrivne på felles prinsipp, i tillegg til å
- kunne avgrense lenkingar med hjelp av bottom-up-informasjon om kva
- for ordlenkjer som er moglege. Desse f\hyp{}strukturane avgrensar
- igjen kva for ordsamanstillingar som er moglege, og kva for
- c\hyp{}strukturnodar (syntaktiske frasar) som kan lenkjast. Til sist
- evaluerer eg resultatet av å køyre programmet mitt, og samanliknar
- dette med kva for samanstillingar me kan få frå andre metodar.
+ f\hyp{}strukturar og c\hyp{}strukturnodar me ideelt sett /ønskjer/, og
+ drøftar eit par utfordrande døme. Eg implementerer så eit program
+ =lfgalign= som automatisk finn samanstillingar med slike lenkjer.
+ Dette programmet opprettar frasesamanstillingar med hjelp av
+ f\hyp{}strukturinformasjonen gitt av grammatikkar som er skrivne på
+ felles prinsipp, i tillegg til å kunne avgrense lenkingar med hjelp
+ av bottom-up-informasjon om kva for ordlenkjer som er moglege. Desse
+ f\hyp{}strukturane avgrensar igjen kva for ordsamanstillingar som er
+ moglege, og kva for c\hyp{}strukturnodar (syntaktiske frasar) som kan
+ lenkjast. Til sist evaluerer eg resultatet av å køyre programmet
+ mitt, og samanliknar dette med kva for samanstillingar me kan få frå
+ andre metodar.
 
 
 
@@ -359,14 +363,15 @@ ulike konkurrerande f\hyp{}struktursamanstillingar. Eit oversyn over
 implementasjonen kjem i kapittel \ref{SEC:implementasjon}.
 
 Eg evaluerer samanstillingane som kjem ut av denne metoden i kapittel
-\ref{SEC:diskusjon}. Her samanliknar eg desse samanstillingane med det
-som er mogleg der me berre har konstituentstruktur (syntaktiske tre) i
-tillegg til N-grambasert ordsamanstilling. Eg nyttar dei typologisk
-svært ulike språka georgisk og norsk i eit lite testsett kor eg går
-gjennom lenkingane manuelt. I tillegg ser eg på forskjellane mellom
-f\hyp{}strukturlenkingane frå min implementasjonen og dei som kjem frå ein
-N-grambasert metode for lenking av f\hyp{}strukturar, på eit større,
-tysk-engelsk testsett.
+ \ref{SEC:diskusjon}. Her samanliknar eg lenkjene frå implementasjonen
+ min med det som er mogleg der lenkjene kjem frå ei N-grambasert
+ ordsamanstilling. Eg nyttar dei typologisk svært ulike språka
+ georgisk og norsk i eit lite testsett kor eg går gjennom lenkingane
+ manuelt. I tillegg ser eg på forskjellane mellom
+ f\hyp{}strukturlenkingane frå min implementasjonen og dei som kjem
+ frå ein N-grambasert metode for lenking av f\hyp{}strukturar, på eit
+ større, tysk-engelsk testsett. Til slutt diskuterer eg nokre opne
+ problem, og moglege bruksområde for annotasjonen.
 
 
 
@@ -411,7 +416,7 @@ Automatisk frasesamanstilling er eit nytt felt.  Det finst allereie
  konstituentar, dependensstrukturar, syntaktiske funksjonar -- og i
  motsetning til einingar som /ord/ eller /setning/, er einingane i ein
  frasesamanstilling sjeldan teoretisk ukontroversielle[fn:35].  Dei
- ulike tilnærmingane som finst, og einingane dei lenkjer, er prega av
+ ulike tilnærmingane som finst, og einingane dei lenkjar, er prega av
  formåla til utviklarane.
 
 Eit av dei tidlegaste forsøka på å lenkje frasar var
@@ -800,7 +805,7 @@ Eitt av formåla med samanstillinga i denne oppgåva er å kunne oppdage
  konstituentar[fn:11] som fyller dei semantiske rollene.
 
 Eit anna mogleg formål er å nytte desse frasesamanstillingane til
- maskinomsetjing. \citet{riezler2006gmt} nyttar ein frasesamanstilling
+ maskinomsetjing. \citet{riezler2006gmt} nyttar ei frasesamanstilling
  (fått ved hjelp av N-gramtabellar) til å oppdage overføringsreglar
  for bruk i LFG-basert generering i maskinomsetjing. Dette er reglar
  som omsett fragment av ein f\hyp{}struktur på kjeldespråket til
@@ -871,7 +876,7 @@ Sidan metoden er mynta på bruk i ein LFG-parsa trebank, og delvis vil
 nytte denne annotasjonen som datagrunnlag, er det naturleg å nytte
 same konsept som blir nytta i LFG[fn:9] (f\hyp{}struktur, c\hyp{}struktur,
 endosentrisitetsprinsipp, \xbar{}-tre, osb.)  au i desse krava til den
-«beste» frasesamanstillinga; i den grad LFG gir ein generaliserbar
+«beste» frasesamanstillinga; i den grad LFG gir ei generaliserbar
 skildring av syntaks, bør desse krava vere generaliserbare til andre
 teoriar, men ein del forhold som er avleidd av LFG-prinsipp må
 sjølvsagt modifiserast om krava skal generaliserast til andre teoriar.
@@ -1034,7 +1039,7 @@ Her tek /have/har/ del i VP-samanstillinga \emph{have no king.../har
 
 Men som nemnd treng ikkje ordsamanstillinga vere ein-til-ein, det
  punkt \ref{krav:f-links-words} seier er at desse orda iallfall er ein
- del av ein samanstilling med kvarandre (i døme \Last altså
+ del av ei samanstilling med kvarandre (i døme \Last altså
  VP-samanstillinga). Kanskje er dette ei mange-til-mange-lenkje som
  ikkje \emph{kan} reduserast til ein-til-ein-lenkjer; eller kanskje er
  det som i \Last mogleg å skilje ut delsamanstillingar, som
@@ -1330,7 +1335,7 @@ f\hyp{}strukturnivå[fn:32]:
 \d. LPT\hyp{}korrespondansane kan lenkjast ein-til-ein
 \e. ingen adjunkt til $p$ er lenkja til f\hyp{}strukturar utanfor $q$, og omvendt
 
-Det \Last[d] seier er at me ikkje lenkjer t.d. to instansar av «hest»
+Det \Last[d] seier er at me ikkje lenkjar t.d. to instansar av «hest»
 på det eine språket til éin instans av «horse» på det andre. Krav
 \Last[e] kjem eg tilbake til nedanfor. 
 
@@ -2065,7 +2070,7 @@ Viss me har to funksjonelle konstituentar kor komplementa kan lenkjast
  har ikkje teke høgd for korrespondansar mellom andre
  f\hyp{}strukturelement enn \PRED{} i denne oppgåva).
 
-Me kan krevje at komplementa er lenkja for å sikre at me ikkje lenkjer
+Me kan krevje at komplementa er lenkja for å sikre at me ikkje lenkjar
  nodar som står i ulike konstekstar (me vil ikkje lenkje /at/ i «han
  såg at det gjekk bra» med /that/ i «he saw that she drew a picture»),
  jamfør kravet om lenkja argument for lenkja predikat i del
@@ -2787,7 +2792,7 @@ c\hyp{}strukturnodar kan me nytte f\hyp{}strukturlenkja til den preterminale
 noden i staden for ordlenkjer.
 
 Programmet =lfgalign= følgjer krav \ref{krav:c-pro} og
-lenkjer øvste nodar i funksjonelle domene, og subordinate nodar som
+lenkjar øvste nodar i funksjonelle domene, og subordinate nodar som
 har same informasjonstap. Prosedyren =c-align= i kodefigur
 \ref{algo:c-align} implementerer dette kravet. 
 
@@ -3101,7 +3106,7 @@ Dei vanlegaste metodane er basert på sannsynsmodellar[fn:36], kor den
  på felles prinsipp, vil altså ordfølgja i inndata til ordlenkinga
  bli nokolunde lik (ytre predikat først, så første argument, så andre,
  osb.), noko som lettar den statistiske ordsamanstillingsprosessen.
- Dei lenkjer ikkje c\hyp{}strukturnodar, sidan målet er å lage
+ Dei lenkjar ikkje c\hyp{}strukturnodar, sidan målet er å lage
  overføringsreglar på f\hyp{}strukturnivå.
 
  I del \ref{SEC:ria} ser eg på kor stor overlapp det er mellom dei
@@ -3626,7 +3631,7 @@ Ein annan strategi, som iallfall løyser problemet med effektivitet, er
  å gjere eit ufullstendig søk etter adjunktpermutasjonar. Det å finne
  alle kombinasjonar av lenkjer mellom «flate» f\hyp{}strukturar der me har
  over åtte ord på kvar side tek for lang tid til at det blir
- nyttig. Ein filtrering av moglege lenkjer basert på
+ nyttig. Ei filtrering av moglege lenkjer basert på
  t.d. LPT\hyp{}korrespondanse kan gjere ei betre avskjering enn me får med
  berre ordfølgje. Dette kan ha andre gode sideverknader.
 
@@ -3669,7 +3674,7 @@ eksplisitt, ikkje berre la vere å lenkje, for det kan vere andre
 grunnar til at det ikkje kom ei lenking. A la ekspertsystem: forklare
 resonnementet.)
 
-Alternativt ein konstruksjonslenking... 
+Alternativt ei konstruksjonslenking... 
 
 Kan au ha eit krav om at argstr til $PRED_{L1}$ er ein slag delmengd av
 argstr til $PRED_{L2}$. 
