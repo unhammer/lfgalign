@@ -3460,7 +3460,7 @@ Tabell \ref{tbl:RIA} viser resultatet av
  lenkjer som var felles for kvart setningspar, mellom =RIA= og dei tri
  testmetodane (=lfgalign= med og utan informasjon i LPT-tabellen, og
  ein tilfeldig baseline). Ved å dele dette talet på kor mange lenkjer
- =RIA= hadde, får me ein enkel samanlikning av dei to testmetodane --
+ =RIA= hadde, får me ei enkel samanlikning av dei to testmetodane --
  viss forholdet var 100 % ville altså alle lenkjene vore like, og
  testmetoden ville ha funne alle lenkjene som =RIA= fann
  (dekning). Viss forholdet mellom snittet og lenkjene i testmetoden
@@ -4064,7 +4064,7 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
        \ref{SEC:ordkrav} om lenkjer mellom koreferente substantiv og
        pronomen).
 
-[fn:9] I tillegg finst andre positive biverknader av ein LFG-basert
+[fn:9] I tillegg finst andre positive biverknader av ei LFG-basert
        frasesamanstilling for bruk i denne samanhengen, som at ein kan
        studere kor parallelle dei parallelle grammatikkane i
        ParGram-prosjektet \citep{butt2002pgp} faktisk er, på ulike
