@@ -815,21 +815,16 @@ Eitt av formåla med samanstillinga i denne oppgåva er å kunne oppdage
  argument's semantic role». Skal me finne det siste, må me altså kunne
  lenkje frasar med ulik kasusmarkering, men ha krav om lik tildeling
  av semantiske roller; samtidig skal me sjå at me ikkje kan ha krav om
- lik syntaktisk funksjon. I tillegg vil me sjølvsagt ikkje lenkje på
- tvers av konstituentgrenser, sidan det er fullstendige
- konstituentar[fn:11] som fyller dei semantiske rollene.
+ lik syntaktisk funksjon, eller ein gong lik plass i
+ argumentstrukturen. I tillegg vil me sjølvsagt ikkje lenkje på tvers
+ av konstituentgrenser, sidan det er fullstendige konstituentar[fn:11]
+ som fyller dei semantiske rollene.
 
 Eit anna mogleg formål er å nytte desse frasesamanstillingane til
- maskinomsetjing. \citet{riezler2006gmt} nyttar ei frasesamanstilling
- (fått ved hjelp av N-gramtabellar) til å oppdage overføringsreglar
- for bruk i LFG-basert generering i maskinomsetjing. Dette er reglar
- som omsett fragment av ein f\hyp{}struktur på kjeldespråket til
- f\hyp{}strukturfragment på målspråket. (Eit krav på utforminga av moglege
- overføringsreglar hindrar at ein får reglar som lenkjar
- ikkje-konstituentar, eg kjem tilbake til dette nedanfor.) Ein
- liknande metode er \citet{graham2010dsl,graham2009fts}.
- Samanstillinga utvikla her burde au kunne nyttast til å finne slike
- overføringsreglar, men dette er ikkje noko eg har lagt vekt på.
+ maskinomsetjing, som i \citet{riezler2006gmt} eller
+ \citet{graham2010dsl,graham2009fts}.  Samanstillinga utvikla her
+ burde au kunne nyttast til å finne slike overføringsreglar, men dette
+ er ikkje noko eg har lagt vekt på.
 
 Nedanfor gir eg eit forslag til krav for frasesamanstilling, med
  formåla nemnt her i tankane. Om alle krava er moglege å implementere,
@@ -888,25 +883,26 @@ samsvar mellom setningane (der ei fullstendig samanstilling ville
 brutt visse krav).
 
 Sidan metoden er mynta på bruk i ein LFG-parsa trebank, og delvis vil
-nytte denne annotasjonen som datagrunnlag, er det naturleg å nytte
-same konsept som blir nytta i LFG[fn:9] (f\hyp{}struktur, c\hyp{}struktur,
-endosentrisitetsprinsipp, \xbar{}-tre, osb.)  au i desse krava til den
-«beste» frasesamanstillinga; i den grad LFG gir ei generaliserbar
-skildring av syntaks, bør desse krava vere generaliserbare til andre
-teoriar, men ein del forhold som er avleidd av LFG-prinsipp må
-sjølvsagt modifiserast om krava skal generaliserast til andre teoriar.
+ nytte denne annotasjonen som datagrunnlag, er det naturleg å nytte
+ same konsept som blir nytta i LFG[fn:9] (f\hyp{}struktur,
+ c\hyp{}struktur, endosentrisitetsprinsipp, \xbar{}-tre, osb.)  au i
+ desse krava til den «beste» frasesamanstillinga. I den grad LFG gir
+ ei generaliserbar skildring av syntaks, bør desse krava vere
+ generaliserbare til andre teoriar, men ein del forhold som er avleidd
+ av LFG-prinsipp må sjølvsagt modifiserast om krava skal
+ generaliserast til andre rammeverk.
 
 Utan skrankar i det heile vil alt kunne lenkjast til alt (noko som er
-like unyttig som å ikkje lenkje noko); i del \ref{SEC:kandidatar} ser
-eg på kva for typar element i dei lingvistiske analysane (ord,
-grammatiske trekk, konstituentar, ...) det er fornuftig å tillate
-lenkjer mellom. I avsnitta nedanfor spesifiserer eg kva som må til for
-at me skal lenkje element av desse typane.
+ like unyttig som å ikkje lenkje noko); i del \ref{SEC:kandidatar} ser
+ eg på kva for typar element i dei lingvistiske analysane (ord,
+ grammatiske trekk, konstituentar, ...) det er fornuftig å tillate
+ lenkjer mellom. I avsnitta nedanfor spesifiserer eg kva som må til
+ for at me skal lenkje element av desse typane.
 
 ** Kva kan lenkjast?
 \label{SEC:kandidatar}
 
-Viss to uttrykk er samanstilt på setningsnivå (slik at me dimed kan gå
+Viss to uttrykk er lenkja på setningsnivå (slik at me dimed kan gå
 ut frå at dei er omsetjingar av kvarandre), og begge har ein
 LFG-analyse, så har me iallfall tri ulike nivå kor me kan finne
 ekvivalensforhold under setningsnivå:
@@ -919,37 +915,38 @@ tvers av nivå sidan forhold mellom desse nivåa er implisitt i
 LFG-analysen.
 
 Alle ord i setninga er /kandidatar/ for samanstilling med ord i
-omsetjinga, men det kan godt hende at eit ord /ikkje/ har ei lenkje,
-og me kan heller ikkje utelukke at det finst mange-til-mange-lenkjer
-som ikkje kan «delast opp». Dette gjeld au nodane i c\hyp{}strukturen.
+ omsetjinga, men det kan godt hende at eit ord /ikkje/ har ei lenkje,
+ og det kan au hende at det finst mange-til-mange-lenkjer som ikkje
+ kan «delast opp». Dette gjeld au nodane i c\hyp{}strukturen.
 
-Me utelukker lenking av ikkje-konstituentar som /there is/ på
-c\hyp{}strukturnivå sidan ei lenkje mellom to c\hyp{}strukturnodar impliserer at
-heile frasen under er lenkja. Det finst ingen c\hyp{}strukturnodar som
-dominerer berre /there/, /is/ og ingen andre ord (heller ikkje /es/,
-/gibt/), så dette er ikkje lenkjekandidatar.  /There is/ og /Es gibt/
-i figur \ref{fig:ikkjenode} kan då ikkje samanstillast åleine, men
-berre som del av ei ytre frasesamanstilling[fn:23].
+Me hindrar lenking av ikkje-konstituentar som /There is/ på
+ c\hyp{}strukturnivå sidan ei lenkje mellom to c\hyp{}strukturnodar
+ impliserer at heile frasen under er lenkja. Det finst ingen
+ c\hyp{}strukturnodar som dominerer berre /There/, /is/ og ingen andre
+ ord; N-grammet som er samansett av desse to orda er ikkje ein
+ lenkjekandidat. Det same gjeld /Es/, /gibt/.  Då kan /There is/ og
+ /Es gibt/ i figur \ref{fig:ikkjenode} ikkje lenkjast åleine, men
+ berre som del av ei ytre frasesamanstilling[fn:23].
 
-Når det gjeld f\hyp{}strukturane er det ganske mange element me teoretisk
-sett kunne ha lenkja, t.d. enkelttrekk som kasus eller dei uordna
-mengdene med adjunkt, men det som er mest /nyttig/ og /meiningsfullt/
-er nok å berre lenkje der det er ei nær kopling til orda i
-setninga. Sidan alle \PRED{}-element i ein f\hyp{}struktur unikt står for
-predikerande ord, kan me -- gitt to samanstilte setningar -- la
-\emph{kandidatane for samanstilling på f\hyp{}strukturnivå} inkludere alle
-desse \PRED{}-elementa i f\hyp{}strukturane til
-setningane[fn:12]. \PRED{}-element representerer semantiske bidrag som
-oftast er påkrevde på begge språk i omsetjingar, medan andre
-f\hyp{}strukturtrekk gjerne er valfrie på det eine av språka; det er ikkje
-alle språk som har t.d. obligatorisk kasusmarkering, og ein vil
-kanskje nytte trebanken til å oppdage nettopp slik variasjon.
-\PRED{}-elementa er i tillegg gjerne enklare å knyte direkte opp mot den
-konkrete, observerte tekststrengen (eventuelt testast mot korpora,
-eller talarintuisjonar), medan t.d. eit trekk som aspekt kanskje er
-umogleg å skilje frå tempus i affikset (det vil vere vanskelegare å
-teste om ei lenkje mellom aspekt-trekk er empirisk motivert utan å dra
-inn ein heil del teori).
+Når det gjeld f\hyp{}strukturane er det ganske mange element me
+ teoretisk sett kunne ha lenkja, t.d. enkelttrekk som kasus eller dei
+ uordna mengdene med adjunkt, men det som er mest /nyttig/ og
+ /meiningsfullt/ er nok å berre lenkje der det er ei nær kopling til
+ orda i setninga. Sidan alle \PRED{}-element i ein f\hyp{}struktur
+ unikt står for predikerande ord, kan me -- gitt to samanstilte
+ setningar -- la \emph{kandidatane for samanstilling på
+ f\hyp{}strukturnivå} inkludere alle desse \PRED{}-elementa i
+ f\hyp{}strukturane til setningane[fn:12]. \PRED{}-element
+ representerer semantiske bidrag som oftast er påkrevde på begge språk
+ i omsetjingar, medan andre f\hyp{}strukturtrekk gjerne er valfrie på
+ det eine av språka; det er ikkje alle språk som har t.d. obligatorisk
+ kasusmarkering, og ein vil kanskje nytte trebanken til å oppdage
+ nettopp slik variasjon.  \PRED{}-elementa er i tillegg gjerne enklare
+ å knyte direkte opp mot den konkrete, observerte tekststrengen
+ (eventuelt teste mot korpora, eller talarintuisjonar), medan eit
+ trekk som aspekt kanskje er umogleg å skilje frå tempus i affikset
+ (det vil vere vanskelegare å teste om ei lenkje mellom aspekt-trekk
+ er empirisk motivert utan å dra inn ein heil del teori).
 
 Samtidig er det au eit omsetjingsforhold mellom trekka i same
 f\hyp{}struktur som dei lenkja \PRED{}-elementa, og me ville kanskje ikkje ha
@@ -972,53 +969,54 @@ figur \ref{fig:viss-PRED-så-f-og-c}:
      og $g$, kan lenkjast
 
 #+BEGIN_LaTeX
- \begin{figure}[htp]
-    \centering
-    \begin{tikzpicture}
-    {\avmoptions{}
-     \node(src){
-        \begin{avm}
-          $f$ \[pred  & `{\bf{}sove}<jeg>' \\
-          tense & pret \\
-          ... \]
-        \end{avm}
-      };
-      \node[right of=src, node distance=5cm](trg){
-        \begin{avm}
-          $g$ \[pred   &  `{\bf{}sleep}<I>'\\
-          tense  & pret  \\
-          aspect & simple \\
-          ... \]
-        \end{avm}
-      };
-      }
-      \draw[dashed,-] (src.west) .. controls +(-1,2) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
-      \draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
-
-      \begin{scope}[shift={(0,-3cm)}]
-     \Tree  [.\node(VPs){VP}; [.\node(Vs){\proj{\ua =\da}{V}}; \node(sov){sov};  ] ]
-      \begin{scope}[shift={(5cm,0)}]
-        \Tree  [.\node(VPt){VP}; [.\node(Vt){\proj{\ua =\da}{V}}; \node(slept){slept};  ] ]
-      \end{scope}
-      \end{scope}
-      \draw[-] (VPs)..controls +(north:1.5) and +(north:1.5) .. node[above,sloped]{$l_c$} (VPt) ;
-      \draw[dashed,-] (sov)..controls +(north east:1.5) and +(north west:1.5) .. node[above,sloped]{$l_o$} (slept) ;
-   \end{tikzpicture}
-    
-    \caption{Ei \PRED{}-lenkje $l_p$ kan tolkast som ei f\hyp{}strukturlenkje
-    $l_f$, og impliserer ei c\hyp{}strukturlenkje $l_c$ mellom toppnodane i
-    dei funksjonelle domena. Orda som projiserer \PRED{}-elementa er med
-    i ei lenkje $l_o$ (som kan inkludere fleire ord).}
-   \label{fig:viss-PRED-så-f-og-c}
- \end{figure}
+  \begin{figure}[htp]
+     \centering
+     \begin{tikzpicture}
+     {\avmoptions{}
+      \node(src){
+         \begin{avm}
+           $f$ \[pred  & `{\bf{}sove}<jeg>' \\
+           tense & pret \\
+           ... \]
+         \end{avm}
+       };
+       \node[right of=src, node distance=5cm](trg){
+         \begin{avm}
+           $g$ \[pred   &  `{\bf{}sleep}<I>'\\
+           tense  & pret  \\
+           aspect & simple \\
+           ... \]
+         \end{avm}
+       };
+       }
+       \draw[dashed,-] (src.west) .. controls +(-1,2) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
+       \draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
+  
+       \begin{scope}[shift={(0,-3cm)}]
+      \Tree  [.\node(VPs){VP}; [.\node(Vs){\proj{\ua =\da}{V}}; \node(sov){sov};  ] ]
+       \begin{scope}[shift={(5cm,0)}]
+         \Tree  [.\node(VPt){VP}; [.\node(Vt){\proj{\ua =\da}{V}}; \node(slept){slept};  ] ]
+       \end{scope}
+       \end{scope}
+       \draw[-] (VPs)..controls +(north:1.5) and +(north:1.5) .. node[above,sloped]{$l_c$} (VPt) ;
+       \draw[dashed,-] (sov)..controls +(north east:1.5) and +(north west:1.5) .. node[above,sloped]{$l_o$} (slept) ;
+    \end{tikzpicture}
+     
+     \caption{Ei \PRED{}-lenkje $l_p$ kan tolkast som ei
+     f\hyp{}strukturlenkje $l_f$, og impliserer at me kan lenkje
+     c\hyp{}strukturnodar i dei to funksjonelle domena, $l_c$. Orda
+     som projiserer \PRED{}-elementa er med i ei lenkje $l_o$ (som kan
+     inkludere fleire ord).}
+     \label{fig:viss-PRED-så-f-og-c}
+     \end{figure}
 #+END_LaTeX
 
 Punkt \ref{krav:f-links-substr} og \ref{krav:f-links-domain} over seier at viss
 \PRED{}-elementa projisert av t.d. to verb i verbfrasar er lenkja, kan
 VP-ane som heilskap lenkjast, i tilfellet i figur
 \ref{fig:viss-PRED-så-f-og-c} kan iallfall dei øvste nodane i VP-ane
-lenkjast, i tillegg til f\hyp{}strukturane frå ytre \PRED{} til verba.  Det er
-dette at heile VP-ane (kanskje inkludert objekt) er lenkja som gjer
+lenkjast, i tillegg til f\hyp{}strukturane frå \PRED{} til verba.  Det er
+dette at heile VP-ane (kanskje inkludert objekt eller andre argument) er lenkja som gjer
 det til ei fraselenkje og ikkje berre ei ordlenkje. Punkt
 \ref{krav:f-links-substr} er forsvart over, medan punkt
 \ref{krav:f-links-domain} kjem som ein konsekvens av at det er det
@@ -1209,16 +1207,17 @@ For å gjere dette konkret kan me sjå på følgjande setning frå
       Abrams.NOM Brown.DAT vedde.3SG sigarett.om, at  regne.3SG.IMP \\
      `Abrams veddet en sigarett med Brown på at det regnet' 
 
+
 I følgje LFG-parsen til desse setningane har hovudpredikata svært ulik
- argumentstruktur[fn:14]. Det norske /vedde/ har _fire_ argument,
- medan \emph{da-najleveba} har _to_ (/Abrams/ og /Browne/), kor
- at-setninga på norsk og /rom cvimda/ uttrykkjer same proposisjon og
- speler same rolle i verbsituasjonen. Den engelske LFG-parsen av den
- tilsvarande setninga (mine omsetjingar) gir _tri_ argument, /with/
- blir her adjunkt, medan den tyske grammatikken, som au har _tri_
- argument, gjer /at/-setninga til adjunkt. I \Next nedanfor har eg
- representert dei omsetjingsmessig korresponderande frasane i
- f\hyp{}strukturane med dei norske omsetjingane for å illustrere dette:
+argumentstruktur[fn:14].  Det norske /vedde/ har _fire_ argument,
+medan /da-najleveba/ har _to_ (/Abrams/ og /Browne/), kor
+at-setninga på norsk og /rom cvimda/ uttrykkjer same proposisjon og
+speler same rolle i verbsituasjonen. Den engelske LFG-parsen av den
+tilsvarande setninga (mine omsetjingar) gir _tri_ argument, /with/
+blir her adjunkt, medan den tyske grammatikken, som au har _tri_
+argument, gjer /at/-setninga til adjunkt. I \Next nedanfor har eg
+representert dei omsetjingsmessig korresponderande frasane i
+f\hyp{}strukturane med dei norske omsetjingane for å illustrere dette:
 
 #+BEGIN_LaTeX
 {\avmoptions{}
@@ -2600,7 +2599,7 @@ tilfellet vil $aligntable[\OBJ,\ADJ]$ vere tom.
 
 
 Om me i tillegg krev at substrukturar kan samanstillast kan me
-utelukke lenking av f\hyp{}strukturane $F_s$ og $F_t$ i \Next under:
+ hindre lenking av f\hyp{}strukturane $F_s$ og $F_t$ i \Next under:
 
 #+BEGIN_LaTeX
 {\avmoptions{}
@@ -3898,8 +3897,8 @@ Sidan samanstillingane er direkte avleidd frå utdata frå grammatikkar,
 
 Sjølv om eg her har argumentert for at formålet med metoden i denne
  oppgåva er å lage annotasjonar som er nyttige for språkstudium, er
- det ikkje utelukka at desse kan vere nyttige for meir praktiske
- formål. Predikat-argumentstruktur har m.a. vore nyttig i
+ det ikkje umogleg at desse kan vere nyttige for
+ applikasjonsformål. Predikat-argumentstruktur har m.a. vore nyttig i
  fleirspråkleg anaforresolusjon og informasjonsgjenfinning
  \citep{surdeanu2003upa,azzam1998crm}, medan fraselenkjer generelt kan
  vere nyttige for alle typar overvåka læring av fleirspråklege
@@ -4093,8 +4092,8 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
         krava er oppfylte.
 
 [fn:12] I del \ref{SEC:fnord} kjem eg tilbake til spørsmålet om me vil
-        inkludere visse f\hyp{}strukturar utan \PRED{}-element i kandidatane
-        for samanstilling.
+        inkludere visse ord som ikkje projiserer \PRED{}-element i
+        kandidatane for samanstilling.
 
 [fn:14] Analysane er henta 18. mai, 2009, frå
         http://decentius.aksis.uib.no/logon/xle.xml, som implementerer
