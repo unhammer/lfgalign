@@ -2931,6 +2931,9 @@ I neste kapittel går eg gjennom resultat av å køyre =lfgalign= på
 \label{SEC:diskusjon}
 
 #+BEGIN_LaTeX
+  \q{Purgamentum init, exit purgamentum}
+  {gammalt ordtak}
+
   \q{O! I smell false Latin}
   {Shakespeare}
   
