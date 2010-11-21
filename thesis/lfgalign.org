@@ -2081,7 +2081,7 @@ Ord som ikkje projiserer \PRED{}-lenkjer kan likevel tenkjast å ha
  omsetjingar (Dyvik 2010, p.k.).  I såfall har me ikkje fleire
  lenkingskrav for funksjonelle nodar, og ser på dei preterminale
  funksjonelle nodane som om dei ikkje dominerte noko; eller: $L_c$
- (evt. $LL$) av desse nodane er tomt.
+ (evt. $LL$) av desse nodane er den tomme mengden.
 
 Men, det kan sjølvsagt hende at ein ønskjer å setje eit LPT-krav på
  ord som ikkje projiserer noko \PRED{}-element, der ein er svært
@@ -2091,16 +2091,16 @@ Men, det kan sjølvsagt hende at ein ønskjer å setje eit LPT-krav på
  det kan formaliserast.
 
 Viss me har to funksjonelle konstituentar kor komplementa kan lenkjast
- på f\hyp{}strukturnivå, men funksjonsorda ikkje kan sjåast på som moglege
- omsetjingar (t.d. /fordi/ og /whether/), kan det hende ein ikkje ein
- gong vil lenkje komplementa. Ein kan sjå på dette som at
+ på f\hyp{}strukturnivå, men funksjonsorda ikkje kan sjåast på som
+ moglege omsetjingar (t.d. /fordi/ og /whether/), kan det hende ein
+ ikkje ein gong vil lenkje komplementa. Ein kan sjå på dette som at
  funksjonsorda gjer at komplementa speler ulike roller i
  omgivnadene[fn:10]. Samtidig vil me nok ikkje at eit manglande
  funksjonsord på det eine språket skal hindre lenking av komplementa,
  sidan det kan hende at funksjonsordet ikkje er kravd på det språket
- (eventuelt kjem dette fram som korrespondansar i f\hyp{}strukturtrekk, eg
- har ikkje teke høgd for korrespondansar mellom andre
- f\hyp{}strukturelement enn \PRED{} i denne oppgåva).
+ (eventuelt kjem dette fram som korrespondansar i
+ f\hyp{}strukturtrekk, men eg har ikkje teke høgd for korrespondansar
+ mellom andre f\hyp{}strukturelement enn \PRED{} i denne oppgåva).
 
 Me kan krevje at komplementa er lenkja for å sikre at me ikkje lenkjar
  nodar som står i ulike konstekstar (me vil ikkje lenkje /at/ i «han
@@ -2170,14 +2170,17 @@ Om \Last[a] er oppfylt, kan me få samanstillinga vist i figur
 
 Der det eine språket har eit funksjonsord og det andre språket ikkje
  krever det, bryr me oss ikkje om funksjonsordet. For å sjekke noko
- slikt må me som nemnt sjå på andre trekk enn \PRED{} i f\hyp{}strukturane,
- noko som blir utanfor denne oppgåva; men om me hadde sjekka slike
- f\hyp{}strukturkorrespondansar kunne me unngått kravet om
- LPT\hyp{}korrespondanse og i staden nytta informasjon frå f\hyp{}strukturane
- til lenking av funksjonelle kategoriar. Utan å ha slike mekanismar
- på plass blir f\hyp{}strukturlenkinga avhengig av c\hyp{}strukturforhold, og i
- implementasjonen min har eg difor valt å ikkje lenkje ord som ikkje
- projiserer \PRED{}-element.
+ slikt må me som nemnt sjå på andre trekk enn \PRED{} i
+ f\hyp{}strukturane, noko som blir utanfor denne oppgåva; men om me
+ hadde sjekka slike f\hyp{}strukturkorrespondansar kunne me unngått
+ kravet om LPT\hyp{}korrespondanse og i staden nytta informasjon frå
+ f\hyp{}strukturane til lenking av funksjonelle kategoriar. Utan å ha
+ slike mekanismar på plass blir f\hyp{}strukturlenkinga avhengig av
+ c\hyp{}strukturforhold, og i implementasjonen min har eg difor valt å
+ ikkje lenkje ord som ikkje projiserer \PRED{}-element. Dette kan
+ altså føre til lenking av funksjonelle kategoriar der funksjonsorda
+ har svært ulik «tyding», men som me har sett er det gode grunnar til
+ å ikkje la LPT-kravet dekkje funksjonsord.
 
 *** TOGROK cvimda<PRO> men regne<>expletive -- lenkje? 		     :ROTETE:
 *** TOGROK kva med ekspletivar? ingen \PRED{} men heller ikkje C/F/I    :ROTETE:
@@ -2279,44 +2282,46 @@ argumentstrukturen: argumentfølgje og rekursiv f\hyp{}strukturlenking.
 
 *** Rangering ved følgje
 I \citet[s.~75--76]{dyvik2009lmp} blir det formulert eit
-spesialtilfelle av krava for lenking på f\hyp{}strukturnivå, der det er
-like mange argument på kvart predikat, og førsteargument er lenkja til
-førsteargument, andre til andre, osb. I slike situasjonar er ingen
-adjunkt lenkja til argument; og om argumentstrukturane i analysane
-reflekterer det semantiske rollehierarkiet, vil me aldri lenkje
-t.d. agens til patiens og patiens til agens. Der grammatikkane er
-skrivne etter parallelle prinsipp, bør ei slik samanstilling -- om alt
-anna er likt -- gi den ønskelege lenkinga.
+ spesialtilfelle av krava for lenking på f\hyp{}strukturnivå, der det
+ er like mange argument på kvart predikat, og førsteargument er lenkja
+ til førsteargument, andre til andre, osb. I slike situasjonar er
+ ingen adjunkt lenkja til argument; og om argumentstrukturane i
+ analysane reflekterer det semantiske rollehierarkiet, vil me aldri
+ lenkje t.d. agens til patiens og patiens til agens. Der grammatikkane
+ er skrivne etter parallelle prinsipp, bør ei slik samanstilling -- om
+ alt anna er likt -- gi den ønskelege lenkinga.
 
 Difor har me dette som eit rangeringskriterium. For å nyansere det
-litt, kan me sjå på kor mange av lenkjene frå argumenta til eit
-predikat som ikkje er argument-adjunkt-lenkjer, og der dei ikkje har
-ulik posisjon i argumentstrukturen. Meir formelt:
+ litt, kan me sjå på kor mange av lenkjene frå argumenta til eit
+ predikat som ikkje er argument-adjunkt-lenkjer, og som ikkje har ulik
+ posisjon i argumentstrukturen. Meir formelt:
 
 \ex. \label{krav:arg-order-rate} La $m$ vere mengda av ein-til-ein
      LPT\hyp{}korresponderande argument/adjunkt av to lenkja f\hyp{}strukturar
      $F_s$ og $F_t$. La $n$ vere dei elementa av $m$ som anten begge
      er adjunkt, eller begge er argument og har same posisjon i
-     argumentstrukturane sine. /Følgjeskåren/ til $F_s$, $F_t$ er då
+     argumentstrukturane sine. /Følgjeskåren/ til ($F_s$, $F_t$) er då
      $\frac{n}{m}$.
 
 I spesialtilfellet nemnt over, vil skåren altså vere 1. Når det står
-«ein-til-ein LPT\hyp{}korresponderande» over, er det for å plukke ut ein
-viss måte å samanstille argumenta og adjunkta til $F_s$ og $F_t$ --
-men utan krav om at desse skal vere rekursivt lenkja. Kriteriet
-nedanfor rangerer rekursive lenkjer høgare enn enkle
-LPT\hyp{}korrespondansar.
+ «ein-til-ein LPT\hyp{}korresponderande» over, er det for å plukke ut
+ ein viss måte å samanstille argumenta og adjunkta til $F_s$ og $F_t$
+ (ein viss «argument\hyp{}/adjunktpermutasjon»)
+ -- men utan krav om at desse skal vere rekursivt lenkja. Kriteriet
+ nedanfor rangerer rekursive lenkjer høgare enn enkle
+ LPT\hyp{}korrespondansar.
 
 *** Rangering ved djupn
 Krav \ref{krav:PRED} krev ein-til-ein LPT\hyp{}korrespondanse mellom
-argument/adjunkt av kjelde- og målpredikatet, men stiller ikkje krav
-om at dei LPT\hyp{}korresponderande elementa sjølv må vere lenkja på
-f\hyp{}strukturnivå. Så viss «She tried to ride a bike» er lenkja med «Ho
-prøvde å sykle», kan me lenkje /try/ med /prøve/ sjølv om /ride/ og
-/sykle/ ikkje kan lenkjast -- /bike/ er eit påkravd argument[fn:28]. I
-situasjonar der me har eit val mellom berre LPT\hyp{}korrespondanse, og
-full rekursiv lenking, vil ei rekursiv lenkje skildre meir
-strukturell likskap enn berre LPT\hyp{}korrespondansen.
+ argument/adjunkt av kjelde- og målpredikatet, men stiller ikkje krav
+ om at dei LPT\hyp{}korresponderande elementa sjølv må vere lenkja på
+ f\hyp{}strukturnivå. Så viss «She tried to ride a bike» er lenkja med
+ «Ho prøvde å sykle», kan me lenkje \p{try} med \p{prøve} sjølv om
+ \p{ride} og \p{sykle} ikkje kan lenkjast -- \p{bike} er eit påkravd
+ argument[fn:28]. I situasjonar der me har eit val mellom berre
+ LPT\hyp{}korrespondanse, og full rekursiv lenking, vil ei rekursiv
+ lenkje skildre meir strukturell likskap enn berre
+ LPT\hyp{}korrespondansen.
 
 Difor har me dette som eit rangeringskriterium. Me kan formalisere det
 slik:
@@ -2325,7 +2330,7 @@ slik:
      LPT\hyp{}korresponderande argument/adjunkt av to lenkja f\hyp{}strukturar
      $F_s$ og $F_t$. La $n$ vere dei elementa av $m$ som anten ikkje
      har argument sjølve, eller som er lenkja på
-     f\hyp{}strukturnivå. /Djupnskåren/ til $F_s$, $F_t$ er då
+     f\hyp{}strukturnivå. /Djupnskåren/ til ($F_s$, $F_t$) er då
      $\frac{n}{m}$.
 
 Der alle LPT\hyp{}korresponderande argument/adjunkt av $F_s$ og $F_t$ au er
@@ -2340,14 +2345,15 @@ desse skårane.
 Men argumenta og adjunkta av desse to elementa kan sjølv ha ulike
 moglege delsamanstillingar, som kan gi ulike skårer. La $a_s$ og
 $a_t$, argument eller adjunkt av $F_s$ og $F_t$, vere lenkja i ei
-mogleg samanstilling av $F_s$ og $F_t$. Innanfor $a_s$, $a_t$ finn me
-kanskje ulike moglege samanstillingar, her vel me den som gir best
+mogleg samanstilling av $F_s$ og $F_t$. Innanfor ($a_s$, $a_t$) finn
+me kanskje ulike moglege samanstillingar, her vel me den som gir best
 skåre. Men det kan hende at det finst ei alternativ måte å lenkje på,
-kor $F_s$ er lenkja til $G_t$, $a_s$ til $d_t$ (argument/adjunkt av
-$G_t$), og $a_s$, $b_t$ har høgare skåre enn $a_s$, $a_t$. Viss alt
-anna er likt, bør me då heller velje $F_s$, $G_t$ enn $F_s$, $F_t$.
+kor $F_s$ er lenkja til $G_t$, $a_s$ til $b_t$ (argument/adjunkt av
+$G_t$), og ($a_s$, $b_t$) har høgare skåre enn ($a_s$, $a_t$). Viss
+alt anna er likt, bør me då heller velje ($F_s$, $G_t$) enn ($F_s$,
+$F_t$).
 
-Den endelege skåren for $F_s$, $F_t$ er då produktet av følgjeskåren,
+Den endelege skåren for ($F_s$, $F_t$) er då produktet av følgjeskåren,
 djupnskåren og den vekta summen av dei endelege skårane for lenkja
 argument/adjunkt av $F_s$ og $F_t$. Denne summen er vekta på lengden
 av lista med lenkja argument/adjunkt, for å ikkje gi unaturleg høg
@@ -2359,15 +2365,16 @@ då har flest lenkja adjunkt[fn:29].
 
 ** Oppsummering
 Krava formulert i denne delen definerer kva for lenkjer som er
-ønskelege mellom konstituentar og mellom f\hyp{}strukturar, når formålet er
-å annotere ein parallell trebank for lingvistiske studium. Det finst
-visse tilfelle der krava /ikkje/ kan avgjere kva som er den ideelle
-lenkja utan meir informasjon enn det dei grammatiske analysane gir; eg
-diskuterer slike døme i kapittel \ref{SEC:diskusjon}, i tillegg til
-døme som er problematiske for krava sjølv der me har fullstendig
-informasjon, og der meir arbeid trengst. Kapittelet som kjem no gir
-detaljane for programmet =lfgalign=, som implementerer krava frå dette
-kapittelet sånn at det er lettare å teste kor dei slår feil.
+ ønskelege mellom konstituentar og mellom f\hyp{}strukturar, når
+ formålet er å annotere ein parallell trebank for lingvistiske
+ studium. Det finst visse tilfelle der krava /ikkje/ kan avgjere kva
+ som er den ideelle samanstillinga utan meir informasjon enn det dei
+ grammatiske analysane gir; eg diskuterer slike døme i kapittel
+ \ref{SEC:diskusjon}, i tillegg til døme som er problematiske for
+ krava sjølv der me har fullstendig informasjon, og der meir arbeid
+ trengst. Kapittelet som kjem no gir detaljane for programmet
+ =lfgalign=, som implementerer krava frå dette kapittelet sånn at det
+ er lettare å teste kor dei slår feil.
 
 
 * Implementasjonen av =lfgalign=
@@ -4190,7 +4197,8 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
 [fn:22] Då kan me au representere mange-til-mange-ordlenkjer som
         «udelelege», $(\{\text{gaiGo}\},\{\text{det,åpnet,seg}\})$
         blir den einaste ordlenkja i dømet over, sidan me ikkje må
-        samanlikne ordlenkjene frå $IP_t$, $I'_t$ og $I_t$.
+        samanlikne ordlenkjene frå $IP_t$, $I'_t$ og $I_t$, men berre
+        f-strukturlenkjene.
 
 [fn:8] Som nemnt i del \ref{SEC:fnord} kan funksjonsord gjere
        f\hyp{}strukturlenkinga avhengig av forhold i c\hyp{}strukturen,
@@ -4238,8 +4246,9 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
 [fn:27] Kor $e$ står for engelsk og $f$ for fransk, sjølvsagt.
 
 [fn:28] Merk: utan meir informasjon her vil krava i tillegg opne for
-        ei mange-mange-lenkje mellom /ride/ + /bike/ og /sykle/; for
-        skuld argumentet ser me berre på ein-til-ein-lenkjer her.
+        ei mange-mange-lenkje mellom \p{ride} + \p{bike} og \p{sykle};
+        for skuld argumentet ser me berre på ein-til-ein-lenkjer i
+        dette avsnittet.
 
 [fn:29] Dette er ganske /ad hoc/ skåringsfunksjon, og det er ikkje
         sikkert at alle kriteria bør ha lik vekting.  Sidan det ikkje
