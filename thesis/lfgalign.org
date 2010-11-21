@@ -3844,12 +3844,13 @@ Me føreset at \p{p} og \p{r} har LPT\hyp{}korrespondanse, det same med
  vanskeleg å implementere heller). Me gjer altså eit unntak frå kravet
  om at alle argument skal finne LPT\hyp{}korrespondanse hos
  argument/adjunkt av omsetjinga, sidan dei allereie har
- LPT\hyp{}korrespondanse med argument/adjunkt av eit ytre predikat. Dette
- blir ein slag omsetjingsskifte (på argumentstrukturnivå), og
- lenkinga bør nok vere open for slike skifte.
+ LPT\hyp{}korrespondanse med argument/adjunkt av eit ytre
+ predikat. Dette blir ein slag omsetjingsskifte (på
+ argumentstrukturnivå), og om det finst mange slike situasjonar bør
+ nok lenkinga vere open for slike skifte.
 
 Men ein variant av situasjonen over kan gi litt større problem,
- iallfall implementasjonsmessig. I \NNext kan me tenkje oss at den
+ iallfall implementasjonsmessig. I \NNext nedanfor kan me tenkje oss at den
  ønskelege lenkinga er, som i \Last:
 
 \ex. \{(\p{p},\p{r}),(\p{q},\p{s}),(\p{ich},\p{I})\}.
@@ -3890,9 +3891,16 @@ Det er sjølvsagt mogleg å køyre top-down-metoden frå fleire startpunkt
  nokon argumentpermutasjonar, men ser at \p{ich} opptrer innanfor eitt
  av dei andre argumenta, prøve å lage nye argumentpermutasjonar kor
  \p{ich} er ignorert. Helst bør ein då au krevje at =f-align= kalt på
- det andre argumentet har fått lenkja \p{ich}.  Men om ein må gjere
+ det andre argumentet har fått lenkja \p{ich}.  Men om ein skal gjere
  slike kompliserte unntak er det kanskje eit teikn på at ein må
  vurdere heile metoden på nytt.
+
+Ein tredje utveg, som unngår endringar i krav \ref{krav:PRED}, er å
+ mange\hyp{}mange\hyp{}lenkje \p{p} og \p{q} med \p{r} og
+ \p{s}. Implementasjonsmessig er nok dette det enklaste, men viktigare
+ er det nok at me slepp å seie at det i visse tilfelle er «lov» å
+ ikkje ha LPT\hyp{}korrespondanse for alle argument av lenkja
+ f\hyp{}strukturar.
 
 På den andre sida, viss situasjonen i \Last ikkje dukkar opp i
  faktiske analysar, så kan det hende at top-down-metoden er «god
@@ -3914,9 +3922,9 @@ Formålet med annotasjonen er jo å lage ein trebank for lingvistisk
  grensesnitt som skildra i \citet{dyvik2009lmp} blir dette endå
  enklare, for dei spørjingane grensesnittet tillèt.
  
-Sjølv der programmet kan tek feil i enkelttilfelle, kan ein få nyttig
+Sjølv der programmet kan ta feil i enkelttilfelle, kan ein få nyttig
  informasjon ved å sjå på samanstillingane over heile trebanken.  I
- døme \ref{ex:sie-gefallen} i kapittel \ref{SEC:lik-argstr} viste eg
+ døme \ref{ex:sie-gefallen} i del \ref{SEC:lik-argstr} viste eg
  at, sjølv med fullstendig LPT\hyp{}informasjon kan det finnast tilfelle
  der me ikkje har nok informasjon til å kunne handtere ulik følgje i
  argumentstruktur. Programmet mitt vil her finne to løysingar; ei
@@ -3928,6 +3936,16 @@ Sjølv der programmet kan tek feil i enkelttilfelle, kan ein få nyttig
  med f\hyp{}strukturlenkjer vil slik kartlegging ikkje involvere meir enn å
  gjere spørringar etter subjekt lenkja til objekt og omvendt.
 
+Når det gjeld kollokasjonen /there is/es gibt/, vil me med ein
+ LFG-lenkja trebank sjølvsagt kunne søkje etter kombinasjonen av
+ ordlenkjene, men dette blir ikkje ei lenkja /eining/ som me kan søkje
+ etter. Derimot kan me finne /kombinasjonen/ av lenkjene /there/es/ og
+ /is/geben/ i same setning (noko som burde skje ganske ofte); eller me
+ kan søkje etter predikatlenkja mellom \p{is} og \p{geben}, kombinert
+ med at subjekta til desse er lenkja og er pro-element. I motsetning
+ til eit N\hyp{}gramsøk vil me då au få treff der me t.d. har
+ adverbial mellom orda.
+
 Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
  parallelle som dei er meint å vere, vil sjølvsagt =lfgalign= au vere
  praktisk, sidan umotiverte forskjellar lett kan føre til feil
@@ -3936,22 +3954,25 @@ Om ein er ute etter å sjekke om to grammatikkar verkeleg er så
  men dette gjeld sjølvsagt berre «lenkingskandidatane» -- dei delene
  av analysane som kan få lenkjer.
 
-Sidan samanstillingane er direkte avleidd frå utdata frå grammatikkar,
- bør =lfgalign= vere mogleg å integrere i ein inkrementell metode for
- trebankoppbygging, kor ein kontinuerleg modifiserer grammatikkane på
- bakgrunn av arbeidet med manuell disambiguering av ein trebank.
- \citet{rosen2007tmt} kallar dette /parsebanking/, her kan me kanskje
- snakke om /parallell parsebanking/. Dette kan au vere ein nyttig
- strategi der det er lite parallell språkdata, utover det ein skal
- lenkje (slik situasjonen er for dei fleste språkpara i
- Xpar-prosjektet). Dei fleste frasesamanstillingsmetodar er avhengig
- av parallellkorpora på tusenvis av setningspar for å lage
- N-gramtabellar, sjølv om målet berre er å lenkje eit korpus på eit
- par hundre setningspar. Men i den situasjonen der nokon har skrive
- ein grammatikk for språka, kan me få gode samanstillingar ved hjelp
- av top-down-lenking på dei grammatiske analysane. Med eit godt
+Dette kan me ta eit steg vidare. Sidan samanstillingane er direkte
+ avleidd frå utdata frå grammatikkar, bør =lfgalign= vere mogleg å
+ integrere i ein inkrementell metode for trebankoppbygging, kor ein
+ kontinuerleg modifiserer grammatikkane på bakgrunn av arbeidet med
+ manuell disambiguering av ein trebank.  \citet{rosen2007tmt} kallar
+ dette /parsebanking/, her kan me kanskje snakke om /parallell
+ parsebanking/.
+
+Dette kan au vere ein nyttig strategi der det er lite
+ parallell språkdata, utover det ein skal lenkje (slik situasjonen er
+ for dei fleste språkpara i Xpar-prosjektet). Dei fleste
+ frasesamanstillingsmetodar er avhengig av parallellkorpora på
+ tusenvis av setningspar for å lage N-gramtabellar, sjølv om målet
+ berre er å lenkje eit korpus på eit par hundre setningspar. Men i den
+ situasjonen der nokon har skrive ein grammatikk for språka, kan me få
+ gode samanstillingar med lite LPT\hyp{}informasjonen ved hjelp av
+ top-down\hyp{}lenking på dei grammatiske analysane. Med eit godt
  brukargrensesnitt for val av alternative samanstillingar kan ein til
- og med klare seg utan å gi ordomsetjingar til programmet.
+ og med klare seg utan å gi nokon LPT\hyp{}informasjon til programmet.
 
 Sjølv om eg her har argumentert for at formålet med metoden i denne
  oppgåva er å lage annotasjonar som er nyttige for språkstudium, er
@@ -3991,15 +4012,17 @@ Me kan nok betre skårane på kvantitative mål som presisjon og dekning
 Men i tillegg til desse måla, vil lenkjene til =lfgalign= gi
  informasjon som er kvalitativt forskjellig frå det ein kan få med å
  berre sjå på lenkjer mellom ord, n-gram, konstituentar eller
- dependensstrukturar åleine. Me har ei integrert mengd med lenkjer på
- ulike nivå. Og sidan avbildinga frå c\hyp{}strukturnodar til f\hyp{}struktur er
+ dependensstrukturar åleine. Me har lenkjemengder for både f-struktur
+ og c-struktur, og ved avbildinga mellom desse får me ei integrering
+ av analysane på dei ulike nivåa og dei ulike lenkjetypene. Og sidan
+ avbildinga frå c\hyp{}strukturnodar til f\hyp{}struktur er
  mange-til-ein, kan me innanfor eitt tre ha fleire «N-gram» per
  f\hyp{}strukturhovud; dette gjer at me kan ha diskontinuerlege
- mange-mange-lenkjer på c\hyp{}strukturnivå.  Slike relasjonar kan me ikkje
- finne med ein metode som berre ser på lenkjer mellom
- konstituentdelmengdene av ein N-gramtabell \citep{samuelsson2007apa}
- eller ein metode som ikkje har ei kopling frå f\hyp{}struktur til
- c\hyp{}struktur \citep{graham2009fts}.
+ mange-mange-lenkjer på c\hyp{}strukturnivå.  Slike relasjonar kan me
+ ikkje finne med ein metode som berre ser på lenkjer mellom
+ konstituentdelmengdene av ein N-gramtabell,
+ eller ein metode som ikkje relaterer f\hyp{}strukturlenkjer til
+ c\hyp{}strukturlenkjer.
 
 
 
@@ -4018,11 +4041,11 @@ Automatisk frasesamanstilling direkte avleidd frå parallellismen i
  Xpar-prosjektet. Som evalueringa viser kan både dei ideelle krava
  nyanserast (m.a. til å ta inn over seg fleire relasjonar mellom
  predikat enn argument/adjunkt) og implementeringa betrast (m.a. til å
- rangere i staden for å avskjere på LPT\hyp{}informasjon). Men metoden
+ rangere i staden for å avskjere på bottom-up-informasjon). Men metoden
  synest lovande, sjølv om evalueringsmaterialet er litt for tynt for å
  komme med ein sterk konklusjon.
 
-f\hyp{}strukturlenkjene gir ein kvalitativt ulik informasjon frå det ein
+Lenkjer mellom f\hyp{}strukturar gir ein kvalitativt ulik informasjon frå det ein
  får med lenkjer mellom reine N-gram eller konstituentar. Men den
  endelege samanstillinga har i tillegg ei nær kopling til djupe
  lingvistiske analysar; dette gir oss høve til å samanlikne
@@ -4044,7 +4067,7 @@ Her står koden for å køyre analysane frå tabell \ref{tbl:RIA}. Først
  må du hente ut Ding-ordboka og ekstrahere testsettet. Viss du har
  installert Ding-ordboka til =/usr/share/dict/de-en.txt= og har lasta
  ned og ekstrahert =RIA= til =/home/brukarnamn/ria_12_06_09=, kan du
- klargjere ordboka og testsettet med
+ klargjere ordboka og testsettet frå =lfgalign=-mappa med
 
 #+BEGIN_SRC sh
 $ ./prepare-ria.sh /usr/share/dict/de-en.txt /home/brukarnamn/ria_12_06_09
