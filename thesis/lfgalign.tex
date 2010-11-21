@@ -1,4 +1,4 @@
-% Created 2010-11-21 su. 15:26
+% Created 2010-11-21 su. 17:51
 \documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
@@ -65,6 +65,8 @@
 \newcommand{\p}[1]{`\textbf{#1}'}
 \SetKwComment{Comment}{ // }{}
 \SetKwInOut{Input}{usage}
+\renewcommand{\BOthers}{mfl.\hbox{}}
+\renewcommand{\BOthersPeriod}{mfl.\hbox{}}
 \pagenumbering{roman}
 \newcommand{\tittel}{DASP350 -- Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk fraselenking\vspace{30mm}}
 
@@ -75,6 +77,7 @@
 \begin{document}
 
 \maketitle
+
 
 
 
@@ -2842,7 +2845,7 @@ Det finst altså både praktiske og meir ideelle grunnar til å gjere det
  argument/adjunkt på -- kvar måte er representert ved eit par
  \emph{sublink, subbranches}. Me finn først den rekursive skåren for
  \emph{subbranches} via \emph{rank-f} igjen, og summerer dette inn i
- \emph{subrate-sum}. Me returnerer produktet av skårene frå
+ \emph{subrate-sum}. Me returnerer produktet av skårane frå
  rangeringskriterium \ref{krav:arg-order-rate} og
  \ref{krav:sub-f-rate} med \emph{subrate-sum} vekta på kor mange lenkjer
  det var i greina.
@@ -2883,7 +2886,7 @@ Det finst altså både praktiske og meir ideelle grunnar til å gjere det
 
 I tillegg til skåren, returnerer desse funksjonane den beste
 greina\footnote{Alternativt kunne me returnert eit tre som var annotert med
-        skårene. }, slik at me ender opp med ei enkel, «flat» liste med
+        skårane. }, slik at me ender opp med ei enkel, «flat» liste med
 lenkjer. Denne blir sendt vidare til c\hyp{}strukturlenkinga.
 
 
@@ -3033,8 +3036,8 @@ I neste kapittel går eg gjennom resultat av å køyre \texttt{lfgalign} på
   %   There were grammatical errors even in his silence.}
   % {Stanisław Jerzy Lec}
 
- I denne delen gir eg ei evaluering av resultata frå å køyre
- \texttt{lfgalign} på LFG-analysar av parallelle setningar. Eg ser på manglar
+ I denne delen gir eg ei evaluering av resultatet av å køyre
+ \texttt{lfgalign} på LFG\hyp{}analysar av parallelle setningar. Eg ser på manglar
  ved implementasjonen i forhold til dei ideelle krava frå kapittel
  \ref{SEC:ideell}, og på kor avhengig \texttt{lfgalign} er av
  bottom-up-informasjon. Eg samanliknar dei resultata som er moglege å
@@ -3052,23 +3055,33 @@ I neste kapittel går eg gjennom resultat av å køyre \texttt{lfgalign} på
  f\hyp{}strukturar, eller ikkje er argument/adjunkt av noko). Dette er nok
  for unyansert, men det avskjerer ein god del umotiverte lenkingar.
 
- I dette kapittelet ser eg på korleis føresetnadene ved
- implementasjonen påverkar kva for samanstillingar me får, og kjem
- fram til at svært ulike eller fragmentariske f\hyp{}strukturar fører til
- store feil i lenkingane; men det finst konkrete løysingar på dei
- fleste problema. 
+ Nedanfor ser eg på korleis føresetnadene ved implementasjonen
+ påverkar kva for samanstillingar me får, og kjem fram til at svært
+ ulike eller fragmentariske f\hyp{}strukturar fører til store feil i
+ lenkingane; det same kan skje med ufullstendig
+ LPT\hyp{}informasjon. Men det finst konkrete løysingar på dei fleste
+ problema.
 
- Eg har ikkje gjort nokon evaluering av c\hyp{}strukturlenkinga; denne er
- uansett direkte avleidd frå f\hyp{}strukturlenkjene, utan nokon
+ Eg har ikkje gjort nokon evaluering av c\hyp{}strukturlenkinga; denne
+ er uansett direkte avleidd frå f\hyp{}strukturlenkjene, utan nokon
  «valfridom». Feil i c\hyp{}strukturlenkjene har så langt anten vore
  implementasjonsfeil som var enkle å rette på, eller så har dei
- oppstått på grunn av at f\hyp{}strukturlenkjene var feil.
+ oppstått på grunn av at inndata til c\hyp{}strukturlenkinga,
+ f\hyp{}strukturlenkjene, hadde feil i seg. Ein ting eg ikkje har fått
+ testa skikkeleg er diskontinuerlege konstituentar; det finst ingen
+ ekte slike i testsettet mitt. Det funksjonelle domenet til rotnoden
+ er teknisk sett ofte representert som ein diskontinuerleg konstituent
+ sett saman av verb + teiknsetjing -- og her er det ingen problem i
+ c\hyp{}strukturlenkinga -- men det er jo alltid ein sjanse for at
+ ekte diskontinuerlege konstituentar hadde ført til uventa vanskar.
+ 
+ 
  
   
 \section{Materiale}
 \label{sec-5.1}
 
-Eg byrjar med språka georgisk og norsk i evalueringa, hovudsakleg
+Eg byrjar med språka georgisk og norsk, hovudsakleg
  fordi dei er svært ulike syntaktisk og morfologisk. Som nemnt er
  georgisk eitt av språka nytta i Xpar-prosjektet; og det er nok det
  som har mest typologisk avstand frå norsk av språka i prosjektet.
@@ -3179,7 +3192,7 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
  Ein av dei vanlegaste treningsmetodane er \emph{sannsynsmaksimering}
  \citep[utførleg forklart i][]{prescher-em}, som lèt ein rekne ut
  elles uhandterlege sannsynsproblem ved å iterativt endre
- modellparametrane slik at skårene blir betre. Eg gir her eit \emph{svært  forenkla} oversyn over korleis dette går føre seg. Me byrjar med å
+ modellparametrane slik at skårane blir betre. Eg gir her eit \emph{svært  forenkla} oversyn over korleis dette går føre seg. Me byrjar med å
  setje $p_0$ for alle moglege samanstillingar og ordpar til ein viss
  verdi, kanskje på ein tilfeldig måte. Så genererer me alle moglege
  samanstillingar til målkorpuset basert på kjeldekorpuset, kor kvar
@@ -3218,21 +3231,24 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
  ved å først ta snittet, og så leggje til frå unionen ved hjelp av
  ulike heuristikkar.
 
- I \citet{samuelsson2007apa} nyttar dei liknande metodar for å finne
- ein N-gramtabell, altså ein tabell med kjelde-N-gram, mål-N-gram og
- sannsyn. Denne sender dei, saman med to frasestrukturannoterte
- einspråklege trebankar, gjennom eit \emph{lingvistisk  samanstillingsfilter} for å opprette ein frasesamanstilt parallell
- trebank. Viss ein frasestrukturnode i kjeldetrebanken svarer til ein
- frase i tabellen, og målfrasen i tabellen au er dekkja av ein node på
- målspråket, vil filteret opprette ei lenkje mellom nodane.
- N-gramtabellen er ikkje kopla til setningane, så teoretisk sett kan
- ein opprette lenkjer mellom alle moglege nodepar\footnote{Altså kunne ein ha lenkja frå to søsternodar på kjeldesida til
+ Når ein har funne slike mange\hyp{}mange\hyp{}lenkjer, er det mogleg
+ å nytte desse til å finne meir nyanserte samanstillingar.  I
+ \citet{samuelsson2007apa} nyttar dei metodar som liknar på dei i
+ \citet{koehn2003spb} for å finne ein N-gramtabell, altså ein tabell
+ med kjelde-N-gram, mål-N-gram og sannsyn. Denne sender dei, saman med
+ to frasestrukturannoterte einspråklege trebankar, gjennom eit
+ \emph{lingvistisk samanstillingsfilter} for å opprette ein frasesamanstilt
+ parallell trebank. Viss ein frasestrukturnode i kjeldetrebanken
+ svarer til ein frase i tabellen, og målfrasen i tabellen au er dekkja
+ av ein node på målspråket, vil filteret opprette ei lenkje mellom
+ nodane.  N-gramtabellen er ikkje kopla til setningane, så teoretisk
+ sett kan ein opprette lenkjer mellom alle moglege nodepar\footnote{Altså kunne ein ha lenkja frå to søsternodar på kjeldesida til
         høvesvis mor og dotter på målsida -- noko som ikkje ville ha
         gitt meining. Men dette er lett å unngå ved å krevje at viss
         ein node $n_s$ er lenkja til $n_t$, og er dominert av $m_s$
         som er lenkja til $m_t$, må $m_t$ dominere $n_t$. }.
 
- Lenkjene mellom frasestrukturtre i \citet{samuelsson2007apa} er
+ Lenkjene mellom frasestrukturnodar i \citet{samuelsson2007apa} er
  ein-til-ein; dei skil seg slik formelt frå lenkjene i
  \texttt{lfgalign}. Sidan strengpara dominert av nodelenkjene er ei delmengd
  av mengda med N-gramkorrespondansar, kor desse altså er kontinuerlege
@@ -3244,8 +3260,9 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
         annotasjonsverktøyet for TreeAligner (tilgjengeleg frå
         \href{http://kitt.cl.uzh.ch/kitt/treealigner}{http://kitt.cl.uzh.ch/kitt/treealigner} under GNU GPL) opnar
         for manuelle mange-mange-lenkjer, men det er klart at når me
-        går frå par av N-gram til par av frasestrukturnodar som
-        dominerer same N-gram kan me ikkje få mange-mange-lenkjer. }). Dette står i kontrast
+        går direkte frå par av N-gram til par av frasestrukturnodar
+        som dominerer same N-gram kan me ikkje få evidens for
+        mange\hyp{}mange\hyp{}lenkjer. }). Dette står i kontrast
  til c\hyp{}strukturlenking basert på f\hyp{}strukturforhold -- her gir dei
  funksjonelle domena (saman med dominans) evidens for når ein skal sjå
  på to nodar som del av same mange-mange-lenkje.  Med desse
@@ -3257,18 +3274,19 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
  Metoden i \texttt{RIA} \citep{graham2009osr,graham2009fts} finn
  f\hyp{}strukturlenkjer frå ordlenkjer, med formålet å lage
  overføringsreglar for maskinomsetjing. Dei fjernar alle kantar i
- f\hyp{}strukturgrafen som kan skape sirkularitet eller som deler sluttnode
- med andre kantar (og unngår dimed problemet med \emph{reentrancy}, nemnt
- nedanfor). f\hyp{}strukturen blir då, i lenkingsprosessen, ekvivalent med
- ein enkel trestruktur, slik at dei kan nytte ein liknande
- framgangsmåte som \citet{samuelsson2007apa}.  Dei nyttar
- f\hyp{}strukturhierarkiet til å «normalisere» ordfølgja i setningane, før
- den automatiske ordlenkinga. Viss f\hyp{}strukturane er korrekte og bygd
- på felles prinsipp, vil altså ordfølgja i inndata til ordlenkinga
- bli nokolunde lik (ytre predikat først, så første argument, så andre,
- osb.), noko som lettar den statistiske ordsamanstillingsprosessen.
- Dei lenkjar ikkje c\hyp{}strukturnodar, sidan målet er å lage
- overføringsreglar på f\hyp{}strukturnivå.
+ f\hyp{}strukturgrafen som kan skape sirkularitet eller som deler
+ sluttnode med andre kantar (og unngår dimed problemet med sykliske
+ grafar, nemnt i del \ref{SEC:reentrancy}). F\hyp{}strukturen blir då,
+ i lenkingsprosessen, ekvivalent med ein enkel trestruktur, slik at
+ dei kan nytte ein liknande framgangsmåte som
+ \citet{samuelsson2007apa}.  Dei nyttar f\hyp{}strukturhierarkiet til
+ å «normalisere» ordfølgja i setningane, før den automatiske
+ ordlenkinga. Viss f\hyp{}strukturane er korrekte og bygd på felles
+ prinsipp, vil altså ordfølgja i inndata til ordlenkinga bli nokolunde
+ lik (ytre predikat først, så første argument, så andre, osb.), noko
+ som lettar den statistiske ordsamanstillingsprosessen.  Dei lenkjar
+ ikkje c\hyp{}strukturnodar, sidan målet er å lage overføringsreglar
+ på f\hyp{}strukturnivå.
 
  I del \ref{SEC:ria} ser eg på kor stor overlapp det er mellom dei
  f\hyp{}strukturlenkjene metoden i \texttt{RIA} får, og dei \texttt{lfgalign} får. Kva
@@ -3292,7 +3310,8 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
  argument/adjunkt-lenking. Feil i c\hyp{}struktursamanstillinga, derimot,
  vil ikkje få følgjer andre stader (gitt ei viss
  f\hyp{}struktursamanstilling har me heller ingen «val» å ta for lenkinga
- her).
+ her). Det er ved val av argument-/adjunktpermutasjon me først ser om
+ manglar i LPT-informasjonen gir feil samanstilling.
 
  Setningsparet i \Next illustrerer problemet.
 
@@ -3315,14 +3334,15 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
 
 \ex. \{(\p{mi-codeba}, \p{rekke-hand}), (\p{Browne}, \p{sigarett}), (\p{sigareti}, \p{Browne}), (\p{Abrams}, \p{Abrams})\} 
 
- som jo er feil (me får då au feil c\hyp{}struktursamanstilling). Dette
- skjer pga. argumentstrukturane til dei to verba \emph{ikkje} er
- parallelle\footnote{Det kan sjølvsagt vere gode grunnar (frå evidens på kvart av
-        dei to språka) til at argumentstrukturane er ulike. } -- \p{mi-codeba} har <\p{Abrams}, \p{sigareti},
- \p{Browne}>, medan \p{rekke-hand} har <\p{Abrams}, \p{Browne},
- \p{sigarett}>, og me har eit rangeringskriterium som føretrekkjer lik
- følgje over ulik. Men ved å t.d. leggje til informasjonen om at
- \emph{brouns} og \emph{Browne} har LPT\hyp{}korrespondanse, får me:
+som jo inneheld feil argumentpermutasjon (me får då au feil
+ c\hyp{}struktursamanstilling). Dette skjer pga. argumentstrukturane
+ til dei to verba \emph{ikkje} er parallelle\footnote{Det kan sjølvsagt vere gode grunnar (frå evidens på kvart av
+        dei to språka) til at argumentstrukturane er ulike. } -- \p{mi-codeba} har
+ <\p{Abrams}, \p{sigareti}, \p{Browne}>, medan \p{rekke-hand} har
+ <\p{Abrams}, \p{Browne}, \p{sigarett}>, og me har eit
+ rangeringskriterium som føretrekkjer lik følgje over ulik. Men ved å
+ t.d. leggje til informasjonen om at \emph{brouns} og \emph{Browne} har
+ LPT\hyp{}korrespondanse, får me:
 
 \ex. \{(\p{mi-codeba}, \p{rekke-hand}), (\p{Browne}, \p{Browne}), (\p{sigareti}, \p{sigarett}), (\p{Abrams}, \p{Abrams})\}
 
@@ -3415,7 +3435,7 @@ Setning 4.pl og 5.pl på norsk er to alternative måtar å seie setning
         par som ikkje var disambiguerte har eg sjølv manuelt
         disambiguert (norsk 0.pl og georgisk 3.pl). I setning 57.pl og
         58.pl er eg usikker på kva den rette analysen bør vere (eller
-        om har rette LFG-analysar), men meir LPT\hyp{}informasjon vil
+        om dei har rette LFG-analysar), men meir LPT\hyp{}informasjon vil
         iallfall ikkje endre på det. }.
 
 Setningsparet 38.pl/39.pl har argument som blir referert til fleire
@@ -3441,7 +3461,7 @@ Her er \emph{abramsis} ein \POSS{} under \SPEC{} av f\hyp{}strukturen til
  kapittel \ref{SEC:ideell}. Sidan \emph{abramsis} ikkje er mogleg å finne
  via argument/adjunkt av rotpredikatet, ender det opp i ei eiga liste
  for fragment ol. som kan lenkjast, men kor me ikkje veit noko om
- konteksten. Det blir altså handsama som eit av fleire yttarste
+ konteksten. Det blir altså handsama som eitt av fleire yttarste
  predikat -- men her burde det jo vere mogleg å finne det via
  \emph{suraTi}. På den norske sida er \emph{Abrams} mogleg å finne gjennom
  \emph{bilde}, og er ikkje sett på som noko yttarste predikat, så
@@ -3460,10 +3480,11 @@ Testsettet \texttt{sofie} er frå ein roman, og har difor litt friare
  omsetjingar enn \texttt{mrs}.
 
 I setning 2.pl og 0.pl har konstruksjonen \emph{være på vei hjem} blitt
- omsett til \emph{bruneba}, direkte omsett `dreie'. f\hyp{}strukturane i \Next
- illusterer forskjellen (adposisjonane er fjerna for å få plass til
- figuren); i \NNext ser me f\hyp{}struktursamanstillinga som me får etter
- at \emph{amundsen/Amundsen} og \emph{skola/skole} er lagt til i LPT-tabellen.
+ omsett til \emph{bruneba}, direkte omsett \emph{dreie}. F\hyp{}strukturane i
+ \Next illusterer forskjellen (adposisjonane er fjerna for å få plass
+ til figuren); i \NNext ser me f\hyp{}struktursamanstillinga som me
+ får etter at \emph{amundsen/Amundsen} og \emph{skola/skole} er lagt til i
+ LPT-tabellen.
 
 {\avmoptions{}
 \ex. \ag. soPi amundseni skolidan brundeboda.\\
