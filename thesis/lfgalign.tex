@@ -1,5 +1,5 @@
-% Created 2010-11-20 la. 23:53
-\documentclass[12pt,a4paper,oneside]{report}
+% Created 2010-11-21 su. 10:41
+\documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
 %% That geometry is fugly... ugh
@@ -44,6 +44,7 @@
 \newcommand{\OBJs}{\F{obj~}{}}
 \newcommand{\ADJ}{\F{adj}{}}
 \newcommand{\ADJs}{\F{adj~}{}}
+\newcommand{\ADJUNCT}{\F{adjunct}{}}
 \newcommand{\XCOMP}{\F{xcomp}{}}
 \newcommand{\XCOMPs}{\F{xcomp~}{}}
 \newcommand{\SUBJ}{\F{subj}{}}
@@ -69,7 +70,7 @@
 
 \title{\tittel}
 \author{Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}}
-\date{20/11, 2010}
+\date{21/11, 2010}
 
 \begin{document}
 
@@ -543,8 +544,9 @@ Så langt har eg ikkje komme over metodar som prøver å finne eller
  betre på frase- og ordsamanstilling direkte frå ein LFG-parse -- det
  er dette som er strategien til programmet \texttt{lfgalign} i kapittel
  \ref{SEC:implementasjon} -- men det er stor overlapp mellom krava som
- kjem i kapittel \ref{SEC:ideell} (i tillegg nemnt i
- \citet{unhammer2010lcf}) og dei gitt i den første publiseringa i
+ kjem i kapittel \ref{SEC:ideell} 
+ \citep[i tillegg nemnt i][]{unhammer2010lcf}
+ og dei gitt i den første publiseringa i
  Xpar-prosjektet, \citet{dyvik2009lmp}.
 
 \section{Eit kort oversyn over leksikalsk-funksjonell grammatikk og terminologi}
@@ -624,37 +626,41 @@ Så langt har eg ikkje komme over metodar som prøver å finne eller
  Konstituentstrukturen liknar på tradisjonelle frasetre, kor dominans
  mellom nodane viser frasehierarkiet i analysen av
  setninga. Nodekategoriane er vanlegvis basert på
- \xbar-prinsipp. Hovudet i ein frase er XP, ein XP kan bestå av ein
- \emph{spesifikatorfrase} (valfritt) og ein X' (\xbar). Ein X' kan bestå av
- ein X' og eit \emph{adjunkt}, eller ein X og eit \emph{komplement}\footnote{Det kan sjølvsagt vere gode grunnar (frå evidens på kvart av
-        dei to språka) til at argumentstrukturane er ulike. }. I
- figur \ref{fig:f-og-c-struktur} har me t.d. ein VP (her er X=V), med
- ein spesifikator til venstre (ein ny frase, NP), og V'
- (dvs. $\rm\overline{V}$) til høgre. V' består av V og kanskje eit
- komplement til høgre. I dette tilfellet er spesifikator subjekt
- (kanskje har me eit refleksiv pronomen som komplement). 
+ \xbar-prinsipp. Hovudet i ein frase er XP; ein XP kan bestå av ein
+ \emph{spesifikatorfrase} (valfritt) og ein X' (eller \xbar). Ein X' kan
+ bestå av ein X' og eit \emph{adjunkt}, eller ein X og eit
+ \emph{komplement}\footnote{I utgangspunktet kan ein tenkje på \emph{spesifikator}, \emph{adjunkt}
+        og \emph{komplement} som tomme symbol her, definert ved posisjonen
+        dei har i forhold til XP og X'. }. I figur \ref{fig:f-og-c-struktur} har me
+ t.d. ein VP (her er X=V), med ein spesifikator til venstre (ein ny
+ frase, NP), og V' (dvs. $\rm\overline{V}$) til høgre. V' består av V
+ og kanskje eit komplement til høgre. I dette tilfellet er
+ spesifikator subjekt (kanskje har me eit refleksiv pronomen som
+ komplement).
 
  I tillegg har kvar node i LFG ei kopling til f\hyp{}strukturen, via
- \textbf{c\hyp{}struktur-f\hyp{}strukturavbildinga} $\phi{}$. Nodar i c\hyp{}strukturen kan
- spesifisere informasjon på ulike stader i f\hyp{}strukturen (me seier at
- nodane \textbf{projiserer} f\hyp{}strukturar, eller delar av dei).  I dette
- tilfellet går $\phi$ av VP her til f\hyp{}strukturen $f$, VP projiserer
- $f$. NP-noden er annotert med \ua{}SUBJ=\da{}, dette les me som at
- «denne noden projiserer subjektet til $\phi$ av mornoden», altså
- projiserer NP-en \SUBJ{} av $f$. NP er ikkje åleine om å gjere dette,
- N-noden har \ua{}=\da{} som vil seie at N projiserer same f\hyp{}struktur
- som NP. Dette subjektet har fleire trekk i f\hyp{}strukturen, t.d. \NUM{}
- og \GEND{} som har atomære verdiar og seier at dette er i eintal og
- maskulinum. Viss eit anna ord i setninga må samsvare med dette for å
- vere grammatisk, kan me krevje i grammatikken at me kan \textbf{unifisere}
- visse trekk; for atomære trekk som dette kan me alltid unifisere dei
- viss atomet er formmessig likt. Me kan au unifisere heile
- trekkstrukturar så lenge dei ikkje har trekk som ikkje kan
- unifiserast; dei unifiserte strukturane er då blitt \emph{ein} struktur,
- og alle referansar til dei to peiker no på same struktur. Slik er det
- mogleg å få \emph{sykliske} strukturar -- ein f\hyp{}struktur er ein
- \emph{graf}. Det er altså ikkje mogleg å gjere om ein f\hyp{}struktur til ein
- trestruktur utan å miste informasjon.
+ \textbf{c\hyp{}struktur-f\hyp{}strukturavbildinga} $\phi{}$. Nodar i
+ c\hyp{}strukturen kan spesifisere informasjon på ulike stader i
+ f\hyp{}strukturen (me seier at nodane \textbf{projiserer} f\hyp{}strukturar,
+ eller delar av dei).  I dette tilfellet går $\phi$ av VP her til
+ f\hyp{}strukturen $f$, VP projiserer $f$. NP-noden er annotert med
+ \ua{}SUBJ=\da{}, dette les me som at «denne noden projiserer
+ subjektet til $\phi$ av mornoden», altså projiserer NP-en \SUBJ{} av
+ $f$. NP er ikkje åleine om å gjere dette, N-noden har \ua{}=\da{} som
+ vil seie at N projiserer same f\hyp{}struktur som NP. Dette subjektet
+ har fleire trekk i f\hyp{}strukturen, t.d. \NUM{} og \GEND{} som har
+ atomære verdiar og seier at dette er i eintal og maskulinum. Viss eit
+ anna ord i setninga må samsvare med dette for å vere grammatisk, kan
+ me krevje i grammatikken at me kan \textbf{unifisere} visse trekk; for
+ atomære trekk som dette kan me alltid unifisere dei viss atomet er
+ formmessig likt. Me kan au unifisere heile trekkstrukturar så lenge
+ dei ikkje har trekk som ikkje kan unifiserast; dei unifiserte
+ strukturane er då blitt \emph{ein} struktur, og alle referansar til dei to
+ peiker no på same struktur. Slik er det mogleg å få \emph{sykliske}
+ strukturar -- ein f\hyp{}struktur er matematisk sett ein \emph{graf}. Det
+ er altså ikkje mogleg å gjere om ein f\hyp{}struktur til ein
+ trestruktur utan å miste informasjon (eller leggje til spesielle
+ tolkingar av treet).
 
  I figur \ref{fig:f-og-c-struktur} er verdien av \PRED{}-trekket til
  subjektet \p{hund}. \PRED{} er eit spesielt trekk, verdien her er ein
@@ -662,11 +668,13 @@ Så langt har eg ikkje komme over metodar som prøver å finne eller
  sjølv om dei har lik form. I tillegg viser dei \emph{argumentstrukturen}
  til predikatet. I figur \ref{fig:f-og-c-struktur} har predikatet
  \p{luske} eitt argument, subjektet (det at argumentet er unifisert
- med \SUBJ{}-trekket er vist ved at dei begge har indeksen \ind{1}).
+ med \SUBJ{}-trekket er vist ved at dei begge har indeksen \ind{1}). I
+ tillegg til argument, kan eit predikat ha \emph{adjunkt} (adverbial);
+ desse er representert i uordna mengder i trekket \ADJUNCT{}.
 
- Visse \emph{endosentrisitetsprinsipp} avgrenser avbildinga mellom
+ Visse \emph{endosentrisitetsprinsipp} avgrensar avbildinga mellom
  c\hyp{}struktur og f\hyp{}struktur, ved å vise til \xbar-kategoriane; til dømes
- har me alltid \ua=\da på ein X' som står under XP.
+ har me alltid \ua=\da{} på ein X' som står under XP.
 
  Avbildinga frå c\hyp{}struktur til f\hyp{}struktur er mange-til-ein. Som nemnt
  projiserte både NP og N same f\hyp{}struktur. Desse nodane dominerer same
@@ -685,7 +693,7 @@ Så langt har eg ikkje komme over metodar som prøver å finne eller
  kan gi same verdi.
 
  I denne oppgåva nyttar eg, i tillegg til LFG-terminologien, orda
- \emph{lenking} og \emph{samanstilling} i omtrent same tyding som dei engelske
+ \emph{lenkje} og \emph{samanstilling} i omtrent same tyding som dei engelske
  termane \emph{link} og \emph{alignment}. Ei samanstilling er ei mengd
  lenkjer. Merk at ei enkeltlenkje treng ikkje å vere ein-til-ein.
  Lenkjer og samanstillingar er ekvivalensforhold som me kan finne
@@ -722,7 +730,7 @@ I denne delen prøver eg å finne fram til kva som er den best moglege
  enklare å implementere i kapittel \ref{SEC:implementasjon}. Dette
  involverer au å omformulere krava for c\hyp{}struktursamanstilling slik at
  dei ikkje refererer til ordlenkjer, berre f\hyp{}strukturlenkjer. Sidan
- eit av måla med Xpar-prosjektet er å finne ut kor mykje
+ eitt av måla med Xpar-prosjektet er å finne ut kor mykje
  frasesamanstillingsinformasjon me kan få ut av parallellismen i
  f\hyp{}strukturane (eller, sett frå den andre sida, kor uavhengig ein kan
  gjere seg av den bottom-up-informasjonen ei ordlenkje gir), blir det
@@ -2875,7 +2883,7 @@ unionen av lenkjene dominert av døtrene til \emph{n} er lik \emph{l}. I
 \texttt{lfgalign} opererer eg ikkje med \emph{ordlenkjer} i seg sjølv;
 f\hyp{}struktursamanstillinga er basert på LPT\hyp{}korrespondansar, som
 definerer moglege ordlenkjer utan å sjå på kontekst, og
-f\hyp{}struktursamanstillinga avgrenser vidare moglege ordlenkjer gitt
+f\hyp{}struktursamanstillinga avgrensar vidare moglege ordlenkjer gitt
 f\hyp{}strukturinformasjon. Preterminale nodar er dei mest ordnære nodane
 som kan ha ei f\hyp{}strukturlenkje (ved $\phi$); når formålet er å lenkje
 c\hyp{}strukturnodar kan me nytte f\hyp{}strukturlenkja til den preterminale
@@ -3044,7 +3052,7 @@ Sidan eg ikkje har tilgang på nokon større ferdig setningssamanstilt
         heller ikkje enno om nokon statistisk frasestrukturparsar av
         høg kvalitet for georgisk; testsettet mitt derimot er ferdig
         parsa med LFG-parsaren frå \citet{meurer2008cgg},
-        c\hyp{}strukturnodane avgrenser då kva som er ein syntaktisk
+        c\hyp{}strukturnodane avgrensar då kva som er ein syntaktisk
         konstituent. }. Materialet i \texttt{mrs}
  og \texttt{sofie} er sjølvsagt alt for lite for statistisk samanstilling, så
  det vil ikkje vere mogleg å empirisk samanlikne presisjon/dekning med
@@ -3269,9 +3277,8 @@ Dei vanlegaste metodane er basert på sannsynsmodellar\footnote{Det finst au \em
 
  som jo er feil (me får då au feil c\hyp{}struktursamanstilling). Dette
  skjer pga. argumentstrukturane til dei to verba \emph{ikkje} er
- parallelle\footnote{I utgangspunktet kan ein tenkje på \emph{spesifikator}, \emph{adjunkt}
-        og \emph{komplement} som tomme symbol her, definert ved deira
-        posisjon i forhold til XP og X'. } -- \p{mi-codeba} har <\p{Abrams}, \p{sigareti},
+ parallelle\footnote{Det kan sjølvsagt vere gode grunnar (frå evidens på kvart av
+        dei to språka) til at argumentstrukturane er ulike. } -- \p{mi-codeba} har <\p{Abrams}, \p{sigareti},
  \p{Browne}>, medan \p{rekke-hand} har <\p{Abrams}, \p{Browne},
  \p{sigarett}>, og me har eit rangeringskriterium som føretrekkjer lik
  følgje over ulik. Men ved å t.d. leggje til informasjonen om at
