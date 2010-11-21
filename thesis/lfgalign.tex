@@ -1,4 +1,4 @@
-% Created 2010-11-21 su. 14:44
+% Created 2010-11-21 su. 14:45
 \documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
@@ -2703,20 +2703,22 @@ kjem eg tilbake til i \ref{SEC:impl-f-rangering} nedanfor.
    \label{SEC:impl-adjalign}
 
 Argumentpermutasjonane frå \texttt{argalign} prøver som nemnt ikkje reine
-adjunkt-adjunkt-lenkjer, sidan me ikkje vil forkaste lenking av $F_s$
-og $F_t$ berre på grunn av at ikkje alle adjunkt kunne lenkjast. Men
-når me har prøvd ein argumentpermutasjon, kan me lage ein kopi av
-denne som i tillegg inneheld lenkjer mellom «overflødige» adverbial,
-altså dei adjunkt-adjunkt-lenkjene som \texttt{argalign} ikkje
-prøver. Hjelpefunksjonen \texttt{adjalign} (ikkje vist her) konstruerer
-moglege permutasjonar av lenkjer mellom adjunkt som ikkje er inkludert
-i $argperm$, og \texttt{argloop} prøver desse rekursivt via \texttt{sub-f} på same
-måte som med argumentlenkjene. Lenkjene blir lagt til ein \emph{kopi} av
-argumentpermutasjonane, sidan det ikkje er sikkert at me ønskjer å
-lenkje alle adjunktdøtre. Viss me har to overflødige adjunkt på kvar
-side, og kravet om LPT\hyp{}korrespondanse er dekkja for alle fire moglege
-par, får me seks moglege permutasjonar, sidan me inkluderer dei fire
-permutasjonane der eitt adjunktpar er ulenkja.
+ adjunkt-adjunkt-lenkjer, sidan me ikkje vil forkaste lenking av $F_s$
+ og $F_t$ berre på grunn av at ikkje alle adjunkt kunne lenkjast. Men
+ når me har prøvd ein argumentpermutasjon, kan me lage ein kopi av
+ denne som i tillegg inneheld lenkjer mellom «overflødige» adverbial,
+ altså dei adjunkt-adjunkt-lenkjene som \texttt{argalign} ikkje
+ prøver. Hjelpefunksjonen \texttt{adjalign} (ikkje vist her) konstruerer
+ moglege permutasjonar av lenkjer mellom adjunkt som ikkje er
+ inkludert i $argperm$, og \texttt{argloop} prøver desse rekursivt via
+ \texttt{sub-f} på same måte som med argumentlenkjene. Lenkjene blir lagt til
+ ein \emph{kopi} av argumentpermutasjonane, sidan det ikkje er sikkert at
+ me ønskjer å lenkje alle adjunktdøtre. Viss me har to overflødige
+ adjunkt på kvar side, og kravet om LPT\hyp{}korrespondanse er dekkja
+ for alle fire moglege par, får me seks moglege permutasjonar, viss me
+ inkluderer dei fire permutasjonane der eitt adjunktpar er ulenkja
+ (for no er slike delvise adjunktpermutasjonar ignorert, av omsyn til
+ effektiviteten).
 
 Viss $F_s$ og $F_t$ ikkje hadde argument i det heile teke, går
 \texttt{argloop} au gjennom moglege permutasjonar av adjunktdøtre, på same
