@@ -1661,12 +1661,12 @@ korresponderer.
   \end{figure}
 #+END_LaTeX
 
-I figur \ref{fig:enkel-c-lenkje} er dei funksjonelle domena til /regnar/regent/ 
-lenkja[fn:4], og det same med /det/het/ og /kjøttbollar/gehaktballen/. 
-Viss me føreset at subjekt-NP-ane er lenkja med kvarandre, og at
-objekt-NP-ane er lenkja med kvarandre, på c\hyp{}strukturnivå,
-vil det vere ønskeleg å ein-ein-lenkje IP-nodane, I'-nodane og
-I-nodane. Me skal sjå kvifor.
+I figur \ref{fig:enkel-c-lenkje} er dei funksjonelle domena til
+ /regnar/regent/ lenkja[fn:4], og det same med /det/het/ og
+ /kjøttbollar/gehaktballen/.  Viss me føreset at subjekt-NP-ane er
+ lenkja med kvarandre, og at objekt-NP-ane er lenkja med kvarandre, på
+ c\hyp{}strukturnivå, vil det vere ønskeleg å ein-ein-lenkje
+ IP-nodane, I'-nodane og I-nodane. Me skal sjå kvifor.
 
 IP-nodane bør lenkjast sidan dei dominerer alt innanfor dei
 lenkja funksjonelle domena; det finst ikkje ein gong nodar som står
@@ -1680,7 +1680,7 @@ I'-nodane dominerer ikkje subjekta i figur
  som står under desse korresponderer, men au at nodane står i liknande
  omgivnader. Det er lett å sjå føre seg eit døme der det ikkje ville
  vore ønskeleg med ei lenkje mellom I'-nodane. I figur
- \ref{fig:ikkje-c-lenkje} vil me t.d. ikkje lenkje desse nodane, på
+ \ref{fig:ikkje-c-lenkje} vil me t.d. ikkje lenkje desse nodane; på
  norsk dominerer I' subjektet, som er lenkja til subjektet på
  nederlandsk, men på nederlandsk står ikkje subjektet under I', og
  omvendt for objektet[fn:60]. Ei lenkje mellom I'-nodane ville sagt at
@@ -1764,7 +1764,7 @@ ikkje vil lenkje på tvers av f\hyp{}strukturlenkjer.
 I både figur \ref{fig:ikkje-c-lenkje} og figur
 \ref{fig:ikkje-c-lenkje-pro-drop} er det slik at det I'-nodane dominerer gir
 ulike tilskot til f\hyp{}strukturen, dei kan difor ikkje lenkjast. Likevel
-må me tillate litt slingringsmonn her, nodane skal ikkje trenge
+må me tillate litt slingringsmon her, nodane skal ikkje trenge
 projisere heilt like f\hyp{}strukturar. Det som er relevant er det som blir
 lenkja i f\hyp{}strukturen.
 
@@ -1775,20 +1775,22 @@ dominerer/ kjem i konflikt med f\hyp{}strukturlenkjer.
 
 
 I visse tilfelle kan det hende at sjølv toppnodane i det funksjonelle
-domenet ikkje bør lenkjast. I døma over dominerer toppnoden i det
-funksjonelle domenet, IP, alt som står under $\phi(IP)$ i
-f\hyp{}strukturen.  I figur \ref{fig:ikkje-c-lenkje-toppnode}, derimot, er
-objektet til /regna/ ikkje dominert av toppnoden i det funksjonelle
-domenet til /regna/, VP-en; men det er lenkja til objektet i
-funksjonelle domenet til /rained/. f\hyp{}strukturane til dei to VP-ane er
-lenkja, men toppnodane i dei funksjonelle domena kan ikkje lenkjast
-sidan dei to toppnodane dominerer materiale som inneheld ulike lenkjer
-på f\hyp{}strukturnivå -- ei slik c\hyp{}strukturlenkje ville stått i konflikt
-med f\hyp{}strukturlenkjene. Intuitivt synest det au feil med ei lenkje
-mellom konstituentane /det regner/ og /it rained meatballs/. Dei kan
-iallfall ikkje reknast som omsetjingar av kvarandre åleine; i ein
-større kontekst kan dei inngå i ein korrespondanse, men denne større
-konteksten har me jo lenkja allereie ved IP-nodane.
+ domenet ikkje bør lenkjast. I døma over dominerer toppnoden i det
+ funksjonelle domenet, IP, alt som står under $\phi(IP)$ i
+ f\hyp{}strukturen.  I figur \ref{fig:ikkje-c-lenkje-toppnode},
+ derimot, er objektet til /regna/ ikkje dominert av toppnoden i det
+ funksjonelle domenet til /regna/, VP-en; men det er lenkja til
+ objektet til /rained/, som /er/ dominert av
+ /rained/. F\hyp{}strukturane til dei to VP-ane er lenkja, men
+ toppnodane i dei funksjonelle domena kan ikkje lenkjast sidan dei to
+ toppnodane dominerer materiale som inneheld ulike lenkjer på
+ f\hyp{}strukturnivå -- ei slik c\hyp{}strukturlenkje ville stått i
+ konflikt med f\hyp{}strukturlenkjene. Intuitivt synest det au feil
+ med ei lenkje mellom konstituentane /det regner/ og /it rained
+ meatballs/. Dei kan iallfall ikkje reknast som omsetjingar av
+ kvarandre åleine; i ein større kontekst kan dei inngå i ein
+ korrespondanse, men denne større konteksten har me jo lenkja allereie
+ ved IP-nodane.
 
 #+BEGIN_LaTeX
   \begin{figure}[htp]
@@ -1894,7 +1896,7 @@ Det eine alternativet er å seie seie at I- og I'-nodane ikkje skal
 
 Det andre alternativet er å ikkje gjere forskjell på IP, I' og I når
  det gjeld c\hyp{}strukturlenkinga. Grunnen til å gjere dette er at
- /gaiGo/ både korresponderer med heile frasen /det åpnet seg/, men au
+ /gaiGo/ både kan korrespondere med heile frasen /det åpnet seg/, men au
  med berre /åpnet seg/.  I figur \ref{fig:PanJara-gaiGo} ser me
  t.d. at I'-nodane kan lenkjast (utan å sjå på anna enn krav
  \ref{krav:c-tentativt}), det vil altså vere mogleg å lenkje I'-nodane
@@ -1951,10 +1953,10 @@ Dette kravet gjer at ein ikkje treng krav \ref{krav:c-tentativt}, og
 *** Eit strengare lenkingskriterium
 \label{SEC:c-strengare}
 
-Det er mogleg å ønskje å ikkje lenkje I'- og I-nodane i
+Det er mogleg å ønskje å ikkje lenkje dei norske I'- og I-nodane i
  \ref{fig:gaiGo}. Dette gir eit strengare lenkingskriterium på
- c\hyp{}strukturnivå, kor ein reknar /det/ og /seg/ for å vere uttrykt i
- ordet /gaiGo/, sidan ordet står åleine i omsetjinga. Tolka slik kan
+ c\hyp{}strukturnivå, kor ein reknar /det/ og /seg/ for å vere uttrykt
+ i ordet /gaiGo/, sidan ordet står åleine i omsetjinga. Tolka slik kan
  ein -- i denne konteksten, eller mangelen på meir kontekst -- ikkje
  lenkje /åpnet/ åleine med /gaiGo/. Eg gir her ein måte å formalisere
  dette ønsket på.
@@ -2017,7 +2019,7 @@ nodar[fn:22]:
      $\phi^{-1}(a)=\emptyset$.
      La $L_c(n)$ vere mengda av $l_c(\phi(n'))$ for alle
      f\hyp{}strukturlenkja preterminale $n'$ som er dominert av $n$.
-     $n_s$ og $n_t$ kan lenkjast om $L_c(n_s)=L_c(n_t)$.
+     Då kan $n_s$ og $n_t$ lenkjast om $L_c(n_s)=L_c(n_t)$.
 
 I figur \ref{fig:PanJara-gaiGo} har me då følgjande situasjon:\\
 #+BEGIN_LaTeX
@@ -2044,7 +2046,8 @@ Den georgiske I'-noden, derimot, dominerer det same som IP-nodane:\\
 Merk at om me omdefinerer $l_c(f)$ til å ikkje innehalde
 f\hyp{}strukturlenkjer til argument av $a$, vil krav \ref{krav:c-pro} gi
 same c\hyp{}strukturlenkjer som kravet frå \cite{dyvik2009lmp}, men
-definert i form av f\hyp{}strukturlenkjer på preterminale nodar.
+definert i form av f\hyp{}strukturlenkjer på preterminale nodar, i
+staden for ordlenkjer.
 *** Funksjonelle c\hyp{}strukturnodar
 \label{SEC:fnord}
 
@@ -4421,5 +4424,5 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
         finne lenkjer mellom nodar som ikkje projiserer
         \PRED{}-element.
 
-[fn:60] Me kunne hatt inversjon på nederlandsk au; men me samanstiller
-        instansar av omsetjingar, ikkje språket generelt.
+[fn:60] Me kunne hatt inversjon på nederlandsk au, då ville ei
+        I'-lenkje vore mogleg.
