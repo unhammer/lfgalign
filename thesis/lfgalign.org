@@ -1037,8 +1037,8 @@ projiserer \PRED{}-element, desse kjem eg tilbake til i del
 I følgje punkt \ref{krav:f-links-words} vil fraselenkja leie til at sjølve
 verba i to lenkja VP-ar au er lenkja, som tilseier at \emph{ei \PRED{}-lenkje
 impliserer ei ordlenkje}. I visse tilfelle er dette heilt
-uproblematisk, t.d. viss /I slept down by the river/ skal lenkjast med
-\emph{Eg sov nede med elva} vil me uansett lenkje /slept/ og /sov/; dette
+uproblematisk; viss /I slept down by the river/ skal lenkjast med
+\emph{Eg sov nede med elva} vil me uansett lenkje /slept/ og /sov/. Dette
 kan gjelde transitive verb au:
 
 \ex. \a. The locusts have no king, just noise and hard language\\
