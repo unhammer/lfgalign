@@ -49,7 +49,7 @@
 #+TITLE: \tittel
 
 ### TODO: studentnummer
-#+AUTHOR: Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}
+#+AUTHOR: Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\~\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}
 
 
 #+EXPORT_EXCLUDE_TAGS: ROTETE
@@ -62,7 +62,19 @@
   Parallel Grammars» ved Universitetet i Bergen, og nyttar materiale
   og metodikk frå det prosjektet.
 
-  Takk...
+  Takk til dei involverte i Xpar-gruppa; då spesielt til
+  hovudrettleiaren min Helge Dyvik, for god hjelp under utvikling av
+  metoden, og for å alltid ha klart skiljet mellom prinsipp og
+  implementasjon; og til birettleiar Koenraad De Smedt, for gode råd
+  under skriveprosessen, og for å ha oppmoda meg til å skrive artikkel
+  (noko som førte til mykje betre struktur i denne oppgåva). I
+  tillegg, takk til Paul Meurer ved Uni Digital, som gav god hjelp med
+  evalueringsmaterialet og georgisken, og til Yvette Graham frå DCU
+  som hjalp til med endå meir evalueringsmateriale på kort varsel.
+
+  Takk til Tiril for tolmod og oppmuntring, til Baldur for pelsterapi
+  og fine turar, til begge for alle gode opplevingane gjennom ein lang
+  skriveperiode.
 
   \addcontentsline{toc}{chapter}{Forord}
   
@@ -698,25 +710,27 @@ this project relates to similar projects in the field.»
 #+END_LaTeX
 
 ** Innleiing
-I denne delen prøver eg å finne fram til kva som er den best moglege
- frasesamanstillinga. Eg argumenterer for at «best» her må tolkast i
- forhold til eit formål; her er formålet å annotere ein trebank for
- lingvistiske studium, m.a. for å undersøkje ulike samsvar mellom
- kasusmarkering og semantisk rolletildeling.  Som utgangspunkt har eg
- visse krav for ordsamanstilling gitt i \citet{thunes2003eal}, saman
- med krava for frasesamanstilling i \citet{dyvik2009lmp}. Eg viser
- kvifor ein, for våre formål, må revidere kravet til Thunes om likskap
- i argumentstruktur. Eg gir nokre døme for å grunngje krava i
- \citet{dyvik2009lmp}, i tillegg til å utdjupe dei for å gjere dei
- enklare å implementere i kapittel \ref{SEC:implementasjon}. Dette
- involverer au å omformulere krava for c\hyp{}struktursamanstilling slik at
- dei ikkje refererer til ordlenkjer, berre f\hyp{}strukturlenkjer. Sidan
- eitt av måla med Xpar-prosjektet er å finne ut kor mykje
+Ekte omsetjingar har kompliserte forhold mellom kjelde og mål.  I
+ denne delen prøver eg å finne fram til kva som er den best moglege
+ samanstillinga mellom frasane i ei omsetjing. Eg argumenterer for at
+ «best» her må tolkast i forhold til eit formål; her er formålet å
+ annotere ein trebank for lingvistiske studium, m.a. for å undersøkje
+ ulike samsvar mellom kasusmarkering og semantisk rolletildeling.  Som
+ utgangspunkt har eg visse krav for ordsamanstilling gitt i
+ \citet{thunes2003eal}, saman med krava for frasesamanstilling i
+ \citet{dyvik2009lmp}. Eg viser kvifor ein, for våre formål, må
+ revidere kravet til Thunes om likskap i argumentstruktur. Eg gir
+ nokre døme for å grunngje krava i \citet{dyvik2009lmp}, i tillegg til
+ å utdjupe dei for å gjere dei enklare å implementere i kapittel
+ \ref{SEC:implementasjon}. Dette involverer au å omformulere krava for
+ c\hyp{}struktursamanstilling slik at dei ikkje refererer til
+ ordlenkjer, berre f\hyp{}strukturlenkjer. Sidan eitt av måla med
+ Xpar-prosjektet er å finne ut kor mykje
  frasesamanstillingsinformasjon me kan få ut av parallellismen i
- f\hyp{}strukturane (eller, sett frå den andre sida, kor uavhengig ein kan
- gjere seg av den bottom-up-informasjonen ei ordlenkje gir), blir det
- eit avleidd mål å formulere frasesamanstillingskrava med referanse
- til f\hyp{}strukturane der det går an.
+ f\hyp{}strukturane (eller, sett frå den andre sida, kor uavhengig ein
+ kan gjere seg av den bottom-up-informasjonen ei ordlenkje gir), blir
+ det eit avleidd mål å formulere frasesamanstillingskrava med
+ referanse til f\hyp{}strukturane der det går an.
 
 ** Formål med frasesamanstilling
 \label{SEC:formaal}
@@ -3525,6 +3539,8 @@ Desse tala seier sjølvsagt ingenting om kva for lenkjer som er
 | \texttt{lfgalign} u/ordbok | $\leq \infty$ |  7296 | 44587 |   24161 |                28019 | 30,20 %       | 26,04 %              |
 | \texttt{lfgalign} m/ordbok | $\leq \infty$ |  3382 | 31970 |    7375 |                28019 | 45,86 %       | 12,07 %              |
 #+TBLFM: $7='(replace-regexp-in-string "[.]" "," (format "%.2f %%" (* 100 (/ $3 (* 1.0 $5)))));N::$8='(replace-regexp-in-string "[.]" "," (format "%.2f %%" (* 100 (/ $3 (* 1.0 $6)))));N
+
+#+LaTeX: \afterpage{\clearpage}
 
 Tabell \ref{tbl:RIA} viser resultatet av
  samanlikninga[fn:46]. Kolonnen /snitt/ viser summen av kor mange

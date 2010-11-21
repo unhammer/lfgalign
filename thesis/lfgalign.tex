@@ -1,5 +1,5 @@
-% Created 2010-11-21 su. 20:14
-\documentclass[12pt,a4paper,oneside,draft]{report}
+% Created 2010-11-21 su. 20:36
+\documentclass[12pt,a4paper,oneside]{report}
 %% TODO: Change to twoside for print version, remove draft
 
 %% That geometry is fugly... ugh
@@ -20,6 +20,8 @@
 \usepackage{linguex} 
 
 \usepackage{hyphenat} 
+
+\usepackage{afterpage} 
 
 \usepackage{pslatex}
 % \usepackage{pdfsync} % bug with glosses ( \exg. in linguex )
@@ -71,7 +73,7 @@
 \newcommand{\tittel}{DASP350 -- Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk fraselenking\vspace{30mm}}
 
 \title{\tittel}
-\author{Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}}
+\author{Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\~\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}}
 \date{21/11, 2010}
 
 \begin{document}
@@ -93,7 +95,19 @@
   Parallel Grammars» ved Universitetet i Bergen, og nyttar materiale
   og metodikk frå det prosjektet.
 
-  Takk...
+  Takk til dei involverte i Xpar-gruppa; då spesielt til
+  hovudrettleiaren min Helge Dyvik, for god hjelp under utvikling av
+  metoden, og for å alltid ha klart skiljet mellom prinsipp og
+  implementasjon; og til birettleiar Koenraad De Smedt, for gode råd
+  under skriveprosessen, og for å ha oppmoda meg til å skrive artikkel
+  (noko som førte til mykje betre struktur i denne oppgåva). I
+  tillegg, takk til Paul Meurer ved Uni Digital, som gav god hjelp med
+  evalueringsmaterialet og georgisken, og til Yvette Graham frå DCU
+  som hjalp til med endå meir evalueringsmateriale på kort varsel.
+
+  Takk til Tiril for tolmod og oppmuntring, til Baldur for pelsterapi
+  og fine turar, til begge for alle gode opplevingane gjennom ein lang
+  skriveperiode.
 
   \addcontentsline{toc}{chapter}{Forord}
   
@@ -720,25 +734,27 @@ Så langt har eg ikkje komme over metodar som prøver å finne eller
 \section{Innleiing}
 \label{sec-3.1}
 
-I denne delen prøver eg å finne fram til kva som er den best moglege
- frasesamanstillinga. Eg argumenterer for at «best» her må tolkast i
- forhold til eit formål; her er formålet å annotere ein trebank for
- lingvistiske studium, m.a. for å undersøkje ulike samsvar mellom
- kasusmarkering og semantisk rolletildeling.  Som utgangspunkt har eg
- visse krav for ordsamanstilling gitt i \citet{thunes2003eal}, saman
- med krava for frasesamanstilling i \citet{dyvik2009lmp}. Eg viser
- kvifor ein, for våre formål, må revidere kravet til Thunes om likskap
- i argumentstruktur. Eg gir nokre døme for å grunngje krava i
- \citet{dyvik2009lmp}, i tillegg til å utdjupe dei for å gjere dei
- enklare å implementere i kapittel \ref{SEC:implementasjon}. Dette
- involverer au å omformulere krava for c\hyp{}struktursamanstilling slik at
- dei ikkje refererer til ordlenkjer, berre f\hyp{}strukturlenkjer. Sidan
- eitt av måla med Xpar-prosjektet er å finne ut kor mykje
+Ekte omsetjingar har kompliserte forhold mellom kjelde og mål.  I
+ denne delen prøver eg å finne fram til kva som er den best moglege
+ samanstillinga mellom frasane i ei omsetjing. Eg argumenterer for at
+ «best» her må tolkast i forhold til eit formål; her er formålet å
+ annotere ein trebank for lingvistiske studium, m.a. for å undersøkje
+ ulike samsvar mellom kasusmarkering og semantisk rolletildeling.  Som
+ utgangspunkt har eg visse krav for ordsamanstilling gitt i
+ \citet{thunes2003eal}, saman med krava for frasesamanstilling i
+ \citet{dyvik2009lmp}. Eg viser kvifor ein, for våre formål, må
+ revidere kravet til Thunes om likskap i argumentstruktur. Eg gir
+ nokre døme for å grunngje krava i \citet{dyvik2009lmp}, i tillegg til
+ å utdjupe dei for å gjere dei enklare å implementere i kapittel
+ \ref{SEC:implementasjon}. Dette involverer au å omformulere krava for
+ c\hyp{}struktursamanstilling slik at dei ikkje refererer til
+ ordlenkjer, berre f\hyp{}strukturlenkjer. Sidan eitt av måla med
+ Xpar-prosjektet er å finne ut kor mykje
  frasesamanstillingsinformasjon me kan få ut av parallellismen i
- f\hyp{}strukturane (eller, sett frå den andre sida, kor uavhengig ein kan
- gjere seg av den bottom-up-informasjonen ei ordlenkje gir), blir det
- eit avleidd mål å formulere frasesamanstillingskrava med referanse
- til f\hyp{}strukturane der det går an.
+ f\hyp{}strukturane (eller, sett frå den andre sida, kor uavhengig ein
+ kan gjere seg av den bottom-up-informasjonen ei ordlenkje gir), blir
+ det eit avleidd mål å formulere frasesamanstillingskrava med
+ referanse til f\hyp{}strukturane der det går an.
 
 \section{Formål med frasesamanstilling}
 \label{sec-3.2}
@@ -3678,6 +3694,8 @@ Desse tala seier sjølvsagt ingenting om kva for lenkjer som er
 \end{center}
 \end{table}
 
+
+\afterpage{\clearpage}
 
 Tabell \ref{tbl:RIA} viser resultatet av
  samanlikninga\footnote{Testen blei køyrt på revisjon
