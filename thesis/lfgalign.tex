@@ -1,4 +1,4 @@
-% Created 2010-11-21 su. 13:11
+% Created 2010-11-21 su. 14:37
 \documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
@@ -2153,7 +2153,7 @@ Ord som ikkje projiserer \PRED{}-lenkjer kan likevel tenkjast å ha
  omsetjingar (Dyvik 2010, p.k.).  I såfall har me ikkje fleire
  lenkingskrav for funksjonelle nodar, og ser på dei preterminale
  funksjonelle nodane som om dei ikkje dominerte noko; eller: $L_c$
- (evt. $LL$) av desse nodane er den tomme mengden.
+ (ev. $LL$) av desse nodane er den tomme mengden.
 
 Men, det kan sjølvsagt hende at ein ønskjer å setje eit LPT-krav på
  ord som ikkje projiserer noko \PRED{}-element, der ein er svært
@@ -2192,12 +2192,12 @@ Desse ønskene kan me formalisere slik:
 \a. Gitt ei mogleg lenking av FP og GP, kor F og G er funksjonelle
     kategoriar der komplementa elles kan lenkjast,
     tolk LPT\hyp{}korrespondansen mellom orda under F' og G' som eit
-    medlem av lenkjemengda $L_c$ (evt. $LL$), kor denne må vere lik
+    medlem av lenkjemengda $L_c$ (ev. $LL$), kor denne må vere lik
     for at FP og GP skal kunne lenkjast. Då kan me au lenkje F' og G'.
 \b. Gitt ei mogleg lenking av FP og XP, der F er ein funksjonell
     kategori, medan X er ein ikkje-funksjonell kategori, ignorerer me
     den funksjonelle kategorien i c\hyp{}strukturlenkinga. Sidan det ikkje
-    er nokon forskjell i $L_c$ (evt. $LL$) mellom FP og F', er F' medlem
+    er nokon forskjell i $L_c$ (ev. $LL$) mellom FP og F', er F' medlem
     av nodemengden som blir lenkja til XP.
 
 Om \Last[a] er oppfylt, kan me få samanstillinga vist i figur
@@ -2421,10 +2421,10 @@ noko ikkje er presist nok spesifisert.
 
 For å finne ut av kor godt krava i forrige kapittel fungerer til å
 avgrense kva for lenkjer som er moglege, har eg implementert dei etter
-beste evne i eit Common Lisp\footnote{Dette språkvalet kan gjere eventuell integrering med andre
-        LFG-system lettare (Common Lisp er m.a. nytta i LFG
-        Parsebanker \citep{rosen2009lpt}). }-program. Dette kapittelet gir eit
-overblikk over implementasjonen, medan neste kapittel går gjennom
+beste evne i eit Common Lisp\footnote{Dette språkvalet kan gjere integrering med andre LFG-system
+        lettare (Common Lisp er m.a. nytta i LFG Parsebanker
+        \citep{rosen2009lpt}). }-program. Dette kapittelet gir eit
+oversyn over implementasjonen, medan neste kapittel går gjennom
 resultat av køyring\footnote{«An article about computational science in a scientific
        publication is \textbf{not} the scholarship itself, it is
        merely \textbf{advertising} of the scholarship. The actual
@@ -2480,12 +2480,13 @@ Hovudalgoritmen for lenking mellom f\hyp{}strukturar er vist i kodefigur
 \ref{algo:f-align}. Funksjonen \texttt{f-align} returnerer ei mengd med
 moglege samanstillingar. Kvar samanstilling er ei mengd med par av
 f\hyp{}strukturar\footnote{Eigentleg eit slag avgjerdstre; kvart element er eit par, kor
-        første element er lenkja mellom dei yttarste f\hyp{}strukturane, og
-        andre element er dei moglege samanstillingane for dei indre
-        strukturane. Denne strukturen er nyttig for å rangere
+        første element representerer lenkja mellom dei yttarste
+        f\hyp{}strukturane, og andre element er dei moglege
+        samanstillingane for argument/adjunkt av predikata i første
+        element. Denne representasjonen er nyttig for å rangere
         samanstillingar, og \texttt{f-align} blir mykje meir oversiktleg av å
-        jobbe med eit slikt tre. Ein funksjon \texttt{flatten} kan nyttast
-        til å omforme det ferdige treet til ei enkel liste med
+        jobbe med eit slikt tre. Funksjonen \texttt{flatten} i \texttt{lfgalign} kan
+        nyttast til å omforme det ferdige treet til ei enkel liste med
         samanstillingar, kor kvar samanstilling er ei flat liste med
         lenkjer mellom f\hyp{}strukturar. }. Eit par $(F_s,F_t)$ representerer ei lenkje frå
 ein f\hyp{}struktur på kjeldespråket, til ein f\hyp{}struktur på målspråket. Me
@@ -2529,7 +2530,8 @@ desse f\hyp{}strukturane med eitt av argumenta til den andre.
  «argumentpermutasjonar», dvs. moglege kombinasjonar av lenkjer mellom
  argumenta til $F_s$ og $F_t$ som tilfredsstiller kravet om
  LPT\hyp{}korrespondanse, men utan å sjekke at desse argumenta igjen kan
- samanstillast. Funksjonen prøver å lenkje kvart argument til eit
+ samanstillast\footnote{Saman med \texttt{adjalign} gir denne funksjonen ein implementasjon
+        av \fpairs{} frå kapittel \ref{SEC:innleiing}. }. Funksjonen prøver å lenkje kvart argument til eit
  argument eller eit adjunkt, men gir ingen lenkjer mellom to adjunkt
  (sjå del \ref{SEC:impl-adjalign} nedanfor om dette). Funksjonen gir
  heller ikkje kombinasjonar der minst eitt argument ikkje er lenkja --
@@ -2584,7 +2586,10 @@ desse f\hyp{}strukturane med eitt av argumenta til den andre.
  av desse argumentpermutasjonane, og prøver å leggje til overflødige
  adjunkt, i tillegg til å kalle \texttt{sub-f} (kodefigur \ref{algo:sub-f}),
  som prøver å rekursivt lenkje kvart par av argument/adjunkt i
- permutasjonen.
+ permutasjonen. Viss rekursiv lenking ikkje er mogleg, legg me berre
+ til paret av desse f-strukturane (me veit at dette paret har
+ LPT\hyp{}korrespondanse sidan det kom frå \texttt{argalign} eller
+ \texttt{adjalign}).
 
  Eit døme: viss $F_s$ har argumenta \SUBJs og \OBJs og ingen adjunkt,
  og $F_t$ har argumentet \SUBJs og eitt adjunkt \ADJ, der alle
@@ -2886,7 +2891,7 @@ om c\hyp{}strukturen, medan lenking av c\hyp{}strukturnodar skjer på grunnlag
 av f\hyp{}struktursamanstillinga. Programmet utfører difor samanstilling av
 c\hyp{}strukturar sist\footnote{Som nemnt i del \ref{SEC:fnord} kan funksjonsord gjere
        f\hyp{}strukturlenkinga avhengig av forhold i c\hyp{}strukturen,
-       evt. krevje meir nyansert f\hyp{}strukturlenking. Dette har eg
+       ev. krevje meir nyansert f\hyp{}strukturlenking. Dette har eg
        ikkje teke høgd for i implementasjonen, så der eit funksjonsord
        burde blokkert ei f\hyp{}strukturlenkje vil \texttt{lfgalign} gi feil
        samanstilling. }.
@@ -3436,7 +3441,7 @@ Dette dømet demonstrerer ein veikskap med \texttt{lfgalign}: om ein skal
  køyre programmet med andre LFG-grammatikkar, som kanskje har andre
  retningslinjer for analyse eller har gjort ting på litt spesielle
  måtar, må ein kanskje leggje til fleire unntak eller meir «kunnskap»
- (evt. preprosessere analysane før lenking). Generelt kan dette
+ (ev. preprosessere analysane før lenking). Generelt kan dette
  forsåvidt vere eit problem med alle metodar som er svært
  kunnskapsbaserte.
 
@@ -3524,7 +3529,7 @@ georgisk skal sjølvsagt \emph{ikkje} lenkjast med adjunkta på norsk; her
 har me «overgenerering» av lenkjer pga. me opnar for
 argument-adjunkt-lenkjer. Slik \texttt{lfgalign} fungerer no, kan ein unngå
 at pro blir lenkja til adjunkt ved å leggje inn LPT\hyp{}informasjon om
-adjunkta (evt. krevje at pro \emph{berre} kan lenkjast til nominalar). Om
+adjunkta (ev. krevje at pro \emph{berre} kan lenkjast til nominalar). Om
 me legg inn ei omsetjing for \emph{nå}, får me samanstillinga i \Next:
 
 \ex. \{(\p{Se-Hveva}, \p{svinge}), (\p{pro}, \p{svinge}), (\p{pro}, \p{hun}), (\p{soPi}, \p{inn})\}
@@ -4207,6 +4212,7 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
  kor mange \PRED{}-element på kjeldesida som kunne vore lenkja,
  \texttt{Unreferenced sources/targets} er kor mange «yttarste \PRED{}» me
  fann.
+
 
 
 
