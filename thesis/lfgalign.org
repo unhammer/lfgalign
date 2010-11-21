@@ -7,6 +7,7 @@
 #+OPTIONS: H:4 toc:nil f:t skip:nil num:t
 
 #+LaTeX_CLASS: masterdraft
+#+LaTeX_HEADER: \newcommand{\mytilde}{\raise.17ex\hbox{$\scriptstyle\sim$}}
 #+LaTeX_HEADER: \newcommand{\xbar}{$\rm\overline{X}$}
 #+LaTeX_HEADER: \newcommand{\ind}[1]{{\avmoptions{center}\begin{avm}\@{#1}\end{avm}}}
 #+LaTeX_HEADER: \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
@@ -4409,11 +4410,11 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
 [fn:44] Prolog-filene med f\hyp{}strukturar, og lenkjer mellom
         f\hyp{}strukturar, for 4000 parallelle setningar finst i
         kjeldekoden til =RIA=, tilgjengeleg frå
-        http://www.computing.dcu.ie/~ygraham/software.html under GNU
+        [[http://www.computing.dcu.ie/~ygraham/software.html][http://www.computing.dcu.ie/\mytilde{}ygraham/software.html]] under GNU
         Lesser General Public License. I tillegg finst Prolog-filer
         som inkluderer c\hyp{}strukturar for 1000 setningar på
-        http://www.computing.dcu.ie/~ygraham/sample_de.tar.gz og
-        http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz.
+        [[http://www.computing.dcu.ie/~ygraham/sample_de.tar.gz][http://www.computing.dcu.ie/\mytilde{}ygraham/sample_de.tar.gz]] og
+        [[http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz][http://www.computing.dcu.ie/\mytilde{}ygraham/sample_en.tar.gz]].
 
 [fn:46] Testen blei køyrt på revisjon
         =796824e8f1a0bd643caf9d3928fe0f979a360790= av =lfgalign=.  Sjå
@@ -4465,7 +4466,7 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
         /samanstillingsproblem/ og /korrespondanseproblem/, der berre
         det siste kan involvere kryssande avhengnader.
 
-[fn:54] Tilgjengeleg frå http://www-user.tu-chemnitz.de/~fri/ding/
+[fn:54] Tilgjengeleg frå [[http://www-user.tu-chemnitz.de/~fri/ding/][http://www-user.tu-chemnitz.de/\mytilde{}fri/ding/]]
         under GNU GPL, konvertert til Prolog-format med skriptet
         =dev/ding-to-LPT.py= (i kjeldekoden til =lfgalign=).  Ordboka
         har omtrent 270 000 oppslag; men sidan ein del av dei

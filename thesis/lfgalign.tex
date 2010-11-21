@@ -1,4 +1,4 @@
-% Created 2010-11-21 su. 20:44
+% Created 2010-11-21 su. 21:15
 \documentclass[12pt,a4paper,oneside]{report}
 %% TODO: Change to twoside for print version, remove draft
 
@@ -36,6 +36,7 @@
 \SetAlgorithmName{Funksjon}{fn}{liste over psevdokode}
 %\SetAlgoFuncName{Funksjon}{} % for some reason gets no numbering TODO
 
+\newcommand{\mytilde}{\raise.17ex\hbox{$\scriptstyle\sim$}}
 \newcommand{\xbar}{$\rm\overline{X}$}
 \newcommand{\ind}[1]{{\avmoptions{center}\begin{avm}\@{#1}\end{avm}}}
 \newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
@@ -3606,14 +3607,14 @@ Det andre testsettet mitt er ei mengd med 4000 automatisk
  lenkjene som kjem frå \texttt{RIA}-metoden\footnote{Prolog-filene med f\hyp{}strukturar, og lenkjer mellom
         f\hyp{}strukturar, for 4000 parallelle setningar finst i
         kjeldekoden til \texttt{RIA}, tilgjengeleg frå
-        \href{http://www.computing.dcu.ie/~ygraham/software.html}{http://www.computing.dcu.ie/\~ygraham/software.html} under GNU
+        \href{http://www.computing.dcu.ie/~ygraham/software.html}{http://www.computing.dcu.ie/\mytilde{}ygraham/software.html} under GNU
         Lesser General Public License. I tillegg finst Prolog-filer
         som inkluderer c\hyp{}strukturar for 1000 setningar på
-        \href{http://www.computing.dcu.ie/~ygraham/sample_de.tar.gz}{http://www.computing.dcu.ie/\~ygraham/sample\_de.tar.gz} og
-        \href{http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz}{http://www.computing.dcu.ie/\~ygraham/sample\_en.tar.gz}. } i
+        \href{http://www.computing.dcu.ie/~ygraham/sample_de.tar.gz}{http://www.computing.dcu.ie/\mytilde{}ygraham/sample\_de.tar.gz} og
+        \href{http://www.computing.dcu.ie/~ygraham/sample_en.tar.gz}{http://www.computing.dcu.ie/\mytilde{}ygraham/sample\_en.tar.gz}. } i
  \citet{graham2009osr,graham2009fts}. Eg prøver både utan nokon
  informasjon i LPT-tabellen, og med ein ganske stor LPT-tabell med
- alle oppslaga frå Ding-ordboka\footnote{Tilgjengeleg frå \href{http://www-user.tu-chemnitz.de/~fri/ding/}{http://www-user.tu-chemnitz.de/\~fri/ding/}
+ alle oppslaga frå Ding-ordboka\footnote{Tilgjengeleg frå \href{http://www-user.tu-chemnitz.de/~fri/ding/}{http://www-user.tu-chemnitz.de/\mytilde{}fri/ding/}
         under GNU GPL, konvertert til Prolog-format med skriptet
         \texttt{dev/ding-to-LPT.py} (i kjeldekoden til \texttt{lfgalign}).  Ordboka
         har omtrent 270 000 oppslag; men sidan ein del av dei
