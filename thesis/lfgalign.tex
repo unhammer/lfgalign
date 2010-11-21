@@ -1,4 +1,4 @@
-% Created 2010-11-21 su. 11:59
+% Created 2010-11-21 su. 12:18
 \documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
@@ -1389,14 +1389,15 @@ visse tilfelle vil ikkje ein gong LPT\hyp{}informasjon vere nok:
 
 }
 
-Det finst ingen f\hyp{}strukturinformasjon eller LPT\hyp{}informasjon me kunne
-nytta til å sikre den korrekte lenkinga \emph{sie/dem} og \emph{ihnen/de}; og
-viss me rangerer lik argumentstruktur over ulik, vil me her få feil
-resultat. Det me \emph{kan} gjere (utanom å endre grammatikkane slik at
-argumentstruktur korresponderer med eit universelt tematisk
-rollehierarki) er å sjå på mange lenkingar av same verbpar, og på den
-måten oppdage moglege feil. For enkelttilfelle, derimot, vil krava i
-denne oppgåva ikkje vere nok til å gi korrekt lenking.
+Det finst ingen f\hyp{}strukturinformasjon eller LPT\hyp{}informasjon
+ me kunne nytta til å sikre den korrekte lenkinga \emph{sie/dem} og
+ \emph{ihnen/de}; og viss me rangerer lik argumentstruktur over ulik, vil
+ me her få feil resultat. Det me \emph{kan} gjere (utanom å endre
+ grammatikkane slik at argumentstruktur korresponderer med eit
+ universelt tematisk rollehierarki) er å sjå på mange lenkingar av
+ same verbpar, og på den måten oppdage moglege feil. For
+ enkelttilfelle, derimot, vil krava i denne oppgåva ikkje vere nok til
+ å gi korrekt lenking av analysane i \Last.
 
 
 \subsection{Krav om argumentlenkjer}
@@ -1451,16 +1452,16 @@ lenkja.
  til i del \ref{SEC:rangering}.
 
 Kva med f\hyp{}strukturomgivnadene til $p$ og $q$, skal me krevje at dei er
-like?  I \Last[e] har me eit krav om at adjunkt til $p$ ikkje er
+like?  I \LLast[e] har me eit krav om at adjunkt til $p$ ikkje er
 lenkja til f\hyp{}strukturar utanfor $q$, og omvendt. Men viss $a_p$ er eit
 adjunkt til $p$, kan det lenkjast til ein \emph{dotternode} av argument
 eller adjunkt til $q$? La $a_q$ vere eit argument eller adjunkt til
-$q$, viss $a_q$ er eit argument må det ved \Last ha LPT\hyp{}korrespondanse
+$q$, viss $a_q$ er eit argument må det ved \LLast ha LPT\hyp{}korrespondanse
 med argument/adjunkt i $p$, men det treng ikkje vere lenkja -- viss
-det er ulenkja gjeld ikkje krav \Last for $a_q$, så \Last hindrar
+det er ulenkja gjeld ikkje krav \LLast for $a_q$, så \LLast hindrar
 ikkje ei lenkje mellom $a_p$ og døtre av $a_q$. 
 
-I tillegg vil ikkje \Last hindre at t.d. den yttarste f\hyp{}strukturen i
+I tillegg vil ikkje \LLast hindre at t.d. den yttarste f\hyp{}strukturen i
 kjeldespråket er lenkja til eit \XCOMP{}-argument på målspråket; men i
 dette tilfellet bør kanskje ikkje \emph{setningane} vere lenkja i
 utgangspunktet.
@@ -1468,18 +1469,19 @@ utgangspunktet.
 Sjølv om det er logisk mogleg å gjere slike lenkingar, er det
 vanskeleg å finne ikkje-vilkårlege avgrensingar for når ein skal kunne
 lenkje f\hyp{}strukturar som står i ulike omgivnader. I implementasjonen
-min har eg difor følgt eit strengare krav enn \Last[e]:
+min har eg difor følgt eit strengare krav enn \LLast[e]:
 
 \ex. \label{krav:PRED-omgivnad} \PRED{}-elementa $p$ og $q$ kan berre
      lenkjast om dei er yttarste f\hyp{}strukturar i lenkja setningar, eller
      er argument/adjunkt til lenkja f\hyp{}strukturar.
 
-Dette er ei tentativ formulering. Til no har eg ikkje sett døme kor
-\Last ikkje bør gjelde, men om det finst slike døme bør sjølvsagt
-kravet modifiserast. Sidan LFG tillèt fragmentariske analysar kan det
-vere \emph{fleire} yttarste f\hyp{}strukturar, alle desse kan då potensielt
-lenkjast med kvarandre, eller stå ulenkja (som om dei var adjunkt av
-eit predikat som sto utanfor dei).
+Dette er ei tentativ formulering. Til no har eg ikkje sett døme som
+ eintydig viser at \Last ikkje bør gjelde, men om det finst
+ slike døme bør sjølvsagt kravet modifiserast. Sidan LFG tillèt
+ fragmentariske analysar kan det vere \emph{fleire} yttarste
+ f\hyp{}strukturar, alle desse kan då potensielt lenkjast med
+ kvarandre, eller stå ulenkja (som om dei var adjunkt av eit predikat
+ som sto utanfor dei).
 
 Krav \ref{krav:PRED} og \ref{krav:PRED-omgivnad} bør i enkle
 situasjonar vere tilstrekkelege for lenking på f\hyp{}strukturnivå, men
@@ -1487,7 +1489,7 @@ det finst au meir komplekse korrespondansar mellom \PRED{}-element. Desse
 ser eg på del \ref{SEC:f-mange-mange}.
 
 
-\subsection{Adposisjonsobjekt}
+\subsection{Adposisjonsobjekt og ignorerte predikat}
 \label{sec-3.6.4}
 
 \label{SEC:adposisjonsobjekt}
@@ -1531,7 +1533,7 @@ ser eg på del \ref{SEC:f-mange-mange}.
  neste del diskuterer eg kva me kan gjere i dei situasjane der det
  ikkje er mogleg å berre hoppe over mellomliggande element.
 
-\subsection{Kausativar og inkorporering}
+\subsection{Kausativar, inkorporering og mange-mange-lenkjer}
 \label{sec-3.6.5}
 
 \label{SEC:f-mange-mange}
@@ -1541,26 +1543,26 @@ er lenkja til eitt og berre eitt anna \PRED{}-element. Men i visse
 tilfelle kan det vere ønskeleg å lenkje til fleire \PRED{}-element.
 
 I ein norsk \emph{la}-konstruksjon, t.d. den me har i «å la noko fryse» (i
-tydinga å forårsake at noko frys til) har me semantiske bidrag frå
-både \emph{la} og hovudverbet \emph{fryse}, og begge har \PRED{}-element (sjølv om
-bidraget frå \emph{la} nok er meir «grammatisk»). Men slike perifrastiske
-konstruksjonar kan gjerne omsetjast til leksikaliserte kausativar som
-berre har eitt \PRED{}-element, men likevel med tydinga «å la
-fryse». Påfunnet i \Next illustrerer denne situasjonen:
+tydinga «å forårsake at noko frys til») har me semantiske bidrag frå
+både \emph{la} og hovudverbet \emph{fryse}, og begge har \PRED{}-element (sjølv
+om bidraget frå \emph{la} nok er meir «grammatisk»). Men slike
+perifrastiske konstruksjonar kan gjerne omsetjast til leksikaliserte
+kausativar som berre har eitt \PRED{}-element, men likevel med tydinga
+«å la fryse». Påfunnet i \Next illustrerer denne situasjonen:
 
 {\avmoptions{}
-\ex. \a. ho lar-fryse huset \\
-     $\begin{avm}\[pred & `{\bf{}la-fryse}<ho, hus>' \]\end{avm}$
+\ex. \a. me lèt-fryse huset \\
+     $\begin{avm}\[pred & `{\bf{}la-fryse}<me, hus>' \]\end{avm}$
      $\\\\\leftrightarrow$\\
-     \b. ho lar huset fryse \\
-     $\begin{avm}\[pred & `{\bf{}la}<ho, hus, \@{1}>' \\
+     \b. me lèt huset fryse \\
+     $\begin{avm}\[pred & `{\bf{}la}<me, hus, \@{1}>' \\
      xcomp & \@{1} \[pred & `{\bf{}fryse}<hus>'\]\]\end{avm}$
 
 }
 
 Her er altså den kausative tydinga leksikalisert, og verbet har berre
-eitt \PRED{}-element (på same måte som det norske verbet \emph{kjøle} berre
-har eitt \PRED{}-element, ikkje \emph{la} + \emph{bli kald}).\footnote{Det går sjølvsagt an å analysere sjølv leksikaliserte
+ eitt \PRED{}-element (på same måte som det norske verbet \emph{kjøle}
+ berre har eitt \PRED{}-element, ikkje \p{la} + \p{bli kald}).\footnote{Det går sjølvsagt an å analysere sjølv leksikaliserte
         kausativar som om dei har fleire \PRED{}-element, men det bør i
         såfall skje på uavhengig grunnlag, ikkje for å gjere lenkinga
         enklare. }
@@ -1568,39 +1570,39 @@ har eitt \PRED{}-element, ikkje \emph{la} + \emph{bli kald}).\footnote{Det går 
 Den same situasjonen får me der eit argument eller adjunkt er
 inkorporert i verbet på det eine språket, men uttrykt som eit separat
 predikat på det andre språket, t.d. samisk \emph{fierpmástallat} som på
-norsk blir \emph{å fiske med garn} -- to predikat på norsk tilsvarer eitt
+norsk kan bli \emph{å fiske med garn} -- to predikat på norsk tilsvarer eitt
 på samisk.
 
-I \Last har \emph{la-fryse} to argument, som ved krav \ref{krav:PRED} begge
-må finne korresponderande argument eller adjunkt for å lenkje \emph{la-fryse}. 
-Då går det ikkje an å lenkje \emph{la-fryse} til berre \emph{fryse},
-som har eitt argument; me får eit \XCOMP{} til overs som manglar
-lenkje. Me kan heller ikkje lenkje berre \emph{la} til \emph{la-fryse}, sidan
-det då får ein \XCOMP{} til overs.
+I \Last har \p{la-fryse} to argument; ved krav \ref{krav:PRED} må
+ begge argument finne korresponderande argument eller adjunkt for å
+ lenkje \p{la-fryse}.  Då går det ikkje an å lenkje \p{la-fryse} til
+ berre \p{fryse}, som har eitt argument; me får eit \SUBJ{} til overs
+ som manglar lenkje. Me kan heller ikkje lenkje berre \p{la} til
+ \p{la-fryse}, sidan det då får ein \XCOMP{} til overs.
 
 Det er mogleg å løyse dette formelt ved ei mange-mange-lenkje, kor ein
-tenkjer seg \emph{la} og \emph{fryse} som samanføyd og at dei deler
+tenkjer seg \p{la} og \p{fryse} som samanføyd og at dei deler
 argumentlister. Sidan begge verba tilfører viktig semantisk
 informasjon, som er reflektert i den leksikaliserte kausativen, ville
 det ikkje vore ønskeleg med ei ein-til-ein-lenkje sjølv om ein såg
 vekk frå problemet med å lenkje argumenta.
 
-Ved å ha ei ein-mange-lenkje, frå \emph{la-fryse} til både \emph{la} og \emph{fryse},
+Ved å ha ei ein-mange-lenkje, frå \p{la-fryse} til både \p{la} og \p{fryse},
  kan me oppfylle krav \ref{krav:PRED}. Då treng ikkje
- \XCOMP{}-argumentet lenkjast til eit argument av \emph{la-fryse}, det er
+ \XCOMP{}-argumentet lenkjast til eit argument av \p{la-fryse}, det er
  allereie lenkja til \PRED{}-elementet; det som står igjen er unionen
- av argumenta til \emph{la} og \emph{fryse}, desse må alle ha
- LPT\hyp{}korrespondanse med argument eller adjunkt av \emph{la-fryse}, og
- omvendt må alle argument av \emph{la-fryse} ha LPT\hyp{}korrespondanse med
- argument eller adjunkt av \emph{la} eller \emph{fryse} (utanom
- \XCOMP{}-argumentet til \emph{la}, som allereie har ei lenkje). Ein kan
- tolke dette som om \emph{la} og \emph{fryse} var samanføyd til eitt predikat
- som kravde to argument (her: \emph{ho} og \emph{huset}).
+ av argumenta til \p{la} og \p{fryse}, desse må alle ha
+ LPT\hyp{}korrespondanse med argument eller adjunkt av \p{la-fryse}, og
+ omvendt må alle argument av \p{la-fryse} ha LPT\hyp{}korrespondanse med
+ argument eller adjunkt av \p{la} eller \p{fryse} (utanom
+ \XCOMP{}-argumentet til \p{la}, som allereie har ei lenkje). Ein kan
+ tolke dette som om \p{la} og \p{fryse} var samanføyd til eitt predikat
+ som kravde to argument (her: \p{ho} og \p{huset}).
 
 Den einaste formelle forskjellen mellom dette og
  substantivinkorporering blir då at substantivet ikkje krev eigne
  argument.  Det er au mogleg å tenkje seg ein kausativ med eit
- inkorporert objekt, omsett til \emph{la + hovudverb + objekt}, altså ei
+ inkorporert objekt, omsett til \p{la} + hovudverb + objekt, altså ei
  lenkje frå eitt \PRED{} til tri \PRED{}. Igjen vil me då sjå på dei
  resterande ulenkja argumenta på kvar side; kvar av desse må lenkjast
  med eit unikt argument eller adjunkt. Ein meir ordinær situasjon er
@@ -1664,27 +1666,29 @@ held seg til desse for no.
 
 \label{SEC:subnode}
 
-Ein f\hyp{}struktur er projisert av ei mengd c\hyp{}strukturnodar, det vil seie
-at det er desse nodane -- det funksjonelle domenet til f\hyp{}strukturen --
-som spesifiserer informasjonen som står i f\hyp{}strukturen. Viss me har
-grunnlag for å lenkje to f\hyp{}strukturar, vil me au ha grunnlag for å
-lenkje nodane som projiserte desse f\hyp{}strukturane. Og omvendt vil det
-aldri vere grunnlag for å ha ei c\hyp{}strukturlenkje som står i konflikt
-med f\hyp{}strukturlenkjer, dvs. kor $\phi$ av kjeldenoden er lenkja til
-noko anna enn $\phi$ av målnoden (då burde kjeldenoden vore lenkja til
-dette andre). Det at to nodar er lenkja på c\hyp{}strukturnivå må i det
-minste implisere at informasjonen dei projiserer korresponderer. I
-utgangspunktet bør krevje følgjande:
+Ein f\hyp{}struktur er projisert av ei mengd c\hyp{}strukturnodar, det
+ vil seie at det er desse nodane -- det funksjonelle domenet til
+ f\hyp{}strukturen -- som spesifiserer informasjonen som står i
+ f\hyp{}strukturen. Viss me har grunnlag for å lenkje to
+ f\hyp{}strukturar, vil me au ha grunnlag for å lenkje nodane som
+ projiserte desse f\hyp{}strukturane. Og omvendt vil det aldri vere
+ grunnlag for å ha ei c\hyp{}strukturlenkje som står i konflikt med
+ f\hyp{}strukturlenkjer, dvs. kor $\phi$ av kjeldenoden er lenkja til
+ noko anna enn $\phi$ av målnoden (då burde kjeldenoden vore lenkja
+ til dette andre). Det at to nodar er lenkja på c\hyp{}strukturnivå må
+ i det minste implisere at informasjonen dei projiserer
+ korresponderer. I utgangspunktet me iallfall bør krevje følgjande:
 
 \ex.\label{krav:subnode-f-lenkja} to c\hyp{}strukturnodar $n_s$ og $n_t$ kan
      berre lenkjast om $\phi(n_s)$ og $\phi(n_t)$ er lenkja på
      f\hyp{}strukturnivå
 
 Det enklaste ville vere å berre seie at alle nodane i dei to
-funksjonelle domena er mange-mange-lenkja med kvarandre, men denne
-lenkja vil ikkje gi oss meir informasjon enn at sjølve f\hyp{}strukturane
-er lenkja; ei lenkje på c\hyp{}strukturnivå bør kunne gi meir nyansert
-informasjon.
+ funksjonelle domena er mange-mange-lenkja med kvarandre, men denne
+ lenkja vil ikkje gi oss meir informasjon enn at sjølve
+ f\hyp{}strukturane er lenkja; ei lenkje på c\hyp{}strukturnivå bør
+ kunne gi meir nyansert informasjon, kanskje til og med avgrense
+ moglege f-strukturlenkjer.
 
 Det viktige forholdet på c\hyp{}strukturnivå er \emph{dominans}; hovudgrunnen
 til at me snakkar om c\hyp{}struktur er at me vil skildre den hierarkiske
@@ -1702,7 +1706,7 @@ korresponderer.
                             [.\node(I's){\proj{}{I'}};
                                     [.\node(Is){\proj{}{I}}; {regnar} ]
                                     [.\node(OBJs){\proj{\ua OBJ=\da}{NP}}; \edge[roof]; {kjøttbollar} ] ] ]
-      \begin{scope}[shift={(2in,0in)}]
+      \begin{scope}[shift={(2.5in,0in)}]
   \Tree  [.\node(IPt){IP};  [.\node(SUBJt){\proj{\ua SUBJ=\da}{NP}}; \edge[roof]; {het} ] 
                             [.\node(I't){\proj{}{I'}}; 
                                     [.\node(It){\proj{}{I}}; {regent} ]
@@ -1716,7 +1720,7 @@ korresponderer.
 \draw[-] (Is)..controls +(south east:1.5) and +(south west:1.5) ..  (It) ;
 
 \end{tikzpicture}
-   \caption{Enkel lenking av c\hyp{}strukturnodar mellom norsk og
+   \caption{Enkel lenking av c\hyp{}strukturnodar mellom nynorsk og
    nederlandsk; IP til IP, I' til I' og I til I.}
    \label{fig:enkel-c-lenkje}
   \end{figure}
@@ -1726,7 +1730,7 @@ lenkja\footnote{I desse trea har eg annotert f\hyp{}strukturforhold på visse no
        der eg ikkje har teikna inn dette gjeld $\ua=\da$, altså at
        noden er i same funksjonelle domene som mornoden. Eg har i
        tillegg forenkla kategorinamna ein del frå dei som kjem direkte
-       frå ParGram/Xpar-analysane, det bør ikkje ha noko å seie for
+       frå ParGram/Xpar-analysane; det bør ikkje ha noko å seie for
        framstillinga her. }, og det same med \emph{det/het} og \emph{kjøttbollar/gehaktballen}. 
 Viss me føreset at subjekt-NP-ane er lenkja med kvarandre, og at
 objekt-NP-ane er lenkja med kvarandre, på c\hyp{}strukturnivå,
