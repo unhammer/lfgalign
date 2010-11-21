@@ -488,7 +488,7 @@ Seinare resultat har vist at ein /kombinasjon/ av syntaktisk
  motsetning til å berre fjerne samanstillingar mellom
  ikkje\hyp{}konstituentar) kan auke skåren i ein
  maskinomsetjingsevaluering, både om ein som i /Syn/-modellen nyttar
- frasestrukturinformasjon, men i endå større grad om ein nyttar
+ frasestrukturinformasjon, men i endå større mon om ein nyttar
  dependendsinformasjon \citep{tinsley2007ept,hearne2008ccd}. Dette er
  interessant med tanke på at LFG-analysane gir begge typar
  informasjon.
@@ -937,7 +937,7 @@ Når det gjeld f\hyp{}strukturane er det ganske mange element me
  setningar -- la \emph{kandidatane for samanstilling på
  f\hyp{}strukturnivå} inkludere alle desse \PRED{}-elementa i
  f\hyp{}strukturane til setningane[fn:12]. \PRED{}-element
- representerer semantiske bidrag som oftast er påkrevde på begge språk
+ representerer semantiske bidrag som oftast er påkravde på begge språk
  i omsetjingar, medan andre f\hyp{}strukturtrekk gjerne er valfrie på
  det eine av språka; det er ikkje alle språk som har t.d. obligatorisk
  kasusmarkering, og ein vil kanskje nytte trebanken til å oppdage
@@ -1186,21 +1186,28 @@ same rekkjefølgje i argumentstrukturen, vil det gjere den praktiske
 oppgåva med å lenkje predikata, og argument med argument, mykje
 enklare. Men kan me stille så sterke krav?
 
-Sett at ei setning på språk 1 har ei /at/-setning som adjunkt, medan
-denne setninga på språk 2 er eit argument, og at desse setningane
-ville vore lenkja om dei opptredde åleine. Om dei uttrykkjer same
-proposisjon og \emph{speler same rolle i verbsituasjonen}, synest det
-naturleg å lenkje desse.
+Sett at eit predikat $p$ på kjeldespråket har ei underordna setning
+ som /adjunkt/, medan den tilsvarande underordna setninga på
+ målspråket er eit /argument/ av $q$ (som på alle andre måtar
+ korresponderer med $p$), og at desse underordna setningane ville vore
+ lenkja om dei opptredde åleine. Om dei uttrykkjer same proposisjon og
+ \emph{speler same rolle i verbsituasjonen}, bør ikkje det at den eine
+ er adjunkt og den andre er argument hindre oss i å lenkje $p$ og $q$,
+ eller i å lenkje dei underordna setningane. Om slike situasjonar
+ finst kan me altså ikkje krevje 100 % lik argumentstruktur.
 
-Slike omsetjingsrelasjonar gir data for verbsituasjonen, på eit meir
- generelt grunnlag enn det me kan få frå einspråklege analysar
- åleine. Om me har gode semantiske grunnar for å kalle ein deltakar i
- ein verbsituasjon eit argument på eitt språk, vil dei same grunnane
- gjelde for omsetjingsmessig korresponderande verb på andre språk. Ein
- kan då nytte unionen over alle argument til korresponderande verb til
- å karakterisere kva ein meiner med /deltakarane i
+Omsetjingsrelasjonar gir data om verbsituasjonen, på eit meir generelt
+ grunnlag enn det me kan få frå einspråklege analysar åleine. Om me
+ har gode semantiske grunnar for å kalle ein deltakar i ein
+ verbsituasjon eit argument på eitt språk, vil dei same grunnane
+ gjelde for omsetjingsmessig korresponderande verb på andre språk.
+ Ved å tillate litt slinger i argumentstrukturane, kan me få meir
+ empiri om kva for roller som er kravde i ein viss verbsituasjon,
+ uavhengig av korleis desse rollene er uttrykte syntaktisk.  Ein kan
+ då nytte unionen over alle argumentlenkjer til korresponderande verb
+ til å karakterisere kva ein meiner med /deltakarane i
  verbsituasjonen/. Syntaktiske forhold i språket kan sjølvsagt gi
- grunnar til å /ikkje/ kalle dette eit argument.
+ grunnar til å /ikkje/ kalle ein viss deltakar eit argument.
 
 For å gjere dette konkret kan me sjå på følgjande setning frå
  test-suiten til Xpar-prosjektet:
@@ -1211,15 +1218,16 @@ For å gjere dette konkret kan me sjå på følgjande setning frå
 
 
 I følgje LFG-parsen til desse setningane har hovudpredikata svært ulik
-argumentstruktur[fn:14].  Det norske /vedde/ har _fire_ argument,
-medan /da-najleveba/ har _to_ (/Abrams/ og /Browne/), kor
-at-setninga på norsk og /rom cvimda/ uttrykkjer same proposisjon og
-speler same rolle i verbsituasjonen. Den engelske LFG-parsen av den
-tilsvarande setninga (mine omsetjingar) gir _tri_ argument, /with/
-blir her adjunkt, medan den tyske grammatikken, som au har _tri_
-argument, gjer /at/-setninga til adjunkt. I \Next nedanfor har eg
-representert dei omsetjingsmessig korresponderande frasane i
-f\hyp{}strukturane med dei norske omsetjingane for å illustrere dette:
+ argumentstruktur[fn:14].  Det norske \p{vedde} har _fire_ argument,
+ medan \p{da-najleveba} har _to_ (tilsvarande /Abrams/ og /Browne/),
+ kor at-setninga på norsk og /rom cvimda/ uttrykkjer same proposisjon
+ og speler same rolle i verbsituasjonen. Den engelske LFG-parsen av
+ den tilsvarande setninga gir _tri_ argument, /with Browne/ blir her
+ adjunkt, medan den tyske grammatikken, som au gir _tri_ argument,
+ gjer /at/-setninga til adjunkt (mine omsetjingar). I \Next nedanfor
+ har eg representert dei omsetjingsmessig korresponderande frasane i
+ f\hyp{}strukturane med dei norske omsetjingane for å illustrere
+ dette:
 
 #+BEGIN_LaTeX
 {\avmoptions{}
@@ -1234,7 +1242,7 @@ f\hyp{}strukturane med dei norske omsetjingane for å illustrere dette:
     daß es regnet.\\
     $\\\begin{avm}\[pred & `{\bf{}wetten}<Abrams, regne>' \\
                   adjunct & \{ \rm Browne, sigarett \}\]\end{avm}\\$
-\d. Abrams bet a cigarette with Brown that it was raining. \hfill{} (engelsk)\\
+\d. Abrams bet a cigarette with Browne that it was raining. \hfill{} (engelsk)\\
     $\\\begin{avm}\[pred & `{\bf{}bet}<Abrams, sigarett, regne>'\\
                   adjunct & \{ \rm Browne \}\]\end{avm}$
 
@@ -1254,12 +1262,12 @@ adjunkt og argument som samsvarer.
 LPT-kravet blir forresten endå viktigare når det gjeld lenking av
 adjunkt til adjunkt. Adjunkt plukker ut si eiga rolle (argument får
 rolla tildelt frå verbet) og f\hyp{}strukturane ordnar ikkje adjunkt etter
-nokon rekkjefølgje, dei er representert som uordna mengder, medan
+nokon rekkjefølgje; dei er representert som uordna mengder, medan
 følgja mellom argument iallfall potensielt kan nyttast til å indikere
 semantisk likskap.
 
 Ein kan argumentere for at grammatikkane her /burde/ hatt like (eller
-likare) analysar, dette ville letta lenkingsarbeidet, men sidan stoda
+likare) analysar; dette ville letta lenkingsarbeidet, men sidan stoda
 no er slik, må krava ta høgd for lenkjer mellom argument og
 adjunkt. Om seinare utgåver av grammatikkane gir likare analysar, vil
 det iallfall ikkje gi verre lenkingsresultat.
@@ -1281,8 +1289,8 @@ Mellom anna fann eg at 2 av 15 korresponderande verbtoken hadde
 LFG-analysar kor argument korresponderte med adjunkt[fn:15]. Her
 utgjorde altså dei grammatiske analysane (ein del av) data, og
 undersøkinga seier nok meir om analysane enn om språklege forhold. På
-et så tynt datagrunnlag kan me vel berre konstatere at me må kunne
-handtere argument-adjunkt-lenkjer når me prøver å lenkje, men
+et så tynt datagrunnlag kan me vel ikkje konstatere meir enn at me må
+kunne handtere argument-adjunkt-lenkjer når me prøver å lenkje, men
 argument-argument-lenkjer bør prioriterast viss alt anna er likt.
 
 *** Ulik følgje i argumentstruktur
@@ -1514,15 +1522,16 @@ det ikkje vore ønskeleg med ei ein-til-ein-lenkje sjølv om ein såg
 vekk frå problemet med å lenkje argumenta.
 
 Ved å ha ei ein-mange-lenkje, frå /la-fryse/ til både /la/ og /fryse/,
-kan me oppfylle krav \ref{krav:PRED}. Då treng ikkje
-\XCOMP{}-argumentet lenkjast til eit argument av /la-fryse/, det er
-allereie lenkja til \PRED{}-elementet; det som står igjen er unionen av
-argumenta til /la/ og /fryse/, desse må alle ha LPT\hyp{}korrespondanse med
-argument eller adjunkt av /la-fryse/, og omvendt må alle argument av /la-fryse/ 
-ha LPT\hyp{}korrespondanse med argument eller adjunkt av /la/
-eller /fryse/ (utanom \XCOMP{}-argumentet til /la/, som allereie har ei
-lenkje). Ein kan tolke dette som om /la/ og /fryse/ var samanføyd til
-eitt predikat som krevde to argument (her: /ho/ og /huset/).
+ kan me oppfylle krav \ref{krav:PRED}. Då treng ikkje
+ \XCOMP{}-argumentet lenkjast til eit argument av /la-fryse/, det er
+ allereie lenkja til \PRED{}-elementet; det som står igjen er unionen
+ av argumenta til /la/ og /fryse/, desse må alle ha
+ LPT\hyp{}korrespondanse med argument eller adjunkt av /la-fryse/, og
+ omvendt må alle argument av /la-fryse/ ha LPT\hyp{}korrespondanse med
+ argument eller adjunkt av /la/ eller /fryse/ (utanom
+ \XCOMP{}-argumentet til /la/, som allereie har ei lenkje). Ein kan
+ tolke dette som om /la/ og /fryse/ var samanføyd til eitt predikat
+ som kravde to argument (her: /ho/ og /huset/).
 
 Den einaste formelle forskjellen mellom dette og
  substantivinkorporering blir då at substantivet ikkje krev eigne
@@ -2081,7 +2090,7 @@ Viss me har to funksjonelle konstituentar kor komplementa kan lenkjast
  funksjonsorda gjer at komplementa speler ulike roller i
  omgivnadene[fn:10]. Samtidig vil me nok ikkje at eit manglande
  funksjonsord på det eine språket skal hindre lenking av komplementa,
- sidan det kan hende at funksjonsordet ikkje er krevd på det språket
+ sidan det kan hende at funksjonsordet ikkje er kravd på det språket
  (eventuelt kjem dette fram som korrespondansar i f\hyp{}strukturtrekk, eg
  har ikkje teke høgd for korrespondansar mellom andre
  f\hyp{}strukturelement enn \PRED{} i denne oppgåva).
@@ -4386,7 +4395,7 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
         argumentlista. I analysen av «eska opna seg» vil /eske/ stå
         innanfor argumentlista, medan refleksiven står utanfor:
         ${\avmoptions{center}\begin{avm}`{\bf{}opne}<eske>seg'\end{avm}}$.
-        Begge er likevel subkategorisert for; begge er krevd av (den
+        Begge er likevel subkategorisert for; begge er kravde av (den
         tydinga av) predikatet.
 
 [fn:57] For no berre ein-to/to-ein-lenkjer, der det eine av dei to er
