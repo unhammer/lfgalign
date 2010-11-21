@@ -45,11 +45,11 @@
 #+LaTeX_HEADER: \pagenumbering{roman}
 
 ### The org-mode TITLE command escapes curly parens, so we do it like this instead:
-#+LaTeX_HEADER: \newcommand{\tittel}{DASP350 -- Datalingvistikk og språkteknologi mastergradsoppgåve\\\vspace{10mm}Syntaktisk fraselenking\vspace{30mm}}
+#+LaTeX_HEADER: \newcommand{\tittel}{{\large DASP350 -- Datalingvistikk og språkteknologi mastergradsoppgåve}\\\vspace{20mm}Syntaktisk fraselenking\vspace{25mm}}
 #+TITLE: \tittel
 
 ### TODO: studentnummer
-#+AUTHOR: Kevin Brubeck Unhammer\\\vspace{10mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\\~\vspace{10mm}Haust, 2010\\\includegraphics{uib-emblem-svart}
+#+AUTHOR: Kevin Brubeck Unhammer\\\vspace{05mm}\\Institutt for lingvistiske, litterære og estetiske studier\\Universitetet i Bergen\vspace{10mm}\\Haust, 2010\vspace{15mm}\\\includegraphics{uib-emblem-svart}\vspace{10mm}
 
 
 #+EXPORT_EXCLUDE_TAGS: ROTETE
