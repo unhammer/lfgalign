@@ -1,4 +1,4 @@
-% Created 2010-11-21 su. 14:37
+% Created 2010-11-21 su. 14:44
 \documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
@@ -2544,8 +2544,8 @@ desse f\hyp{}strukturane med eitt av argumenta til den andre.
     
     \Input{Kalt av argalign slik: \\ argalign-p(arguments($F_s$),
       adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))\\
-      ved samanføyd lenkje frå $F_s$ og $a_s$ til $F_t$ slik: \\
-      argalign-p( arguments($a_s$) $\bigcup$ arguments($F_s$) $-a_s$,
+      av margalign ved samanføyd lenkje frå $F_s$ og $a_s$ til $F_t$ slik: \\
+      argalign-p(arguments($a_s$) $\bigcup$ arguments($F_s$) $-a_s$,
       adjuncts($a_s$) $\bigcup$ adjuncts($F_s$), arguments($F_t$), adjuncts($F_t$))}
     \BlankLine
     
@@ -2587,19 +2587,19 @@ desse f\hyp{}strukturane med eitt av argumenta til den andre.
  adjunkt, i tillegg til å kalle \texttt{sub-f} (kodefigur \ref{algo:sub-f}),
  som prøver å rekursivt lenkje kvart par av argument/adjunkt i
  permutasjonen. Viss rekursiv lenking ikkje er mogleg, legg me berre
- til paret av desse f-strukturane (me veit at dette paret har
- LPT\hyp{}korrespondanse sidan det kom frå \texttt{argalign} eller
- \texttt{adjalign}).
+ til paret av desse f-strukturane utan noko anna (me veit at dette
+ paret har LPT\hyp{}korrespondanse sidan det kom frå \texttt{argalign} eller
+ \texttt{adjalign}, men det er ikkje sjølv lenkja).
 
  Eit døme: viss $F_s$ har argumenta \SUBJs og \OBJs og ingen adjunkt,
  og $F_t$ har argumentet \SUBJs og eitt adjunkt \ADJ, der alle
- ord-omsetjingar er moglege, vil \texttt{argalign} gi dei to samanstillingane
- $\{(\SUBJ,\SUBJ), (\OBJ,\ADJ)\}$ og $\{(\SUBJ,\ADJ),
- (\OBJ,\SUBJ)\}$. Viss adjunktet til $F_t$ ikkje fantest, eller ikkje
- hadde LPT\hyp{}korrespondanse med nokon av argumenta til $F_s$, ville me
- ikkje fått nokon samanstillingar; medan viss paret $(\SUBJ,\SUBJ)$
- ikkje hadde LPT\hyp{}korrespondanse og alt anna var likt, ville me berre
- fått den siste samanstillinga.
+ ord-omsetjingar (LPT-korrespondansar) er moglege, vil \texttt{argalign} gi
+ dei to argumentpermutasjonane $\{(\SUBJ,\SUBJ), (\OBJ,\ADJ)\}$ og
+ $\{(\SUBJ,\ADJ), (\OBJ,\SUBJ)\}$. Viss adjunktet til $F_t$ ikkje
+ fantest, eller ikkje hadde LPT\hyp{}korrespondanse med nokon av
+ argumenta til $F_s$, ville me ikkje fått nokon permutasjonar; medan
+ viss paret $(\SUBJ,\SUBJ)$ ikkje hadde LPT\hyp{}korrespondanse og alt
+ anna var likt, ville me berre fått den siste permutasjonen.
 
  Funksjonen \texttt{argloop} går så gjennom kvar argumentpermutasjon og
  kallar \texttt{sub-f} på permutasjonen; \texttt{sub-f} prøver å kalle \texttt{f-align} på
@@ -2624,7 +2624,7 @@ desse f\hyp{}strukturane med eitt av argumenta til den andre.
     \label{algo:argloop}
 
     $alignments \gets \emptyset$  \;
-    \uIf{argperms non-empty} {
+    \uIf{argperms} {
       \ForAll{argperm in argperms} {
         $p \gets (M_s,M_t) \bigcup$ sub-f(argperm)
     \Comment*[r]{optional merged arg}
