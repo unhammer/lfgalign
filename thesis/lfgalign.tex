@@ -1,4 +1,4 @@
-% Created 2010-11-21 su. 11:23
+% Created 2010-11-21 su. 11:36
 \documentclass[12pt,a4paper,oneside,draft]{report}
 %% TODO: Change to twoside for print version, remove draft
 
@@ -1130,7 +1130,7 @@ Det er visse ting me ikkje kan spesifisere ut frå rein c- og
  f\hyp{}strukturinformasjon. Den norske setninga \emph{eg vil ete} kan fint
  samanstillast med \emph{I want to eat}, med ei lenkje mellom \emph{ete} og
  \emph{eat}. Men kva står i vegen for å lenkje \emph{ete} til hovudverbet i \emph{I  want to drink}? Forskjellen på f\hyp{}strukturnivå er berre at
- \PRED{}-verdien er ulik (\textbf{eat} mot \textbf{drink}). Me må altså ha eit krav
+ \PRED{}-verdien er ulik (\p{eat} mot \p{drink}). Me må altså ha eit krav
  om at tydinga til lenkja ord (og deira predikat) er «lik nok» til at
  me kan sjå på dei som omsetjingar\footnote{Eigentleg burde slike setningar ikkje vere lenkja på
         setningsnivå ein gong, men som me skal sjå i del
@@ -1150,14 +1150,17 @@ Det er visse ting me ikkje kan spesifisere ut frå rein c- og
         LPT\hyp{}korrespondanse mellom to ord implisere at orda er
         synonyme, heller enn generelt plausible omsetjingar. }.
 
-Ein type presisering/depresisering (del \ref{SEC:formaal}) me ofte ser
- i omsetjingar er at eit pronomen på kjeldespråket blir nytta der
+Ein type presisering/depresisering (del \ref{SEC:formaal}) som me ofte
+ ser i omsetjingar er at eit pronomen på kjeldespråket blir nytta der
  målspråket har eit koreferent substantiv, eller
  omvendt. \citet{dyvik2009lmp} opnar for at desse au har
- LPT\hyp{}korrespondanse (som nemnt i \cite{thunes2003eal} må lenkja ord
- uansett vere koreferente); om formålet vårt var maskinomsetjing
+ LPT\hyp{}korrespondanse (som nemnt i \cite{thunes2003eal} må lenkja
+ ord uansett vere koreferente); om formålet vårt var maskinomsetjing
  heller enn å byggje ein trebank for lingvistiske studie, ville det
- nok vore betre å unngå slike lenkjer \citep[s.~53]{volk2008hjp}.
+ nok vore betre å unngå slike lenkjer
+ \citep[s.~53]{volk2008hjp}. Ideelt sett bør me altså sjå på meir enn
+ éi setning for å kontrollere koreferens (implementasjonen min tek
+ ikkje høgd for noko slikt).
 
 Men kva då med lenking av pronomen til verb bøygd for person og tal i
 pro-drop-språk?
@@ -1182,7 +1185,7 @@ Viss setningane i døme \Last er lenkja, der iqePa har eit
 \label{sec-3.5.1}
 
 Ulike språk leksikaliserer same konsept på ulike
-måtar. \citet[s.~3]{cheung2002scg} nemnar vanskane med å ha eit krav
+måtar. \citet[s.~3]{cheung2002scg} nemner vanskane med å ha eit krav
 om lik ordklasse i utviklinga av ein kinesisk-engelsk termbank, kor
 t.d. det engelske ordet \emph{fulfilment} meir naturleg blir omsett til eit
 verb på kinesisk. På same måte vil eit georgisk verbalsubstantiv
@@ -1192,10 +1195,9 @@ omsetjing\footnote{Catford \citep[1965, i][s.~61]{munday2001its} gir ein gjennom
        slike \emph{klasseskifte}, og andre typar omsetjingsskifte. }.
 
 Me kan opne for ordklasseoverskridande lenkjer der det er samsvar på
-andre nivå, me bør iallfall krevje ein likskap i argumentstruktur; så
-om LPT-kravet og krava på c- og f\hyp{}strukturnivå er fylt, bør det ikkje
-vere noko i vegen for å lenkje ord (eventuelt mengder av ord) av ulik
-ordklasse.
+ andre nivå -- så om LPT-kravet og krava på c- og f\hyp{}strukturnivå
+ er fylte, bør det ikkje vere noko i vegen for å lenkje ord (eventuelt
+ mengder av ord) av ulik ordklasse.
 
 
 \section{Krav på f\hyp{}strukturnivå}

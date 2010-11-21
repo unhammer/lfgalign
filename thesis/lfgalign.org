@@ -1090,7 +1090,7 @@ Det er visse ting me ikkje kan spesifisere ut frå rein c- og
  samanstillast med /I want to eat/, med ei lenkje mellom /ete/ og
  /eat/. Men kva står i vegen for å lenkje /ete/ til hovudverbet i /I
  want to drink/? Forskjellen på f\hyp{}strukturnivå er berre at
- \PRED{}-verdien er ulik (*eat* mot *drink*). Me må altså ha eit krav
+ \PRED{}-verdien er ulik (\p{eat} mot \p{drink}). Me må altså ha eit krav
  om at tydinga til lenkja ord (og deira predikat) er «lik nok» til at
  me kan sjå på dei som omsetjingar[fn:21]. \citet[s.~74]{dyvik2009lmp}
  krev at orda generelt, utan kontekst, må vere semantisk plausible
@@ -1104,14 +1104,17 @@ Det er visse ting me ikkje kan spesifisere ut frå rein c- og
  automatisk ordsamanstilling, eller ei god tospråkleg ordbok, det bør
  ikkje spele nokon rolle for resten av krava[fn:24].
 
-Ein type presisering/depresisering (del \ref{SEC:formaal}) me ofte ser
- i omsetjingar er at eit pronomen på kjeldespråket blir nytta der
+Ein type presisering/depresisering (del \ref{SEC:formaal}) som me ofte
+ ser i omsetjingar er at eit pronomen på kjeldespråket blir nytta der
  målspråket har eit koreferent substantiv, eller
  omvendt. \citet{dyvik2009lmp} opnar for at desse au har
- LPT\hyp{}korrespondanse (som nemnt i \cite{thunes2003eal} må lenkja ord
- uansett vere koreferente); om formålet vårt var maskinomsetjing
+ LPT\hyp{}korrespondanse (som nemnt i \cite{thunes2003eal} må lenkja
+ ord uansett vere koreferente); om formålet vårt var maskinomsetjing
  heller enn å byggje ein trebank for lingvistiske studie, ville det
- nok vore betre å unngå slike lenkjer \citep[s.~53]{volk2008hjp}.
+ nok vore betre å unngå slike lenkjer
+ \citep[s.~53]{volk2008hjp}. Ideelt sett bør me altså sjå på meir enn
+ éi setning for å kontrollere koreferens (implementasjonen min tek
+ ikkje høgd for noko slikt).
 
 Men kva då med lenking av pronomen til verb bøygd for person og tal i
 pro-drop-språk?
@@ -1131,7 +1134,7 @@ Viss setningane i døme \Last er lenkja, der iqePa har eit
 
 *** Ordklasse
 Ulike språk leksikaliserer same konsept på ulike
-måtar. \citet[s.~3]{cheung2002scg} nemnar vanskane med å ha eit krav
+måtar. \citet[s.~3]{cheung2002scg} nemner vanskane med å ha eit krav
 om lik ordklasse i utviklinga av ein kinesisk-engelsk termbank, kor
 t.d. det engelske ordet /fulfilment/ meir naturleg blir omsett til eit
 verb på kinesisk. På same måte vil eit georgisk verbalsubstantiv
@@ -1140,10 +1143,9 @@ norsk. Slike skifte mellom ordklasser er svært vanlege i
 omsetjing[fn:3].
 
 Me kan opne for ordklasseoverskridande lenkjer der det er samsvar på
-andre nivå, me bør iallfall krevje ein likskap i argumentstruktur; så
-om LPT-kravet og krava på c- og f\hyp{}strukturnivå er fylt, bør det ikkje
-vere noko i vegen for å lenkje ord (eventuelt mengder av ord) av ulik
-ordklasse.
+ andre nivå -- så om LPT-kravet og krava på c- og f\hyp{}strukturnivå
+ er fylte, bør det ikkje vere noko i vegen for å lenkje ord (eventuelt
+ mengder av ord) av ulik ordklasse.
 
 
 ** Krav på f\hyp{}strukturnivå
