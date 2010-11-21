@@ -2676,7 +2676,7 @@ Som nemnt i del \ref{SEC:adposisjonsobjekt} hoppar me over
 
 Der det er umogleg å finne ein kombinasjon av argument- og
  adjunkt-lenkjer slik at alle argument har LPT\hyp{}korrespondanse med ein
- unik f\hyp{}struktur, dvs. der =argalign= feilar, prøver me
+ unik f\hyp{}struktur, dvs. der =argalign= feilar, prøver =f-align=
  ein-mange/mange-ein-lenkjer[fn:57]. Dette er ikkje verre enn at ein
  kallar =argalign-p= med unionen av argument frå dei to samanføyde
  f\hyp{}strukturane (minus desse f\hyp{}strukturane sjølve); men me sjekker i
@@ -2718,16 +2718,16 @@ Me må i alle tilfelle vere klar for ei setning der alle ord er ukjende
  LPT\hyp{}informasjon[fn:58].
 
 Ein sideverknad av å byrje med ytre lenkjer og gå innover (prosessen
- skildra i del \ref{SEC:impl-f-lenking}) er at me automatisk unngår å
- prøve «kryssande» lenkjer, t.d. å lenkje $F_s$ med \XCOMPs av $F_t$,
- og \XCOMPs av $F_s$ med $F_t$ (denne kombinasjonen av lenkjer vil jo
- vere ein del av alle logisk moglege permutasjonar). Me får au
- prioritert å lenkje ytre element, som jo er sikrare lenkjer: gitt to
- f\hyp{}strukturar for setningar der alt me veit om lenkinga er at
- /setningane/ er omsetjingar av kvarandre, vil dei to ytre
- f\hyp{}strukturane ha størst sjanse for å korrespondere med kvarandre. For
- kvart steg du går innover må du multiplisere inn sjansen for å trå
- feil i argumentpermutasjonane.
+ til =f-align=) er at me automatisk unngår å prøve «kryssande»
+ lenkjer, t.d. å lenkje $F_s$ med \XCOMPs av $F_t$, og \XCOMPs av
+ $F_s$ med $F_t$ (denne kombinasjonen av lenkjer vil jo vere ein del
+ av alle logisk moglege permutasjonar). Me får au prioritert å lenkje
+ ytre element, som jo er sikrare lenkjer: gitt to f\hyp{}strukturar
+ for setningar der alt me veit om lenkinga er at /setningane/ er
+ omsetjingar av kvarandre, vil dei to ytre f\hyp{}strukturane ha
+ størst sjanse for å korrespondere med kvarandre. For kvart steg du
+ går innover må du multiplisere inn sjansen for å trå feil i
+ argumentpermutasjonane.
 
 Det finst altså både praktiske og meir ideelle grunnar til å gjere det
  på denne måten, men om det faktisk fungerer er eit spørsmål eg kjem
@@ -2744,17 +2744,17 @@ Det finst altså både praktiske og meir ideelle grunnar til å gjere det
  representert som eit avgjerdstre kor førsteelement er ei lenkje
  (/link/) mellom to f\hyp{}strukturar, og andreelement er ei mengd
  (/branches/) med moglege måtar å samanstille argumenta og adjunkta
- til desse f\hyp{}strukturane. Kvar enkelt grein i /branches/ er ei mengd
- med nye avgjerdstre, eitt tre for kvart lenkja argument/adjunkt i den
- moglege delsamanstillinga. Så viss me har ei lenkje mellom to ytre
- pred $F_s$ og $F_t$, og desse har to argument kvar ($a1_s$, $a2_s$,
- $a1_t$, $a2_t$), vil /link/ vere $(F_t,F_s)$ medan /branches/ er $\{
- \{ a1a1tree, a2a2tree \}, \{ a1a2tree, a2a1tree \} \}$; her har
- $a1a1tree$ har som /link/ $(a1_s, a2_t)$, osb. Viss desse argumenta
- ikkje har argument/adjunkt sjølve, vil deira /branches/ vere tomme,
- og deira /rank-f/ er då 1. For $F_t$ og $F_s$ vil funksjonen /rank-f/
- returnere den greina som har best skåre[fn:30], gitt ved
- /rank-branch/.
+ til desse f\hyp{}strukturane. Kvar enkelt grein i /branches/ er ei
+ mengd med nye avgjerdstre, eitt tre for kvart lenkja argument/adjunkt
+ i den moglege delsamanstillinga. Så viss me har ei lenkje mellom to
+ ytre \PRED{} $F_s$ og $F_t$, og desse har to argument kvar ($a1_s$,
+ $a2_s$, $a1_t$, $a2_t$) og alle argumentpermutasjonar er moglege, vil
+ /link/ vere $(F_t,F_s)$ medan /branches/ er $\{ \{ a1a1tree, a2a2tree
+ \}, \{ a1a2tree, a2a1tree \} \}$; kor $a1a1tree$ har $(a1_s, a2_t)$
+ som /link/, osb. Viss desse argumenta ikkje har argument/adjunkt
+ sjølve, vil deira /branches/ vere tomme, og deira /rank-f/ er
+ då 1. For $F_t$ og $F_s$ vil funksjonen /rank-f/ returnere den greina
+ som har best skåre[fn:30], gitt ved /rank-branch/.
 
  Kodefigur \ref{algo:rank-branch} illustrerer funksjonen
  /rank-branch/. Her har me fått ei viss lenkje /link/ mellom
@@ -2778,7 +2778,7 @@ Det finst altså både praktiske og meir ideelle grunnar til å gjere det
  	best-branches $\gets \emptyset$ \;
         \ForAll{branch $\in$ branches} {
 	  newbranch, rate $\gets$ rank-branch(seen, link, branch) \;
-	  \uIf{rate $>=$ best-rate}{
+	  \uIf{rate $\geq$ best-rate}{
             best-branch $\gets$ newbranch \;
             best-rate $\gets$ rate \;
           }
@@ -2796,10 +2796,9 @@ Det finst altså både praktiske og meir ideelle grunnar til å gjere det
         \ForAll{sublink, subbranches $\in$ branch} {
 	  newsub, subrate $\gets$ rank-f(seen, sublink, subbranches) \;
 	  add newsub to subs \;
-	  subrate-sum $+=$ subrate \;
+	  subrate-sum $\gets$ subrate-sum $+$ subrate \;
 	}
-	rate $\gets$ sub-f-rate(seen, branch) $\cdot$ arg-order-rate(link, seen, branch) \\
-	\hfill $\cdot \frac{\text{subrate-sum}}{\text{count(subs)}}$ \;
+	rate $\gets$ sub-f-rate(seen, branch) $\cdot$ arg-order-rate(link, seen, branch) $\cdot \frac{\text{\normalsize subrate-sum}}{\text{\normalsize count(subs)}}$ \;
 	\Return subs, rate \;
       \end{algorithm}
 #+END_LaTeX
@@ -2823,22 +2822,24 @@ målspråket. Det er ingen overlapp mellom medlem av lenkjer (ein node
 er aldri med i meir enn eitt par).
 
 I \citet[s.~77]{dyvik2009lmp} er kravet for å lenkje to
-c\hyp{}strukturnodar er at dei dominerer same mengd med
-ordlenkjer[fn:20]. Ein node /n/ dominerer ei mengd lenkjer /l/ viss
-unionen av lenkjene dominert av døtrene til /n/ er lik /l/. I
-=lfgalign= opererer eg ikkje med /ordlenkjer/ i seg sjølv;
-f\hyp{}struktursamanstillinga er basert på LPT\hyp{}korrespondansar, som
-definerer moglege ordlenkjer utan å sjå på kontekst, og
-f\hyp{}struktursamanstillinga avgrensar vidare moglege ordlenkjer gitt
-f\hyp{}strukturinformasjon. Preterminale nodar er dei mest ordnære nodane
-som kan ha ei f\hyp{}strukturlenkje (ved $\phi$); når formålet er å lenkje
-c\hyp{}strukturnodar kan me nytte f\hyp{}strukturlenkja til den preterminale
-noden i staden for ordlenkjer.
+ c\hyp{}strukturnodar at dei dominerer same mengd med
+ ordlenkjer[fn:20]. Ein node /n/ dominerer ei mengd lenkjer /l/ viss
+ unionen av lenkjene dominert av døtrene til /n/ er lik /l/. I
+ =lfgalign= opererer eg ikkje med /ordlenkjer/ i seg sjølv;
+ f\hyp{}struktursamanstillinga er basert på LPT\hyp{}korrespondansar,
+ som definerer moglege ordlenkjer utan å sjå på kontekst, og
+ f\hyp{}struktursamanstillinga avgrensar vidare moglege ordlenkjer
+ gitt f\hyp{}strukturinformasjon. Preterminale nodar er dei mest
+ ordnære nodane som kan ha ei f\hyp{}strukturlenkje (ved $\phi$); når
+ formålet er å lenkje c\hyp{}strukturnodar kan me difor nytte
+ f\hyp{}strukturlenkja til den preterminale noden i staden for
+ ordlenkjer.
 
-Programmet =lfgalign= følgjer krav \ref{krav:c-pro} og
-lenkjar øvste nodar i funksjonelle domene, og subordinate nodar som
-har same informasjonstap. Prosedyren =c-align= i kodefigur
-\ref{algo:c-align} implementerer dette kravet. 
+Programmet =lfgalign= følgjer krav \ref{krav:c-pro} (ev. med $LL$ i
+ staden for $L_c$) og lenkjar nodar i lenkja funksjonelle domene som
+ dominerer same mengd med f\hyp{}strukturlenkja preterminale
+ nodar. Prosedyren =c-align= i kodefigur \ref{algo:c-align}
+ implementerer dette kravet.
 
 #+BEGIN_LaTeX
  \begin{algorithm}[htbp]
@@ -2906,16 +2907,17 @@ Sidan =c-align= kallar =add-links= for kvar av sidene, får me to
  returnert av =c-align=.
 
  Om brukarvariabelen =*pro-affects-c-linking*= er sann, vil me leggje
- til lenkja pro\hyp{}argument i lenkjemengdene; denne variabelen styrer
- forskjellen mellom dei to alternative løysingane på ulenkja
- c\hyp{}strukturnodar diskutert i del \ref{SEC:f-lenkje-utan-c-node}. Om
- =*pro-affects-c-linking*= er usann, filtrerer me ut alle lenkjer frå
- =f-alignment= kor det eine elementet ikkje opptrer i c\hyp{}strukturen,
- før kall på =c-align=.  I figur \ref{fig:gaiGo} har me to
- f\hyp{}strukturlenkjer som ikkje finst i c\hyp{}strukturen; om me ikkje
- filterer ut desse, vil det /norske/ treet bli delt i tri nodemengder
- (noko me berre ønskjer viss =*pro-affects-c-linking*= er sann) medan
- det georgiske uansett står som éin del.
+ til lenkja pro\hyp{}argument i lenkjemengdene; denne variabelen
+ styrer forskjellen mellom dei to alternative løysingane på ulenkja
+ c\hyp{}strukturnodar diskutert i del
+ \ref{SEC:f-lenkje-utan-c-node}. Om =*pro-affects-c-linking*= er
+ usann, filtrerer me ut alle lenkjer frå =f-alignment= kor det eine
+ elementet ikkje opptrer i c\hyp{}strukturen, før kall på =c-align=.
+ I figur \ref{fig:gaiGo} i kapittel \ref{SEC:ideell} har me to
+ f\hyp{}strukturlenkjer som ikkje finst i c\hyp{}strukturen; om me
+ ikkje filtrerer ut desse, vil det /norske/ treet bli delt i tri
+ nodemengder (noko me berre ønskjer viss =*pro-affects-c-linking*= er
+ sann) medan det georgiske uansett står som éin del.
 
 Etter å ha henta ut nodane som er lagra med same nøkkel, er prosessen
  ferdig. Mange-til-mange-lenkjene mellom c\hyp{}strukturnodar definerer
@@ -4209,7 +4211,7 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
 [fn:8] Som nemnt i del \ref{SEC:fnord} kan funksjonsord gjere
        f\hyp{}strukturlenkinga avhengig av forhold i c\hyp{}strukturen,
        ev. krevje meir nyansert f\hyp{}strukturlenking. Dette har eg
-       ikkje teke høgd for i implementasjonen, så der eit funksjonsord
+       ikkje teke høgd for i implementasjonen, så viss eit funksjonsord
        burde blokkert ei f\hyp{}strukturlenkje vil =lfgalign= gi feil
        samanstilling.
 
@@ -4426,14 +4428,17 @@ kor tala frå dei fire første linjene tilsvarer kolonnene \emph{snitt,
         argument av same predikat, men dette vil gi ein omveg rundt
         krav \ref{krav:PRED} i kapittel \ref{SEC:ideell} om at alle
         argument må finne omsetjingar. I neste kapittel (del
-        \ref{SEC:feilanalyse}) gir eg eit døme kor slik samanføying
-        ville opna for rett lenking, men der me kanskje heller bør ta
-        mangelen på lenking som evidens for at predikatet har ein
-        alternativ argumentstruktur.
+        \ref{SEC:feilanalyse}) gir eg eit døme kor samanføying av
+        denne typen ville opna for rett lenking, men der me kanskje
+        heller bør ta mangelen på lenking som evidens for at
+        predikatet har ein alternativ argumentstruktur.
 
 [fn:58] Ein slik strategi kan samanliknast med metoden i
         \citet{samuelsson2007apa}, men med f\hyp{}strukturar og ord i
-        staden for c\hyp{}strukturar og N-gram.
+        staden for c\hyp{}strukturar og N-gram. Metoden i
+        \citet{graham2009osr} går au frå ordlenkjer til
+        f-strukturlenkjer, men på ein litt meir nyansert måte (sjå
+        kapittel \ref{SEC:diskusjon}).
 
 [fn:59] Som nemnt i del \ref{SEC:fnord} gjer eg ingen forsøk på å
         finne lenkjer mellom nodar som ikkje projiserer
