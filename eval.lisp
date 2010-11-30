@@ -264,7 +264,6 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
 			   for link = (cons (parse-integer (car (third c)))
 					    (parse-integer (car (fourth c))))
 			   collect link))
-
      for tab_s = (open-and-import (format nil "~A" path_s) 'absolute)
      for tab_t = (open-and-import (format nil "~A" path_t) 'absolute)
      for f-alignments = (funcall aligner '(-1 . -1) tab_s tab_t LPT)
@@ -296,17 +295,17 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
      finally (out "~%Intersections: ~A~%Unions: ~A~%links made by ~A: ~A~%links in RIA: ~A~%Linkable source PRED's: ~A~%Link possibilities (linkable srcs * linkable trgs): ~A~%Unreferenced sources: ~A~%Unreferenced targets: ~A~%"
 		  isects unions aligner ls_best ls_ria possible_srcs possible_links
 		  unref_s unref_t)
-       (return (list isects unions ls_best ls_ria possible_srcs possible_links unref_s unref_t))
+     (return (list isects unions ls_best ls_ria possible_srcs possible_links unref_s unref_t))
      ))
 
 
 (lisp-unit:define-test test-ria
   ;; Mostly just to show how to use ev-ria and ria-analyses
   (lisp-unit:assert-equal
-   '(18 195 102 112 190 1716 82 66)
+   '(16 185 90 112 190 1716 82 66)
    (ev-ria (ria-analyses 20 nil)))
   (lisp-unit:assert-equal
-   '(16 164 85 96 157 1341 67 52)
+   '(16 157 78 96 157 1341 67 52)
    (ev-ria (ria-analyses 20 5)))
   (lisp-unit:assert-true
    (ev-ria (ria-analyses 20 2) #'random-f-align #'random-rank)))

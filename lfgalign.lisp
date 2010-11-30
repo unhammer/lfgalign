@@ -939,6 +939,11 @@ is multiplied with the sum of sub-node scores (weighted by branch
 length, since we don't want the length of the argument list to play a
 role here).
 
+The first two rates (`sub-f-rate' and `arg-order-rate') have some
+\"smoothing\" -- we add 1 to numerator and denominator. For
+`LPT-rate', there is no such smoothing. This weighs `LPT-rate' higher
+than the other two.
+
 Returns both the ranked sub-alignments from `rank-helper' and the
 score."
   ;; Sum over individual sub-alignments in the branch -- retrieved
@@ -972,6 +977,8 @@ handles equivalences."
 of src and trg in `link'? Return 1 if arguments are completely
 aligned, if not: 
 sum matches in argument position, weighted by length of linked arg/adj-list
+
+Add 1 to numerator and denominator so we never get 0.
 
 Adjunct-argument links are counted as a non-match.
 
@@ -1010,6 +1017,8 @@ TODO: How should merges score here? For now, just bail out and return
 possible? If the links have no arguments, it's a trivial success;
 otherwise it's a success if there are any sub-alignments at all.
 
+Add 1 to numerator and denominator so we never get 0.
+
 TODO: differentiate between how many of the args were sub-aligned."
   (flet ((failed-sub (f-alignment)
 	  (and (f-link? f-alignment)	; there are no sub-alignments
@@ -1025,17 +1034,21 @@ TODO: differentiate between how many of the args were sub-aligned."
 			     (1+ total))))))
 
 (defun LPT-rate (branch tab_s tab_t LPTs)
-  "Count how many links in the argument/adjunct permutation `branch' are
-LPT, weight by length."
-  (if LPTs
-      (/ (reduce #'+ (mapcar
-		      (lambda (link)
-			(if (LPT? (get-pred (car link) tab_s) tab_s
-				  (get-pred (cdr link) tab_t) tab_t LPTs)
+  "Count how many links in this `branch' are LPT, weight by length.
+No smoothing."
+  (if (and tab_s tab_t LPTs)
+      (loop for sub in branch
+	    for pair = (if (f-link? sub)
+			   sub
+			 (first sub))
+	    summing (if (LPT? (get-pred (car pair) tab_s) tab_s
+			      (get-pred (cdr pair) tab_t) tab_t LPTs)
 			    1
-			  0))
-		      branch))
-	 (length branch))
+			  0)
+	    into matches
+	    counting sub into total
+	    finally (return (/ matches
+			       total)))
     1))
 
 
