@@ -617,18 +617,38 @@ TODO: Could this leave us with duplicate solutions where we exclude?"
 		 (warn "Adjunct list length >~A, only trying first solution" *max-adjs*))
 	       (list
 		(loop for src in adjs_s for trg in adjs_t collect (cons src trg))))
-      (remove-if
-       #'null
-       (loop for perm in (if (> l_s l_t)
-			     (adjalign-p-on-src adjs_s adjs_t)
-			   (adjalign-p-on-trg adjs_s adjs_t))
-	     collect
-	     (remove-if (lambda (link)
-			  (not (and (not (member-either link exclude))
-				    (or (not LPTs)
-					(LPT? (get-pred (car link) tab_s) tab_s
-					      (get-pred (cdr link) tab_t) tab_t LPTs)))))
-			perm))))))
+      (flet ((LPT-score (perm) ; no weighting on length... TODO: is that OK?
+		(reduce #'+ (mapcar
+			     (lambda (link)
+			       (if (LPT? (get-pred (car link) tab_s) tab_s
+					 (get-pred (cdr link) tab_t) tab_t LPTs)
+				   1
+				 0))
+			     perm))))
+	(sort 
+	 (remove-if
+	  #'null
+	  (loop for perm in (if (> l_s l_t)
+				(adjalign-p-on-src adjs_s adjs_t)
+			      (adjalign-p-on-trg adjs_s adjs_t))
+		collect
+		(remove-if (lambda (link)
+			     (not (and (not (member-either link exclude))
+				       (or (not LPTs)
+					   (LPT? (get-pred (car link) tab_s) tab_s
+						 (get-pred (cdr link) tab_t) tab_t LPTs)))))
+			   perm)))
+	 (lambda (perm1 perm2)
+	   (out "~A > ~A ?~%" perm1 perm2)
+	   (let ((score1 )
+		 (score2 (reduce #'+ (mapcar
+				      (lambda (link) (if (LPT? (get-pred (car link) tab_s) tab_s
+							       (get-pred (cdr link) tab_t) tab_t LPTs)
+							 1
+						       0))
+				      perm2))))
+	     (> score1 score2)))
+	 )))))
 
 (defun adjalign-p-on-trg (adjs_s adjs_t) "When trg list is longest"
   (when (and adjs_s adjs_t)
