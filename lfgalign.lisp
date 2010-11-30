@@ -484,10 +484,11 @@ the pro no matter what, but will this give us trouble?"
 
 
 
+
 ;;;;;;;; ALIGNMENT:
 ;;;;;;;; ----------
 
-(defun argalign (link tab_s tab_t LPTs)
+(defun argalign (link tab_s tab_t)
   "Return all possible combinations of links from `args_s'/`adjs_s' to
 `args_t'/`adjs_t' that include all members of `args_s' and `args_t',
 ie. return all pairs of
@@ -501,8 +502,7 @@ included.
 Return nil if no alignments are possible, and (list nil) if no
 alignments are necessary (there are no arguments to align).
 
-Only returns pairs which are LPT, as defined by `LPTs'. This should
-cover (iii) and (iv). See `argalign-p'."
+See `argalign-p'."
   (let* ((var_s (car link))
 	 (var_t (cdr link))
 	 (adjs_s (get-adjs var_s tab_s 'no-error))
@@ -510,9 +510,9 @@ cover (iii) and (iv). See `argalign-p'."
 	 (args_s (get-args var_s tab_s 'no-nulls))
 	 (args_t (get-args var_t tab_t 'no-nulls)))
     (when *debug* (format t "args_s:~A adjs_s:~A args_t:~A adjs_t:~A~%" args_s adjs_s args_t adjs_t))
-    (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
+    (argalign-p args_s adjs_s args_t adjs_t)))
 
-(defun margalign (link1 link2 tab_s tab_t LPTs)
+(defun margalign (link1 link2 tab_s tab_t)
   "Like argalign, but `link1' and `link2' describe a two-to-one link, 
 so we merge the adjunct/argument lists.
 
@@ -539,21 +539,17 @@ we don't set-difference from adjs"
 		  (union (get-equivs var_t1 tab_t 'include-this)
 			 (get-equivs var_t2 tab_t 'include-this)))))
     (when *debug* (format t "args_s:~A adjs_s:~A args_t:~A adjs_t:~A~%" args_s adjs_s args_t adjs_t))
-    (argalign-p args_s adjs_s args_t adjs_t tab_s tab_t LPTs)))
+    (argalign-p args_s adjs_s args_t adjs_t)))
 
-(defun argalign-p (args_s adjs_s args_t adjs_t &optional tab_s tab_t LPTs)
-  "Helper for `argalign'. If `LPTs', `tab_s' and `tab_t' are supplied,
-only return those combinations where all pairs are LPT. "
+(defun argalign-p (args_s adjs_s args_t adjs_t)
+  "Helper for `argalign'."
   (macrolet
       ((mapalign (srcs trgs)
 	 "Within one call, we have the same src, but loop through possible `trgs',
 the recursion loops through all possible `srcs'."
 	 `(mapcan			; for each target arg/adj
 	   (lambda (trg)
-	     (when (or (not LPTs)
-		       (LPT? (get-pred (car ,srcs) tab_s) tab_s
-			     (get-pred     trg     tab_t) tab_t LPTs))
-	       (mapcar-true	 ; for each permuation w/o src and trg
+	     (mapcar-true	 ; for each permuation w/o src and trg
 		(lambda (perm)
 		  (cons (cons (car ,srcs) trg)
 			perm))
@@ -561,8 +557,7 @@ the recursion loops through all possible `srcs'."
 		(argalign-p (if (eq ,srcs args_s) (cdr args_s) args_s)
 			    (if (eq ,srcs adjs_s) (cdr adjs_s) adjs_s)
 			    (if (eq ,trgs args_t) (remove trg args_t :count 1) args_t)
-			    (if (eq ,trgs adjs_t) (remove trg adjs_t :count 1) adjs_t)
-			    tab_s tab_t LPTs))))
+			    (if (eq ,trgs adjs_t) (remove trg adjs_t :count 1) adjs_t))))
 	   ,trgs)))
     (if args_s
 	(append (mapalign args_s args_t)
@@ -575,14 +570,12 @@ the recursion loops through all possible `srcs'."
 	    ;; all args_s and args_t used up, make end-of-list:
 	    (list nil)))))
 
-(defun adjalign (exclude link mlink tab_s tab_t LPTs)
+
+(defun adjalign (exclude link mlink tab_s tab_t)
   "Return all possible combinations of links between adjuncts that use
 no id's from `exclude' (a list of links).
 
 Return nil if no alignments are possible.
-
-Only returns pairs which are LPT, as defined by `LPTs'. See
-`adjalign-p'.
 
 Optional argument `mlink' is a merged link, which together with `link'
 describes a two-to-one link, so we merge their adjunct lists; there is
@@ -594,16 +587,11 @@ no separate madjalign function."
 				 (get-adjs (cdr mlink) tab_t 'no-error))
 		  (get-adjs (cdr link) tab_t 'no-error))))
     (when *debug* (out "~A~%~A~%" adjs_s adjs_t))
-    (adjalign-p exclude adjs_s adjs_t tab_s tab_t LPTs)))
+    (adjalign-p exclude adjs_s adjs_t)))
 
-(defun adjalign-p (exclude adjs_s adjs_t &optional tab_s tab_t LPTs)
-  "Helper for `adjalign'. If `LPTs', `tab_s' and `tab_t' are supplied,
-only return those combinations where all pairs are LPT.
 
-This filtering on `LPTs' and `exclude' only increases 9x9 time from
-3.1s to 4.1s where exclude and LPTs are nil. Putting the LPT check in
-the inner loop (ie. `adjalign-p-on-trg' / `adjalign-p-on-src') might
-speed things up if you have a huge LPT table.
+(defun adjalign-p (exclude adjs_s adjs_t)
+  "Helper for `adjalign'.
 
 TODO: Could this leave us with duplicate solutions where we exclude?"
   (let ((l_s (length adjs_s))
@@ -617,38 +605,14 @@ TODO: Could this leave us with duplicate solutions where we exclude?"
 		 (warn "Adjunct list length >~A, only trying first solution" *max-adjs*))
 	       (list
 		(loop for src in adjs_s for trg in adjs_t collect (cons src trg))))
-      (flet ((LPT-score (perm) ; no weighting on length... TODO: is that OK?
-		(reduce #'+ (mapcar
-			     (lambda (link)
-			       (if (LPT? (get-pred (car link) tab_s) tab_s
-					 (get-pred (cdr link) tab_t) tab_t LPTs)
-				   1
-				 0))
-			     perm))))
-	(sort 
-	 (remove-if
-	  #'null
-	  (loop for perm in (if (> l_s l_t)
-				(adjalign-p-on-src adjs_s adjs_t)
-			      (adjalign-p-on-trg adjs_s adjs_t))
-		collect
-		(remove-if (lambda (link)
-			     (not (and (not (member-either link exclude))
-				       (or (not LPTs)
-					   (LPT? (get-pred (car link) tab_s) tab_s
-						 (get-pred (cdr link) tab_t) tab_t LPTs)))))
-			   perm)))
-	 (lambda (perm1 perm2)
-	   (out "~A > ~A ?~%" perm1 perm2)
-	   (let ((score1 )
-		 (score2 (reduce #'+ (mapcar
-				      (lambda (link) (if (LPT? (get-pred (car link) tab_s) tab_s
-							       (get-pred (cdr link) tab_t) tab_t LPTs)
-							 1
-						       0))
-				      perm2))))
-	     (> score1 score2)))
-	 )))))
+      (remove-if
+	#'null
+	(loop for perm in (if (> l_s l_t)
+			      (adjalign-p-on-src adjs_s adjs_t)
+			    (adjalign-p-on-trg adjs_s adjs_t))
+	      collect
+	      (remove-if (lambda (link) (member-either link exclude))
+			 perm))))))
 
 (defun adjalign-p-on-trg (adjs_s adjs_t) "When trg list is longest"
   (when (and adjs_s adjs_t)
@@ -715,12 +679,11 @@ TODO: Could this leave us with duplicate solutions where we exclude?"
 (defun f-align (link tab_s tab_t LPTs &optional aligntab)
   "Optional hash table `aligntab' (with :test #'equal) is
 destructively modified to store the alignments of all linkings, and lets
-you check whether each linking was possible to sub-align (in addition
-to being LPT).
+you check whether each linking was possible to sub-align.
 
  (i) the number of arguments n and m may or may not differ
 is trivially true
- (ii), LPT, should be covered for `link' on all calls.
+ (ii), LPT, is now a ranking criterion, see `rank'
   argalign covers (iii) and (iv)
 TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covered by the way we handle links? Need example..."
   (let* ((F_s (car link))
@@ -728,41 +691,40 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
 	 (aligntab (or aligntab (make-aligntab)))
 	 alignments)
     
-    (flet ((sub-f (perm)
-		  "Try to recursively align links in perm, but keep unaligned links"
-		  (loop for link_a in perm
-			do (unless (gethash link_a aligntab)
-			     (setf (gethash link_a aligntab)
-				   (f-align link_a tab_s tab_t LPTs aligntab)))
-			collect (or (gethash link_a aligntab)
-				    (or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
-					link_a))))
+    (labels ((sub-f (perm)
+	      "Try to recursively align links in perm, but keep unaligned links"
+	      (loop for link_a in perm
+		    do (unless (gethash link_a aligntab)
+			 (setf (gethash link_a aligntab)
+			       (f-align link_a tab_s tab_t LPTs aligntab)))
+		    collect (or (gethash link_a aligntab)
+				(or (unless *no-warnings* (warn "sub-f failed:~A" link_a))
+				    link_a))))
 	   
-	   (store (subalignment) (pushnew subalignment alignments :test #'equal)))
-      
-      (flet
-	  ((argloop (argperms mlink)
-	    "For each permutation of arg/adj links, store link + sub-alignment in `alignments'."
-	    (if (equal argperms '(nil))
-		;; '(nil) means no recursion on args needed, try adjs
-		(loop for adjperm in (adjalign nil link mlink tab_s tab_t LPTs)
-		      do (store (sub-f adjperm)))
-	      ;; try recursion on argperms (if there are any)
-	      (loop for argperm in argperms
-		    for new = (if mlink
-				  (cons mlink (sub-f argperm))
-				(sub-f argperm))
-		    do (store new)
-		    ;; try to fill up adj alignments
-		    (loop for adjperm in (adjalign argperm link mlink tab_s tab_t LPTs)
-			  do (store (append (sub-f adjperm) new)))))
+	     (store (subalignment) (pushnew subalignment alignments :test #'equal))
+	   
+	     (argloop (argperms mlink)
+	      "For each permutation of arg/adj links, store link + sub-alignment in `alignments'."
+	      (if (equal argperms '(nil))
+		  ;; '(nil) means no recursion on args needed, try adjs
+		  (loop for adjperm in (adjalign nil link mlink tab_s tab_t)
+			do (store (sub-f adjperm)))
+		;; try recursion on argperms (if there are any)
+		(loop for argperm in argperms
+		      for new = (if mlink
+				    (cons mlink (sub-f argperm))
+				  (sub-f argperm))
+		      do (store new)
+		      ;; try to fill up adj alignments
+		      (loop for adjperm in (adjalign argperm link mlink tab_s tab_t)
+			    do (store (append (sub-f adjperm) new)))))
 	    ; The caller will want to know whether arg-matching was even possible:
 	    argperms))
-	
-	(when ; If there are no argperms/margperms, this `when' fails and nil is returned
+      
+      (when ; If there are no argperms/margperms, this `when' fails and nil is returned
 	    (or
 	     ;; Either one-to-one is possible, we don't try merging:
-	     (argloop (argalign link tab_s tab_t LPTs)
+	     (argloop (argalign link tab_s tab_t)
 		      nil)
 	     ;; One-to-one is not possible, we try merging:
 	     (let ((mlinks_s (loop for arg in (get-args F_s tab_s 'no-nulls)
@@ -776,7 +738,7 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
 			      (when (or (not LPTs)
 					(LPT? (get-pred (car mlink) tab_s) tab_s
 					      (get-pred (cdr mlink) tab_t) tab_t LPTs))
-				(argloop (margalign link mlink tab_s tab_t LPTs)
+				(argloop (margalign link mlink tab_s tab_t)
 					 mlink)))
 			    (append mlinks_s mlinks_t))))
 	  (if alignments
@@ -784,36 +746,19 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
 	      (cons link alignments)
 	    ;; Either sub-f failed, or there were no args to align,
 	    ;; check get-args F_t/F_s to find out:
-	    link))))))
+	    link)))))
 
 (lisp-unit:define-test test-merge
  (let ((tab_s (open-and-import "dev/TEST_merge_s.pl"))
-       (tab_t (open-and-import "dev/TEST_merge_t.pl"))
-       (LPT (make-LPT)))
+       (tab_t (open-and-import "dev/TEST_merge_t.pl")))
    (lisp-unit:assert-equal
     '(((9 . 3)))
-    (margalign '(0 . 0) '(10 . 0) tab_s tab_t LPT))
+    (margalign '(0 . 0) '(10 . 0) tab_s tab_t))
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '(((0 . 0) (10 . 0) (9 . 3))  ; perf-qePa, bjeffe-qePa, hund-jaGli (correct)
       ((0 . 0) (10 . 3) (9 . 0))) ; perf-qePa, bjeffe-jaGli, hund-qePa (wrong)
-    (flatten (f-align '(0 . 0) tab_s tab_t LPT)))
-   (add-to-lpt "bjeffe" "qePa" LPT)
-   (lisp-unit:assert-equality
-    #'set-of-set-equal
-    '(((0 . 0) (10 . 0) (9 . 3))) ; perf-qePa, bjeffe-qePa, hund-jaGli
-    (flatten (f-align '(0 . 0) tab_s tab_t LPT)))
-   ;; Letting the merge happen on the target side:
-   (lisp-unit:assert-equality
-    #'set-of-set-equal
-    '(((0 . 0) (0 . 10) (3 . 9))  ; qePa-perf, qePa-bjeffe, jaGli-hund (correct)
-      ((0 . 0) (3 . 10) (0 . 9))) ; qePa-perf, jaGli-bjeffe, qePa-hund (wrong)
-    (flatten (f-align '(0 . 0) tab_t tab_s LPT)))
-   (add-to-lpt "qePa" "bjeffe" LPT)	; LPT is not symmetric, so we add again:
-   (lisp-unit:assert-equality
-    #'set-of-set-equal
-    '(((0 . 0) (0 . 10) (3 . 9)))  ; qePa-perf, qePa-bjeffe, jaGli-hund (correct)
-    (flatten (f-align '(0 . 0) tab_t tab_s LPT)))))
+    (flatten (f-align '(0 . 0) tab_s tab_t (make-LPT))))))
 
 (lisp-unit:define-test test-f-align
  (let ((tab_s (open-and-import "dev/TEST_simple_s.pl"))
@@ -832,11 +777,10 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
       ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
     (flatten (f-align '(0 . 0) tab_s tab_t LPT)))
    (add-to-lpt "Browne" "Browne" LPT)
-   (lisp-unit:assert-equality
-    #'set-of-set-equal
-    '(((0 . 0) (11 . 6) (10 . 3) (9 . 9))
-      ((0 . 0) (11 . 9) (10 . 3) (9 . 6)))
-    (flatten (f-align '(0 . 0) tab_s tab_t LPT))))
+   (lisp-unit:assert-equal
+    '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+    (rank (f-align '(0 . 0) tab_s tab_t LPT)
+	  tab_s tab_t LPT)))
  (let ((tab_s (open-and-import "dev/TEST_optadj_s.pl"))
        (tab_t (open-and-import "dev/TEST_optadj_t.pl"))
        (LPT (make-LPT)))
@@ -865,7 +809,7 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
    (lisp-unit:assert-equality
     #'set-equal
     '((0 . 0) (10 . 0) (9 . 3))	; perf-qePa, bjeffe-qePa, hund-jaGli (correct)
-    (values (rank f-alignments tab_s tab_t)))))
+    (values (rank f-alignments tab_s tab_t LPT)))))
 
 (lisp-unit:define-test test-rank-argorder
  ;; Should select the alignment where argument orders match
@@ -882,7 +826,7 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
    (lisp-unit:assert-equality
     #'set-equal
     '((0 . 0) (11 . 3) (10 . 9) (9 . 6))
-    (values (rank f-alignments tab_s tab_t)))))
+    (values (rank f-alignments tab_s tab_t LPT)))))
 
 (lisp-unit:define-test test-rank-recursive
  (lisp-unit:assert-equality
@@ -926,6 +870,9 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
 
 
 
+;;;;;;;; RANKING:
+;;;;;;;; --------
+
 (defun longest-sublists (lists)
   "Return the longest sublists in `lists'. Could do this in one loop,
 but meh."
@@ -933,7 +880,7 @@ but meh."
     (mapcar-true (lambda (l) (when (>= (length l) maxlen) l))
 		 lists)))
 
-(defun rank (f-alignments tab_s tab_t)
+(defun rank (f-alignments tab_s tab_t &optional LPTs)
   "This could be done in a million different ways. For now, this is
 the procedure: We start with input like '((0 . 0) branch1 branch2 ...)
 where branch1 is e.g. '((9 . 0) (10 . 3)), 
@@ -947,9 +894,9 @@ that branch.
 
 If there are several with equal rank, choose the first of the longest
 branches (thus trying to align as many adjuncts as possible)."
-  (rank-helper nil f-alignments tab_s tab_t))
+  (rank-helper nil f-alignments tab_s tab_t LPTs))
 
-(defun rank-helper (seen f-alignments &optional tab_s tab_t)
+(defun rank-helper (seen f-alignments &optional tab_s tab_t LPTs)
   (if (f-link? f-alignments)
       (values (list f-alignments)
 	      1)
@@ -963,7 +910,7 @@ branches (thus trying to align as many adjuncts as possible)."
 	    for branch in (cdr f-alignments)
 	    do (setf (values newbranch
 			     rate)
-		     (rank-branch link outer-links branch tab_s tab_t))
+		     (rank-branch link outer-links branch tab_s tab_t LPTs))
 	    if (= rate best-rate)
 	    do (setq best-branches (cons newbranch best-branches))
 	    else if (> rate best-rate)
@@ -976,13 +923,14 @@ branches (thus trying to align as many adjuncts as possible)."
 				  (car (longest-sublists best-branches)))
 			    best-rate))))))
 
-(defun rank-branch (link seen branch &optional tab_s tab_t)
+(defun rank-branch (link seen branch &optional tab_s tab_t LPTs)
   "The individual branch score is the product of
 - `sub-f-rate' which gives how many recursive sub-alignments were
   successful as opposed to simply having LPT-correspondence,
 - `arg-order-rate' which gives how close a match there is between the
   argument orders of the src and trg pred's of the branch parent
-  `link', and
+  `link', 
+- `LPT-rate' which gives how many of the links were LPT, and
 - the weighted sum of the sub-alignment scores, achieved by recursive
   `rank-helper' calls
 
@@ -1008,6 +956,7 @@ score."
 		 ;; Multiply this branch with those from children:
 		 (* (sub-f-rate seen branch tab_s tab_t)
 		    (arg-order-rate link seen branch tab_s tab_t)
+		    (LPT-rate branch tab_s tab_t LPTs)
 		    (if (> (length subs) 0)
 			(/ sub-rate-sum (length subs))
 		      0))))))
@@ -1052,10 +1001,8 @@ TODO: How should merges score here? For now, just bail out and return
 			0)
 	      into matches
 	      counting sub into total
-	      finally (return (if (> total 0)
-				  (/ matches
-				     total)
-				0))))
+	      finally (return (/ (1+ matches)
+				 (1+ total)))))
     1))
 
 (defun sub-f-rate (seen branch &optional tab_s tab_t)
@@ -1074,13 +1021,27 @@ TODO: differentiate between how many of the args were sub-aligned."
     (loop for sub in branch
 	  counting (not (failed-sub sub)) into sub-f
 	  counting sub into total
-	  finally (return (if (> total 0)
-				  (/ sub-f
-				     total)
-				0)))))
+	  finally (return (/ (1+ sub-f)
+			     (1+ total))))))
+
+(defun LPT-rate (branch tab_s tab_t LPTs)
+  "Count how many links in the argument/adjunct permutation `branch' are
+LPT, weight by length."
+  (if LPTs
+      (/ (reduce #'+ (mapcar
+		      (lambda (link)
+			(if (LPT? (get-pred (car link) tab_s) tab_s
+				  (get-pred (cdr link) tab_t) tab_t LPTs)
+			    1
+			  0))
+		      branch))
+	 (length branch))
+    1))
+
+
 
 (defun spread (flatperm)
-  "See `test-spread'."
+  "See `test-spread'; used by `flatten'."
   (when flatperm
     (if (cdr flatperm)
 	(if (f-link? (car flatperm))
@@ -1115,6 +1076,8 @@ See `test-flatten' for possible inputs and outputs."
 			(cons elt p))
 		      flatperms))
 	  (list elt))))))
+
+
 
 (defun subnodes-list (tree)
   "Debug function, deprecated. Return id's of this node and all
@@ -1297,7 +1260,7 @@ phi's don't match anything in the files)."
 
 (defun align (tab_s tab_t LPT)
   (let* ((f-alignments (f-align '(-1 . -1) tab_s tab_t LPT))
-	 (best-f-alignment (rank f-alignments tab_s tab_t))
+	 (best-f-alignment (rank f-alignments tab_s tab_t LPT))
 	 (tree_s (maketree tab_s))
 	 (tree_t (maketree tab_t))
 	 (c-alignments (c-align-ranked best-f-alignment 
@@ -1316,11 +1279,7 @@ phi's don't match anything in the files)."
 	    c-alignments)
     (list best-f-alignment c-alignments)))
 
-(defun foo ()
-  (let ((tab_s (open-and-import "eval/ka/0.pl"))
-	(tab_t (open-and-import "eval/nb/0.pl"))
-	(LPT (make-LPT)))
-    (align tab_s tab_t LPT)))
+
 
 (defun f-align-naive (var1 tab1 var2 tab2)
   "Just to show the difference between naive alignment, and the complete alignment.
@@ -1458,7 +1417,7 @@ respectively.  TODO: cache/memoise maketree"
    (lisp-unit:assert-equality
     #'set-of-set-equal
     '()
-    (argalign '(0 . 0) tab_s tab_t (make-LPT))))
+    (argalign '(0 . 0) tab_s tab_t)))
  (let ((tab_s (open-and-import "dev/TEST_argadj_s.pl"))
        (tab_t (open-and-import "dev/TEST_argadj_t.pl")))
    (lisp-unit:assert-equality
@@ -1487,16 +1446,7 @@ respectively.  TODO: cache/memoise maketree"
       ((30 . 5) (27 . 10) (29 . 37) (28 . 46))
       ((30 . 5) (27 . 37) (29 . 46) (28 . 10))
       ((30 . 5) (27 . 37) (29 . 10) (28 . 46)))
-    (argalign '(0 . 0) tab_s tab_t (make-LPT)))
-   (lisp-unit:assert-equality
-    #'set-of-set-equal
-    '(((30 . 46) (27 . 10) (29 . 37) (28 . 5))
-      ((30 . 46) (27 . 10) (29 . 5) (28 . 37))
-      ((30 . 46) (27 . 37) (29 . 10) (28 . 5))
-      ((30 . 46) (27 . 37) (29 . 5) (28 . 10))
-      ((30 . 46) (27 . 5) (29 . 10) (28 . 37))
-      ((30 . 46) (27 . 5) (29 . 37) (28 . 10)))
-    (argalign '(0 . 0) tab_s tab_t (add-to-LPT "regnet" "cvimda" (make-LPT))))))
+    (argalign '(0 . 0) tab_s tab_t))))
 
 (lisp-unit:define-test test-argalign-p
   (lisp-unit:assert-equality

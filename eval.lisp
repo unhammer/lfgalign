@@ -9,7 +9,7 @@
        (tab_t (open-and-import path_t absolute))
        (LPTs (or LPTs (make-LPT)))
        (f-alignments (f-align '(-1 . -1) tab_s tab_t LPTs))
-       (best-f-alignment (rank f-alignments tab_s tab_t))
+       (best-f-alignment (rank f-alignments tab_s tab_t LPTs))
        (tree_s (maketree tab_s))
        (tree_t (maketree tab_t))
        (c-alignments (c-align-ranked best-f-alignment 
@@ -133,7 +133,7 @@
 	   (let*
 	       ((LPTs (make-LPT))
 		(f-alignments (f-align '(-1 . -1) tab_s tab_t LPTs))
-		(best-f-alignment (rank f-alignments tab_s tab_t))
+		(best-f-alignment (rank f-alignments tab_s tab_t LPTs))
 		(tree_s (maketree tab_s))
 		(tree_t (maketree tab_t))
 		(c-alignments (c-align-ranked best-f-alignment 
@@ -178,7 +178,7 @@ like `flatten' or `rank'"
        for trg in (shuffle (all-pred-vars tab_t))
        collect (cons src trg))))
 
-(defun random-rank (f-alignments tab_s tab_t)
+(defun random-rank (f-alignments tab_s tab_t LPT)
   f-alignments)
 
 
@@ -270,7 +270,7 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
      for f-alignments = (funcall aligner '(-1 . -1) tab_s tab_t LPT)
      for best-f-alignment = (remove-if
 			     (lambda (link) (equal '(-1 . -1) link))
-			     (funcall ranker f-alignments tab_s tab_t))
+			     (funcall ranker f-alignments tab_s tab_t LPT))
 
      for l_best = (length best-f-alignment)
      for l_ria = (length ria-ranked)
