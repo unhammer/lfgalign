@@ -1220,7 +1220,8 @@ phi's don't match anything in the files)."
 
 (lisp-unit:define-test test-c-align-ranked ()
   (let* 
-      ((tab_s (open-and-import "dev/TEST_subord-c-align_s.pl"))
+      ((*pro-affects-c-linking* t)
+       (tab_s (open-and-import "dev/TEST_subord-c-align_s.pl"))
        (tree_s (maketree tab_s))
        (tab_t (open-and-import "dev/TEST_subord-c-align_t.pl"))
        (tree_t (maketree tab_t))
@@ -1232,7 +1233,8 @@ phi's don't match anything in the files)."
 	(186 42 183 180 178 161 157 2 156 4 155 6 154 8 153 10 152 12 150 16)))
      (c-align-ranked f-alignment tree_s tab_s tree_t tab_t)))
   (let* 
-      ((tab_s (open-and-import "dev/TEST_subord-c-align_s.pl"))
+      ((*pro-affects-c-linking* t)
+       (tab_s (open-and-import "dev/TEST_subord-c-align_s.pl"))
        (tree_s (maketree tab_s))
        (tab_t (open-and-import "dev/TEST_subord-c-align_t2.pl"))
        (tree_t (maketree tab_t))
