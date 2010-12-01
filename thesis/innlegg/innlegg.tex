@@ -1,0 +1,113 @@
+% Created 2009-05-08 Fri 15:22
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage[english,nynorsk]{babel}
+\usepackage{apacite} % after babel
+\usepackage{natbib}
+\usepackage{pslatex}
+
+\usepackage{enumerate}
+\usepackage{subfigure}
+\usepackage{linguex}
+
+\def\newblock{\hskip .11em plus .33em minus .07em} % for using bibtex with beamer 
+
+\title{Syntaktisk fraselenking}
+\author{Kevin Brubeck Unhammer\\ Universitetet i Bergen}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{frame}\frametitle{Fraselenking}
+    \begin{itemize}
+    \item Finne korresponderande
+      konstituentar / dependenseiningar / syntaktiske funksjonar / N-gram / ...
+    \item Nyttig både for applikasjonar (maskinomsetjing) og
+      korpuslingvistikk
+    \item Data vanlegvis N-gramtabellar frå statistisk samanstilling,
+      reint korpusbasert
+    \item Formål vanlegvis maskinomsetjing
+    \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Syntaktisk fraselenking, med \texttt{lfgalign}}
+  \begin{itemize}
+  \item Data: LFG-analysar, «kunnskapsbasert» lenking
+  \item Formål: annotert trebank
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Vegkart}
+  \begin{itemize}
+  \item Krav til frasesamanstilling
+  \item Implementasjon av \texttt{lfgalign}
+  \item Evaluering
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Ideelle krav}
+  \begin{itemize}
+  \item \emph{Krav avheng av formål}
+  \item Formål: trebankannotasjon
+    \begin{itemize}
+    \item presisjon viktigare enn dekning
+    \item integrering med djupe analysar
+    \end{itemize}
+  \item 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Krav på ulike nivå}
+  \begin{itemize}
+  \item lenkjer mellom f-strukturar
+  \item lenkjer mellom c-struktur
+  \item lenkjer mellom ord % nedprioritert...
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Krav på ordnivå}
+  \begin{itemize}
+  \item LPT-korrespondanse
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Krav på f-strukturnivå}
+  For å lenkje p og q:
+  \begin{itemize}
+  \item Alle argument av p skal finne LPT-korrespondanse i argument/adjunkt av q, og omvendt
+  \item Adjunkt kan valfritt lenkjast til kvarandre
+  \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}
+  \begin{center}
+    {\huge Takk for merksemda!}
+  \end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Litteratur}
+  \nocite{dyvik2009lmp}
+  \bibliographystyle{apacite}
+  \bibliography{master}
+\end{frame}
+
+\begin{frame}\frametitle{Lisensar}
+  Denne presentasjonen kan distribuerast under lisensane
+  GNU GPL, GNU FDL og CC-BY-SA.
+  \begin{itemize}
+  \item GNU GPL v. 3.0 \\
+    \href{http://www.gnu.org/licenses/gpl.html}{http://www.gnu.org/licenses/gpl.html}
+  \item GNU FDL v. 1.2 \\
+    \href{http://www.gnu.org/licenses/gfdl.html}{http://www.gnu.org/licenses/gfdl.html}
+  \item CC-BY-SA v. 3.0 \\
+    \href{http://creativecommons.org/licenses/by-sa/3.0/}{http://creativecommons.org/licenses/by-sa/3.0/}
+  \end{itemize}
+\end{frame}
+
+\end{document}
