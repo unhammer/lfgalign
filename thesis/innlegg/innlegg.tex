@@ -1,5 +1,5 @@
 % Created 2009-05-08 Fri 15:22
-\documentclass{beamer}
+\documentclass[bigger]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
@@ -17,6 +17,8 @@
 \title{Syntaktisk fraselenking}
 \author{Kevin Brubeck Unhammer\\ Universitetet i Bergen}
 \date{\today}
+
+\usetheme[orchid]{Singapore} 
 
 \begin{document}
 \maketitle
@@ -48,7 +50,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Ideelle krav}
+\begin{frame}\frametitle{Krav -- kva vil me lenkje?}
   \begin{itemize}
   \item \emph{Krav avheng av formål}
   \item Formål: trebankannotasjon
@@ -56,7 +58,6 @@
     \item presisjon viktigare enn dekning
     \item integrering med djupe analysar
     \end{itemize}
-  \item 
   \end{itemize}
 \end{frame}
 
@@ -69,12 +70,33 @@
 \end{frame}
 
 \begin{frame}\frametitle{Krav på ordnivå}
-  \begin{itemize}
-  \item LPT-korrespondanse
-  \end{itemize}
+  Lenkja ord må ha LPT-korrespondanse:
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+      \item LPT = Linguistically Predictable Translations
+      \item bottom-up-informasjon (omsetjingsordbøker, giza++, ...)
+      \item koreferente pronomen og substantiv/eigennamn er au LPT
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+      \item kaffi $=_{LPT}$ coffee
+      \item kaffi $\neq_{LPT}$ tea
+      \item han $=_{LPT}$ Joe
+      \item kaffi $\neq_{LPT}$ Bob
+      \item (kaffi $=_{LPT}$ Joe)
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  % I \texttt{lfgalign} må lenkja ord ha lenkja f-strukturar
 \end{frame}
 
+
 \begin{frame}\frametitle{Krav på f-strukturnivå}
+  Argumentstrukturar er ikkje alltid 1-1
+  
   For å lenkje p og q:
   \begin{itemize}
   \item Alle argument av p skal finne LPT-korrespondanse i argument/adjunkt av q, og omvendt
@@ -82,6 +104,41 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}\frametitle{Krav på c-strukturnivå}
+  For å lenkje $n_s$ og $n_t$:
+  \begin{itemize}
+  \item $\phi$ av nodane må vere lenkja
+  \item nodane må dominere same mengd med ordlenkjer
+    \begin{itemize}
+    \item Finn mengda av dominerte, f-strukturlenkja preterminale
+      nodar, sjekk om $n_s$ og $n_t$ dominerer same mengd med slike
+      lenkjer
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}\frametitle{Implementasjon}
+  \begin{itemize}
+  \item 1. Finn f-strukturlenkjer
+  \item 2. Finn c-strukturlenkjer
+  \end{itemize}
+  (Men først må inndata vere LFG-parsa, setningslenkja og disambiguert)
+\end{frame}
+
+\begin{frame}\frametitle{Evaluering}
+  \begin{itemize}
+  \item 1. Manuell gjennomgang
+  \item 2. Overlapp av lenkjer frå N-grambasert metode (\texttt{RIA})
+  \end{itemize}
+  % Uheldigvis ikkje så mykje materiale
+\end{frame}
+
+\begin{frame}\frametitle{Manuell evaluering}
+  \begin{itemize}
+  \item 
+  \end{itemize}
+\end{frame}
 
 
 
