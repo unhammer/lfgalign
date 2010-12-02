@@ -15,6 +15,9 @@
 (defvar *no-warnings* t)
 (defvar *debug* nil)
 (defvar *pro-affects-c-linking* nil)	; Whether unlinked pro-elements may hinder linking c-structure nodes of two predicates
+(defvar *arg-order-smoothing* 0.01)	; Added to numerator and denominator in arg-order-rate
+(defvar *sub-f-smoothing* 0.01)            ; Added to numerator and denominator in sub-f-rate
+(defvar *lpt-smoothing* 0.01)            ; Added to numerator and denominator in lpt-rate
 (defvar *max-adjs* 8)			; maximum amount of adjs to try to match in `adjalign'
 (defvar *include-unreferenced-preds* t)	; Whether we add all unreferenced PRED f-structures to adjuncts of SENTENCE (with f-structure id -1)
 
@@ -1008,8 +1011,8 @@ TODO: How should merges score here? For now, just bail out and return
 			0)
 	      into matches
 	      counting sub into total
-	      finally (return (/ (1+ matches)
-				 (1+ total)))))
+	      finally (return (/ (+ *arg-order-smoothing* matches)
+				 (+ *arg-order-smoothing* total)))))
     1))
 
 (defun sub-f-rate (seen branch &optional tab_s tab_t)
@@ -1030,8 +1033,8 @@ TODO: differentiate between how many of the args were sub-aligned."
     (loop for sub in branch
 	  counting (not (failed-sub sub)) into sub-f
 	  counting sub into total
-	  finally (return (/ (1+ sub-f)
-			     (1+ total))))))
+	  finally (return (/ (+ *sub-f-smoothing* sub-f)
+			     (+ *sub-f-smoothing* total))))))
 
 (defun LPT-rate (branch tab_s tab_t LPTs)
   "Count how many links in this `branch' are LPT, weight by length.
@@ -1047,8 +1050,8 @@ No smoothing."
 			  0)
 	    into matches
 	    counting sub into total
-	    finally (return (/ matches
-			       total)))
+	    finally (return (/ (+ *lpt-smoothing* matches)
+			       (+ *lpt-smoothing* total))))
     1))
 
 
