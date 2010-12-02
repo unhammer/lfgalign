@@ -120,22 +120,30 @@
 
 \begin{frame}\frametitle{Implementasjon}
   \begin{itemize}
-  \item 1. Finn f-strukturlenkjer
-  \item 2. Finn c-strukturlenkjer
+  \item 1. Finn f-strukturlenkjer frå analyse + bottom-up-informasjon (LPT)
+    \begin{itemize}
+    \item LFG-analysane må vere disambiguerte, må korrespondere på setningsnivå 
+    \end{itemize}
+  \item 2. Finn c-strukturlenkjer frå f-strukturlenkinga
   \end{itemize}
-  (Men først må inndata vere LFG-parsa, setningslenkja og disambiguert)
+
+  Berre f-strukturlenkinga kan ta val, og dimed ta feil val
 \end{frame}
+
 
 \begin{frame}\frametitle{Evaluering}
   \begin{itemize}
   \item 1. Manuell gjennomgang
   \item 2. Overlapp av lenkjer frå N-grambasert metode (\texttt{RIA})
+  \item Hovudformål: finne ut kor avhengig \texttt{lfgalign} er av
+    bottom-up-informasjon
   \end{itemize}
   % Uheldigvis ikkje så mykje materiale
 \end{frame}
 
 \begin{frame}\frametitle{Manuell evaluering}
   \begin{itemize}
+  \item Testsett: georgisk-norsk, ~30 setningar
   \item 
   \end{itemize}
 \end{frame}
