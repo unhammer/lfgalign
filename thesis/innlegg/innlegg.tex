@@ -47,12 +47,12 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{cat korpusbasert_fraselenking | syntaks}
+\begin{frame}\frametitle{\texttt{cat korpusbasert\_fraselenking | syntaks}}
     \begin{itemize}
     \item N-grambasert (datadriven/korpusbasert) lenking kan filtrerast med kunnskap
       \begin{itemize}
-      \item Berre ha dei lenkjene som svarer til syntaktiske nodar \citep{samuelsson2007apa}
-      \item Berre ha dei lenkjene som passar inn i ein dependensanalyse \citep{hearne2008ccd}
+       \item berre lenkjer som samsvarer med syntaktiske nodar \citep{samuelsson2007apa}
+       \item berre lenkjer som samsvarer med ein dependensanalyse \citep{hearne2008ccd}
       \end{itemize}
     \end{itemize}
   \end{frame}
@@ -110,12 +110,18 @@
 
 
 \begin{frame}\frametitle{Krav på f-strukturnivå}
-  Argumentstrukturar er ikkje alltid 1-1
-  
-  For å lenkje p og q:
   \begin{itemize}
-  \item Alle argument av p skal finne LPT-korrespondanse i argument/adjunkt av q, og omvendt
-  \item Adjunkt kan valfritt lenkjast til kvarandre
+  \item Gjeld i hovudsak argumentstruktur
+  
+
+  \item Argumentstrukturar er ikkje alltid 1-1
+  
+  \item For å lenkje predikat $p$ og $q$:
+    \begin{itemize}
+    \item Alle argument av $p$ skal finne LPT-korrespondanse i
+      argument/adjunkt av $q$, og omvendt
+    \item Adjunkt kan valfritt lenkjast til kvarandre
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
