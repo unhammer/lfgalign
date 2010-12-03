@@ -16,17 +16,29 @@
 
 \title{Syntaktisk fraselenking}
 \author{Kevin Brubeck Unhammer\\ Universitetet i Bergen}
-\date{\today}
+\date{10. desember 2010}
 
 \usetheme[orchid]{Singapore} 
 
 \begin{document}
+
 \maketitle
+
+\begin{frame}\frametitle{Vegkart}
+  \begin{itemize}
+  \item Krav til frasesamanstilling
+  \item Implementasjon av \texttt{lfgalign}
+  \item Evaluering
+  \end{itemize}
+\end{frame}
 
 \begin{frame}\frametitle{Fraselenking}
     \begin{itemize}
-    \item Finne korresponderande
-      konstituentar / dependenseiningar / syntaktiske funksjonar / N-gram / ...
+    \item Finne korresponderande frasar
+      \begin{itemize}
+      \item Kva er ein «frase»? Konstituentar? Dependenseiningar?
+        Syntaktiske funksjonar? N-gram? Chunks?
+      \end{itemize}
     \item Nyttig både for applikasjonar (maskinomsetjing) og
       korpuslingvistikk
     \item Data vanlegvis N-gramtabellar frå statistisk samanstilling,
@@ -35,18 +47,21 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}\frametitle{cat korpusbasert_fraselenking | syntaks}
+    \begin{itemize}
+    \item N-grambasert (datadriven/korpusbasert) lenking kan filtrerast med kunnskap
+      \begin{itemize}
+      \item Berre ha dei lenkjene som svarer til syntaktiske nodar \citep{samuelsson2007apa}
+      \item Berre ha dei lenkjene som passar inn i ein dependensanalyse \citep{hearne2008ccd}
+      \end{itemize}
+    \end{itemize}
+  \end{frame}
+
 \begin{frame}\frametitle{Syntaktisk fraselenking, med \texttt{lfgalign}}
   \begin{itemize}
-  \item Data: LFG-analysar, «kunnskapsbasert» lenking
+  \item Data: LFG-analysar
   \item Formål: annotert trebank
-  \end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Vegkart}
-  \begin{itemize}
-  \item Krav til frasesamanstilling
-  \item Implementasjon av \texttt{lfgalign}
-  \item Evaluering
+  \item Kunnskapsdriven lenking, kan ev. filtrerast med N-gramtabell (eller omsetjingsordbok)
   \end{itemize}
 \end{frame}
 
@@ -63,8 +78,8 @@
 
 \begin{frame}\frametitle{Krav på ulike nivå}
   \begin{itemize}
-  \item lenkjer mellom f-strukturar
-  \item lenkjer mellom c-struktur
+  \item lenkjer mellom predikat i f-strukturar
+  \item lenkjer mellom c-strukturnodar
   \item lenkjer mellom ord % nedprioritert...
   \end{itemize}
 \end{frame}
