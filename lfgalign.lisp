@@ -414,6 +414,59 @@ or adjuncts of others."
 	       vars)))
 
 
+;;;;;;;; PRETTY-PRINTING:
+;;;;;;;; ----------------
+
+(defun simple-f-str (var tab)
+  (let* ((Pr (get-pred var tab)))
+    (remove-if
+     #'null
+     (list (first Pr)
+	   (second Pr)
+	   (awhen (append
+		   (mapcar (lambda (v) (simple-f-str v tab))
+			   (fourth Pr))
+		   (mapcar (lambda (v) (simple-f-str v tab))
+			   (fifth Pr)))
+	     (cons 'arg it))
+	   (awhen (mapcar (lambda (v) (simple-f-str v tab))
+			  (get-adjs var tab 'no-error))
+	     (cons 'adj it))))))
+
+(defun pretty-simple-f-str (var tab)
+  (labels      
+      ((out-f (fs indent)
+	 (concatenate 'string
+		      (format nil "~A~A[ `~A<~{~A~^, ~}>'"
+			      indent
+			      (first fs)
+			      (second fs)
+			      (mapcar #'car (cdr (assoc 'arg (cddr fs)))))
+		      (when (third fs)
+			(format nil "~%~A~{~A~}"
+				indent
+				(mapcar (lambda (fsa)
+					  (out-f fsa (concatenate 'string indent "   ")))
+					(cdr (third fs)))))
+		      (when (fourth fs)
+			(format nil "~%~A~{~A~}"
+				indent
+				(mapcar (lambda (fsa)
+					  (out-f fsa (concatenate 'string indent "   ")))
+					(cdr (fourth fs)))))
+		      (format nil "~A ]~%" indent))))
+    
+    (out-f (simple-f-str var tab)
+		     "")))
+
+(defun out-two-f-str (tab_s tab_t)
+  "Pretty-print the f-structures of two tables next to each other"
+  (loop for src in (split-str-by (pretty-simple-f-str 0 tab_s) #\Newline)
+	for trg in (split-str-by (pretty-simple-f-str 0 tab_t) #\Newline)
+	do (out "~A~40T~A~%" scr trg)))
+
+
+
 ;;;;;;;; LPT:
 ;;;;;;;; ----
 

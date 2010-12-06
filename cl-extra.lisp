@@ -53,6 +53,12 @@ the list of pairs `list'."
 (defun assoc-equal (item alist &key key)
   (assoc item alist :key key :test #'equal))
 
+(defun split-str-by (string char)
+  (loop for i = 0 then (1+ j)
+     as j = (position char string :start i)
+     collect (subseq string i j)
+     while j))
+
 ;;;;;;;; DSET implementations. Remember to (setf *print-circle* t) 
 ;;;;;;;; ----------------------------------------------------------
 

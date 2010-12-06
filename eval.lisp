@@ -258,12 +258,12 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
      with LPT = (or LPT (make-LPT))
      for ((path_s path_t path_a)) on sentpairs
      for ria-alignment = (with-open-file
-			  (stream path_a)
-			(loop for c = (parse-pred stream)
-			   while c
-			   for link = (cons (parse-integer (car (third c)))
-					    (parse-integer (car (fourth c))))
-			   collect link))
+			     (stream path_a)
+			   (loop for c = (parse-pred stream)
+			      while c
+			      for link = (cons (parse-integer (car (third c)))
+					       (parse-integer (car (fourth c))))
+			      collect link))
      for tab_s = (open-and-import (format nil "~A" path_s) 'absolute)
      for tab_t = (open-and-import (format nil "~A" path_t) 'absolute)
      for f-alignments = (funcall aligner '(-1 . -1) tab_s tab_t LPT)
@@ -291,12 +291,13 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
      summing (length (unreferenced-preds tab_t)) into unref_t
 
      counting path_s into i
-     ;do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
+     ;; do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
      finally (out "~%Intersections: ~A~%Unions: ~A~%links made by ~A: ~A~%links in RIA: ~A~%Linkable source PRED's: ~A~%Link possibilities (linkable srcs * linkable trgs): ~A~%Unreferenced sources: ~A~%Unreferenced targets: ~A~%"
 		  isects unions aligner ls_best ls_ria possible_srcs possible_links
 		  unref_s unref_t)
      (return (list isects unions ls_best ls_ria possible_srcs possible_links unref_s unref_t))
      ))
+
 
 
 (lisp-unit:define-test test-ria
