@@ -257,7 +257,7 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
   (loop
      with LPT = (or LPT (make-LPT))
      for ((path_s path_t path_a)) on sentpairs
-     for ria-ranked = (with-open-file
+     for ria-alignment = (with-open-file
 			  (stream path_a)
 			(loop for c = (parse-pred stream)
 			   while c
@@ -272,13 +272,13 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
 			     (funcall ranker f-alignments tab_s tab_t LPT))
 
      for l_best = (length best-f-alignment)
-     for l_ria = (length ria-ranked)
+     for l_ria = (length ria-alignment)
      for l_pred_s = (length (all-pred-vars tab_s)) 
      for l_pred_t = (length (all-pred-vars tab_t))
-     for isect = (length (intersection ria-ranked
+     for isect = (length (intersection ria-alignment
 				       best-f-alignment
 				       :test #'equal))
-     for union = (length (union ria-ranked
+     for union = (length (union ria-alignment
 				best-f-alignment
 				:test #'equal))
      summing isect into isects
