@@ -364,12 +364,15 @@ var `childv'."
      collect attval))
 
 (defun lemma (Pr) (second Pr))
+(defun pron-form (var tab)
+  (cdr (assoc-equal "PRON-FORM" (gethash var tab))))
+
 
 (defun L (Pr tab)
   "Return the lexical expression (ie. surfaceform) of PRED `Pr'.
-Note: a real \"pro\" argument will return its verb!  A fake \"pro\"
-element (created by get-pred for var's that have no PRED element) will
-return \"pro\"."
+Note: a real, dropped \"pro\" argument will return its verb!  A fake
+\"pro\" element (created by get-pred for var's that have no PRED
+element) will return \"pro\"."
   (if (third Pr)
       (let* ((semform_id (third Pr))
 	     (semform (assoc semform_id (gethash '|semform_data| tab)))
@@ -379,7 +382,9 @@ return \"pro\"."
 			      (gethash '|terminal| tab)))
 	     (surfaceform (assoc (car (third terminal))
 				 (gethash '|surfaceform| tab))))
-	(second surfaceform))
+	(or (second surfaceform)
+	    (and (equal "pro" (lemma Pr))
+		 (pron-form (car Pr) tab))))
     (second Pr)))
 
 (defun all-pred-vars (tab)
