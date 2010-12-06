@@ -417,21 +417,23 @@ or adjuncts of others."
 ;;;;;;;; PRETTY-PRINTING:
 ;;;;;;;; ----------------
 
-(defun simple-f-str (var tab)
+(defun simple-f-str (var tab seen)
   (let* ((Pr (get-pred var tab)))
-    (remove-if
-     #'null
-     (list (first Pr)
-	   (second Pr)
-	   (awhen (append
-		   (mapcar (lambda (v) (simple-f-str v tab))
-			   (fourth Pr))
-		   (mapcar (lambda (v) (simple-f-str v tab))
-			   (fifth Pr)))
-	     (cons 'arg it))
-	   (awhen (mapcar (lambda (v) (simple-f-str v tab))
-			  (get-adjs var tab 'no-error))
-	     (cons 'adj it))))))
+    (when (and (listp Pr) (not (member var seen)))
+      (remove-if
+       #'null
+       (list (first Pr)
+	     (second Pr)
+	     (third Pr)
+	     (awhen (append
+		     (mapcar (lambda (v) (simple-f-str v tab (cons var seen)))
+			     (fourth Pr))
+		     (mapcar (lambda (v) (simple-f-str v tab (cons var seen)))
+			     (fifth Pr)))
+		    (cons 'arg it))
+	     (awhen (mapcar (lambda (v) (simple-f-str v tab (cons var seen)))
+			    (get-adjs var tab 'no-error))
+		    (cons 'adj it)))))))
 
 (defun pretty-simple-f-str (var tab)
   (labels      
@@ -441,29 +443,29 @@ or adjuncts of others."
 			      indent
 			      (first fs)
 			      (second fs)
-			      (mapcar #'car (cdr (assoc 'arg (cddr fs)))))
-		      (when (third fs)
-			(format nil "~%~A~{~A~}"
-				indent
-				(mapcar (lambda (fsa)
-					  (out-f fsa (concatenate 'string indent "   ")))
-					(cdr (third fs)))))
+			      (mapcar #'car (cdr (assoc 'arg (cdddr fs)))))
 		      (when (fourth fs)
 			(format nil "~%~A~{~A~}"
 				indent
 				(mapcar (lambda (fsa)
 					  (out-f fsa (concatenate 'string indent "   ")))
 					(cdr (fourth fs)))))
+		      (when (fifth fs)
+			(format nil "~%~A~{~A~}"
+				indent
+				(mapcar (lambda (fsa)
+					  (out-f fsa (concatenate 'string indent "   ")))
+					(cdr (fifth fs)))))
 		      (format nil "~A ]~%" indent))))
     
-    (out-f (simple-f-str var tab)
+    (out-f (simple-f-str var tab nil)
 		     "")))
 
 (defun out-two-f-str (tab_s tab_t)
   "Pretty-print the f-structures of two tables next to each other"
   (loop for src in (split-str-by (pretty-simple-f-str 0 tab_s) #\Newline)
 	for trg in (split-str-by (pretty-simple-f-str 0 tab_t) #\Newline)
-	do (out "~A~40T~A~%" scr trg)))
+	do (out "~A~40T~A~%" src trg)))
 
 
 
