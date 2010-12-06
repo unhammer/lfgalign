@@ -423,7 +423,11 @@ or adjuncts of others."
       (remove-if
        #'null
        (list (first Pr)
-	     (second Pr)
+	     (if (equal "pro" (second Pr))
+		 (aif (assoc-equal "PRON-FORM" (gethash var tab))
+		      (cdr it)
+		      (second Pr))
+	       (second Pr))
 	     (third Pr)
 	     (awhen (append
 		     (mapcar (lambda (v) (simple-f-str v tab (cons var seen)))
