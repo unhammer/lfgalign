@@ -291,7 +291,7 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
      summing (length (unreferenced-preds tab_t)) into unref_t
 
      counting path_s into i
-     do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
+     ;do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
      finally (out "~%Intersections: ~A~%Unions: ~A~%links made by ~A: ~A~%links in RIA: ~A~%Linkable source PRED's: ~A~%Link possibilities (linkable srcs * linkable trgs): ~A~%Unreferenced sources: ~A~%Unreferenced targets: ~A~%"
 		  isects unions aligner ls_best ls_ria possible_srcs possible_links
 		  unref_s unref_t)
@@ -300,14 +300,41 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
 
 
 (lisp-unit:define-test test-ria
-  ;; Mostly just to show how to use ev-ria and ria-analyses
-  (lisp-unit:assert-equal
-   '(16 185 90 112 190 1716 82 66)
-   (ev-ria (ria-analyses 20 nil)))
-  (lisp-unit:assert-equal
-   '(16 157 78 96 157 1341 67 52)
-   (ev-ria (ria-analyses 20 5)))
-  (lisp-unit:assert-true
-   (ev-ria (ria-analyses 20 2) #'random-f-align #'random-rank)))
+  (let ((*arg-order-smoothing* 0.01)
+	(*sub-f-smoothing* 0.01)
+	(*lpt-smoothing* 0.00))
+    ;; Mostly just to show how to use ev-ria and ria-analyses
+    (lisp-unit:assert-equal
+     '(16 195 100 112 190 1716 82 66)
+     (ev-ria (ria-analyses 20 nil)))
+    (lisp-unit:assert-equal
+     '(16 164 85 96 157 1341 67 52)
+     (ev-ria (ria-analyses 20 5)))
+    (lisp-unit:assert-true
+     (ev-ria (ria-analyses 20 2) #'random-f-align #'random-rank))))
 
 
+
+(defun foo ()
+  (let ((lpt (ding-lpt)))
+    (let ((sents  (ria-analyses nil 0)))
+      (ev-ria sents   #'random-f-align #'random-rank nil)
+      (ev-ria sents   #'f-align        #'rank        nil)
+      (ev-ria sents   #'f-align        #'rank        lpt))
+    (let ((sents (ria-analyses nil 1)))
+      (ev-ria sents   #'random-f-align #'random-rank nil)
+      (ev-ria sents   #'f-align        #'rank        nil)
+      (ev-ria sents   #'f-align        #'rank        lpt))
+    (let ((sents (ria-analyses nil 2)))
+      (ev-ria sents   #'random-f-align #'random-rank nil)
+      (ev-ria sents   #'f-align        #'rank        nil)
+      (ev-ria sents   #'f-align        #'rank        lpt))
+    (let ((sents (ria-analyses nil 3)))
+      (ev-ria sents   #'random-f-align #'random-rank nil)
+      (ev-ria sents   #'f-align        #'rank        nil)
+      (ev-ria sents   #'f-align        #'rank        lpt))
+    (let ((sents (ria-analyses nil nil)))
+      (ev-ria sents   #'random-f-align #'random-rank nil)
+      (ev-ria sents   #'f-align        #'rank        nil)
+      (ev-ria sents   #'f-align        #'rank        lpt))
+    ))

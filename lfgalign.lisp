@@ -17,7 +17,7 @@
 (defvar *pro-affects-c-linking* nil)	; Whether unlinked pro-elements may hinder linking c-structure nodes of two predicates
 (defvar *arg-order-smoothing* 0.01)	; Added to numerator and denominator in arg-order-rate
 (defvar *sub-f-smoothing* 0.01)            ; Added to numerator and denominator in sub-f-rate
-(defvar *lpt-smoothing* 0.01)            ; Added to numerator and denominator in lpt-rate
+(defvar *lpt-smoothing* 0.00)            ; Added to numerator and denominator in lpt-rate
 (defvar *max-adjs* 8)			; maximum amount of adjs to try to match in `adjalign'
 (defvar *include-unreferenced-preds* t)	; Whether we add all unreferenced PRED f-structures to adjuncts of SENTENCE (with f-structure id -1)
 
@@ -764,35 +764,38 @@ TODO: (v) the LPT-correspondences can be aligned one-to-one -- isn't this covere
     (flatten (f-align '(0 . 0) tab_s tab_t (make-LPT))))))
 
 (lisp-unit:define-test test-f-align
- (let ((tab_s (open-and-import "dev/TEST_simple_s.pl"))
-       (tab_t (open-and-import "dev/TEST_simple_t.pl")))
-   (lisp-unit:assert-equality
-    #'set-of-set-equal
-    '(((0 . 0) (5 . 3)))
-    (flatten (f-align '(0 . 0) tab_s tab_t (make-LPT)))))
- (let ((tab_s (open-and-import "dev/TEST_regargadj_s.pl"))
-       (tab_t (open-and-import "dev/TEST_regargadj_t.pl"))
-       (LPT (make-LPT)))
-   (lisp-unit:assert-equality
-    #'set-of-set-equal
-    '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
-      ((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-      ((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
-    (flatten (f-align '(0 . 0) tab_s tab_t LPT)))
-   (add-to-lpt "Browne" "Browne" LPT)
-   (lisp-unit:assert-equal
-    '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
-    (rank (f-align '(0 . 0) tab_s tab_t LPT)
-	  tab_s tab_t LPT)))
- (let ((tab_s (open-and-import "dev/TEST_optadj_s.pl"))
-       (tab_t (open-and-import "dev/TEST_optadj_t.pl"))
-       (LPT (make-LPT)))
-   (lisp-unit:assert-equality
-    #'set-of-set-equal
-    '(((0 . 0) (8 . 2) (31 . 8))	; adjuncts optionally align
-      ((0 . 0) (8 . 8) (31 . 2))
-      ((0 . 0) (8 . 8)))
-    (flatten (f-align '(0 . 0) tab_s tab_t LPT)))))
+ (let ((*arg-order-smoothing* 0.01)
+       (*sub-f-smoothing* 0.01)
+       (*lpt-smoothing* 0.00))
+   (let ((tab_s (open-and-import "dev/TEST_simple_s.pl"))
+	 (tab_t (open-and-import "dev/TEST_simple_t.pl")))
+     (lisp-unit:assert-equality
+      #'set-of-set-equal
+      '(((0 . 0) (5 . 3)))
+      (flatten (f-align '(0 . 0) tab_s tab_t (make-LPT)))))
+   (let ((tab_s (open-and-import "dev/TEST_regargadj_s.pl"))
+	 (tab_t (open-and-import "dev/TEST_regargadj_t.pl"))
+	 (LPT (make-LPT)))
+     (lisp-unit:assert-equality
+      #'set-of-set-equal
+      '(((0 . 0) (11 . 6) (10 . 9) (9 . 3)) ((0 . 0) (11 . 6) (10 . 3) (9 . 9))
+	((0 . 0) (11 . 9) (10 . 6) (9 . 3)) ((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+	((0 . 0) (11 . 3) (10 . 6) (9 . 9)) ((0 . 0) (11 . 3) (10 . 9) (9 . 6)))
+      (flatten (f-align '(0 . 0) tab_s tab_t LPT)))
+     (add-to-lpt "Browne" "Browne" LPT)
+     (lisp-unit:assert-equal
+      '((0 . 0) (11 . 9) (10 . 3) (9 . 6))
+      (rank (f-align '(0 . 0) tab_s tab_t LPT)
+	    tab_s tab_t LPT)))
+   (let ((tab_s (open-and-import "dev/TEST_optadj_s.pl"))
+	 (tab_t (open-and-import "dev/TEST_optadj_t.pl"))
+	 (LPT (make-LPT)))
+     (lisp-unit:assert-equality
+      #'set-of-set-equal
+      '(((0 . 0) (8 . 2) (31 . 8))	; adjuncts optionally align
+	((0 . 0) (8 . 8) (31 . 2))
+	((0 . 0) (8 . 8)))
+      (flatten (f-align '(0 . 0) tab_s tab_t LPT))))))
 
 
 (defun f-link? (x)
