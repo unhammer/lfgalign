@@ -1,5 +1,6 @@
-% Created 2009-05-08 Fri 15:22
-\documentclass[bigger]{beamer}
+\documentclass[xcolor=x11names,compress,bigger]{beamer}
+
+%% General document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
@@ -14,30 +15,130 @@
 
 \def\newblock{\hskip .11em plus .33em minus .07em} % for using bibtex with beamer 
 
-\title{Syntaktisk fraselenking}
-\author{Kevin Brubeck Unhammer\\ Universitetet i Bergen}
-\date{10. desember 2010}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{avm}
+\avmfont{\sc}
+\avmoptions{sorted,active}
+\avmvalfont{\rm}
+\avmsortfont{\scriptsize\it}
+\usetikzlibrary{calc}
 
-\usetheme[orchid]{Singapore} 
+%% My own commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mytilde}{\raise.17ex\hbox{$\scriptstyle\sim$}}
+\newcommand{\xbar}{$\rm\overline{X}$}
+\newcommand{\ind}[1]{{\avmoptions{center}\begin{avm}\@{#1}\end{avm}}}
+\newcommand{\F}[2]{\textsc{#1}\ensuremath{_{#2}}}
+\newcommand{\q}[2]{\begin{quotation}\raggedleft{}#1\\\vspace{0.2cm}(#2)\vspace{1.2cm}\end{quotation}}
+\newcommand{\OBLben}{\F{obl}{ben}}
+\newcommand{\OBJben}{\F{obj}{ben}}
+\newcommand{\OBJ}{\F{obj}{}}
+\newcommand{\OBJs}{\F{obj~}{}}
+\newcommand{\ADJ}{\F{adj}{}}
+\newcommand{\ADJs}{\F{adj~}{}}
+\newcommand{\ADJUNCT}{\F{adjunct}{}}
+\newcommand{\XCOMP}{\F{xcomp}{}}
+\newcommand{\XCOMPs}{\F{xcomp~}{}}
+\newcommand{\SUBJ}{\F{subj}{}}
+\newcommand{\SUBJs}{\F{subj~}{}}
+\newcommand{\SPEC}{\F{spec}{}}
+\newcommand{\POSS}{\F{poss}{}}
+\newcommand{\GEND}{\F{gend}{}}
+\newcommand{\NUM}{\F{num}{}}
+\newcommand{\PRED}{\F{pred}{}}
+\newcommand{\TOPIC}{\F{topic}{}}
+\newcommand{\falign}{\ensuremath{\operatorname{\emph{falign}}}}
+\newcommand{\fpairs}{\ensuremath{\operatorname{\emph{fpairs}}}}
+\newcommand{\Bleu}{\textsc{Bleu}}
+\newcommand{\proj}[2]{\begin{tabular}{c}\footnotesize{#1}\\\normalsize{#2}\end{tabular}}
+\newcommand{\ua}{\ensuremath{\uparrow}}
+\newcommand{\da}{\ensuremath{\downarrow}}
+\newcommand{\p}[1]{`\textbf{#1}'}
+\renewcommand{\BOthers}{mfl.\hbox{}}
+\renewcommand{\BOthersPeriod}{mfl.\hbox{}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Beamer Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\useoutertheme[subsection=false,shadow]{miniframes}
+\useinnertheme{default}
+\usefonttheme{serif}
+\usepackage{palatino}
+
+\setbeamerfont{title like}{shape=\scshape}
+\setbeamerfont{frametitle}{shape=\scshape}
+
+\setbeamercolor*{lower separation line head}{bg=DeepSkyBlue4} 
+\setbeamercolor*{normal text}{fg=black,bg=white} 
+\setbeamercolor*{alerted text}{fg=red} 
+\setbeamercolor*{example text}{fg=black} 
+\setbeamercolor*{structure}{fg=black} 
+ 
+\setbeamercolor*{palette tertiary}{fg=black,bg=black!10} 
+\setbeamercolor*{palette quaternary}{fg=black,bg=black!10} 
+
+\renewcommand{\(}{\begin{columns}}
+\renewcommand{\)}{\end{columns}}
+\newcommand{\<}[1]{\begin{column}{#1}}
+\renewcommand{\>}{\end{column}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 \begin{document}
 
-\maketitle
-
-\begin{frame}\frametitle{Vegkart}
-  \begin{itemize}
-  \item Krav til frasesamanstilling
-  \item Implementasjon av \texttt{lfgalign}
-  \item Evaluering
-  \end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[plain]
+  \title[Syntaktisk fraselenking]{
+    \scalebox{1.0}{\centering\scriptsize{}\avmoptions{}
+      \begin{tikzpicture}[scale=0.5]
+        \node(src){
+          \begin{avm}
+            \[ adjunct & \[ `{\bf{}syntaktisk}' \]  \\
+               pred  & `{\bf{}fraselenking}' \]
+          \end{avm}
+        };
+        \node[below of=src, node distance=2cm](trg){
+          \begin{avm}
+            \[pred   &  `{\bf{}link}'\\
+            adjunct & \[ `{\bf{}of<\@{1}>}' \\
+                          obj & \@{1} \[ adjunct & \[ `{\bf{}syntactic}' \] \\
+                                         pred `{\bf{}phrase}' 
+            \] \] \]
+          \end{avm}
+        };
+        \draw[-] ($(src.south)+(0.0,+0.2)$) .. controls +(-0,-1.5) and +( 0,1.5) .. ($(trg.west) +( 4.0,2.0)$) ;
+        \draw[-] ($(src.south)+(0.0,+0.2)$) .. controls +(-0,-1.5) and +( 0,1.5) .. ($(trg.south)+( 2.5,1.0)$) ;
+        \draw[-] ($(src.north)+(2.0,-0.4)$) .. controls +(3.1,2.1) and +(-1,1.5) .. ($(trg.east) +(-2.5,0.0)$) ;
+      \end{tikzpicture}
+    }
+  }
+    \author{\small
+  Kevin Brubeck Unhammer}
+    \institute{ Universitetet i Bergen}
+  \date{\small
+    10. desember 2010}
+  \titlepage
 \end{frame}
 
+\begin{frame}
+  \tableofcontents
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape Fraselenking}
+\subsection{Kva og kvifor}
 \begin{frame}\frametitle{Fraselenking}
     \begin{itemize}
-    \item Finne korresponderande frasar
+    \item Finne frasar som korresponderer i omsetjingar
       \begin{itemize}
-      \item Kva er ein «frase»? Konstituentar? Dependenseiningar?
-        Syntaktiske funksjonar? N-gram? Chunks?
+      \item  «frase» = konstituent? dependenseining?
+        syntaktisk funksjon? N-gram? chunk?
       \end{itemize}
     \item Nyttig både for applikasjonar (maskinomsetjing) og
       korpuslingvistikk
@@ -47,12 +148,18 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}
+
+\end{frame}
+
+\subsection{Standardmetoden: N-grambasert}
 \begin{frame}\frametitle{\texttt{cat korpusbasert\_fraselenking | syntaks}}
     \begin{itemize}
     \item N-grambasert (datadriven/korpusbasert) lenking kan filtrerast med kunnskap
       \begin{itemize}
        \item berre lenkjer som samsvarer med syntaktiske nodar \citep{samuelsson2007apa}
        \item berre lenkjer som samsvarer med ein dependensanalyse \citep{hearne2008ccd}
+       \item berre lenkjer som samsvarer med ein f-strukturanalyse \citep{graham2009osr}
       \end{itemize}
     \end{itemize}
   \end{frame}
@@ -65,6 +172,10 @@
   \end{itemize}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape Lenkingskrav}
+\subsection{F-strukturlenkjer}
 \begin{frame}\frametitle{Krav -- kva vil me lenkje?}
   \begin{itemize}
   \item \emph{Krav avheng av formål}
@@ -125,6 +236,14 @@
   \end{itemize}
 \end{frame}
 
+\subsection{Rangering}
+\begin{frame}\frametitle{Rangering}
+  \begin{itemize}
+  \item 
+  \end{itemize}
+\end{frame}
+
+\subsection{C-strukturlenkjer}
 \begin{frame}\frametitle{Krav på c-strukturnivå}
   For å lenkje $n_s$ og $n_t$:
   \begin{itemize}
@@ -162,9 +281,23 @@
   % Uheldigvis ikkje så mykje materiale
 \end{frame}
 
-\begin{frame}\frametitle{Manuell evaluering}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape Vanskar}
+\subsection{Dårleg inndata}
+\subsection{Nye grammatikkar -- nye problem}
+\begin{frame}\frametitle{Nye grammatikkar -- nye problem}
   \begin{itemize}
-  \item Testsett: georgisk-norsk, ~30 setningar
+  \item 
+  \item 
+  \end{itemize}
+\end{frame}
+
+
+\subsection{Når predikat ikkje korresponderer 1-til-1}
+\begin{frame}\frametitle{Mange-mange-lenkjer i predikat}
+  \begin{itemize}
+  \item 
   \item 
   \end{itemize}
 \end{frame}
