@@ -148,8 +148,31 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
+  \begin{tikzpicture}[auto]
+       \tikzstyle{frame} = [rectangle, draw=blue, thick, fill=blue!20];
 
+       \matrix [column sep=0.5cm,ampersand replacement=\&]
+       {
+         \node(roboter){Roboter}; \&
+         \node(hadde){hadde}; \&
+         \node(dei){dei}; \&
+         \node(snakka){snakka}; \&
+         \node(om){om};  \\[1cm]
+         \node(they){They}; \&
+         \node(had){had}; \&
+         \node(talked){talked}; \&
+         \node(about){about}; \&
+         \node(robots){robots}; \\
+       };
+
+
+      
+%       % \draw[-] ($(roboter.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(robots.north) +(0.0,0.0)$) ;
+%       % \draw[-] ($(src.south)+(2.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(trg.north) +(2.0,0.0)$) ;
+%       % \draw[-] ($(src.south)+(4.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(trg.north) +(4.0,0.0)$) ;
+% };
+     \end{tikzpicture}
 \end{frame}
 
 \subsection{Standardmetoden: N-grambasert}
