@@ -328,14 +328,169 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{\scshape Lenkingskrav}
 \subsection{F-strukturlenkjer}
+
 \begin{frame}
-  Lenkja predikat må ha LPT-korrespondanse på ordnivå:
+  \begin{tikzpicture}
+     {\avmoptions{}
+      \node(src){
+         \begin{avm}
+           $f$ \[pred  & `{\bf{}sove}<eg>' \\
+           tense & pret \\
+           ... \]
+         \end{avm}
+       };
+       \node[right of=src, node distance=5cm](trg){
+         \begin{avm}
+           $g$ \[pred   &  `{\bf{}sleep}<I>'\\
+           tense  & pret  \\
+           aspect & simple \\
+           ... \]
+         \end{avm}
+       };
+       }
+%       \draw[dashed,-] (src.west) .. controls +(-1,2) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
+       %\draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
+  
+       \begin{scope}[shift={(0,-3cm)}]
+      \Tree  [.\node(VPs){VP}; [.\node(Vs){\proj{\ua =\da}{V}}; \node(sov){sov};  ] ]
+       \begin{scope}[shift={(5cm,0)}]
+         \Tree  [.\node(VPt){VP}; [.\node(Vt){\proj{\ua =\da}{V}}; \node(slept){slept};  ] ]
+       \end{scope}
+       \end{scope}
+       %\draw[-] (VPs)..controls +(north:1.5) and +(north:1.5) .. node[above,sloped]{$l_c$} (VPt) ;
+%       \draw[dashed,-] (sov)..controls +(north east:1.5) and +(north west:1.5) .. node[above,sloped]{$l_o$} (slept) ;
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+  \begin{tikzpicture}
+     {\avmoptions{}
+      \node(src){
+         \begin{avm}
+           $f$ \[pred  & `{\bf{}sove}<eg>' \\
+           tense & pret \\
+           ... \]
+         \end{avm}
+       };
+       \node[right of=src, node distance=5cm](trg){
+         \begin{avm}
+           $g$ \[pred   &  `{\bf{}sleep}<I>'\\
+           tense  & pret  \\
+           aspect & simple \\
+           ... \]
+         \end{avm}
+       };
+       }
+%       \draw[dashed,-] (src.west) .. controls +(-1,2) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
+       \draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
+  
+       \begin{scope}[shift={(0,-3cm)}]
+      \Tree  [.\node(VPs){VP}; [.\node(Vs){\proj{\ua =\da}{V}}; \node(sov){sov};  ] ]
+       \begin{scope}[shift={(5cm,0)}]
+         \Tree  [.\node(VPt){VP}; [.\node(Vt){\proj{\ua =\da}{V}}; \node(slept){slept};  ] ]
+       \end{scope}
+       \end{scope}
+       %\draw[-] (VPs)..controls +(north:1.5) and +(north:1.5) .. node[above,sloped]{$l_c$} (VPt) ;
+%       \draw[dashed,-] (sov)..controls +(north east:1.5) and +(north west:1.5) .. node[above,sloped]{$l_o$} (slept) ;
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+  \begin{tikzpicture}
+    {\avmoptions{}
+      \node(src){
+        \begin{avm}
+          $f$ \[pred  & `{\bf{}sove}<eg>' \\
+          tense & pret \\
+          ... \]
+        \end{avm}
+      };
+      \node[right of=src, node distance=5cm](trg){
+        \begin{avm}
+          $g$ \[pred   &  `{\bf{}sleep}<I>'\\
+          tense  & pret  \\
+          aspect & simple \\
+          ... \]
+        \end{avm}
+      };
+    }
+%       \draw[dashed,-] (src.west) .. controls +(-1,2) and +(-1,2) .. node[above,sloped]{$l_f$} (trg.west) ;
+       \draw[-] ($(src.north)-(1,0.3)$) .. controls +(0,1.5) and +(0,1.5) .. node[above,sloped]{$l_p$} ($(trg.north)-(1,0.3)$) ;
+  
+       \begin{scope}[shift={(0,-3cm)}]
+      \Tree  [.\node(VPs){VP}; [.\node(Vs){\proj{\ua =\da}{V}}; \node(sov){sov};  ] ]
+       \begin{scope}[shift={(5cm,0)}]
+         \Tree  [.\node(VPt){VP}; [.\node(Vt){\proj{\ua =\da}{V}}; \node(slept){slept};  ] ]
+       \end{scope}
+       \end{scope}
+       \draw[-] (VPs)..controls +(north:1.5) and +(north:1.5) .. node[above,sloped]{$l_c$} (VPt) ;
+%       \draw[dashed,-] (sov)..controls +(north east:1.5) and +(north west:1.5) .. node[above,sloped]{$l_o$} (slept) ;
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+  
+  {\avmoptions{}
+    \begin{tikzpicture}
+      \node(src){
+        \begin{avm}
+          \[pred  & `{\bf{}veit}<eg,\@{1}:knuse>' \\
+          comp & \@{1} \[pred  & `{\bf{}knuse}<han>'  \]
+          \]
+        \end{avm}
+      };
+      \node[below of=src, node distance=2cm](trg){
+        \begin{avm}
+          \[pred   &  `{\bf{}know}<I,\@{2}:break>'\\
+          comp & \@{2} \[pred  & `{\bf{}break}<he,vase>'  \]
+          \]
+        \end{avm}
+      };
+      \draw[-] ($(src.west)+(1,0.6)$) .. controls +(-1,1.5) and +(-1.5,1.5) .. node[above,sloped]{$l_p$} ($(trg.west)+(1,0.6)$) ;
+      \draw[dashed] ($(src.east)-(4.0,0.5)$) .. controls +(-0,+0.3) and +(0.3,0.3) .. node[midway,sloped]{$\times$} ($(trg.east)-(4.7,0.2)$) ;
+    \end{tikzpicture}
+  }
+  
+  \vspace{1cm}
+  
+  For å lenkje $p$ til $q$ må alle argument av $p$ ha omsetjingar i
+  f-strukturen av $q$, og omvendt
+\end{frame}
+
+\begin{frame}
+  
+  {\avmoptions{}
+    \setlength{\Exlabelsep}{1.0em} % was 1.3em
+    \alignSubExtrue % wasn't
+    \ex. \a. der Tonfall gefällt mir nicht \\
+    $\begin{avm}\[pred & `{\bf{}gefallen}<Tonfall, ich$_i$>' ... \]\end{avm}$
+    \b. jeg liker ikke tonen \\
+    $\begin{avm}\[pred & `{\bf{}like}<jeg$_i$, tonen>' ... \]\end{avm}$
+
+  }
+\end{frame}
+
+\begin{frame}
+  
+  {\avmoptions{}
+    \setlength{\Exlabelsep}{1.0em} % was 1.3em
+    \alignSubExtrue % wasn't
+    \ex. \a. Adams veddet en sigarett med Browne på at det regnet.\\
+    $\begin{avm}\[pred & `{\bf{}vedde}<Abrams, sigarett, Browne, regne>' \\
+      adjunct & \{\}\]\end{avm}$
+    \b. abramsi brouns daenajleva sigaretze, rom cvimda.\\
+    $\begin{avm}\[pred &  `{\bf{}da-najleveba}<Abrams, Browne, cvima>'\\
+      adjunct &  \{ \rm sigareti \}\]\end{avm}$ 
+
+  }
+\end{frame}
+
+\begin{frame}\frametitle{«Ordomsetjing»}
   \begin{columns}
     \begin{column}{0.5\textwidth}
       \begin{itemize}
       \item LPT = Linguistically Predictable Translations
-      \item bottom-up-informasjon (omsetjingsordbøker, giza++, ...)
-      \item koreferente pronomen og substantiv/eigennamn er au LPT
+      \item Her: bottom-up-informasjon (omsetjingsordbøker, 1-gramtabell, ...)
       \end{itemize}
     \end{column}
 
@@ -350,23 +505,6 @@
     \end{column}
   \end{columns}
   % I \texttt{lfgalign} må lenkja ord ha lenkja f-strukturar
-\end{frame}
-
-
-\begin{frame}\frametitle{Krav på f-strukturnivå}
-  \begin{itemize}
-  \item Gjeld i hovudsak argumentstruktur
-  
-
-  \item Argumentstrukturar er ikkje alltid 1-1
-  
-  \item For å lenkje predikat $p$ og $q$:
-    \begin{itemize}
-    \item Alle argument av $p$ skal finne LPT-korrespondanse i
-      argument/adjunkt av $q$, og omvendt
-    \item Adjunkt kan valfritt lenkjast til kvarandre
-    \end{itemize}
-  \end{itemize}
 \end{frame}
 
 \subsection{Rangering}
