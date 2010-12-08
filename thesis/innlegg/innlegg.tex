@@ -498,8 +498,8 @@
       \begin{itemize}
       \item kaffi $=_{LPT}$ coffee
       \item kaffi $\neq_{LPT}$ tea
-      \item han $=_{LPT}$ Joe
-      \item kaffi $\neq_{LPT}$ Bob
+      \item han$_i =_{LPT}$ Joe$_i$
+      \item kaffi $\neq_{LPT}$ Bob\\[0.5cm]
       \item (kaffi $=_{LPT}$ Joe)
       \end{itemize}
     \end{column}
@@ -510,11 +510,35 @@
 \subsection{Rangering}
 \begin{frame}\frametitle{Rangering}
   \begin{itemize}
-  \item 
+  \item LPT-informasjon
+  \item Lik følgje i argumentstruktur
+  \item Djupaste lenking:
+      {\avmoptions{}
+    \begin{tikzpicture}
+      \node(src){
+        \begin{avm}
+          \[pred  & `{\bf{}veit}<eg,\@{1}:knuse>' \\
+          comp & \@{1} \[pred  & `{\bf{}knuse}<han,vase>'  \]
+          \]
+        \end{avm}
+      };
+      \node[below of=src, node distance=2cm](trg){
+        \begin{avm}
+          \[pred   &  `{\bf{}know}<I,\@{2}:break>'\\
+          comp & \@{2} \[pred  & `{\bf{}break}<he,vase>'  \]
+          \]
+        \end{avm}
+      };
+    \end{tikzpicture}
+  }
   \end{itemize}
 \end{frame}
 
 \subsection{C-strukturlenkjer}
+\begin{frame}
+  
+\end{frame}
+
 \begin{frame}\frametitle{Krav på c-strukturnivå}
   For å lenkje $n_s$ og $n_t$:
   \begin{itemize}
