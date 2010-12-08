@@ -283,7 +283,7 @@
        };      
        \draw[-] ($(there.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(es.north) +(0.0,0.0)$) ;
        \draw[-] ($('s.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(gibt.north) +(0.0,0.0)$) ;
-
+%TODO!
        \draw[-] ($(an.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elephant.south) +(0.0,0.0)$) ;
        \draw[-] ($(ein.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elefant.north) +(0.0,0.0)$) ;
        \draw[-] ($(an.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(ein.north) +(0.0,0.0)$) ;
@@ -306,9 +306,9 @@
     \begin{itemize}
     \item N-grambasert (datadriven/korpusbasert) lenking kan filtrerast med kunnskap
       \begin{itemize}
-       \item berre lenkjer som samsvarer med syntaktiske nodar \citep{samuelsson2007apa}
-       \item berre lenkjer som samsvarer med ein dependensanalyse \citep{hearne2008ccd}
-       \item berre lenkjer som samsvarer med ein f-strukturanalyse \citep{graham2009osr}
+       \item berre lenkjer som samsvarer med \emph{syntaktiske nodar} \citep{samuelsson2007apa}
+       \item berre lenkjer som samsvarer med ein \emph{dependensanalyse} \citep{hearne2008ccd}
+       \item berre lenkjer som samsvarer med ein \emph{f-strukturanalyse} \citep{graham2009osr}
       \end{itemize}
     \end{itemize}
   \end{frame}
@@ -435,15 +435,15 @@
     \begin{tikzpicture}
       \node(src){
         \begin{avm}
-          \[pred  & `{\bf{}veit}<eg,\@{1}:knuse>' \\
-          comp & \@{1} \[pred  & `{\bf{}knuse}<han>'  \]
+          \[pred  & `{\bf{}veit}<eg, \@{1}:knuse>' \\
+          comp & \@{1} \[pred  & `{\bf{}knuse}<vase>'  \]
           \]
         \end{avm}
       };
       \node[below of=src, node distance=2cm](trg){
         \begin{avm}
-          \[pred   &  `{\bf{}know}<I,\@{2}:break>'\\
-          comp & \@{2} \[pred  & `{\bf{}break}<he,vase>'  \]
+          \[pred   &  `{\bf{}know}<I, \@{2}:break>'\\
+          comp & \@{2} \[pred  & `{\bf{}break}<he, vase>'  \]
           \]
         \end{avm}
       };
@@ -464,7 +464,7 @@
     \setlength{\Exlabelsep}{1.0em} % was 1.3em
     \alignSubExtrue % wasn't
     \ex. \a. der Tonfall gefällt mir nicht \\
-    $\begin{avm}\[pred & `{\bf{}gefallen}<Tonfall, ich$_i$>' ... \]\end{avm}$
+    $\begin{avm}\[pred & `{\bf{}gefallen}<Tonfall, ich$_i$>' ... \]\end{avm}$\\~
     \b. jeg liker ikke tonen \\
     $\begin{avm}\[pred & `{\bf{}like}<jeg$_i$, tonen>' ... \]\end{avm}$
 
@@ -478,7 +478,7 @@
     \alignSubExtrue % wasn't
     \ex. \a. Adams veddet en sigarett med Browne på at det regnet.\\
     $\begin{avm}\[pred & `{\bf{}vedde}<Abrams, sigarett, Browne, regne>' \\
-      adjunct & \{\}\]\end{avm}$
+      adjunct & \{\}\]\end{avm}$\\~
     \b. abramsi brouns daenajleva sigaretze, rom cvimda.\\
     $\begin{avm}\[pred &  `{\bf{}da-najleveba}<Abrams, Browne, cvima>'\\
       adjunct &  \{ \rm sigareti \}\]\end{avm}$ 
@@ -562,8 +562,8 @@
   }}
   {\footnotesize\setlength{\Exlabelsep}{1.0em} % was 1.3em
     \alignSubExtrue % wasn't
-    \ex. \a. \textbf{roboter} \textbf{snakket} \textbf{de} \textbf{om}
-    \bg. \textbf{gza-\v{s}i} \textbf{robo\d{t}eb-ze} \textbf{la\d{p}ara\d{k}obdnen} \\
+    \ex.
+    \ag. \textbf{gza-\v{s}i} \textbf{robo\d{t}eb-ze} \textbf{la\d{p}ara\d{k}obdnen} \\
     veg.DAT-til robotar.DAT-på snakka.3PL \\
     `På vegen hadde dei snakka om robotar'
 
@@ -597,8 +597,8 @@
   }}
   {\footnotesize\setlength{\Exlabelsep}{1.0em} % was 1.3em
     \alignSubExtrue % wasn't
-    \ex. \a. \textbf{roboter} \textbf{snakket} \textbf{de} \textbf{om}
-    \bg. \textbf{gza-\v{s}i} \textbf{robo\d{t}eb-ze} \textbf{la\d{p}ara\d{k}obdnen} \\
+    \ex.
+    \ag. \textbf{gza-\v{s}i} \textbf{robo\d{t}eb-ze} \textbf{la\d{p}ara\d{k}obdnen} \\
     veg.DAT-til robotar.DAT-på snakka.3PL \\
     `På vegen hadde dei snakka om robotar'
 
@@ -633,8 +633,8 @@
   }}
   {\footnotesize\setlength{\Exlabelsep}{1.0em} % was 1.3em
     \alignSubExtrue % wasn't
-    \ex. \a. \textbf{roboter} \textbf{snakket} \textbf{de} \textbf{om}
-    \bg. \textbf{gza-\v{s}i} \textbf{robo\d{t}eb-ze} \textbf{la\d{p}ara\d{k}obdnen} \\
+    \ex.
+    \ag. \textbf{gza-\v{s}i} \textbf{robo\d{t}eb-ze} \textbf{la\d{p}ara\d{k}obdnen} \\
     veg.DAT-til robotar.DAT-på snakka.3PL \\
     `På vegen hadde dei snakka om robotar'
 
@@ -648,7 +648,7 @@
 \section{\scshape Vanskar}
 \subsection{Dårleg inndata}
 \subsection{Generalisering til nye grammatikkar}
-\begin{frame}\frametitle{Nye grammatikkar}
+\begin{frame}
   \begin{itemize}
   \item Kanskje eit problem å generalisere til grammatikkar utanfor Xpar-prosjektet...
   \item Ikkje alle predikat finst i argument/adjunkt av rotpredikatet
@@ -684,7 +684,7 @@
     }}
     {\footnotesize\setlength{\Exlabelsep}{1.0em} % was 1.3em
     \alignSubExtrue % wasn't
-    \ex. \a. \textbf{roboter} \textbf{hadde} \textbf{de} \textbf{snakket} \textbf{om}
+    \ex. \a. \textbf{roboter} \textbf{hadde} \textbf{de} \textbf{snakket} \textbf{om}\\~
     \bg. \textbf{gza-\v{s}i} \textbf{robo\d{t}eb-ze} \textbf{la\d{p}ara\d{k}obdnen} \\
     veg.DAT-til robotar.DAT-på snakka.3PL \\
     `På vegen hadde dei snakka om robotar'
