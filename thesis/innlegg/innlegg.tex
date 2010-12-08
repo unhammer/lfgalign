@@ -140,43 +140,168 @@
       \item  «frase» = konstituent? dependenseining?
         syntaktisk funksjon? N-gram? chunk?
       \end{itemize}
-    \item Nyttig både for applikasjonar (maskinomsetjing) og
-      korpuslingvistikk
-    \item Data vanlegvis N-gramtabellar frå statistisk samanstilling,
+    \item Data: vanlegvis N-gramtabellar frå statistisk samanstilling,
       reint korpusbasert
-    \item Formål vanlegvis maskinomsetjing
+    \item Formål: vanlegvis statistisk maskinomsetjing
     \end{itemize}
+\end{frame}
+
+\subsection{Standardmetoden: N-grambasert}
+\begin{frame}[fragile]
+  \begin{tikzpicture}[auto]
+       \tikzstyle{frame} = [rectangle, draw=blue, thick, fill=blue!20];
+       \matrix [row sep=1cm,column sep=0.5cm,ampersand replacement=\&]
+       {
+         \node(there){There}; \&
+         \node('s){'s}; \&
+         \node(an){an}; \&
+         \node(elephant){elephant}; \&
+         \node(in){in}; \&
+         \node(the){the}; \&
+         \node(room){room};\\[1cm]
+         \node(es){Es}; \&
+         \node(gibt){gibt}; \&
+         \node(ein){ein}; \&
+         \node(elefant){Elefant}; \&
+         \node(im){im}; \&
+         \node(raum){Raum}; \\
+         \& % Es
+         \& % gibt
+         \& % ein
+         \node(X'){~}; \& % Elefant
+         \& % im
+         \& \\% Raum
+         \& % Es
+         \& % gibt
+         \node(XP){~}; \& % ein
+         \& % Elefant
+         \& % im
+         \& \\% Raum
+       };      
+       \draw[-] ($(there.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($('s.south) +(0.0,0.0)$) ;
+       \draw[-] ($(es.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(gibt.north) +(0.0,0.0)$) ;
+       \draw[-] ($(there.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(es.north) +(0.0,0.0)$) ;
+       \draw[-] ($('s.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(gibt.north) +(0.0,0.0)$) ;
+
+       \draw[-] ($(an.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elephant.south) +(0.0,0.0)$) ;
+       \draw[-] ($(ein.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elefant.north) +(0.0,0.0)$) ;
+       \draw[-] ($(an.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(ein.north) +(0.0,0.0)$) ;
+       \draw[-] ($(elephant.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elefant.north) +(0.0,0.0)$) ;
+
+       \draw[-] ($(in.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(room.south) +(0.0,0.0)$) ;
+       \draw[-] ($(im.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(raum.north) +(0.0,0.0)$) ;
+       \draw[-] ($(in.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(im.north) +(0.0,0.0)$) ;
+       \draw[-] ($(room.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(raum.north) +(0.0,0.0)$) ;
+     \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile]
   \begin{tikzpicture}[auto]
        \tikzstyle{frame} = [rectangle, draw=blue, thick, fill=blue!20];
-
-       \matrix [column sep=0.5cm,ampersand replacement=\&]
+       \matrix [row sep=1cm,column sep=0.5cm,ampersand replacement=\&]
        {
-         \node(roboter){Roboter}; \&
-         \node(hadde){hadde}; \&
-         \node(dei){dei}; \&
-         \node(snakka){snakka}; \&
-         \node(om){om};  \\[1cm]
-         \node(they){They}; \&
-         \node(had){had}; \&
-         \node(talked){talked}; \&
-         \node(about){about}; \&
-         \node(robots){robots}; \\
-       };
+         \node(there){There}; \&
+         \node('s){'s}; \&
+         \node(an){an}; \&
+         \node(elephant){elephant}; \&
+         \node(in){in}; \&
+         \node(the){the}; \&
+         \node(room){room};\\[1cm]
+         \node(es){Es}; \&
+         \node(gibt){gibt}; \&
+         \node(ein){ein}; \&
+         \node(elefant){Elefant}; \&
+         \node(im){im}; \&
+         \node(raum){Raum}; \\
+         \& % Es
+         \& % gibt
+         \& % ein
+         \node(X'){\xbar}; \& % Elefant
+         \& % im
+         \& \\% Raum
+         \& % Es
+         \& % gibt
+         \node(XP){XP}; \& % ein
+         \& % Elefant
+         \& % im
+         \& \\% Raum
+       };      
+       \draw[-] ($(there.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($('s.south) +(0.0,0.0)$) ;
+       \draw[-] ($(es.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(gibt.north) +(0.0,0.0)$) ;
+       \draw[-] ($(there.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(es.north) +(0.0,0.0)$) ;
+       \draw[-] ($('s.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(gibt.north) +(0.0,0.0)$) ;
 
+       \draw[-] ($(an.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elephant.south) +(0.0,0.0)$) ;
+       \draw[-] ($(ein.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elefant.north) +(0.0,0.0)$) ;
+       \draw[-] ($(an.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(ein.north) +(0.0,0.0)$) ;
+       \draw[-] ($(elephant.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elefant.north) +(0.0,0.0)$) ;
 
-      
-%       % \draw[-] ($(roboter.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(robots.north) +(0.0,0.0)$) ;
-%       % \draw[-] ($(src.south)+(2.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(trg.north) +(2.0,0.0)$) ;
-%       % \draw[-] ($(src.south)+(4.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(trg.north) +(4.0,0.0)$) ;
-% };
+       \draw[-] ($(in.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(room.south) +(0.0,0.0)$) ;
+       \draw[-] ($(im.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(raum.north) +(0.0,0.0)$) ;
+       \draw[-] ($(in.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(im.north) +(0.0,0.0)$) ;
+       \draw[-] ($(room.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(raum.north) +(0.0,0.0)$) ;
+
+       \draw[-] ($(es.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(XP.north) +(0.0,0.0)$) ;
+       \draw[-] ($(XP.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(X'.north) +(0.0,0.0)$) ;
+       \draw[-] ($(X'.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(gibt.south) +(0.0,0.0)$) ;
+       \draw[-] ($(X'.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(raum.south) +(0.0,0.0)$) ;
+       \draw[-] ($(gibt.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(raum.south) +(0.0,0.0)$) ;
      \end{tikzpicture}
 \end{frame}
 
-\subsection{Standardmetoden: N-grambasert}
-\begin{frame}\frametitle{\texttt{cat korpusbasert\_fraselenking | syntaks}}
+\begin{frame}[fragile]
+  \begin{tikzpicture}[auto]
+       \tikzstyle{frame} = [rectangle, draw=blue, thick, fill=blue!20];
+       \matrix [row sep=1cm,column sep=0.5cm,ampersand replacement=\&]
+       {
+         \node(there){There}; \&
+         \node('s){'s}; \&
+         \node(an){an}; \&
+         \node(elephant){elephant}; \&
+         \node(in){in}; \&
+         \node(the){the}; \&
+         \node(room){room};\\[1cm]
+         \node(es){Es}; \&
+         \node(gibt){gibt}; \&
+         \node(ein){ein}; \&
+         \node(elefant){Elefant}; \&
+         \node(im){im}; \&
+         \node(raum){Raum}; \\
+         \& % Es
+         \& % gibt
+         \& % ein
+         \node(X'){\xbar}; \& % Elefant
+         \& % im
+         \& \\% Raum
+         \& % Es
+         \& % gibt
+         \node(XP){XP}; \& % ein
+         \& % Elefant
+         \& % im
+         \& \\% Raum
+       };      
+       \draw[-] ($(there.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(es.north) +(0.0,0.0)$) ;
+       \draw[-] ($('s.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(gibt.north) +(0.0,0.0)$) ;
+
+       \draw[-] ($(an.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elephant.south) +(0.0,0.0)$) ;
+       \draw[-] ($(ein.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elefant.north) +(0.0,0.0)$) ;
+       \draw[-] ($(an.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(ein.north) +(0.0,0.0)$) ;
+       \draw[-] ($(elephant.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(elefant.north) +(0.0,0.0)$) ;
+
+       \draw[-] ($(in.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(room.south) +(0.0,0.0)$) ;
+       \draw[-] ($(im.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(raum.north) +(0.0,0.0)$) ;
+       \draw[-] ($(in.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(im.north) +(0.0,0.0)$) ;
+       \draw[-] ($(room.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(raum.north) +(0.0,0.0)$) ;
+
+       \draw[-] ($(es.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(XP.north) +(0.0,0.0)$) ;
+       \draw[-] ($(XP.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(X'.north) +(0.0,0.0)$) ;
+       \draw[-] ($(X'.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(gibt.south) +(0.0,0.0)$) ;
+       \draw[-] ($(X'.north)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(raum.south) +(0.0,0.0)$) ;
+       \draw[-] ($(gibt.south)+(0.0,0.0)$) .. controls +(0,0) and +(0,0) .. ($(raum.south) +(0.0,0.0)$) ;
+     \end{tikzpicture}
+\end{frame}
+
+\begin{frame}\frametitle{\texttt{\normalsize cat n-gramtabell | fraselenking | syntaks}}
     \begin{itemize}
     \item N-grambasert (datadriven/korpusbasert) lenking kan filtrerast med kunnskap
       \begin{itemize}
@@ -187,11 +312,15 @@
     \end{itemize}
   \end{frame}
 
-\begin{frame}\frametitle{Syntaktisk fraselenking, med \texttt{lfgalign}}
+\begin{frame}\frametitle{\texttt{\normalsize cat syntaks | fraselenking | n-gramtabell}}
   \begin{itemize}
-  \item Data: LFG-analysar
-  \item Formål: annotert trebank
-  \item Kunnskapsdriven lenking, kan ev. filtrerast med N-gramtabell (eller omsetjingsordbok)
+  \item Men me kan au gå andre vegen
+    \begin{itemize}
+    \item Data: LFG-analysar
+    \item Formål: annotert trebank
+    \item Kunnskapsdriven lenking, kan ev. filtrerast med N-gramtabell
+      (eller omsetjingsordbok)
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -199,27 +328,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{\scshape Lenkingskrav}
 \subsection{F-strukturlenkjer}
-\begin{frame}\frametitle{Krav -- kva vil me lenkje?}
-  \begin{itemize}
-  \item \emph{Krav avheng av formål}
-  \item Formål: trebankannotasjon
-    \begin{itemize}
-    \item presisjon viktigare enn dekning
-    \item integrering med djupe analysar
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Krav på ulike nivå}
-  \begin{itemize}
-  \item lenkjer mellom predikat i f-strukturar
-  \item lenkjer mellom c-strukturnodar
-  \item lenkjer mellom ord % nedprioritert...
-  \end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Krav på ordnivå}
-  Lenkja ord må ha LPT-korrespondanse:
+\begin{frame}
+  Lenkja predikat må ha LPT-korrespondanse på ordnivå:
   \begin{columns}
     \begin{column}{0.5\textwidth}
       \begin{itemize}
@@ -281,28 +391,6 @@
 \end{frame}
 
 
-\begin{frame}\frametitle{Implementasjon}
-  \begin{itemize}
-  \item 1. Finn f-strukturlenkjer frå analyse + bottom-up-informasjon (LPT)
-    \begin{itemize}
-    \item LFG-analysane må vere disambiguerte, må korrespondere på setningsnivå 
-    \end{itemize}
-  \item 2. Finn c-strukturlenkjer frå f-strukturlenkinga
-  \end{itemize}
-
-  Berre f-strukturlenkinga kan ta val, og dimed ta feil val
-\end{frame}
-
-
-\begin{frame}\frametitle{Evaluering}
-  \begin{itemize}
-  \item 1. Manuell gjennomgang
-  \item 2. Overlapp av lenkjer frå N-grambasert metode (\texttt{RIA})
-  \item Hovudformål: finne ut kor avhengig \texttt{lfgalign} er av
-    bottom-up-informasjon
-  \end{itemize}
-  % Uheldigvis ikkje så mykje materiale
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
