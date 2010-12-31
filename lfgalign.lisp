@@ -338,22 +338,37 @@ to be user-configurable."
       (cdr (assoc-equal "OBJ" (gethash var tab)))
     var))
 
+(defun get-spec (exclude var tab)
+  (let* ((spec-var (cdr (assoc-equal "SPEC" (gethash var tab))))
+	 (spec-poss-var (cdr (assoc-equal "POSS" (gethash spec-var tab))))
+	 (spec-det-var (cdr (assoc-equal "DET" (gethash spec-var tab)))))
+    (append
+     (when (and spec-poss-var
+		(not (member spec-poss-var exclude)))
+       (list spec-poss-var))
+     (when (and spec-det-var
+		(not (member spec-det-var exclude)))
+       (list spec-det-var)))))
+
 (defun get-adjs (var tab &optional no-error)
   "Use `no-error' to return nil if no ADJUNCT was found.
 TODO: find example to test where we need `unravel' / eq-sets.
 TODO: Skip prepositions, as defined in footnote 3 in
 dyvik2009lmp, with `skip-pp'."
-  (mapcar
-   (lambda (v) (skip-pp v tab))
-   (if (eq -1 var)
-       (when *include-unreferenced-preds* (remove 0 (unreferenced-preds tab)))
-     (aif (assoc "ADJUNCT" (gethash var tab) :test #'equal)
-	  (if (get-equivs (cdr it) tab)
-	      (error 'unexpected-input "eqvar of ADJUNCT, TODO")
-	    (mapcar-true (lambda (setpair) (when (eq (cdr setpair) (cdr it))
-					     (car setpair)))
-			 (cdr (gethash '|in_set| tab))))
-	  (unless no-error (error 'no-adjs-error-todo var))))))
+  (append
+   (mapcar
+    (lambda (v) (skip-pp v tab))
+    (if (eq -1 var)
+	(when *include-unreferenced-preds* (remove 0 (unreferenced-preds tab)))
+      (aif (assoc "ADJUNCT" (gethash var tab) :test #'equal)
+	   (if (get-equivs (cdr it) tab)
+	       (error 'unexpected-input "eqvar of ADJUNCT, TODO")
+	     (mapcar-true (lambda (setpair) (when (eq (cdr setpair) (cdr it))
+					      (car setpair)))
+			  (cdr (gethash '|in_set| tab))))
+	   (unless no-error (error 'no-adjs-error-todo var)))))
+   (get-spec nil var tab)
+   ))
 
 (defun references (parentv childv tab)
   "Give a list of attributes of var `parentv' in `tab' which refer to
@@ -424,48 +439,50 @@ or adjuncts of others."
 
 (defun simple-f-str (var tab seen)
   (let* ((Pr (get-pred var tab)))
-    (when (and (listp Pr) (not (member var seen)))
-      (remove-if
-       #'null
-       (list (first Pr)
-	     (if (equal "pro" (second Pr))
-		 (aif (assoc-equal "PRON-FORM" (gethash var tab))
-		      (cdr it)
-		      (second Pr))
-	       (second Pr))
-	     (third Pr)
-	     (awhen (append
-		     (mapcar (lambda (v) (simple-f-str v tab (cons var seen)))
-			     (fourth Pr))
-		     (mapcar (lambda (v) (simple-f-str v tab (cons var seen)))
-			     (fifth Pr)))
-		    (cons 'arg it))
-	     (awhen (mapcar (lambda (v) (simple-f-str v tab (cons var seen)))
-			    (get-adjs var tab 'no-error))
-		    (cons 'adj it)))))))
+    (if (and (listp Pr) (not (member var seen)))
+	(remove-if
+	 #'null
+	 (list (first Pr)
+	       (if (equal "pro" (second Pr))
+		   (aif (assoc-equal "PRON-FORM" (gethash var tab))
+			(cdr it)
+			(second Pr))
+		 (second Pr))
+	       (third Pr)
+	       (awhen (append
+		       (mapcar (lambda (v) (simple-f-str v tab (cons var seen)))
+			       (fourth Pr))
+		       (mapcar (lambda (v) (simple-f-str v tab (cons var seen)))
+			       (fifth Pr)))
+		      (cons 'arg it))
+	       (awhen (mapcar (lambda (v) (simple-f-str v tab (cons var seen)))
+			      (get-adjs var tab 'no-error))
+		      (cons 'adj it))))
+      (list var))))
 
 (defun pretty-simple-f-str (var tab)
   (labels      
       ((out-f (fs indent)
-	 (concatenate 'string
-		      (format nil "~A~A[ `~A<~{~A~^, ~}>'"
-			      indent
-			      (first fs)
-			      (second fs)
-			      (mapcar #'car (cdr (assoc 'arg (cdddr fs)))))
-		      (when (fourth fs)
-			(format nil "~%~A~{~A~}"
-				indent
-				(mapcar (lambda (fsa)
-					  (out-f fsa (concatenate 'string indent "   ")))
-					(cdr (fourth fs)))))
-		      (when (fifth fs)
-			(format nil "~%~A~{~A~}"
-				indent
-				(mapcar (lambda (fsa)
-					  (out-f fsa (concatenate 'string indent "   ")))
-					(cdr (fifth fs)))))
-		      (format nil "~A ]~%" indent))))
+	(concatenate 'string
+		     (format nil "~A~A[ `~A<~{~A~^, ~}>'"
+			     indent
+			     (first fs)
+			     (second fs)
+			     (mapcar #'car (cdr (assoc 'arg (cdddr fs)))))
+		     (when (fourth fs)
+		       (format nil "~%~A~{~A~}"
+			       indent
+			       (mapcar (lambda (fsa)
+					 (out-f fsa (concatenate 'string indent "   ")))
+				       (cdr (fourth fs)))))
+		     (when (fifth fs)
+		       (format nil "~%~A~{~A~}"
+			       indent
+			       (mapcar (lambda (fsa)
+					 (out-f fsa (concatenate 'string indent "   ")))
+				       (cdr (fifth fs)))))
+		     (format nil "~A ]~%" indent))
+	      ))
     
     (out-f (simple-f-str var tab nil)
 		     "")))
