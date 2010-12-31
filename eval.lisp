@@ -292,6 +292,12 @@ assumes there is a symlink \"ria\" from the \"eval\" folder to the
 
      counting path_s into i
      ;; do (out ".") when (eq 0 (mod i 10)) do (out " ~A~%" path_s) end
+     when 'print do
+       (out "~A~% <=> ~A~%"
+	    (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
+       (out-two-f-str tab_s tab_t)
+       (out "~A~%~%" best-f-alignment)
+     end
      finally (out "~%Intersections: ~A~%Unions: ~A~%links made by ~A: ~A~%links in RIA: ~A~%Linkable source PRED's: ~A~%Link possibilities (linkable srcs * linkable trgs): ~A~%Unreferenced sources: ~A~%Unreferenced targets: ~A~%"
 		  isects unions aligner ls_best ls_ria possible_srcs possible_links
 		  unref_s unref_t)
