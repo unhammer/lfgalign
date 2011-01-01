@@ -4,7 +4,7 @@
 
 ;;; Tell SBCL we want full debugging info (eg. no function inlining),
 ;;; but don't care about speed:
-(declaim (optimize (speed 0) (safety 3) (debug 3)))
+(declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (in-package #:lfgalign)
 
@@ -20,6 +20,7 @@
 (defvar *lpt-smoothing* 0.00)            ; Added to numerator and denominator in lpt-rate
 (defvar *max-adjs* 8)			; maximum amount of adjs to try to match in `adjalign'
 (defvar *include-unreferenced-preds* t)	; Whether we add all unreferenced PRED f-structures to adjuncts of SENTENCE (with f-structure id -1)
+(defvar *include-spec* nil)		; Whether we add SPEC elements to the set of adjuncts
 
 ;;;;;;;; C-STRUCTURE TREE:
 ;;;;;;;; -----------------
@@ -367,8 +368,8 @@ dyvik2009lmp, with `skip-pp'."
 					      (car setpair)))
 			  (cdr (gethash '|in_set| tab))))
 	   (unless no-error (error 'no-adjs-error-todo var)))))
-   (get-spec nil var tab)
-   ))
+   (when *include-spec*
+     (get-spec nil var tab))))
 
 (defun references (parentv childv tab)
   "Give a list of attributes of var `parentv' in `tab' which refer to
