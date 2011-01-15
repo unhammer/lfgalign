@@ -105,6 +105,26 @@
   (ev-align-print "eval/sulis/de/D0000.pl" "eval/sulis/en/E0000.pl"))
 
 
+(defun ev-mrs ()
+  (with-open-file
+      (stream
+       "/l/l/eval/mrs/alignments/0-0.lisp")
+    (let* ((srcfile (read stream))
+	   (trgfile (read stream))
+	   (alignments (read stream))
+	   (dir '("/l/l/eval/mrs/"))
+	   (path_s (make-pathname
+		    :name srcfile
+		    :type "pl"
+		    :directory (append dir '("ka"))))
+	   (path_t (make-pathname
+		    :name trgfile
+		    :type "pl"
+		    :directory (append dir '("nb")))))
+      (list srcfile trgfile alignments path_s path_t)
+      )))
+
+
 
 ;;;;;;;; EUROPARL WITH C-STRUCTURES
 ;;;;;;;; --------------------------

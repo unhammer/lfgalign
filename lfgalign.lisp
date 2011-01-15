@@ -4,7 +4,7 @@
 
 ;;; Tell SBCL we want full debugging info (eg. no function inlining),
 ;;; but don't care about speed:
-(declaim (optimize (speed 3) (safety 0) (debug 0)))
+(declaim (optimize (speed 0) (safety 3) (debug 3)))
 
 (in-package #:lfgalign)
 
@@ -1359,7 +1359,7 @@ phi's don't match anything in the files)."
 	       (get-val links splits_t)))
        linkable))))
 
-(defun align (tab_s tab_t LPT)
+(defun align (tab_s tab_t LPT &optional verbose)
   (let* ((f-alignments (f-align '(-1 . -1) tab_s tab_t LPT))
 	 (best-f-alignment (rank f-alignments tab_s tab_t LPT))
 	 (tree_s (maketree tab_s))
@@ -1367,19 +1367,20 @@ phi's don't match anything in the files)."
 	 (c-alignments (c-align-ranked best-f-alignment 
 				       tree_s tab_s
 				       tree_t tab_t)))
-    ;; TODO: pretty-print
-    (out "ALIGN f: ~A~%" best-f-alignment)
-    (mapcar (lambda (pair)
-	      (out "ALIGN c_s: ~A~%      c_t: ~A~%"
-		   (mapcar (lambda (tree)
-			     (skip-suff_base (trimtree (car pair) tree)))
-			   (topnodes (car pair) tree_s))
-		   (mapcar (lambda (tree)
-			     (skip-suff_base (trimtree (cadr pair) tree)))
-			   (topnodes (cadr pair) tree_t))))
-	    c-alignments)
+    (when verbose
+      (out "~A~%    <=>~%~A~%" (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
+      (out-two-f-str tab_s tab_t)
+      (out "ALIGN f: ~A~%" best-f-alignment)
+      (mapcar (lambda (pair)
+		(out "ALIGN c_s: ~A~%      c_t: ~A~%"
+		     (mapcar (lambda (tree)
+			       (skip-suff_base (trimtree (car pair) tree)))
+			     (topnodes (car pair) tree_s))
+		     (mapcar (lambda (tree)
+			       (skip-suff_base (trimtree (cadr pair) tree)))
+			     (topnodes (cadr pair) tree_t))))
+	      c-alignments))
     (list best-f-alignment c-alignments)))
-
 
 
 (defun f-align-naive (var1 tab1 var2 tab2)
