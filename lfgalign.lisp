@@ -439,6 +439,7 @@ or adjuncts of others."
 ;;;;;;;; ----------------
 
 (defun simple-f-str (var tab seen)
+  "Extract the 'important' features from an f-structure (from `var' and onwards)"
   (let* ((Pr (get-pred var tab)))
     (if (and (listp Pr) (not (member var seen)))
 	(remove-if
@@ -446,7 +447,9 @@ or adjuncts of others."
 	 (list (first Pr)
 	       (if (equal "pro" (second Pr))
 		   (aif (assoc-equal "PRON-FORM" (gethash var tab))
-			(cdr it)
+			(if (numberp (cdr it)) ; ugly, but works.. todo prettier
+			    (loop for x in (get-equivs (cdr it) tab) if (stringp x) return x)
+			    (cdr it))
 			(second Pr))
 		 (second Pr))
 	       (third Pr)
