@@ -15,26 +15,16 @@
        (c-alignments (c-align-ranked best-f-alignment 
 				     tree_s tab_s
 				     tree_t tab_t)))
-    (out "=================================~% (evaluate \"~A\" \"~A\")~%"
+    (out "=================================~% (ev-align-print \"~A\" \"~A\")~%"
 	 path_s path_t)
-    (out "~A~% <=> ~A~%"
+    (out "~A <=> ~A~%~%"
 	 (gethash '|sentence| tab_s) (gethash '|sentence| tab_t))
+    (out-two-f-str tab_s tab_t)
+    (out "unranked: ~A~%" f-alignments)
+    (out "ranked: ~A~%~%" best-f-alignment)
     (out "~A~% ~A~%"
 	 (f-tag-tree (skip-suff_base tree_s) tab_s)
 	 (f-tag-tree (skip-suff_base tree_t) tab_t))
-    (let ((allpairs
-	   (if (consp (cdr f-alignments))
-	       ;; Strangely, mapcan #'append hangs if the list is long enough:
-	       (loop for l in (flatten f-alignments) append l)
-	       (list f-alignments))))
-      (flet ((preds (getter tab)
-	       (mapcar (lambda (var)
-			 (get-pred var tab))
-		       (remove-duplicates (mapcar getter allpairs)))))
-	(out "~%srcs: ~A~%trgs: ~A~%"
-	     (preds #'car tab_s) (preds #'cdr tab_t))))
-    (out "unranked: ~A~%" (pred-tag-alignment f-alignments tab_s tab_t))
-    (out "ranked: ~A~%" (pred-tag-alignment best-f-alignment tab_s tab_t))
     (mapcar (lambda (pair)
 	      (out "ALIGN c_s: ~A~%      c_t: ~A~%"
 		   (mapcar (lambda (tree)
@@ -51,7 +41,7 @@
 
 (defun ev-ka-nb (subdir n_s n_t)
   (ev-align-print (format nil "eval/~A/ka/~A.pl" subdir n_s)
-	    (format nil "eval/~A/nb/~A.pl" subdir n_t)))
+		  (format nil "eval/~A/nb/~A.pl" subdir n_t)))
 
 (defun ev-all ()
   (ev-ka-nb "mrs" 0 0)
@@ -106,23 +96,38 @@
 
 
 (defun ev-mrs ()
-  (with-open-file
-      (stream
-       "/l/l/eval/mrs/alignments/0-0.lisp")
-    (let* ((srcfile (read stream))
-	   (trgfile (read stream))
-	   (alignments (read stream))
-	   (dir '("/l/l/eval/mrs/"))
-	   (path_s (make-pathname
-		    :name srcfile
-		    :type "pl"
-		    :directory (append dir '("ka"))))
-	   (path_t (make-pathname
-		    :name trgfile
-		    :type "pl"
-		    :directory (append dir '("nb")))))
-      (list srcfile trgfile alignments path_s path_t)
-      )))
+  (with-open-file (stream
+		   (make-pathname
+		    :name "gold"
+		    :type "lisp"
+		    :directory
+		    (append (pathname-directory
+			     (asdf:component-pathname (asdf:find-system :lfgalign)))
+			    '("eval" "mrs"))))
+    	      
+    (loop for (srcfile trgfile gold) = (read stream nil)
+       with lpt = (make-lpt)
+       with pass = 0
+       with fail = 0
+       with dir = (append (pathname-directory
+			   (asdf:component-pathname (asdf:find-system :lfgalign)))
+			  '("eval" "mrs"))
+       while gold
+       do
+       (let* ((path_s (make-pathname :name srcfile :type "pl"
+				     :directory (append dir '("ka"))))
+	      (path_t (make-pathname :name trgfile :type "pl"
+				     :directory (append dir '("nb"))))
+	      (result (align (open-and-import (format nil "~A" path_s) 'absolute)
+			     (open-and-import (format nil "~A" path_t) 'absolute)
+			     lpt)))
+	 ;; If the gold test does not define a c-structure, don't test
+	 ;; for c-structure:
+	 (unless (cdr gold) (setf (cdr result) nil))
+	 (if (equal gold result) (incf pass)
+	     (progn (incf fail)
+		    (out "~A <=> ~A failed" srcfile trgfile))))
+       finally (return (list pass '/ (+ pass fail))))))
 
 
 
