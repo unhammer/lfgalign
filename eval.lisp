@@ -124,9 +124,10 @@
 	 ;; If the gold test does not define a c-structure, don't test
 	 ;; for c-structure:
 	 (unless (cdr gold) (setf (cdr result) nil))
-	 (if (equal gold result) (incf pass)
+	 (if (and (set-equal (first gold) (first result))
+		  (set-equal (second gold) (second result))) (incf pass)
 	     (progn (incf fail)
-		    (out "~A <=> ~A failed" srcfile trgfile))))
+		    (out "FAIL: ~A <=> ~A~%" srcfile trgfile))))
        finally (return (list pass '/ (+ pass fail))))))
 
 
